@@ -38,34 +38,37 @@
         - **Editor**
         - **RegisteredUser**
     - *methods*:
-        - create_user : *@classmethod* (Owners cannot be created)
-        - generate_password
-        - authenticate_user : *@classmethod*
-        - edit_account_data
-        - delete_account
         - add_track (Administrators only)
-        - add_track_to_tracklist : (Editors only)
-        - add_track_to_wishlist : (RegisteredUsers only)
-        - count_administrators : (Owner only)
-        - count_active_users : (Administrators and Owner only)
-        - count_active_administrators : (Administrators and Owner only)
-        - edit_track : (Administrators only)
-        - get_editors : (Administrators only)
+        - add_track_to_tracklist : (Editors)
+        - add_track_to_wishlist : (RegisteredUsers)
+        - assign_timeslot : (Administrators)
+        - authenticate_user : *@classmethod*
+        - count_administrators : (Owner)
+        - count_active_users : (Administrators, Owner)
+        - count_active_administrators : (Administrators, Owner)
+        - create_user : *@classmethod* (Owners cannot be created)
+        - delete_account
+        - edit_account_data
+        - edit_track : (Administrators)
+        - generate_password
+        - get_editors : (Administrators)
         - get_most_wished_tracks : (Administrators)
-        - get_most_popular_track_freq : (Administrators only)
-        - get_track_reproduction_count : (restricted to Administrators)
-        - get_wishlist : (restricted to Editors)
-        - make_administrator : (restricted to Owner)
-        - make_editor : (restricted to Administrators)
-        - remove_track : (restricted to Administrators)
-        - unmake_administrator : (restricted to Owner)
-        - unmake_editor : (restricted to Administrators)
-
+        - get_most_popular_track_freq : (Administrators)
+        - get_track_reproduction_count : (Administrators)
+        - get_wishlist : (Editors)
+        - make_administrator : (Owner)
+        - make_editor : (Administrators)
+        - remove_track : (Administrators)
+        - unmake_administrator : (Owner)
+        - unmake_editor : (Administrators)
 - **EditorTimes**:
     - *attributes*:
         - editor : *User*
         - time_slot_start : *Time*
-
+    - *methods*:
+        - add_editor_slot : *@classmethod*
+        - change_editor_slot (?)
+        - remove_editor_slot (?)
 - **TrackList**:    A playlist of all tracks (TODO: think this through, what if track changed, update all?)
     - *attributes*:
         - track : *Track*
@@ -75,6 +78,8 @@
     - *methods*:
         - add_to_tracklist : *@classmethod*
         - remove_from_tracklist
+        - get_tracklist : *@classmethod*
+        - get_next_track : *@classmethod*
 - **Wishes**:
     - *attributes*:
         - track : *Track*
@@ -87,8 +92,30 @@
 ## Notes
 - Radio station data to be stored into flask config object
 - Registration requires sending an activation code via email, confirmation by link, then sending a password again by mail
+- Each RegisteredUser can select at most 10 tracks for his wishlist
+- Display currently playing track
 
 ## Questions
 - What is a carrier_type?
 - Can registration procedure be changed to something better?
-- What about the 24-hour track list constraint?
+- What about the 24-hour track list constraint? If it fails?
+
+
+## Views
+- **index**:
+    - Currently playing track and it's data
+    - Login and signup forms
+- **settings**:
+    - Account settings:
+        - Change name, occupation
+        - Change password
+        - Delete account
+- **track_management**:
+    - Administrators only
+    - View all tracks
+    -
+    - Add track
+    - Edit track
+    - Delete Track
+- **wishlists**:
+    -
