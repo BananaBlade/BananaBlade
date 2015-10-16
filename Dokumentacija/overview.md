@@ -16,7 +16,13 @@
         // Special
         - (? play_count )
     - *methods*:
-        - add_track: *@classmethod*
+        - add_track : *@classmethod*
+        - get_track : *@classmethod*
+        - edit_track
+        - delete_track
+        - increment_play_count
+        - get_wishlist : *@classmethod*
+        - get_search : *@classmethod*
 - **User**:
     - *attributes*:
         - first_name : *String*
@@ -37,15 +43,29 @@
             - Can choose Editors
         - **Editor**:
             - attributes:
-                - daily_time_start : *Time*
-                - daily_time_end : *Time*
+                - time_slot_start : Time
                 - (? requested_time )
         - **RegisteredUser**:
             - Can edit his own data
     - *methods*:
         - register_user : *@classmethod*
         - authenticate_user : *@classmethod*
-
+        - count_administrators : *@staticmethod*
+- **TrackList**:    A playlist of all the tracks
+    - *attributes*:
+        - track : *Track*
+        - editor : *User*
+        - start_time : *DateTime*
+        - play_duration : *Int (in seconds)*
+    - *methods*:
+        - add_track : *@classmethod*
+- **Wishes**:   Songs wished by the registered users
+    - *attributes*:
+        - track : *Track*
+        - wish_time : *DateTime*
+        - wisher : *User*
+    - *methods*:
+        
 
 ## Notes
 - Radio station data to be stored into flask config object
