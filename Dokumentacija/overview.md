@@ -73,8 +73,8 @@
         - start_time : *Time*
         - play_duration : *Int (in seconds)*
     - *methods*:
-        - add_track : *@classmethod*
-        - remove_track
+        - add_to_tracklist : *@classmethod*
+        - remove_from_tracklist
 - **Wishes**:
     - *attributes*:
         - track : *Track*
