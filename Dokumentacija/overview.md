@@ -99,7 +99,8 @@
 - What is a carrier_type?
 - Can registration procedure be changed to something better?
 - What about the 24-hour track list constraint? If it fails?
-
+- Wish list changes - clarify
+- Occupation?
 
 ## Views
 - **index**:
@@ -110,12 +111,13 @@
         - Change name, occupation
         - Change password
         - Delete account
+    - Administrator settings
+    - Owner settings
 - **track_management**:
     - Administrators only
     - View all tracks
-    -
     - Add track
     - Edit track
     - Delete Track
 - **wishlists**:
-    -
+- **editorlist:
