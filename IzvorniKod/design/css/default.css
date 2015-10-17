@@ -1,0 +1,396 @@
+@import "reset.css";
+body {
+  background: #fff;
+  color: #222;
+  font-family: "Roboto", sans;
+  font-size: 16px;
+  height: 100%;
+  line-height: 1.5;
+}
+div,
+section,
+header,
+nav,
+input,
+button {
+  box-sizing: border-box;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway";
+}
+h1 {
+  font-size: 4em;
+  font-weight: 300;
+  margin-bottom: 0.5em;
+  text-align: center;
+}
+h2 {
+  font-size: 2em;
+  line-height: 1.2;
+  padding: 0.5em 0;
+}
+h3 {
+  font-size: 1.2em;
+  font-weight: 700;
+  line-height: 3;
+}
+b {
+  font-weight: 700;
+}
+i {
+  font-style: italic;
+}
+sup {
+  font-size: 85%;
+  line-height: 0;
+  position: relative;
+  top: -0.25em;
+}
+.small {
+  font-size: 0.6em;
+  font-weight: 700;
+  line-height: 0;
+}
+/******************************************************************************/
+/* Basic UI styles */
+.side-text {
+  opacity: 0.5;
+}
+/******************************************************************************/
+/* Form elements styles */
+form {
+  line-height: 2;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  background: #eee;
+  border: none;
+  display: block;
+  font-family: "Roboto", sans;
+  font-size: 1em;
+  height: 2em;
+  line-height: 2;
+  padding: 0 0.5em;
+}
+input[type="checkbox"] {
+  display: block;
+  height: 1em;
+  font-size: 1em;
+  margin: 0.5em;
+}
+button {
+  background: #ff3242;
+  border: none;
+  border-bottom: 0.22em solid #e40012;
+  color: #fff;
+  font-family: "Roboto", sans;
+  font-size: 0.9em;
+  font-weight: 700;
+  height: 2.22em;
+  line-height: 2;
+  padding: 0 0.75em;
+}
+label {
+  display: block;
+  line-height: 2;
+}
+.form-line {
+  margin: 1em 0;
+}
+.form-line:before,
+.form-line:after {
+  content: "";
+  display: table;
+}
+.form-line:after {
+  clear: both;
+}
+/******************************************************************************/
+a[href] {
+  color: #ff3242;
+  font-weight: 700;
+  text-decoration: none;
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+/******************************************************************************/
+.clear:before,
+.clear:after {
+  content: "";
+  display: table;
+}
+.clear:after {
+  clear: both;
+}
+.grid:before,
+.grid:after {
+  content: "";
+  display: table;
+}
+.grid:after {
+  clear: both;
+}
+.top-header {
+  background: #fff;
+  height: 4em;
+  left: 0;
+  padding: 1em 2em;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+.top-header:before,
+.top-header:after {
+  content: "";
+  display: table;
+}
+.top-header:after {
+  clear: both;
+}
+.app-logo {
+  float: left;
+  font-size: 1.33em;
+  font-weight: 900;
+}
+.user-box {
+  float: right;
+}
+.user-box input,
+.user-box button {
+  float: left;
+  margin-left: 0.5em;
+}
+.page-section {
+  min-height: 40em;
+  padding: 4em 2em;
+  width: 100%;
+}
+.front-section {
+  background: url(../img/pattern7.png );
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  color: #fff;
+}
+.track-playing {
+  margin: 0 auto;
+  width: 920px;
+}
+.playing-label {
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 1em;
+}
+.track {
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  padding: 1em 2em 2em 2em;
+}
+.metadata:before,
+.metadata:after {
+  content: "";
+  display: table;
+}
+.metadata:after {
+  clear: both;
+}
+.metadata-item {
+  float: left;
+  width: 33.33333333%;
+  font-weight: 700;
+}
+.album {
+  text-align: center;
+}
+.genre {
+  text-align: right;
+}
+.metadata-item:before {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 400;
+}
+.artist:before {
+  content: "Od: ";
+}
+.album:before {
+  content: "Album: ";
+}
+.genre:before {
+  content: "Žanr: ";
+}
+.play-status {
+  padding-top: 1.5em;
+}
+.play-status:before,
+.play-status:after {
+  content: "";
+  display: table;
+}
+.play-status:after {
+  clear: both;
+}
+.play-time,
+.duration {
+  float: left;
+  width: 8.33333333%;
+}
+.duration {
+  text-align: right;
+}
+.play-percentage {
+  float: left;
+  width: 83.33333333%;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.25em 0.35em;
+  position: relative;
+}
+.play-progress-bar {
+  background: #ff3242;
+  border-right: 4px solid #fff;
+  height: 1em;
+}
+.progress-30 {
+  width: 30%;
+}
+.playing-next {
+  font-weight: 700;
+  margin-top: 1em;
+}
+.playing-next:before {
+  color: rgba(255, 255, 255, 0.75);
+  content: "Iduće: ";
+  font-style: normal;
+  font-weight: 400;
+}
+.center-grid {
+  margin: 0 auto;
+  width: 1200px;
+}
+.center-grid:before,
+.center-grid:after {
+  content: "";
+  display: table;
+}
+.center-grid:after {
+  clear: both;
+}
+.register-text,
+.register-form {
+  float: left;
+  width: 50%;
+}
+.register-text {
+  padding: 1em 2em 0 0;
+  text-align: justify;
+}
+.register-form {
+  padding-left: 2em;
+}
+.register-form input[type="text"],
+.register-form input[type="password"],
+.register-form input[type="email"] {
+  width: 100%;
+}
+.register-form input[type="checkbox"] {
+  float: left;
+}
+.register-form label {
+  float: left;
+}
+/******************************************************************************/
+.page-content-wrapper {
+  min-height: 100vh;
+  padding-top: 4em;
+  position: relative;
+  width: 100%;
+}
+.page-sidebar {
+  background: #eee;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  top: 4em;
+  width: 20%;
+}
+.page-content {
+  border-top: 1px solid #ddd;
+  margin-left: 20%;
+  padding: 0 4em;
+}
+.side-group {
+  line-height: 2;
+  padding: 1em;
+}
+.side-group-name {
+  font-weight: 700;
+}
+.side-group-options li {
+  font-size: 0.9em;
+}
+.user-side {
+  background: url(../img/pattern7.png );
+  color: #fff;
+  padding: 2em 1em;
+}
+.user-img {
+  float: left;
+  width: 25%;
+}
+.user-img img {
+  display: block;
+  height: 3em;
+  padding: 0.19em 0;
+}
+.user-info {
+  float: left;
+  width: 75%;
+}
+.user-name {
+  font-size: 1.25em;
+  line-height: 1.5;
+  font-weight: 700;
+}
+.user-type {
+  font-size: 0.9em;
+  line-height: 1.67;
+}
+.settings-section {
+  border-bottom: 4px solid #ddd;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+}
+.settings-section-header {
+  padding: 1.5em 0;
+}
+.settings-subsection {
+  border-top: 1px solid #ddd;
+  padding-bottom: 3em;
+}
+.settings-form .form-line:before,
+.settings-form .form-line:after {
+  content: "";
+  display: table;
+}
+.settings-form .form-line:after {
+  clear: both;
+}
+.settings-form .form-line label {
+  float: left;
+  width: 25%;
+  opacity: 0.5;
+}
+.settings-input {
+  float: left;
+  width: 75%;
+}
+input[type="text"].account-type-input {
+  background: #29b86b;
+  color: #fff;
+  font-weight: 700;
+}

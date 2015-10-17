@@ -1,0 +1,154 @@
+@header               :     "Raleway";
+@body                 :     "Roboto", sans;
+
+@accent               :     #FF3242;
+@dominant             :     #29b86b;
+
+body{
+    background        :     #fff;
+    color             :     #222;
+    font-family       :     @body;
+    font-size         :     16px;
+    height            :     100%;
+    line-height       :     1.5;
+}
+
+div, section, header, nav, input, button{
+    box-sizing        :     border-box;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family       :     @header;
+}
+
+h1{
+    font-size         :     4em;
+    font-weight       :     300;
+    margin-bottom     :     0.5em;
+    text-align        :     center;
+}
+
+h2{
+    font-size         :     2em;
+    line-height       :     1.2;
+    padding           :     0.5em 0;
+}
+
+h3{
+    font-size         :     1.2em;
+    font-weight       :     700;
+    line-height       :     3;
+}
+
+b{
+    font-weight       :     700;
+}
+
+i{
+    font-style        :     italic;
+}
+
+sup{
+    font-size         :     85%;
+    line-height       :     0;
+    position          :     relative;
+    top               :     -0.25em;
+}
+
+.small{
+    font-size         :     0.6em;
+    font-weight       :     700;
+    line-height       :     0;
+}
+
+/******************************************************************************/
+/* Basic UI styles */
+
+.main-text{
+
+}
+
+.side-text{
+    opacity           :     0.5;
+}
+
+.link{
+
+}
+
+/******************************************************************************/
+/* Form elements styles */
+
+form{
+    line-height    :     2;
+}
+
+input[ type = "text" ], input[ type = "password" ], input[ type = "email" ]{
+    background     :     #eee;
+    border         :     none;
+    display        :     block;
+    font-family    :     @body;
+    font-size      :     1em;
+    height         :     2em;
+    line-height    :     2;
+    padding        :     0 0.5em;
+}
+
+input[ type = "checkbox" ]{
+    display          :     block;
+    height           :     1em;
+    font-size        :     1em;
+    margin           :     0.5em;
+}
+
+button{
+    background     :     @accent;
+    border         :     none;
+    border-bottom  :     0.22em solid darken( @accent, 15% );
+    color          :     #fff;
+    font-family    :     @body;
+    font-size      :     0.9em;
+    font-weight    :     700;
+    height         :     2.22em;
+    line-height    :     2;
+    padding        :     0 0.75em;
+}
+
+label{
+    display        :     block;
+    line-height    :     2;
+}
+
+.form-line{
+    .grid();
+    margin         :     1em 0;
+}
+
+/******************************************************************************/
+
+a[ href ]{
+    color             :     @accent;
+    font-weight       :     700;
+    text-decoration   :     none;
+
+    &:hover{
+        text-decoration     :     underline;
+    }
+}
+
+/******************************************************************************/
+
+.clear{
+    &:before, &:after{  content         :   "";
+                        display         :   table; }
+    &:after{            clear           :   both; }
+}
+
+.grid{
+    .clear();
+}
+
+.column( @x, @n ){
+    float       :   left;
+    width       :   100% * @x / @n;
+}
