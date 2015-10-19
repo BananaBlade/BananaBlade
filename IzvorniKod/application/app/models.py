@@ -20,9 +20,6 @@ class Track( BaseModel ):
     carrier_type    = CharField()
     year            = IntegerField()
 
-    class Meta:
-        order_by = ( '+artist', '+name' )
-
     # Methods
 
     @classmethod
@@ -64,9 +61,6 @@ class TimeSlot( BaseModel ):
     editor          = ForeignKeyField( User )
     time            = TimeField()
 
-    class Meta:
-        order_by = ( '+time' )
-
 class PlaylistItem( BaseModel ):
     """ """
     track           = ForeignKeyField( Track )
@@ -80,17 +74,11 @@ class PlayRecord( BaseModel ):
     editor          = ForeignKeyField( User )
     date_time       = DateTimeField()
 
-    class Meta:
-        order_by = ( 'date_time' )
-
 class Wish( BaseModel ):
     """ """
     track           = ForeginKeyField( Track )
     user            = ForeignKeyField( User, related_name = 'wishes' )
     date_time       = DateTimeField()
-
-    class Meta:
-        order_by = ( 'date_time' )
 
 class Notification( BaseModel ):
     """ """
@@ -99,6 +87,3 @@ class Notification( BaseModel ):
     content         = CharField()
     date_time       = DateTimeField()
     seen            = BooleanField()
-
-    class Meta:
-        order_by = ( '+seen', 'date_time', 'title' )
