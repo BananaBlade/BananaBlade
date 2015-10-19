@@ -10,7 +10,7 @@ class PermissionError( Exception ):
 
 
 class AccountType( Enum ):
-    REGISTERED_USER = 1
-    MUSIC_EDITOR = 2
+    USER = 1
+    EDITOR = 2
     ADMINISTRATOR = 3
     OWNER = 4
