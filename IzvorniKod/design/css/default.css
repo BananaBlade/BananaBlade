@@ -7,12 +7,12 @@ body {
   height: 100%;
   line-height: 1.5;
 }
+button,
 div,
-section,
 header,
-nav,
 input,
-button {
+nav,
+section {
   box-sizing: border-box;
 }
 h1,
@@ -50,6 +50,9 @@ sup {
   line-height: 0;
   position: relative;
   top: -0.25em;
+}
+img {
+  display: block;
 }
 .small {
   font-size: 0.6em;
@@ -141,7 +144,7 @@ a[href]:hover {
   background: #fff;
   height: 4em;
   left: 0;
-  padding: 1em 2em;
+  padding: 0 1em;
   position: absolute;
   top: 0;
   width: 100%;
@@ -159,14 +162,29 @@ a[href]:hover {
   float: left;
   font-size: 1.33em;
   font-weight: 900;
+  padding: 0.752em 0;
 }
 .user-box {
   float: right;
+}
+.user-box form {
+  padding: 1em 0;
 }
 .user-box input,
 .user-box button {
   float: left;
   margin-left: 0.5em;
+}
+.user-options li {
+  float: left;
+  overflow: hidden;
+  padding: 1em;
+}
+.user-options li img {
+  height: 2em;
+}
+.user-options li.active {
+  background: url(../img/pattern7.png );
 }
 .page-section {
   min-height: 40em;
@@ -324,14 +342,29 @@ a[href]:hover {
   padding: 0 4em;
 }
 .side-group {
-  line-height: 2;
-  padding: 1em;
+  line-height: 2.5;
+  padding: 1em 0;
 }
 .side-group-name {
+  border-top: 1px solid #ccc;
   font-weight: 700;
+  padding: 0 1em;
+}
+.side-group-name.first {
+  border-top: none;
 }
 .side-group-options li {
   font-size: 0.9em;
+  padding: 0 1em;
+}
+.side-group-options li:hover {
+  font-weight: 700;
+  cursor: pointer;
+}
+.side-group-options li img {
+  float: left;
+  height: 1em;
+  padding: 0.75em 1em 0.75em 0;
 }
 .user-side {
   background: url(../img/pattern7.png );
@@ -361,7 +394,7 @@ a[href]:hover {
   line-height: 1.67;
 }
 .settings-section {
-  border-bottom: 4px solid #ddd;
+  border-bottom: 0.5em solid #ddd;
   margin-bottom: 1em;
   padding-bottom: 1em;
 }
@@ -371,6 +404,22 @@ a[href]:hover {
 .settings-subsection {
   border-top: 1px solid #ddd;
   padding-bottom: 3em;
+}
+.settings-subsection h3 {
+  padding-bottom: 0.5em;
+}
+.settings-subsection h3 img {
+  float: left;
+  height: 1em;
+  padding: 1em 0.5em 1em 0;
+}
+.settings-content:before,
+.settings-content:after {
+  content: "";
+  display: table;
+}
+.settings-content:after {
+  clear: both;
 }
 .settings-form .form-line:before,
 .settings-form .form-line:after {
@@ -393,4 +442,113 @@ input[type="text"].account-type-input {
   background: #29b86b;
   color: #fff;
   font-weight: 700;
+}
+.editors-list {
+  border-bottom: 1px solid #ddd;
+}
+.editors-list-caption {
+  border: 1px solid #ddd;
+  color: #aaa;
+  font-weight: 700;
+  padding: 1em 2em;
+}
+.editors-list-caption:before,
+.editors-list-caption:after {
+  content: "";
+  display: table;
+}
+.editors-list-caption:after {
+  clear: both;
+}
+.editor-info-caption {
+  float: left;
+  width: 25%;
+}
+.editor-favourites-caption {
+  float: left;
+  width: 75%;
+  border-left: 1px solid #ddd;
+  padding-left: 1em;
+}
+.editor {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  padding: 1em 2em;
+}
+.editor:before,
+.editor:after {
+  content: "";
+  display: table;
+}
+.editor:after {
+  clear: both;
+}
+.editor:nth-child(even) {
+  background: #eee;
+}
+.editor-info {
+  float: left;
+  width: 25%;
+}
+.editor-favourites {
+  float: left;
+  width: 75%;
+}
+.editor-favourites:before,
+.editor-favourites:after {
+  content: "";
+  display: table;
+}
+.editor-favourites:after {
+  clear: both;
+}
+.editor-favourite-track {
+  float: left;
+  width: 33.33333333%;
+  border-left: 1px solid #ddd;
+  font-size: 0.9em;
+  padding: 0.25em 1em 0.5em 1em;
+}
+.editor-favourite-track .track-name {
+  font-weight: 700;
+  height: 1.5em;
+  overflow: hidden;
+}
+.editor-favourite-track .track-artist {
+  opacity: 0.5;
+}
+.editor-name {
+  font-size: 1.25em;
+}
+.editor-occupation {
+  opacity: 0.5;
+}
+.add-editor {
+  border: 1px solid #ddd;
+  margin-top: 1em;
+  padding: 0 2em;
+}
+.add-editor:before,
+.add-editor:after {
+  content: "";
+  display: table;
+}
+.add-editor:after {
+  clear: both;
+}
+.editor-name-label {
+  float: left;
+  width: 25%;
+}
+.editor-input {
+  float: left;
+  width: 50%;
+}
+.editor-add-button {
+  float: left;
+  width: 25%;
+  padding-left: 1em;
+}
+.editor-add-button button {
+  width: 100%;
 }

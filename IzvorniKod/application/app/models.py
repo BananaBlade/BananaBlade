@@ -53,7 +53,7 @@ class User( BaseModel ):
     email           = CharField( unique = True )
     password_hash   = CharField()
     account_type    = IntegerField()    # from 1 to 4
-    active          = BooleanField()
+    last_active     = DateTimeField()
     activation_code = CharField()
 
 class TimeSlot( BaseModel ):
