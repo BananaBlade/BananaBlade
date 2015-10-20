@@ -40,6 +40,6 @@
     - The list has to be confirmed before storing
     - After confirmation, the system generates the global wish list with all the wished tracks and their wish counts
     - This general list is available to all the editors
-- Administrators can see how many times was a certain track reproduced, which editor prefers which tracks, which are the most wanted tracks (via wish lists), and what is the occurence frequency of the most wished track within a given time interval
+- Administrators can see how many times was a certain track reproduced, which editor prefers which tracks, which are the most wanted tracks (via wish lists), and what is the occurrence frequency of the most wished track within a given time interval
 - The system must allow concurrent work of the owner, administrators, editors and basic users
 - During work, the owner and administrators must be able to see the number and names of the currently active administrators, and the number of currently active basic users
