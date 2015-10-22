@@ -2,7 +2,7 @@
 
 - Editors can create playlists (1 hour duration)
 - Editors can search the entire database by all relevant track informations
-- Basic users can to create their own wishlists with up to 10 tracks on it
+- Basic users can create their own wishlists with up to 10 tracks on it
 - Editors can see the tracks on users' wishlists (how often do they occur - count)
 - Visitors can only see the currently playing track
 - Each track has a name and it's metadata
