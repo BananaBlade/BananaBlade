@@ -16,7 +16,7 @@ def preprocess_request():
 def show_index():
     return 'Hello'
 
-@app.route( '/settings' ):
+@app.route( '/settings' )
 def show_settings():
     pass
 
