@@ -2,10 +2,12 @@ from peewee import *
 from app import db
 from app.definitions import *
 
+
 class BaseModel( Model ):
     """Tell peewee to use app-specific database"""
     class Meta:
         database = db
+
 
 class Track( BaseModel ):
     """Track model, has CRUD methods"""
@@ -13,12 +15,12 @@ class Track( BaseModel ):
     artist          = CharField()
     duration        = IntegerField()    # in seconds
     file_format     = CharField()
-    sample_rate     = FloatField()      # in kHz
-    bits_per_sample = IntegerField()
-    genre           = CharField()
-    publisher       = CharField()
-    carrier_type    = CharField()
-    year            = IntegerField()
+    sample_rate     = FloatField( null = True )      # in kHz
+    bits_per_sample = IntegerField( null = True )
+    genre           = CharField( null = True )
+    publisher       = CharField( null = True )
+    carrier_type    = CharField( null = True )
+    year            = IntegerField( null = True )
 
     # Methods
 
@@ -45,45 +47,45 @@ class Track( BaseModel ):
     def get_tracks( cls, start = 0, limit = 20 ):
         return cls.select().paginate( start, limit )
 
+
 class User( BaseModel ):
-    """ """
+    """User model, containing basic user data and some app-specific fields (last_active, activation_code)"""
     first_name      = CharField()
     last_name       = CharField()
     occupation      = CharField()
     email           = CharField( unique = True )
     password_hash   = CharField()
-    account_type    = IntegerField()    # from 1 to 4
+    account_type    = IntegerField()    # definitions.AccountType
     last_active     = DateTimeField()
     activation_code = CharField()
 
-class TimeSlot( BaseModel ):
-    """ """
+
+class Slot( BaseModel ):
+    """Model of a single time slot assigned to an editor"""
+    time            = DateTimeField();
     editor          = ForeignKeyField( User )
-    time            = TimeField()
+
+
+class SlotRequest( BaseModel ):
+    """Model of a request for allocating a time slot to the editor"""
+    time            = TimeField();
+    editor          = ForeignKeyField( User )
+    days_bit_mask   = IntegerField()    # Bitmask
+    start_date      = DateField()
+    end_date        = DateField()
+
 
 class PlaylistItem( BaseModel ):
-    """ """
+    """"""
+    slot            = ForeignKeyField( Slot, related_name = "tracks" )
     track           = ForeignKeyField( Track )
-    slot            = ForeignKeyField( TimeSlot )
-    index_in_slot   = IntegerField()
-    play_duration   = IntegerField()    # in seconds
+    index           = IntegerField()
 
-class PlayRecord( BaseModel ):
-    """ """
-    track           = ForeignKeyField( Track )
-    editor          = ForeignKeyField( User )
-    date_time       = DateTimeField()
 
-class Wish( BaseModel ):
-    """ """
-    track           = ForeignKeyField( Track )
-    user            = ForeignKeyField( User, related_name = 'wishes' )
-    date_time       = DateTimeField()
-
-class Notification( BaseModel ):
-    """ """
-    user            = ForeignKeyField( User, related_name = 'notifications' )
-    title           = CharField()
-    content         = CharField()
-    date_time       = DateTimeField()
-    seen            = BooleanField()
+# class Notification( BaseModel ):
+#     """ """
+#     user            = ForeignKeyField( User, related_name = 'notifications' )
+#     title           = CharField()
+#     content         = CharField()
+#     date_time       = DateTimeField()
+#     seen            = BooleanField()
