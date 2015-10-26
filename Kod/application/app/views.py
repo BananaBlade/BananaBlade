@@ -10,74 +10,90 @@ def preprocess_request():
     g.user = User.get( User.id == session[ 'user_id' ] ) if 'user_id' in session else None
 
 
-# Main views
+# Main view
 
 @app.route( '/' )
 def show_index():
-    return 'Hello'
+    return 'Index page'
 
-@app.route( '/settings' )
-def show_settings():
-    pass
 
-# Basic authentication & user management routes
+# User - auth
 
-@app.route( '/users/login', methods = [ 'POST' ] )
+@app.route( '/user/auth/login', methods = [ 'POST' ] )
 def process_login():
     pass
 
-@app.route( '/users/register', methods = [ 'POST' ] )
+@app.route( '/user/auth/register', methods = [ 'POST' ] )
 def process_register():
     pass
 
-@app.route( '/users/activate', methods = [ 'GET' ] )
-def process_account_activation():
+@app.route( '/user/auth/confirm', methods = [ 'GET' ] )
+def process_confirm():
     pass
 
-@app.route( '/users/change-password', methods = [ 'POST' ] )
-def process_password_change():
+
+# User - account
+
+@app.route( '/user/account/get', methods = [ 'GET' ] )
+def get_account_data():
     pass
 
-@app.route( '/users/modify-account-data', methods = [ 'POST' ] )
-def process_account_data_modifications():
+@app.route( '/user/account/modify', methods = [ 'POST' ] )
+def modify_account_data():
     pass
 
-# Admin-specific routes
-
-@app.route( '/admin/editors/add', methods = [ 'POST' ] )
-def process_editor_adding():
+@app.route( '/user/account/delete', methods = [ 'POST' ] )
+def delete_account_account():
     pass
 
-@app.route( '/admin/editors/<int:id>/remove', methods = [ 'POST' ] )
-def process_editor_removal( id ):
+@app.route( '/user/account/password', methods = [ 'POST' ] )
+def change_account_password():
     pass
 
-@app.route( '/admin/schedule/modify', methods = [ 'POST' ] )
-def process_schedule_modifications():
+
+# Admin - users
+
+@app.route( '/admin/users/list', methods = [ 'GET' ] )
+def list_users():
     pass
 
-@app.route( '/admin/tracks/add', methods = [ 'POST' ] )
-def process_track_adding():
+@app.route( '/admin/users/<int:id>/edit', methods = [ 'POST' ] )
+def edit_user_data( id ):
     pass
 
-@app.route( '/admin/tracks/<int:id>/edit', methods = [ 'POST' ] )
-def process_track_editing( id ):
+@app.route( '/admin/users/<int:id>/delete', methods = [ 'POST' ] )
+def delete_user( id ):
     pass
 
-@app.route( '/admin/tracks/<int:id>remove', methods = [ 'POST' ] )
-def process_track_removal( id ):
+
+# Admin - editors
+
+@app.route( '/admin/editors/list', methods = [ 'GET' ] )
+def list_editors():
     pass
 
-# Editor-specific routes
-
-
-
-# Owner-specific routes
-
-@app.route( '/owner/admins/add', methods = [ 'POST' ] )
-def process_admin_adding():
+@app.route( '/admin/editors/<int:id>/set', methods = [ 'POST' ] )
+def set_as_editor( id ):
     pass
 
-@app.route( '/owner/admins/<int:id>/remove', methods = [ 'POST' ] )
-def process_admin_removal():
+@app.route( '/admin/editors/<int:id>/unset', methods = [ 'POST' ] )
+def unset_as_editor( id ):
     pass
+
+@app.route( '/admin/editors/<int:id>/slots/assign/<int:slot_id>', methods = [ 'POST' ] )
+def assign_slot_to_editor( id, slot_id ):
+    pass
+
+@app.route( '/admin/editors/<int:id>/slots/unassign/<int:slot_id>', methods = [ 'POST' ] )
+def unassign_slot_to_editor( id, slot_id ):
+    pass
+
+# # Owner-specific routes
+#
+# @app.route( '/owner/admins/add', methods = [ 'POST' ] )
+# def process_admin_adding():
+#     pass
+#
+# @app.route( '/owner/admins/<int:id>/remove', methods = [ 'POST' ] )
+# def process_admin_removal():
+#     pass
