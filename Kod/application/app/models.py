@@ -10,11 +10,17 @@ class BaseModel( Model ):
 
 
 class Track( BaseModel ):
-    """Track model, has CRUD methods"""
+    """Track model
+
+    Track itself is stored on the server as a file, whose location is in the `path` field.
+    `Name`, `path`, `artist` and `duration` fields are mandatory, others could be undefined.
+    """
     name            = CharField()
+    path            = CharField()
     artist          = CharField()
-    duration        = IntegerField()    # in seconds
-    file_format     = CharField()
+    album           = CharField( null = True )
+    duration        = IntegerField()                 # in seconds
+    file_format     = CharField( null = True )
     sample_rate     = FloatField( null = True )      # in kHz
     bits_per_sample = IntegerField( null = True )
     genre           = CharField( null = True )
@@ -49,15 +55,15 @@ class Track( BaseModel ):
 
 
 class User( BaseModel ):
-    """User model, containing basic user data and some app-specific fields (last_active, activation_code)"""
+    """User model, for all types"""
     first_name      = CharField()
     last_name       = CharField()
     occupation      = CharField()
     email           = CharField( unique = True )
     password_hash   = CharField()
-    account_type    = IntegerField()    # definitions.AccountType
-    last_active     = DateTimeField()
-    activation_code = CharField()
+    account_type    = IntegerField( default = AccountType.USER )
+    last_active     = DateTimeField( null = True )
+    activation_code = CharField( null = True )
 
 
 class Slot( BaseModel ):
@@ -75,17 +81,25 @@ class SlotRequest( BaseModel ):
     end_date        = DateField()
 
 
-class PlaylistItem( BaseModel ):
-    """"""
+class PlaylistTrack( BaseModel ):
+    """Model of a track on a slot playlist"""
     slot            = ForeignKeyField( Slot, related_name = "tracks" )
     track           = ForeignKeyField( Track )
     index           = IntegerField()
 
 
-# class Notification( BaseModel ):
-#     """ """
-#     user            = ForeignKeyField( User, related_name = 'notifications' )
-#     title           = CharField()
-#     content         = CharField()
-#     date_time       = DateTimeField()
-#     seen            = BooleanField()
+class Wish( BaseModel ):
+    """Model of a wishlist - all users' wishes"""
+    track           = ForeignKeyField( Track )
+    user            = ForeignKeyField( User )
+    date_time       = DateTimeField()
+    is_temporary    = BooleanField( default = True )
+
+
+class Notification( BaseModel ):
+    """Model of a simple notification"""
+    user            = ForeignKeyField( User, related_name = 'notifications' )
+    category        = IntField( default = NotificationCategory.INFO )
+    text            = CharField()
+    date_time       = DateTimeField()
+    seen            = BooleanField( default = False )

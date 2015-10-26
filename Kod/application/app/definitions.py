@@ -10,16 +10,14 @@ class PermissionError( Exception ):
 
 
 class AccountType( Enum ):
-    """ """
+    """User account type constants"""
     USER = 1
     EDITOR = 2
     ADMINISTRATOR = 3
     OWNER = 4
 
 
-class NotificationType( Enum ):
-    """ """
-    INDIVIDUAL = 0
-    EDITORIAL = 1
-    ADMINISTRATIVE = 2
-    OWNER = 4
+class NotificationCategory( Enum ):
+    """Notification category constants"""
+    INFO = 1
+    WARNING = 2
