@@ -57,6 +57,10 @@ def change_account_password():
 def list_users():
     pass
 
+@app.route( '/admin/users/<int:id>/get', methods = [ 'GET' ] )
+def get_user_data( id ):
+    pass
+
 @app.route( '/admin/users/<int:id>/edit', methods = [ 'POST' ] )
 def edit_user_data( id ):
     pass
@@ -111,12 +115,16 @@ def list_tracks():
 def add_track():
     pass
 
-@app.route( '/admin/tracks/<int:id>/edit', methods = [ 'POST' ] )
-def edit_track( id ):
+@app.route( '/admin/tracks/<int:track_id>/get', methods = [ 'POST' ] )
+def get_track( track_id ):
     pass
 
-@app.route( '/admin/tracks/<int:id>/delete', methods = [ 'POST' ] )
-def delete_track( id ):
+@app.route( '/admin/tracks/<int:track_id>/edit', methods = [ 'POST' ] )
+def edit_track( track_id ):
+    pass
+
+@app.route( '/admin/tracks/<int:track_id>/delete', methods = [ 'POST' ] )
+def delete_track( track_id ):
     pass
 
 
@@ -182,4 +190,6 @@ def get_active_users_count():
 def list_active_admins():
     pass
 
-# @app.route( '/stats/editors/tracks/prefered' )
+@app.route( '/stats/editors/<int:id>/tracks/preferred/list', methods = [ 'POST' ] )
+def list_editors_preferred_tracks( id ):
+    pass

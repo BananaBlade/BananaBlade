@@ -2,65 +2,96 @@
 
 ## API actions
 
-- **/user**
-    - **/auth**
-        - /login
-        - /register
-        - /confirm
-    - **/account**
-        - /get
-        - /modify
-        - /delete
-        - /password
-- **/admin**
-    - **/users**
-        - /list
-        - /&lt;int:id&gt;
-            - /edit
-            - /delete
-    - **/editors**
-        - /list
+- **/user**, different user actions
+    - **/auth**, actions related to user authentication
+        - */login*, **(P)**:
+            - process user login
+        - */register*, **(P)**:
+            - process user registration
+        - */confirm*, **(G)**:
+            - perform user activation via link
+    - **/account**, current user's account actions
+        - */get*, **(G)**:
+            - get user account data
+        - */modify*, **(P)**:
+            - modify user account data
+        - */delete*, **(P)**:
+            - delete user account
+        - */password*, **(P)**:
+            - change account password
+- **/admin**, administrative actions
+    - **/users**, user management actions
+        - */list*, **(G)**:
+            - get a list of all application users
+        - **/&lt;int:id&gt;**, managing a single user
+            - */get/*, **(G)**:
+                - get user account data
+            - */edit*, **(P)**:
+                - change user account data
+            - */delete*, **(P)**:
+                - delete user account
+    - **/editors**, editor management actions
+        - */list*, **(G)**:
+            - get a list of all editors
         - **/&lt;int:id&gt;**
-            - /set
-            - /unset
+            - */set*, **(P)**:
+                - make user with a given `id` an editor
+            - */unset*, **(P)**:
+                - unmake user with a given `id` an editor
             - **/slots**
                 - **/&lt;int:slot_id&gt;**
-                    - /assign
-                    - /unassign
-        - **/requests**
-            - /list
-            - **/&lt;int:request_id&gt;**
-                - /allow
-                - /deny
-    - **/tracks**
-        - /list
-        - /add
-        - **/&lt;int:id&gt;**
-            - /edit
-            - /delete
+                    - */assign*, **(P)**:
+                        - assign a slot with a given `slot_id` to the editor with an `id`
+                    - */unassign*:
+                        - unassign a slot with a given `slot_id` from the editor with an `id`
+        - **/requests**, slot requests management
+            - */list*, **(G)**:
+                - get a list of all pending requests
+            - **/&lt;int:request_id&gt;**, individual request management
+                - */allow*, **(P)**:
+                    - allow the request with a given `id`
+                - */deny*, **(P)**:
+                    - deny the request with a given `id`
+    - **/tracks**, track management
+        - */list*, **(G)**:
+            - get a list of all tracks
+        - */add*, **(P)**:
+            - add a new track
+        - **/&lt;int:track_id&gt;**, individual track management
+            - */get*, **(G)**:
+                - get track data
+            - */edit*, **(P)**:
+                - edit data of
+            - */delete*, **(P)**:
+                - delete
 - **/editor**
     - **/&lt;int:id&gt;**
         - **/slots**
-            - /list
-            - /request
+            - */list*
+            - */request*
             - **&lt;int:slot_id&gt;**
-                - /get
-                - /set
+                - */get*
+                - */set*
 - **/owner**
     - **/admins**
-        - /list
+        - */list*
         - **/&lt;int:id&gt;**
-            - /set
-            - /unset
+            - */set*
+            - */unset*
     - **/station**
-        - /get
-        - /edit
+        - */get*
+        - */edit*
 - **/stats**
     - **/wishlist**
-        - /get
+        - */get*
     - **/users**
         - **/active**
-            - /count
+            - */count*
     - **/admins**
         - **/active**
-            - /list
+            - */list*
+    - **/editors**
+        - **&lt;int:id&gt;**
+            - **/tracks**
+                - **/preferred**
+                    - */list*
