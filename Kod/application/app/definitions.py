@@ -1,5 +1,9 @@
 from enum import Enum
 
+class AuthenticationError( Exception ):
+    """An exception raised on wrong login attempt"""
+    pass
+
 class AuthorizationError( Exception ):
     """An exception raised on attemped access to login-restricted area"""
     pass
@@ -9,7 +13,7 @@ class PermissionError( Exception ):
     pass
 
 
-class AccountType( Enum ):
+class AccountType:
     """User account type constants"""
     USER = 1
     EDITOR = 2
@@ -17,7 +21,7 @@ class AccountType( Enum ):
     OWNER = 4
 
 
-class NotificationCategory( Enum ):
+class NotificationCategory:
     """Notification category constants"""
     INFO = 1
     WARNING = 2

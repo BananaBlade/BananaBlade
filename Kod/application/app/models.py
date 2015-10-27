@@ -1,7 +1,11 @@
+import peewee
+
+from datetime import datetime
 from peewee import *
+
 from app import db
 from app.definitions import *
-
+from app.helpers import generate_activation_code
 
 class BaseModel( Model ):
     """Tell peewee to use app-specific database"""
@@ -65,6 +69,31 @@ class User( BaseModel ):
     last_active     = DateTimeField( null = True )
     activation_code = CharField( null = True )
 
+    @classmethod
+    def authenticate_user( cls, email, password_hash ):
+        user = cls.get( User.email == email )
+
+        if user.password_hash != password_hash:
+            raise AuthenticationError( 'Netočna lozinka' )
+
+        return user
+
+    @classmethod
+    def create_user( cls, first_name, last_name, occupation, email, password_hash ):
+        user = cls( first_name = first_name, last_name = last_name, occupation = occupation, email = email, password_hash = password_hash )
+        user.save()
+        user.activation_code = generate_activation_code( user.id )
+        user.save()
+        return user
+
+    @classmethod
+    def delete_user( cls, id ):
+        user = User.get( User.id == id )
+        user.delete_instance()
+
+    def update_activity( self ):
+        self.last_activity = datetime.now()
+        self.save()
 
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
@@ -86,6 +115,7 @@ class PlaylistTrack( BaseModel ):
     slot            = ForeignKeyField( Slot, related_name = "tracks" )
     track           = ForeignKeyField( Track )
     index           = IntegerField()
+    play_duration   = IntegerField()
 
 
 class Wish( BaseModel ):
@@ -99,7 +129,7 @@ class Wish( BaseModel ):
 class Notification( BaseModel ):
     """Model of a simple notification"""
     user            = ForeignKeyField( User, related_name = 'notifications' )
-    category        = IntField( default = NotificationCategory.INFO )
+    category        = IntegerField( default = NotificationCategory.INFO )
     text            = CharField()
     date_time       = DateTimeField()
     seen            = BooleanField( default = False )

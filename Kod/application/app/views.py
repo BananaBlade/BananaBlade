@@ -1,6 +1,10 @@
-from app import app
+from flask import g, redirect, request, render_template, session
+from peewee import DoesNotExist
 
-from flask import g, redirect, render_template, session
+from app import app
+from app.helpers import *
+from app.models import *
+from app.validators import EmailValidator
 
 # Pre-request setup
 
@@ -25,11 +29,50 @@ def get_currently_playing_track():
 
 @app.route( '/user/auth/login', methods = [ 'POST' ] )
 def process_login():
-    pass
+    email = request.values.get( 'email' )
+    password_hash = request.values.get( 'password_hash' )
+
+    try:
+        EmailValidator().validate( email )
+        user = User.authenticate_user( email, password_hash )
+
+        if user is not None:
+            session[ 'user_id' ] = user.id
+            return success_response( 'Uspješna prijava' )
+        else:
+            return error_response( 'Netočna lozinka' )
+
+    except ValueError:
+        return error_response( 'Email adresa nije ispravna' )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danom email adresom' )
 
 @app.route( '/user/auth/register', methods = [ 'POST' ] )
 def process_register():
-    pass
+    first_name = request.values.get( 'first_name' )
+    last_name = request.values.get( 'last_name' )
+    email = request.values.get( 'email' )
+    occupation = request.values.get( 'occupation' )
+    password_hash = request.values.get( 'password_hash' )
+
+    try:
+        CharValidator( min_length = 2, max_length = 64 ).validate( first_name )
+        CharValidator( min_length = 2, max_length = 64 ).validate( last_name )
+        CharValidator( min_length = 2, max_length = 64 ).validate( occupation )
+        EmailValidator().validate( email )
+        CharValidator( min_length = 64, max_length = 64 ).validate( password_hash )
+
+        user = User.create_user( first_name, last_name, occupation, email, password_hash )
+        # send email
+
+        if user is not None:
+            return success_response( 'Uspješna registracija' )
+        else:
+            return error_response( 'Registracija neuspjela' )
+    except ValueError:
+        return error_response( 'Uneseni su neispravni podaci' )
+    except peewee.IntegrityError:
+        return error_response( 'Već postoji korisnik s danom email adresom' )
 
 @app.route( '/user/auth/confirm', methods = [ 'GET' ] )
 def process_confirm():
@@ -111,7 +154,7 @@ def unassign_slot_to_editor( id, slot_id ):
 
 # Admin - tracks
 
-@app.rout( '/admin/tracks/list', methods = [ 'GET' ] )
+@app.route( '/admin/tracks/list', methods = [ 'GET' ] )
 def list_tracks():
     pass
 
@@ -134,7 +177,7 @@ def delete_track( track_id ):
 
 # Editor - slot management
 
-@app.roue( '/editor/<int:id>/slots/list', methods = [ 'GET' ] )
+@app.route( '/editor/<int:id>/slots/list', methods = [ 'GET' ] )
 def list_editor_slots( id ):
     pass
 

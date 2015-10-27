@@ -1,3 +1,6 @@
-from app.tests.test_models import *
+from app.tests.test_views import *
+# from app.tests.test_models import *
 
-run_tests()
+import unittest
+
+unittest.main()
