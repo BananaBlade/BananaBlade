@@ -80,20 +80,106 @@ def set_as_editor( id ):
 def unset_as_editor( id ):
     pass
 
-@app.route( '/admin/editors/<int:id>/slots/assign/<int:slot_id>', methods = [ 'POST' ] )
+@app.route( '/admin/editors/requests/list', methods = [ 'GET' ] )
+def list_pending_requests():
+    pass
+
+@app.route( '/admin/editors/requests/<int:id>/allow', methods = [ 'POST' ] )
+def allow_editor_request( id ):
+    pass
+
+@app.route( '/admin/editors/requests/<int:id>/deny', methods = [ 'POST' ] )
+def deny_editor_request( id ):
+    pass
+
+@app.route( '/admin/editors/<int:id>/slots/<int:slot_id>/assign', methods = [ 'POST' ] )
 def assign_slot_to_editor( id, slot_id ):
     pass
 
-@app.route( '/admin/editors/<int:id>/slots/unassign/<int:slot_id>', methods = [ 'POST' ] )
+@app.route( '/admin/editors/<int:id>/slots/<int:slot_id>/unassign', methods = [ 'POST' ] )
 def unassign_slot_to_editor( id, slot_id ):
     pass
 
-# # Owner-specific routes
-#
-# @app.route( '/owner/admins/add', methods = [ 'POST' ] )
-# def process_admin_adding():
-#     pass
-#
-# @app.route( '/owner/admins/<int:id>/remove', methods = [ 'POST' ] )
-# def process_admin_removal():
-#     pass
+
+# Admin - tracks
+
+@app.rout( '/admin/tracks/list', methods = [ 'GET' ] )
+def list_tracks():
+    pass
+
+@app.route( '/admin/tracks/add', methods = [ 'POST' ] )
+def add_track():
+    pass
+
+@app.route( '/admin/tracks/<int:id>/edit', methods = [ 'POST' ] )
+def edit_track( id ):
+    pass
+
+@app.route( '/admin/tracks/<int:id>/delete', methods = [ 'POST' ] )
+def delete_track( id ):
+    pass
+
+
+# Editor - slot management
+
+@app.roue( '/editor/<int:id>/slots/list', methods = [ 'GET' ] )
+def list_editor_slots( id ):
+    pass
+
+@app.route( '/editor/<int:id>/slots/request', methods = [ 'POST' ] )
+def request_slot( id ):
+    pass
+
+
+# Editor - playlists
+
+@app.route( '/editor/<int:id>/slots/<int:slot_id>/get', methods = [ 'GET' ] )
+def get_editor_slot_playlist( id, slot_id ):
+    pass
+
+@app.route( '/editor/<int:id>/slots/<int:slot_id>/set', methods = [ 'POST' ] )
+def set_editor_slot_playlist( id, slot_id ):
+    pass
+
+
+# Owner - admins
+
+@app.route( '/owner/admins/list', methods = [ 'GET' ] )
+def get_admins():
+    pass
+
+@app.route( '/owner/admins/<int:id>/set', methods = [ 'POST' ] )
+def set_as_admin( id ):
+    pass
+
+@app.route( '/owner/admins/<int:id>/unset', methods = [ 'POST' ] )
+def unset_as_admin( id ):
+    pass
+
+
+# Owner - radio station
+
+@app.route( '/owner/station/get', methods = [ 'POST' ] )
+def get_station_data():
+    pass
+
+@app.route( '/owner/station/edit', methods = [ 'POST' ] )
+def edit_station_data():
+    pass
+
+
+# Stats
+
+@app.route( '/stats/wishlist/get', methods = [ 'GET' ] )
+def get_wishlist():
+    pass
+
+@app.route( '/stats/users/active/count', methods = [ 'GET' ] )
+def get_active_users_count():
+    pass
+
+@app.route( '/stats/admins/active/list', methods = [ 'GET' ] )
+def list_active_admins():
+    pass
+
+# @app.route( '/stats/editors/tracks/prefered' )

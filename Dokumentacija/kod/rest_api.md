@@ -1,0 +1,66 @@
+# An explanation of the server REST API
+
+## API actions
+
+- **/user**
+    - **/auth**
+        - /login
+        - /register
+        - /confirm
+    - **/account**
+        - /get
+        - /modify
+        - /delete
+        - /password
+- **/admin**
+    - **/users**
+        - /list
+        - /&lt;int:id&gt;
+            - /edit
+            - /delete
+    - **/editors**
+        - /list
+        - **/&lt;int:id&gt;**
+            - /set
+            - /unset
+            - **/slots**
+                - **/&lt;int:slot_id&gt;**
+                    - /assign
+                    - /unassign
+        - **/requests**
+            - /list
+            - **/&lt;int:request_id&gt;**
+                - /allow
+                - /deny
+    - **/tracks**
+        - /list
+        - /add
+        - **/&lt;int:id&gt;**
+            - /edit
+            - /delete
+- **/editor**
+    - **/&lt;int:id&gt;**
+        - **/slots**
+            - /list
+            - /request
+            - **&lt;int:slot_id&gt;**
+                - /get
+                - /set
+- **/owner**
+    - **/admins**
+        - /list
+        - **/&lt;int:id&gt;**
+            - /set
+            - /unset
+    - **/station**
+        - /get
+        - /edit
+- **/stats**
+    - **/wishlist**
+        - /get
+    - **/users**
+        - **/active**
+            - /count
+    - **/admins**
+        - **/active**
+            - /list
