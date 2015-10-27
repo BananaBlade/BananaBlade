@@ -17,6 +17,10 @@ def show_index():
     return 'Index page'
 
 
+@app.route( '/play', methods = [ 'POST' ] )
+def get_currently_playing_track():
+    pass
+
 # User - auth
 
 @app.route( '/user/auth/login', methods = [ 'POST' ] )
