@@ -61,37 +61,50 @@
             - */get*, **(G)**:
                 - get track data
             - */edit*, **(P)**:
-                - edit data of
+                - edit data of a track with a given `track_id`
             - */delete*, **(P)**:
-                - delete
-- **/editor**
-    - **/&lt;int:id&gt;**
-        - **/slots**
-            - */list*
-            - */request*
-            - **&lt;int:slot_id&gt;**
-                - */get*
-                - */set*
-- **/owner**
-    - **/admins**
-        - */list*
-        - **/&lt;int:id&gt;**
-            - */set*
-            - */unset*
-    - **/station**
-        - */get*
-        - */edit*
-- **/stats**
-    - **/wishlist**
-        - */get*
-    - **/users**
-        - **/active**
-            - */count*
-    - **/admins**
-        - **/active**
-            - */list*
-    - **/editors**
-        - **&lt;int:id&gt;**
+                - delete a track with a given `track_id`
+- **/editor**, editorial actions
+    - **/&lt;int:id&gt;**, actions of an individual editor
+        - **/slots**, managing assigned slots
+            - */list*, **(G)**:
+                - list all editor's slots
+            - */request*, **(P)**:
+                - make a request for a time slot(s)
+            - **&lt;int:slot_id&gt;**, slot playlist management
+                - */get*, **(G)**:
+                    - get all tracks on the slot playlist
+                - */set*, **(P)**:
+                    - set tracks to the slot playlist (overwrite old)
+- **/owner**, owner actions
+    - **/admins**, managing administrators
+        - */list*, **(G)**:
+            - get a list of all the admins
+        - **/&lt;int:id&gt;**, managing a single admin
+            - */set*, **(P)**:
+                - make user with a given `id` an admin
+            - */unset*, **(P)**:
+                - unmake user with a given `id` an admin
+    - **/station**, managing radio station data
+        - */get*, **(G)**:
+            - get radio station data
+        - */edit*, **(P)**:
+            - change radio station data
+- **/stats**, statistics
+    - **/wishlist**, wishlist-related statistics
+        - */get*, **(G)**:
+            - get
+    - **/users**, user statistics
+        - **/active**, active users stats
+            - */count*, **(G)**:
+                - get number of currently active users
+    - **/admins**, admin statistics
+        - **/active**, active admins stats
+            - */list*, **(G)**:
+                - get a list of all active administrators
+    - **/editors**, editor stats
+        - **&lt;int:id&gt;**, individual editor
             - **/tracks**
                 - **/preferred**
-                    - */list*
+                    - */list*, **(G)**:
+                        - get a list of tracks preferred by this editor
