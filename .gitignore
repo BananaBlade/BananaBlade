@@ -58,3 +58,4 @@ target/
 
 # Custom ignores
 examples/
+node_modules/
