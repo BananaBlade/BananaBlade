@@ -16,6 +16,9 @@ def preprocess_request():
 def show_index():
     return 'Index page'
 
+@app.route( '/player/get', methods = [ 'GET' ] )
+def get_currently_playing():
+    pass
 
 # User - auth
 
