@@ -67,7 +67,10 @@ class User( BaseModel ):
     password_hash   = CharField()
     account_type    = IntegerField( default = AccountType.USER )
     last_active     = DateTimeField( null = True )
+    activated       = BooleanField( default = False )
     activation_code = CharField( null = True )
+
+    # Classmethods: CRUD & activation
 
     @classmethod
     def authenticate_user( cls, email, password_hash ):
@@ -91,9 +94,100 @@ class User( BaseModel ):
         user = User.get( User.id == id )
         user.delete_instance()
 
+    @classmethod
+    def activate_user_account( activation_code ):
+        pass
+
+    # User account actions
+
+    def change_password( self, new_hash ):
+        self.password_hash = new_hash
+        self.save()
+
+    def modify_account( self, first_name, last_name, occupation, email ):
+        if first_name is not None:
+            self.first_name = first_name
+        if last_name is not None:
+            self.last_name = last_name
+        if occupation is not None:
+            self.occupation = occupation
+        if email is not None:
+            self.email = email
+        self.save()
+
     def update_activity( self ):
         self.last_activity = datetime.now()
         self.save()
+
+    # Admin actions
+
+    def get_all_users( self ):
+        # TODO: Exclude self?
+        self.restrict_to_admin()
+        users = list( User.select() )
+        return users
+
+    def get_user_data( self, id ):
+        self.restrict_to_admin()
+        user = User.get( User.id == id )
+        return user
+
+    def edit_user_data( self, id, first_name, last_name, occupation, email ):
+        self.restrict_to_admin()
+        user = User.get( User.id == id )
+
+        if user.account_type in ( AccountType.ADMIN, AccountType.OWNER ):
+            raise PermissionError
+
+        if first_name is not None:
+            user.first_name = first_name
+        if last_name is not None:
+            user.last_name = last_name
+        if occupation is not None:
+            user.occupation = occupation
+        if email is not None:
+            user.email = email
+        user.save()
+
+    def delete_user_account( self, id ):
+        self.restrict_to_admin()
+        user = User.get( User.id == id )
+
+        if user.account_type in ( AccountType.ADMIN, AccountType.OWNER ):
+            raise PermissionError
+
+        user.delete_instance()
+
+    def get_all_editors( self ):
+        self.restrict_to_admin()
+        editors = list( User.select().where( User.account_type == AccountType.EDITOR ) )
+        return editors
+
+    def set_user_as_editor( id ):
+        self.restrict_to_admin()
+        user = User.get( User.id == id )
+
+        if user.account_type != AccountType.USER:
+            raise ValueError
+
+        user.account_type = AccountType.EDITOR
+        user.save()
+
+    def unset_user_as_editor( id ):
+        self.restrict_to_admin()
+        user = User.get( User.id == id )
+
+        if user.account_type != AccountType.EDITOR:
+            raise ValueError
+
+        user.account_type = AccountType.USER
+        user.save()
+
+    # Type check helpers
+
+    def restrict_to_admin( self ):
+        if self.account_type != AccountType.ADMIN:
+            raise PermissionError
 
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
