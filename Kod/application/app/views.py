@@ -156,7 +156,7 @@ def list_users():
 @login_required
 def get_user_data( id ):
     try:
-        user = g.user.get_user_data( id )
+        user = g.user.get_user_account( id )
         data = {
             'user_id' : user.id,
             'first_name' : user.first_name,
@@ -179,7 +179,7 @@ def edit_user_data( id ):
         occupation = request.values.get( 'occupation' )
         email = request.values.get( 'email' )
 
-        g.user.change_user_data( id, first_name, last_name, occupation, email )
+        g.user.change_user_account( id, first_name, last_name, occupation, email )
         return success_response( 'Korisnički podaci uspješno promjenjeni' )
     except DoesNotExist:
         return error_response( 'Ne postoji korisnik s danim id-jem' )
@@ -204,7 +204,7 @@ def delete_user( id ):
 @login_required
 def list_editors():
     try:
-        editors = g.user.get_all_users()
+        editors = g.user.get_all_editors()
         data = [ {
             'user_id' : user.id,
             'first_name' : user.first_name,
@@ -224,11 +224,11 @@ def set_as_editor( id ):
         g.user.set_user_as_editor( id )
         return success_response( 'Korisnik uspješno postavljen za urednika' )
     except DoesNotExist:
-        pass
+        return error_response( 'Ne postoji korisnik s danim id-jem' )
     except PermissionError:
-        pass
+        return error_response( 'Nedozvoljena operacija', 403 )
     except ValueError:
-        pass
+        return error_response( 'Korisnik ne može postati urednikom' )
 
 @app.route( '/admin/editors/<int:id>/unset', methods = [ 'POST' ] )
 @login_required
@@ -237,11 +237,11 @@ def unset_as_editor( id ):
         g.user.unset_user_as_editor( id )
         return success_response( 'Korisnik uspješno uklonjen s popisa urednika' )
     except DoesNotExist:
-        pass
+        return error_response( 'Ne postoji korisnik s danim id-jem' )
     except PermissionError:
-        pass
+        return error_response( 'Nedozvoljena operacija', 403 )
     except ValueError:
-        pass
+        return error_response( 'Korisnik nije urednik' )
 
 @app.route( '/admin/editors/requests/list', methods = [ 'GET' ] )
 @login_required
@@ -346,7 +346,18 @@ def unset_as_admin( id ):
 @app.route( '/owner/station/get', methods = [ 'POST' ] )
 @login_required
 def get_station_data():
-    return not_implemented_response()
+    try:
+        station = g.user.get_station()
+        data = {
+            'name' : station.name,
+            'frequency' : station.frequency,
+            'oib' : station.oib,
+            'address' : station.address,
+            'email' : station.email
+        }
+        return data_response( data )
+    except PermissionError:
+        return error_response( 'Nedozvoljena operacija', 403 )
 
 @app.route( '/owner/station/edit', methods = [ 'POST' ] )
 @login_required

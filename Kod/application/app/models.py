@@ -127,12 +127,12 @@ class User( BaseModel ):
         users = list( User.select() )
         return users
 
-    def get_user_data( self, id ):
+    def get_user_account( self, id ):
         self.restrict_to_admin()
         user = User.get( User.id == id )
         return user
 
-    def edit_user_data( self, id, first_name, last_name, occupation, email ):
+    def change_user_account( self, id, first_name, last_name, occupation, email ):
         self.restrict_to_admin()
         user = User.get( User.id == id )
 
@@ -183,15 +183,46 @@ class User( BaseModel ):
         user.account_type = AccountType.USER
         user.save()
 
+    def get_requests_list( self ):
+        self.restrict_to_admin()
+        requests = list( SlotRequest.select().join( User ) )
+        return requests
+
+    # Owner actions
+
+    def get_station( self ):
+        self.restrict_to_owner()
+        return RadioStation.get()
+
+    def edit_station( self, name, frequency, oib, address, email ):
+        self.restrict_to_owner()
+        station = RadioStation.get()
+
+        if name is not None:
+            station.name = name
+        if frequency is not None:
+            station.frequency = frequency
+        if oib is not None:
+            station.oib = oib
+        if address is not None:
+            station.address = address
+        if email is not None:
+            station.email = email
+        station.save()
+
     # Type check helpers
 
     def restrict_to_admin( self ):
         if self.account_type != AccountType.ADMIN:
             raise PermissionError
 
+    def restrict_to_owner( self ):
+        if self.account_type != AccountType.OWNER:
+            raise PermissionError
+
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
-    time            = DateTimeField();
+    time            = DateTimeField( primary_key = True );
     editor          = ForeignKeyField( User )
 
 
@@ -211,6 +242,9 @@ class PlaylistTrack( BaseModel ):
     index           = IntegerField()
     play_duration   = IntegerField()
 
+    class Meta:
+        primary_key = CompositeKey( 'slot', 'track', 'index' )
+
 
 class Wish( BaseModel ):
     """Model of a wishlist - all users' wishes"""
@@ -227,3 +261,12 @@ class Notification( BaseModel ):
     text            = CharField()
     date_time       = DateTimeField()
     seen            = BooleanField( default = False )
+
+class RadioStaion( BaseModel ):
+    """Radio station model - singleton table"""
+    # TODO: Initial row creation
+    name            = CharField()
+    oib             = CharField()
+    address         = CharField()
+    email           = CharField()
+    frequency       = FloatField()
