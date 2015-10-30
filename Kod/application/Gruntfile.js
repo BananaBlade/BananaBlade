@@ -12,25 +12,39 @@ module.exports = function(grunt) {
         }
     },
     jade: {
-      compile: {
+      html: {
+        files: [{
+          //'app/templates/': ['app/templates/*.jade', '!app/templates/layout.jade']
+          expand: true,
+          cwd: "app/jade",
+          src: ["**/*.jade", "!layout.jade"],
+          dest: "app/templates",
+          ext: ".html"
+        }],
         options: {
-          data: {
-            debug: false
-          }
-        },
-        files: {
-          "app/templates/index.html": "app/templates/index.jade"
+          pretty: true,
+          client: false
         }
       }
     },
     ts: {
-      default : {
-        src: ["app/static/ts/**/*.ts", "!node_modules/**/*.ts"]
+      options: {
+        fast: 'never',
+        failOnTypeErrors: false
+      },
+      default: {
+        files: {
+          'app/static/js/app.js': 'app/typescript/app.ts'
+        }
       }
     },
     watch: {
-      files: ['views/**/*.jade', 'app/static/sass/**/*.sass'],
-      tasks: ['sass', 'jade']
+      files: [
+        'app/jade/**/*.jade',
+        //'app/typescript/**/*.ts',
+        'app/static/**/*.sass'
+      ],
+      tasks: ['compile']
     }
   });
 
@@ -39,6 +53,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-sass');
 
-  grunt.registerTask('default', ['sass', 'jade', 'watch']);
+  grunt.registerTask('compile', ['sass', 'jade']);
+  grunt.registerTask('default', ['compile', 'watch']);
 
 };

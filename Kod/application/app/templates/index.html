@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SARTz</title>
+    <!--link(rel="stylesheet" src="/css/main.css")-->
+    <link rel="stylesheet" src="/static/css/main.css">
+    <!--script(src="bower_components/jquery/dist/jquery.js")-->
+    <!--script(src="bower_components/jquery-ui/jquery-ui.min.js")-->
+    <!--script(src="bower_components/underscore/underscore-min.js")-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/systemjs/0.18.4/system.src.js"></script>
+    <script>
+      System.config({
+        defaultJSExtensions: true
+      });
+    </script>
+    <script src="https://code.angularjs.org/2.0.0-alpha.44/angular2.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-alpha.44/http.dev.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-alpha.44/router.dev.js"></script>
+  </head>
+  <body>
+    <sartzapp></sartzapp>
+    <script>System.import('app');</script>
+  </body>
+</html>
