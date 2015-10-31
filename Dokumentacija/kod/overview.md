@@ -1,5 +1,7 @@
 # A preliminary overview of the application structure
 
+## !! OBSOLETE !!
+
 ## Models
 - **Track**:
     - *attributes*
