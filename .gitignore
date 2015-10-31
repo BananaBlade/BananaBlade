@@ -59,3 +59,7 @@ target/
 # Custom ignores
 examples/
 node_modules/
+frontend/src/**/*.css.map
+frontend/src/**/*.js.map
+frontend/src/**/*.js
+frontend/src/**/*.css

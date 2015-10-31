@@ -1,1 +1,0 @@
-"tsc -m commonjs -t es5 --emitDecoratorMetadata --experimentalDecorators --jsx react --outDir C:/Users/Dito/Desktop/git/bananablade/Kod/application/app/templates app.ts" 
