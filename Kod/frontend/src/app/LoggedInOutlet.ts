@@ -1,5 +1,5 @@
 ///<reference path='../../typings/tsd.d.ts'/>
-
+/*
 import {Directive, Attribute, ElementRef, DynamicComponentLoader} from 'angular2/angular2';
 import {Router, RouterOutlet, ComponentInstruction} from 'angular2/router';
 import {Login} from '../login/login';
@@ -24,11 +24,6 @@ export class LoggedInRouterOutlet extends RouterOutlet {
 
   activate(instruction: ComponentInstruction) {
     return super.activate(instruction);
-    /*var url = this.parentRouter.lastNavigationAttempt;
-    if (!this.publicRoutes[url] && !localStorage.getItem('jwt')) {
-      // todo: redirect to Login, may be there a better way?
-      this.parentRouter.navigateByUrl('/login');
-    }
-    return super.activate(instruction);*/
   }
 }
+*/

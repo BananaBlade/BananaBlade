@@ -1,30 +1,51 @@
 ///<reference path='../../typings/tsd.d.ts'/>
+import {
+  Component,
+  View,
+  bootstrap,
+  provide
+} from "angular2/angular2";
 
-import {View, Component} from 'angular2/angular2';
-import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
+import {
+  RouteConfig,
+  RouterLink,
+  RouterOutlet,
+  Route,
+  ROUTER_DIRECTIVES,
+  ROUTER_PROVIDERS,
+  Location,
+  LocationStrategy,
+  HashLocationStrategy,
+  Router
+} from 'angular2/router';
 
-import {LoggedInRouterOutlet} from './LoggedInOutlet';
-import {Home} from '../home/home';
-import {Login} from '../login/login';
-import {Signup} from '../signup/signup';
-
-//let template = require('./app.html');
+import {Listen} from '../user/listen/listen';
+import {Settings} from '../user/settings/settings';
+import {Wishlist} from '../user/wishlist/wishlist';
 
 
 @Component({
-  selector: 'auth-app'
-})
-@View({
-  templateUrl: './src/app/app.html',
-  directives: [ LoggedInRouterOutlet ]
+  selector: 'app',
+  templateUrl: './dest/app/app.html',
+  directives: [ ROUTER_DIRECTIVES ]
 })
 @RouteConfig([
-  { path: '/',       redirectTo: '/home' },
-  { path: '/home',   as: 'Home',   component: Home },
-  //{ path: '/login',  as: 'Login',  component: Login },
-  { path: '/signup', as: 'Signup', component: Signup }
+  new Route({ path: '/',         as: 'Listen',   component: Listen   }), //redirectTo: '/Listen' }),
+  //new Route({ path: '/Listen',   as: 'Listen',   component: Listen   }),
+  new Route({ path: '/settings', as: 'Settings', component: Settings }),
+  new Route({ path: '/Wishlist', as: 'Wishlist', component: Wishlist })
 ])
-export class App {
-  constructor(public router: Router) {
-  }
+
+class App {
+
+    router: Router;
+    location: Location;
+
+    constructor(router: Router, location: Location) {
+        this.router = router;
+        this.location = location;
+    }
+
 }
+
+bootstrap(App, [ROUTER_PROVIDERS, provide(LocationStrategy, { useClass: HashLocationStrategy })]);

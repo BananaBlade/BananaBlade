@@ -1,2 +1,7 @@
 .container
-	router-outlet
+  nav
+    ul
+      | <li [router-link]=["/Listen"]>Listen</li>
+      | <li [router-link]=["/Settings"]>Settings</li>
+      | <li [router-link]=["/Wishlist"]>Wishlist</li>
+  router-outlet
