@@ -13,6 +13,7 @@ from app.validators import CharValidator, EmailValidator
 def preprocess_request():
     """Before processing each request, make the current user available to everyone via flask g object,
     and store activity time"""
+    # TODO: possible error - int vs. string
     g.user = User.get( User.id == session[ 'user_id' ] ) if 'user_id' in session else None
 
     if g.user is not None:
