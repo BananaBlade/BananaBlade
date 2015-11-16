@@ -7,6 +7,8 @@ from app import db
 from app.definitions import *
 from app.helpers import generate_activation_code
 
+# TODO: Catalog possible Exceptions
+
 class BaseModel( Model ):
     """Tell peewee to use app-specific database"""
     class Meta:
