@@ -2,13 +2,15 @@
 
 ## API actions
 
+# IMPORTANT: Modified, for newer version see Docs
+
 - **/user**, different user actions
     - **/auth**, actions related to user authentication
         - */login*, **(P)**:
             - process user login
         - */register*, **(P)**:
             - process user registration
-        - */confirm*, **(G)**:
+        - */activate*, **(G)**:
             - perform user activation via link
     - **/account**, current user's account actions
         - */get*, **(G)**:
@@ -38,20 +40,20 @@
                 - make user with a given `id` an editor
             - */unset*, **(P)**:
                 - unmake user with a given `id` an editor
-            - **/slots**
-                - **/&lt;int:slot_id&gt;**
-                    - */assign*, **(P)**:
-                        - assign a slot with a given `slot_id` to the editor with an `id`
-                    - */unassign*:
-                        - unassign a slot with a given `slot_id` from the editor with an `id`
-        - **/requests**, slot requests management
-            - */list*, **(G)**:
-                - get a list of all pending requests
-            - **/&lt;int:request_id&gt;**, individual request management
-                - */allow*, **(P)**:
-                    - allow the request with a given `id`
-                - */deny*, **(P)**:
-                    - deny the request with a given `id`
+    - **/slots**
+        - **/&lt;int:slot_id&gt;**
+            - */assign*, **(P)**:
+                - assign a slot with a given `slot_id` to the editor with an `id`
+            - */unassign*:
+                - unassign a slot with a given `slot_id` from the editor with an `id`
+    - **/requests**, slot requests management
+        - */list*, **(G)**:
+            - get a list of all pending requests
+        - **/&lt;int:request_id&gt;**, individual request management
+            - */allow*, **(P)**:
+                - allow the request with a given `id`
+            - */deny*, **(P)**:
+                - deny the request with a given `id`
     - **/tracks**, track management
         - */list*, **(G)**:
             - get a list of all tracks
