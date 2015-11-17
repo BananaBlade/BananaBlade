@@ -224,7 +224,7 @@ class User( BaseModel ):
 
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
-    time            = DateTimeField( primary_key = True );
+    time            = DateTimeField( unique = True );
     editor          = ForeignKeyField( User )
 
 

@@ -3,6 +3,7 @@
 ## API actions
 
 # IMPORTANT: Modified, for newer version see Docs
+# NOTE: Listing all tracks for regular user, for use in making wishlists
 
 - **/user**, different user actions
     - **/auth**, actions related to user authentication
@@ -35,11 +36,10 @@
     - **/editors**, editor management actions
         - */list*, **(G)**:
             - get a list of all editors
-        - **/&lt;int:id&gt;**
-            - */set*, **(P)**:
-                - make user with a given `id` an editor
-            - */unset*, **(P)**:
-                - unmake user with a given `id` an editor
+        - */add*, **(P)**:
+            - add an editor
+        - */remove*, **(P)**:
+            - remove an editor
     - **/slots**
         - **/&lt;int:slot_id&gt;**
             - */assign*, **(P)**:
@@ -67,17 +67,16 @@
             - */delete*, **(P)**:
                 - delete a track with a given `track_id`
 - **/editor**, editorial actions
-    - **/&lt;int:id&gt;**, actions of an individual editor
-        - **/slots**, managing assigned slots
-            - */list*, **(G)**:
-                - list all editor's slots
-            - */request*, **(P)**:
-                - make a request for a time slot(s)
-            - **&lt;int:slot_id&gt;**, slot playlist management
-                - */get*, **(G)**:
-                    - get all tracks on the slot playlist
-                - */set*, **(P)**:
-                    - set tracks to the slot playlist (overwrite old)
+    - **/slots**, managing assigned slots
+        - */list*, **(G)**:
+            - list all editor's slots
+        - */request*, **(P)**:
+            - make a request for a time slot(s)
+        - **&lt;int:slot_id&gt;**, slot playlist management
+            - */get*, **(G)**:
+                - get all tracks on the slot playlist
+            - */set*, **(P)**:
+                - set tracks to the slot playlist (overwrite old)
 - **/owner**, owner actions
     - **/admins**, managing administrators
         - */list*, **(G)**:
