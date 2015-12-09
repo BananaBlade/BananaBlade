@@ -1,7 +1,8 @@
 .container
-  nav
-    ul
-      | <li [router-link]=["/Listen"]>Listen</li>
-      | <li [router-link]=["/Settings"]>Settings</li>
-      | <li [router-link]=["/Wishlist"]>Wishlist</li>
+  header.header
+    div.brand SARTz
+    .user-options
+      | <div [router-link]=["/Listen"]>Listen</div>
+      | <div [router-link]=["/Settings"]>Settings</div>
+      | <div [router-link]=["/Wishlist"]>Wishlist</div>
   router-outlet

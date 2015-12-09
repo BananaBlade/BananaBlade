@@ -11,6 +11,25 @@ import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
 })
 
 export class Listen {
+  currentSong: Song;
+
   constructor(public router: Router) {
+    this.currentSong = new Song("Symphony No. 9 in D Minor, Op. 125 \"Choral\": IV. Presto - Allegro assai - Choral Finale (Ode to Joy)", "Konan", "Pobjede", 2142, "Rok");
+  }
+}
+
+class Song {
+  name: String;
+  artist: String;
+  album: Sring;
+  duration: Number;
+  genre: String;
+  currentProgress: Number;
+  constructor(name: String, artist: String, album: String, duration: Number, genre: String) {
+    this.name = name;
+    this.artist = artist;
+    this.duration = duration;
+    this.genre = genre;
+    this.currentProgress = 0;
   }
 }

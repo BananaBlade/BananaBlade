@@ -36,7 +36,7 @@ import {Wishlist} from '../user/wishlist/wishlist';
   new Route({ path: '/Wishlist', as: 'Wishlist', component: Wishlist })
 ])
 
-class App {
+export class App {
 
     router: Router;
     location: Location;
