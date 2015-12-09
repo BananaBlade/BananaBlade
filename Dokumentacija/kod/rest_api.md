@@ -2,13 +2,16 @@
 
 ## API actions
 
+# IMPORTANT: Modified, for newer version see Docs
+# NOTE: Listing all tracks for regular user, for use in making wishlists
+
 - **/user**, different user actions
     - **/auth**, actions related to user authentication
         - */login*, **(P)**:
             - process user login
         - */register*, **(P)**:
             - process user registration
-        - */confirm*, **(G)**:
+        - */activate*, **(G)**:
             - perform user activation via link
     - **/account**, current user's account actions
         - */get*, **(G)**:
@@ -33,25 +36,24 @@
     - **/editors**, editor management actions
         - */list*, **(G)**:
             - get a list of all editors
-        - **/&lt;int:id&gt;**
-            - */set*, **(P)**:
-                - make user with a given `id` an editor
-            - */unset*, **(P)**:
-                - unmake user with a given `id` an editor
-            - **/slots**
-                - **/&lt;int:slot_id&gt;**
-                    - */assign*, **(P)**:
-                        - assign a slot with a given `slot_id` to the editor with an `id`
-                    - */unassign*:
-                        - unassign a slot with a given `slot_id` from the editor with an `id`
-        - **/requests**, slot requests management
-            - */list*, **(G)**:
-                - get a list of all pending requests
-            - **/&lt;int:request_id&gt;**, individual request management
-                - */allow*, **(P)**:
-                    - allow the request with a given `id`
-                - */deny*, **(P)**:
-                    - deny the request with a given `id`
+        - */add*, **(P)**:
+            - add an editor
+        - */remove*, **(P)**:
+            - remove an editor
+    - **/slots**
+        - **/&lt;int:slot_id&gt;**
+            - */assign*, **(P)**:
+                - assign a slot with a given `slot_id` to the editor with an `id`
+            - */unassign*:
+                - unassign a slot with a given `slot_id` from the editor with an `id`
+    - **/requests**, slot requests management
+        - */list*, **(G)**:
+            - get a list of all pending requests
+        - **/&lt;int:request_id&gt;**, individual request management
+            - */allow*, **(P)**:
+                - allow the request with a given `id`
+            - */deny*, **(P)**:
+                - deny the request with a given `id`
     - **/tracks**, track management
         - */list*, **(G)**:
             - get a list of all tracks
@@ -65,17 +67,16 @@
             - */delete*, **(P)**:
                 - delete a track with a given `track_id`
 - **/editor**, editorial actions
-    - **/&lt;int:id&gt;**, actions of an individual editor
-        - **/slots**, managing assigned slots
-            - */list*, **(G)**:
-                - list all editor's slots
-            - */request*, **(P)**:
-                - make a request for a time slot(s)
-            - **&lt;int:slot_id&gt;**, slot playlist management
-                - */get*, **(G)**:
-                    - get all tracks on the slot playlist
-                - */set*, **(P)**:
-                    - set tracks to the slot playlist (overwrite old)
+    - **/slots**, managing assigned slots
+        - */list*, **(G)**:
+            - list all editor's slots
+        - */request*, **(P)**:
+            - make a request for a time slot(s)
+        - **&lt;int:slot_id&gt;**, slot playlist management
+            - */get*, **(G)**:
+                - get all tracks on the slot playlist
+            - */set*, **(P)**:
+                - set tracks to the slot playlist (overwrite old)
 - **/owner**, owner actions
     - **/admins**, managing administrators
         - */list*, **(G)**:

@@ -13,16 +13,22 @@ from app.validators import CharValidator, EmailValidator
 def preprocess_request():
     """Before processing each request, make the current user available to everyone via flask g object,
     and store activity time"""
+    # TODO: possible error - int vs. string
     g.user = User.get( User.id == session[ 'user_id' ] ) if 'user_id' in session else None
 
     if g.user is not None:
         g.user.update_activity()
 
-# Main view
+# Main views
 
 @app.route( '/' )
 def show_index():
     return 'Index page'
+
+@app.route( '/settings' )
+@login_required
+def show_settings():
+    return 'Settings page'
 
 @app.route( '/player/get', methods = [ 'POST' ] )
 def get_currently_playing_track():
@@ -51,7 +57,7 @@ def process_login():
         return error_response( 'Ne postoji korisnik s danom email adresom' )
 
 @app.route( '/user/auth/register', methods = [ 'POST' ] )
-def process_register():
+def process_registration():
     first_name = request.values.get( 'first_name' )
     last_name = request.values.get( 'last_name' )
     email = request.values.get( 'email' )
@@ -77,8 +83,8 @@ def process_register():
     except peewee.IntegrityError:
         return error_response( 'Već postoji korisnik s danom email adresom', 400 )
 
-@app.route( '/user/auth/confirm', methods = [ 'GET' ] )
-def process_confirm():
+@app.route( '/user/auth/activate', methods = [ 'GET' ] )
+def process_activation():
     return not_implemented_response()
 
 

@@ -7,6 +7,9 @@ from app import db
 from app.definitions import *
 from app.helpers import generate_activation_code
 
+# TODO: Large rewrite needed
+# TODO: Catalog possible Exceptions
+
 class BaseModel( Model ):
     """Tell peewee to use app-specific database"""
     class Meta:
@@ -19,7 +22,7 @@ class Track( BaseModel ):
     Track itself is stored on the server as a file, whose location is in the `path` field.
     `Name`, `path`, `artist` and `duration` fields are mandatory, others could be undefined.
     """
-    name            = CharField()
+    title           = CharField()
     path            = CharField()
     artist          = CharField()
     album           = CharField( null = True )
@@ -222,7 +225,7 @@ class User( BaseModel ):
 
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
-    time            = DateTimeField( primary_key = True );
+    time            = DateTimeField( unique = True );
     editor          = ForeignKeyField( User )
 
 
@@ -253,14 +256,6 @@ class Wish( BaseModel ):
     date_time       = DateTimeField()
     is_temporary    = BooleanField( default = True )
 
-
-class Notification( BaseModel ):
-    """Model of a simple notification"""
-    user            = ForeignKeyField( User, related_name = 'notifications' )
-    category        = IntegerField( default = NotificationCategory.INFO )
-    text            = CharField()
-    date_time       = DateTimeField()
-    seen            = BooleanField( default = False )
 
 class RadioStaion( BaseModel ):
     """Radio station model - singleton table"""

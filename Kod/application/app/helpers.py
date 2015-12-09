@@ -1,6 +1,7 @@
 from flask import jsonify
 
 def generate_activation_code( user_id ):
+    """Come up with a way to generate unique activation code for each user id"""
     return str( user_id ).rjust( 64, 'A' )
 
 def data_response( data, code = 200 ):
@@ -13,4 +14,4 @@ def success_response( message, code = 200 ):
     return jsonify( { 'success_message' : message } ), code
 
 def not_implemented_response():
-    return erro_response( 'Funkcija još nije implementirana', 501 )
+    return error_response( 'Funkcija još nije implementirana', 501 )
