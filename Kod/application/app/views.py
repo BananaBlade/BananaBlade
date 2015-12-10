@@ -80,3 +80,69 @@ def delete_account():
 @login_required
 def change_account_password():
     pass
+
+
+# User wishlist routes
+
+@app.route( '/user/wishlist/get', methods = [ 'GET' ] )
+@login_required
+def get_wishlist():
+    pass
+
+
+@app.route( '/user/wishlist/set', methods = [ 'POST' ] )
+@login_required
+def set_wishlist():
+    pass
+
+
+@app.route( '/user/wishlist/confirm', methods = [ 'POST' ] )
+@login_required
+def confirm_wishlist():
+    pass
+
+
+# Admin track management routes
+
+@app.route( '/admin/tracks/add', methods = [ 'POST' ] )
+@login_required
+def add_track():
+    pass
+
+@app.route( '/admin/tracks/<int:track_id>/edit', methods = [ 'POST' ] )
+@login_required
+def edit_track( track_id ):
+    pass
+
+@app.route( '/admin/tracks/<int:track_id>/delete', methods = [ 'POST' ] )
+@login_required
+def delete_track( track_id ):
+    pass
+
+
+# Admin editors management routes
+
+@app.route( '/admin/editors/list', methods = [ 'GET' ] )
+@login_required
+def list_editors():
+    pass
+
+@app.route( '/admin/editors/add/<int:user_id>', methods = [ 'POST' ] )
+@login_required
+def add_editor( user_id ):
+    pass
+
+@app.route( '/admin/editors/<int:editor_id>/remove', methods = [ 'POST' ] )
+@login_required
+def remove_editor( editor_id ):
+    pass
+
+
+# Admin requests management
+
+@app.route( '/admin/requests/list', methods = [ 'GET' ] )
+@login_required
+def list_requests():
+    pass
+
+@app.route( '/admin/requests/')
