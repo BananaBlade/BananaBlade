@@ -7,24 +7,19 @@ from app import db
 from app.definitions import *
 from app.helpers import generate_activation_code
 
-# TODO: Large rewrite needed
-# TODO: Catalog possible Exceptions
-
 class BaseModel( Model ):
     """Tell peewee to use app-specific database"""
     class Meta:
         database = db
 
-
 class Track( BaseModel ):
     """Track model
 
-    Track itself is stored on the server as a file, whose location is in the `path` field.
-    `Name`, `path`, `artist` and `duration` fields are mandatory, others could be undefined.
+    This model is a track representation, containing it's various
+    metadata. The track itself is stored on the server as a music
+    file, whose location is stored in the `path` field.
+    `name`, `path`, `artist` and `duration` fields are mandatory.
     """
-    title           = CharField()
-    path            = CharField()
-    artist          = CharField()
     album           = CharField( null = True )
     duration        = IntegerField()                 # in seconds
     file_format     = CharField( null = True )
@@ -35,34 +30,40 @@ class Track( BaseModel ):
     carrier_type    = CharField( null = True )
     year            = IntegerField( null = True )
 
-    # Methods
-
     @classmethod
     def add_track( cls, **kwargs ):
         track = cls.create( **kwargs )
+        track.save
+        return track
+
+    @classmethod
+    def edit_track( cls, track_id, **kwargs ):
+        track = cls.get( Track.id == track_id )
+        for attr, val in kwargs.items():
+            track.__setattr__( attr, val )
         track.save()
         return track
 
     @classmethod
-    def edit_track( cls, id, **kwargs ):
-        track = cls.get( Track.id == id )
-        for attr, value in kwargs.items():
-            track.__setattr__( attr, value )
-        track.save()
-        return track
+    def delete_track( cls, track_id ):
+        cls.delete().where( Track.id == track__id ).execute()
 
     @classmethod
-    def delete_track( cls, id ):
-        track = cls.get( Track.id == id )
-        track.delete_instance()
+    def get_currently_playing( cls ):
+        pass
 
     @classmethod
     def get_tracks( cls, start = 0, limit = 20 ):
-        return cls.select().paginate( start, limit )
+        pass
+
+    @classmethod
+    def search_tracks( search_terms ):
+        pass
 
 
 class User( BaseModel ):
-    """User model, for all types"""
+    """Model for all registered users
+    """
     first_name      = CharField()
     last_name       = CharField()
     occupation      = CharField()
@@ -73,160 +74,132 @@ class User( BaseModel ):
     activated       = BooleanField( default = False )
     activation_code = CharField( null = True )
 
-    # Classmethods: CRUD & activation
-
     @classmethod
-    def authenticate_user( cls, email, password_hash ):
-        user = cls.get( User.email == email )
-
-        if user.password_hash != password_hash:
-            raise AuthenticationError( 'Netočna lozinka' )
-
-        return user
+    def authenticate_user( cls, email, password ):
+        pass
 
     @classmethod
     def create_user( cls, first_name, last_name, occupation, email, password_hash ):
-        user = cls( first_name = first_name, last_name = last_name, occupation = occupation, email = email, password_hash = password_hash )
-        user.save()
-        user.activation_code = generate_activation_code( user.id )
-        user.save()
-        return user
-
-    @classmethod
-    def delete_user( cls, id ):
-        user = User.get( User.id == id )
-        user.delete_instance()
-
-    @classmethod
-    def activate_user_account( activation_code ):
         pass
 
-    # User account actions
+    @classmethod
+    def delete_user( cls, user_id ):
+        pass
 
-    def change_password( self, new_hash ):
-        self.password_hash = new_hash
-        self.save()
+    @classmethod
+    def activate_user( cls, activation_code ):
+        pass
+
+    @classmethod
+    def list_active_admins( cls ):
+        pass
+
+    @classmethod
+    def count_active_users( cls ):
+        pass
+
+    def change_password( self, old_password_hash, new_password_hash ):
+        pass
 
     def modify_account( self, first_name, last_name, occupation, email ):
-        if first_name is not None:
-            self.first_name = first_name
-        if last_name is not None:
-            self.last_name = last_name
-        if occupation is not None:
-            self.occupation = occupation
-        if email is not None:
-            self.email = email
-        self.save()
+        pass
 
     def update_activity( self ):
-        self.last_activity = datetime.now()
-        self.save()
+        pass
 
-    # Admin actions
+    def _assert_admin( self ):
+        pass
+
+    def _assert_editor( self ):
+        pass
+
+    def _assert_owner( self ):
+        pass
+
+    def _assert_user( self ):
+        pass
 
     def get_all_users( self ):
-        # TODO: Exclude self?
-        self.restrict_to_admin()
-        users = list( User.select() )
-        return users
+        pass
 
-    def get_user_account( self, id ):
-        self.restrict_to_admin()
-        user = User.get( User.id == id )
-        return user
+    def get_user( self, user_id ):
+        pass
 
-    def change_user_account( self, id, first_name, last_name, occupation, email ):
-        self.restrict_to_admin()
-        user = User.get( User.id == id )
+    def modify_user_account( self, user_id, first_name, last_name, occupatin, email ):
+        pass
 
-        if user.account_type in ( AccountType.ADMIN, AccountType.OWNER ):
-            raise PermissionError
-
-        if first_name is not None:
-            user.first_name = first_name
-        if last_name is not None:
-            user.last_name = last_name
-        if occupation is not None:
-            user.occupation = occupation
-        if email is not None:
-            user.email = email
-        user.save()
-
-    def delete_user_account( self, id ):
-        self.restrict_to_admin()
-        user = User.get( User.id == id )
-
-        if user.account_type in ( AccountType.ADMIN, AccountType.OWNER ):
-            raise PermissionError
-
-        user.delete_instance()
+    def delete_user_accont( self, user_id ):
+        pass
 
     def get_all_editors( self ):
-        self.restrict_to_admin()
-        editors = list( User.select().where( User.account_type == AccountType.EDITOR ) )
-        return editors
+        pass
 
-    def set_user_as_editor( id ):
-        self.restrict_to_admin()
-        user = User.get( User.id == id )
+    def add_editor( self, user_id ):
+        pass
 
-        if user.account_type != AccountType.USER:
-            raise ValueError
+    def remove_editor( self, editor_id ):
+        pass
 
-        user.account_type = AccountType.EDITOR
-        user.save()
+    def get_requests( self ):
+        pass
 
-    def unset_user_as_editor( id ):
-        self.restrict_to_admin()
-        user = User.get( User.id == id )
+    def allow_request( self, request_id ):
+        pass
 
-        if user.account_type != AccountType.EDITOR:
-            raise ValueError
+    def deny_request( self, request_id ):
+        pass
 
-        user.account_type = AccountType.USER
-        user.save()
+    def modify_station_data( self, **data ):
+        pass
 
-    def get_requests_list( self ):
-        self.restrict_to_admin()
-        requests = list( SlotRequest.select().join( User ) )
-        return requests
+    def add_admin( self, user_id ):
+        pass
 
-    # Owner actions
+    def remove_admin( self, admin_id ):
+        pass
 
-    def get_station( self ):
-        self.restrict_to_owner()
-        return RadioStation.get()
+    def add_track( self, **track_data ):
+        pass
 
-    def edit_station( self, name, frequency, oib, address, email ):
-        self.restrict_to_owner()
-        station = RadioStation.get()
+    def edit_track( self, track_i
+    def request_slot( self, **params ):
+        pass
 
-        if name is not None:
-            station.name = name
-        if frequency is not None:
-            station.frequency = frequency
-        if oib is not None:
-            station.oib = oib
-        if address is not None:
-            station.address = address
-        if email is not None:
-            station.email = email
-        station.save()
+    def get_playlist( self, slot_id ):
+        pass
 
-    # Type check helpers
+    def set_playlist( self, slot_id, track_list ):
+        pass
 
-    def restrict_to_admin( self ):
-        if self.account_type != AccountType.ADMIN:
-            raise PermissionError
+    def get_all_tracks( self ):
+        pass
 
-    def restrict_to_owner( self ):
-        if self.account_type != AccountType.OWNER:
-            raise PermissionError
+    def searh_tracks( self, **search_params ):
+        pass
+
+    def get_wishlist( self ):
+        pass
+
+    def get_active_users_count( self ):
+        pass
+
+    def get_active_admins_list( self ):
+        pass
+
+    def get_editor_preferred_tracks( self, editor_id ):
+        pass
+
 
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
     time            = DateTimeField( unique = True );
     editor          = ForeignKeyField( User )
+
+    def get_slot_playlist( self ):
+        pass
+
+    def set_slot_playlist( self, track_list ):
+        pass
 
 
 class SlotRequest( BaseModel ):
@@ -236,6 +209,12 @@ class SlotRequest( BaseModel ):
     days_bit_mask   = IntegerField()    # Bitmask
     start_date      = DateField()
     end_date        = DateField()
+
+    def allow( self ):
+        pass
+
+    def deny( self ):
+        pass
 
 
 class PlaylistTrack( BaseModel ):
@@ -256,12 +235,26 @@ class Wish( BaseModel ):
     date_time       = DateTimeField()
     is_temporary    = BooleanField( default = True )
 
+    @classmethod
+    def get_user_wishlist( cls, user_id ):
+        pass
+
+    @classmethod
+    def get_global_wishlist( cls ):
+        pass
+
+    def confirm( self ):
+        pass
+
 
 class RadioStaion( BaseModel ):
     """Radio station model - singleton table"""
-    # TODO: Initial row creation
     name            = CharField()
     oib             = CharField()
     address         = CharField()
     email           = CharField()
     frequency       = FloatField()
+
+    @classmethod
+    def modifiy_data( **data ):
+        pass
