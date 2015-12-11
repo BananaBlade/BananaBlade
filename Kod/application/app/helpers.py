@@ -1,6 +1,6 @@
 from flask import jsonify
 
-def generate_activation_code( user_id ):
+def generate_activation_code( user_id, activation_time ):
     """Come up with a way to generate unique activation code for each user id"""
     return str( user_id ).rjust( 64, 'A' )
 
