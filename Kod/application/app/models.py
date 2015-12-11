@@ -498,7 +498,7 @@ class User( BaseModel ):
     def get_wishlist( self ):
         """Returns user's wishlist
 
-        Restricted to basic users
+        Restricted to basic users.
 
         Raises AuthorizationError
         """
@@ -509,29 +509,80 @@ class User( BaseModel ):
         """Sets user's wishlist
 
         Track list contains up to ten track ids.
+        Restricted to basic users.
 
         Raises AuthorizationError, DoesNotExist
         """
-        pass
+        self._assert_user()
+        Wish.set_user_wishlist( self, track_list )
 
     def confirm_wishlist( self ):
-        """
+        """Confirms user's temporary wishlist
+
+        Restricted to basic users.
 
         Raises AuthorizationError
         """
-        pass
+        self._assert_user()
+        Wish.confirm_user_wishlist( self )
 
-    def get_wishlist_stat( self ):
-        pass
+    def get_global_wishlist( self ):
+        """Returns the global wishlist
+
+        Basic users cannot perform this action.
+
+        Raises AuthorizationError
+        """
+        if self.account_type < AccountType.EDITOR:
+            raise AuthorizationError( 'Pregled globalne liste želja nije dozvoljen' )
+        return Wish.get_global_wishlist()
+
+    def get_global_wishlist_stat( self, **params ):
+        """Returns various global wishlist statistics
+
+        Restricted to administrators and owner.
+
+        Raises AuthorizationError
+        """
+        if self.account_type < AccountType.ADMINISTRATOR:
+            raise AuthorizationError( 'Pregled statistika globalne liste želja nije dozvoljen' )
+
+        # TODO: obtain statistics
 
     def get_active_users_count_stat( self ):
-        pass
+        """Returns a number of currently active users
+
+        Restricted to administrators and owner.
+
+        Raises AuthorizationError
+        """
+        if self.account_type < AccountType.ADMINISTRATOR:
+            raise AuthorizationError( 'Dohvaćanje broja trenutnih korisnika nije dozvoljeno' )
+        return User.count_active_users()
 
     def get_active_admins_list_stat( self ):
-        pass
+        """Returns a list of active administrators
 
-    def get_editor_preferred_tracks_stat( self, editor_id ):
-        pass
+        Restricted to administrators and owner.
+
+        Raises AuthorizationError
+        """
+        if self.account_type < AccountType.ADMINISTRATOR:
+            raise AuthorizationError( 'Pregled trenutno aktivnih administratora nije dozvoljen' )
+        return User.list_active_admins()
+
+    def get_editor_preferred_tracks_stat( self, editor_id, **params ):
+        """Returns a list of tracks most often played by this editor
+
+        Restricted to administrators.
+
+        Raises AuthorizationError, TypeError, DoesNotExist
+        """
+        self._assert_admin()
+        editor = User.get( User.id == editor_id )
+        if editor.account_type != AccountType.EDITOR:
+            raise TypeError( 'Odabrani korisnik nije urednik' )
+        return PlaylistTrack.get_editor_preferred_tracks( editor_id )
 
 
 class Slot( BaseModel ):
@@ -565,14 +616,17 @@ class SlotRequest( BaseModel ):
 
     @classmethod
     def make_request( cls, start_date, end_date, time, days_bit_mask, editor ):
+        """ """
         request = cls( time = time, editor = editor, days_bit_mask = days_bit_mask,
             start_date = start_date, end_date = end_date )
         request.save()
 
     def allow( self ):
-        pass
+        """ """
+        pass    # TODO: Implement allow()
 
     def deny( self ):
+        """Denies slot request by removing it from the database"""
         self.delete_instance()
 
 
@@ -588,8 +642,17 @@ class PlaylistTrack( BaseModel ):
 
     @classmethod
     def make_item( cls, slot, index, track_id, duration ):
+        """Make a new PlaylistTrack item
+
+        Equivalent to placing a track onto slot's playlist.
+        """
         item = cls( slot = slot, track_id = track_id, index = index, play_duration = duration )
         item.save()
+
+    @classmethod
+    def get_editor_preferred_tracks( cls, editor_id ):
+        """Return a list of tracks most often played by this editor"""
+        pass    # TODO: Implement get_editor_preferred_tracks()
 
 
 class Wish( BaseModel ):
@@ -600,15 +663,40 @@ class Wish( BaseModel ):
     is_temporary    = BooleanField( default = True )
 
     @classmethod
-    def get_user_wishlist( cls, user_id ):
-        pass
+    def get_user_wishlist( cls, user ):
+        """Return a list of all user's currently active wishes
+
+        A wish is currently active if it is temporary.
+        """
+        return Wish.select().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) )
+
+    @classmethod
+    def set_user_wishlist( cls, user, track_list ):
+        """Set user's wishlist
+
+        Track list contains up to 10 track ids.
+        """
+        pass    # TODO: Implement set_user_wishlist()
+
+    @classmethod
+    def confirm_user_wishlist( cls, user ):
+        """Confirm wishes from user's wishlist
+
+        Equivalent to making all those wishes permanent (not temporary).
+        Has to check that user hasn't already confirmed any wishlist within last 24 hours.
+
+        Raises AuthorizationError"""
+        wishes = cls.get_user_wishlist( user )
+        time_now = datetim.now()
+        for wish in wishes:
+            wish.is_temporary = False
+            wish.date_time = time_now
+            wish.save()
 
     @classmethod
     def get_global_wishlist( cls ):
-        pass
-
-    def confirm( self ):
-        pass
+        """Returns a list of all tracks on wishlists, with occurrence count"""
+        pass    # TODO: Implement get_global_wishlist()
 
 
 class RadioStation( BaseModel ):
@@ -621,4 +709,11 @@ class RadioStation( BaseModel ):
 
     @classmethod
     def modifiy_data( name, oib, address, email, frequency ):
-        pass
+        """Modify radio station data"""
+        station = cls.get()
+        if name is not None: station.name = name
+        if oib is not None: station.oib = oib
+        if address is not None: station.address = address
+        if email is not None: station.email = email
+        if frequency is not None: station.frequency = frequency
+        station.save()
