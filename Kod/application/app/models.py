@@ -59,8 +59,11 @@ class Track( BaseModel ):
 
     @classmethod
     def get_currently_playing( cls ):
-        """Returns the currently playing track"""
-        pass
+        """Returns the currently playing track
+
+        Raises DoesNotExist
+        """
+        pass    # TODO: Implement get_currently_playing()
 
     @classmethod
     def get_tracks( cls, start = 0, limit = None ):
@@ -76,7 +79,7 @@ class Track( BaseModel ):
     def search_tracks( **search_terms ):
         """Returns a list of tracks matching search parameters
 
-        TODO: Decide how exactly to perform searching.c
+        TODO: Decide how exactly to perform searching
         """
         pass
 
@@ -668,7 +671,7 @@ class Wish( BaseModel ):
 
         A wish is currently active if it is temporary.
         """
-        return Wish.select().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) )
+        return cls.select().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) )
 
     @classmethod
     def set_user_wishlist( cls, user, track_list ):
@@ -676,7 +679,11 @@ class Wish( BaseModel ):
 
         Track list contains up to 10 track ids.
         """
-        pass    # TODO: Implement set_user_wishlist()
+        cls.delete().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).execute()
+        time_now = datetime.now()
+        for track_id in track_list:
+            wish = cls( track_id = track_id, user = user, date_time = time_now )
+            wish.save()
 
     @classmethod
     def confirm_user_wishlist( cls, user ):
