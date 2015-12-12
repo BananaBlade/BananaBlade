@@ -12,3 +12,5 @@ DATABASE = 'sartz.db'
 
 WTF_CSRF_ENABLED = True
 WTF_CSRF_SECRET_KEY = "somethingimpossibletoguess"
+
+UPLOAD_FOLDER = "/tracks"

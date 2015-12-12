@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import re
 
 class Validator( metaclass = ABCMeta ):
-    """An argument (form input, POST/GET request) validator"""
+    """Argument (form input, POST/GET request) validator base class"""
 
     @abstractmethod
     def __init__( self ):
@@ -11,11 +11,13 @@ class Validator( metaclass = ABCMeta ):
 
     @abstractmethod
     def validation_test( self, arg ):
+        """Abstract boolean method that tests whether a given argument satisfies validation conditions"""
         pass
 
     def validate( self, arg ):
         if not self.validation_test( arg ):
             raise ValueError( 'Validation of {} failed'.format( arg ) )
+
 
 class IntValidator( Validator ):
     """Validate an integer argument"""

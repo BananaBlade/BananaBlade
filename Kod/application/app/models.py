@@ -186,7 +186,7 @@ class User( BaseModel ):
         self.password_hash = new_password_hash
         self.save()
 
-    def modify_account( self, first_name, last_name, occupation, year_of_birth, email ):
+    def modify_account( self, first_name, last_name, email, occupation, year_of_birth ):
         """Changes account data
 
         Raises peewee.IntegrityError
@@ -271,7 +271,7 @@ class User( BaseModel ):
             raise AuthorizationError( 'Nije dozvoljeno pristupiti podacima ovog korisnika' )
         return user
 
-    def modify_user_account( self, user_id, first_name, last_name, occupation, year_of_birth, email ):
+    def modify_user_account( self, user_id, first_name, last_name, email, occupation, year_of_birth ):
         """Modifies account data of a user with a given id
 
         User whose data is modified has to be either editor or basic user.
@@ -279,13 +279,13 @@ class User( BaseModel ):
 
         Raises AuthorizationError, DoesNotExist, peewee.IntegrityError
         """
-        self._assert_admin()ima
+        self._assert_admin()
         user = User.get( User.id == user_id )
         if user.account_type not in [ AccountType.USER, AccountType.EDITOR ]:
             raise AuthorizationError( 'Nije dozvoljeno mijenjati podactke ovog korisnika' )
         user.modify_account_data( first_name, last_name, occupation, year_of_birth, email )
 
-    def delete_user_accont( self, user_id ):
+    def delete_user_account( self, user_id ):
         """Deletes user account with a given id
 
         User whose account is deleted has to be either editor or basic user.
@@ -339,7 +339,7 @@ class User( BaseModel ):
         user.account_type = AccountType.USER
         user.save()
 
-    def get_requests( self ):
+    def get_all_requests( self ):
         """Returns a list of all slot pending requests
 
         Operation restricted to administrators.
@@ -671,7 +671,7 @@ class Wish( BaseModel ):
 
         A wish is currently active if it is temporary.
         """
-        return cls.select().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) )
+        return cls.select().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).join( Track )
 
     @classmethod
     def set_user_wishlist( cls, user, track_list ):
@@ -692,9 +692,12 @@ class Wish( BaseModel ):
         Equivalent to making all those wishes permanent (not temporary).
         Has to check that user hasn't already confirmed any wishlist within last 24 hours.
 
-        Raises AuthorizationError"""
+        Raises AuthorizationError, EnvironmentError"""
         wishes = cls.get_user_wishlist( user )
-        time_now = datetim.now()
+        time_now = datetime.now()
+
+        # TODO: Check for confirmations within last 24 hours
+
         for wish in wishes:
             wish.is_temporary = False
             wish.date_time = time_now

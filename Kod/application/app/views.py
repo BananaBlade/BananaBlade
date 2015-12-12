@@ -1,5 +1,8 @@
+import os
+
 from flask import g, redirect, request, render_template, send_file, session
 from peewee import DoesNotExist
+from werkzeug import secure_filename
 
 from app import app
 from app.decorators import *
@@ -11,6 +14,8 @@ from app.validators import CharValidator, EmailValidator
 #       TODO: Check track path on input for possible malicious attacks
 #       TODO: Setup cache to enable proper signing out (otherwise user could remain
 #             signed in for a while)
+#       TODO: Rethink index and settings pages - possibly combine them into one
+#       TODO: Reformulate error messages - decide upon unique format
 
 
 # Pre-request setup
@@ -56,6 +61,7 @@ def get_currently_playing_track_info():
     try:
         track = Track.get_currently_playing()
         data = {
+            'id'                : track.id,
             'title'             : track.title,
             'artist'            : track.artist,
             'album'             : track.album,
@@ -80,8 +86,6 @@ def process_login():
     """Process user login
 
     Request should contain `email` and `password_hash` arguments.
-
-    TODO: Decide upon return type
     """
     email           = request.values.get( 'email' )
     password_hash   = request.values.get( 'password_hash' )
@@ -90,13 +94,13 @@ def process_login():
         EmailValidator().validate( email )
         user = User.authenticate_user( email, password_hash )
         session[ 'user_id' ] = user.id
-        pass # return success_response( 'Uspješna prijava' )
+        return success_response( 'Uspješna prijava' )
     except ValueError:
-        pass # return error_response( 'Email adresa nije ispravna' )
+        return error_response( 'Email adresa nije ispravna' )
     except DoesNotExist:
-        pass # return error_response( 'Ne postoji korisnik s danom email adresom' )
+        return error_response( 'Ne postoji korisnik s danom email adresom', 404 )
     except AuthenticationError as e:
-        pass # return error_response( str( e ) )
+        return error_response( str( e ) )
 
 @app.route( '/user/auth/register', methods = [ 'POST' ] )
 def process_registration():
@@ -104,54 +108,46 @@ def process_registration():
 
     Request should contain `first_name`, `last_name`, `email`, `occupation`,
     `year_of_birth` and `password_hash` arguments.
-
-    TODO: Decide upon return type
     """
     first_name      = request.values.get( 'first_name' )
     last_name       = request.values.get( 'last_name' )
+    email           = request.values.get( 'email' )
     occupation      = request.values.get( 'occupation' )
     year_of_birth   = int( request.values.get( 'year_of_birth' ) )
-    email           = request.values.get( 'email' )
     password_hash   = request.values.get( 'password_hash' )
 
     try:
-        CharValidator( min_length = 2, max_length = 64 ).validate( first_name )
-        CharValidator( min_length = 2, max_length = 64 ).validate( last_name )
-        CharValidator( min_length = 2, max_length = 64 ).validate( occupation )
-        IntValidator( minimum = 1900, maximum = 2100 ).validate( year_of_birth )
-        EmailValidator().validate( email )
-        CharValidator( min_length = 64, max_length = 64 ).validate( password_hash )
-
+        validate_user_data( first_name, last_name, email, year_of_birth, occupation,
+            password_hash = password_hash )
         user = User.create_user( first_name, last_name, occupation, email, password_hash )
         # TODO: Send email with the activation code
-
-        if user is not None:
-            pass # return success_response( 'Registracija uspješna', 201 )
-        else:
-            pass # return error_response( 'Registracija nije uspjela', 500 )
+        return success_response( 'Registracija uspješna', 201 )
     except ValueError:
-        pass # return error_response( 'Uneseni su neispravni podaci' )
+        return error_response( 'Uneseni su neispravni podaci' )
     except peewee.IntegrityError:
-        pass # return error_response( 'Već postoji korisnik s danom email adresom' )
+        return error_response( 'Već postoji korisnik s danom email adresom', 409 )
 
 @app.route( '/user/auth/activate/<activation_code>', methods = [ 'GET' ] )
 def process_activation( activation_code ):
     """Process account activation
 
     No request parameters required, `activation_code` obtained from the URL
+
+    TODO: Style the response page
     """
     try:
         User.activate_user( activation_code )
-        pass # Return sth
+        return 'Račun aktiviran'
     except DoesNotExist:
-        pass # return error_response( 'Ne postoji korisnik s danim aktivacijskim kodom' )
+        return 'Ne postoji korisnik s danim aktivacijskim kodom', 400
 
 @app.route( '/user/auth/signout', methods = [ 'GET' ] )
 @login_required
 def process_signout():
     """Process user signout
 
-    After signing out, user is redirected to the index page
+    No request parameters required.
+    After signing out, user is redirected to the index page.
     """
     session.clear()
     return redirect( '/' )
@@ -167,6 +163,7 @@ def get_account_data():
     No request arguments required.
     """
     data = {
+        'id'            :   g.user.id,
         'first_name'    :   g.user.first_name,
         'last_name'     :   g.user.last_name,
         'email'         :   g.user.email,
@@ -178,17 +175,57 @@ def get_account_data():
 @app.route( '/user/account/modify', methods = [ 'POST' ] )
 @login_required
 def modify_account_data():
-    return not_implemented_response()
+    """Change user account data
+
+    Request should contain `first_name`, `last_name`, `email`, `occupation` and
+    `year_of_birth`.
+    """
+    first_name      = request.values.get( 'first_name' )
+    last_name       = request.values.get( 'last_name' )
+    email           = request.values.get( 'email' )
+    year_of_birth   = int( request.values.get( 'year_of_birth' ) )
+    occupation      = request.values.get( 'occupation' )
+
+    try:
+        validate_user_data( first_name, last_name, email, year_of_birth, occupation )
+        g.user.modify_account( first_name, last_name, email, year_of_birth, occupation )
+        return success_response( 'Korisnički podaci uspješno promjenjeni' )
+    except ValueError:
+        return error_response( 'Nisu uneseni ispravni podaci' )
+    except peewee.IntegrityError:
+        return error_response( 'Email adresa se već koristi', 409 )
 
 @app.route( '/user/account/delete', methods = [ 'POST' ] )
 @login_required
 def delete_account():
-    return not_implemented_response()
+    """Deletes current user's account
+
+    Request should contain `password_hash`.
+    """
+    password_hash = request.values.get( 'password_hash' )
+
+    try:
+        g.user.delete_account( password_hash )
+        session.clear()
+        return success_response( 'Korisnički račun uspješno izbrisan' )
+    except AuthenticationError:
+        return error_response( 'Nije unesena ispravna lozinka' )
 
 @app.route( '/user/account/change_password', methods = [ 'POST' ] )
 @login_required
 def change_account_password():
-    return not_implemented_response()
+    """Changes user account password
+
+    Request should contain `old_password_hash` and `new_password_hash`.
+    """
+    old_password_hash = request.values.get( 'old_password_hash' )
+    new_password_hash = request.values.get( 'new_password_hash' )
+
+    try:
+        g.user.change_password( old_password_hash, new_password_hash )
+        return success_response( 'Lozinka uspješno promjenjena' )
+    except AuthenticationError:
+        return error_response( 'Stara lozinka nije ispravna' )
 
 
 # User wishlist management
@@ -196,19 +233,57 @@ def change_account_password():
 @app.route( '/user/wishlist/get', methods = [ 'GET' ] )
 @login_required
 def get_wishlist():
-    return not_implemented_response()
+    """Returns user's private wishlist
 
+    Returns a list of up to 10 dicts { title, artist, album, duration, genre, year }
+    describing tracks on user's wishlist.
+
+    No request parameters required.
+    """
+    try:
+        wishlist = g.user.get_wishlist()
+        data = [{
+            'id'        : wish.id,
+            'title'     : wish.track.title,
+            'artist'    : wish.track.artist,
+            'album'     : wish.track.album,
+            'duration'  : wish.track.duration,
+            'genre'     : wish.track.genre,
+            'year'      : wish.track.year
+        } for wish in wishlist ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost pregledavanja svoje liste želja', 403 )
 
 @app.route( '/user/wishlist/set', methods = [ 'POST' ] )
 @login_required
 def set_wishlist():
-    return not_implemented_response()
+    """Sets user's wishlist
 
+    Request should contain a list of up to 10 track_id's, of tracks to be placed
+    on the user's wishlist. Parameters are JSON-encoded.
+    """
+    try:
+        track_list = request.get_json()
+        g.user.set_wishlist( track_list )
+        return success_response( 'Lista želja uspješno pohranjena' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost stvaranja svoje liste želja', 403 )
 
 @app.route( '/user/wishlist/confirm', methods = [ 'POST' ] )
 @login_required
 def confirm_wishlist():
-    return not_implemented_response()
+    """Confirms user's wishlist
+
+    No request parameters required.
+    """
+    try:
+        g.user.confirm_wishlist()
+        return success_response( 'Lista želja uspješno potvrđena' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost potvrđivanja svoje liste želja', 403 )
+    except EnvironmentError:
+        return error_response( 'Nije moguće potvrditi listu želja, to je već učinjeno unutar proteklih 24 sata', 409 )
 
 
 # Admin track management
@@ -216,17 +291,100 @@ def confirm_wishlist():
 @app.route( '/admin/tracks/add', methods = [ 'POST' ] )
 @login_required
 def add_track():
-    return not_implemented_response()
+    """Adds a new track with its metadata
+
+    Request should contain track metadata: `title`, `artist`, `album`, `duration`,
+    `file_format`, `sample_rate`, `bits_per_sample`, `genre`, `publisher`,
+    `carrier_type`, `year`, and audio file for upload.
+
+    TODO: Extensive testing!!
+    """
+    title           = request.values.get( 'title' )
+    artist          = request.values.get( 'artist' )
+    album           = request.values.get( 'album' )
+    duration        = int( request.values.get( 'duration' ) )
+    file_format     = request.values.get( 'file_format' )
+    sample_rate     = float( request.values.get( 'sample_rate' ) )
+    bits_per_sample = int( request.values.get( 'bits_per_sample' ) )
+    genre           = request.values.get( 'genre' )
+    publisher       = request.values.get( 'publisher' )
+    carrier_type    = request.values.get( 'carrier_type' )
+    year            = int( request.values.get( 'year' ) )
+    audio_file      = request.files.get( 'audio_file' )
+
+    try:
+        validate_track_data( title, artist, album, duration, file_format, sample_rate,
+            bits_per_sample, genre, publisher, carrier_type, year )
+        if audio_file is None: raise ValueError
+
+        validate_filename( audio_file.filename )
+        filename = secure_filename( audio_file.filename )
+        path = os.path.join( app.config['UPLOAD_FOLDER'], filename )
+
+        g.user.add_track( title = title, path = path, artist = artist, album = album, duration = duration,
+            file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,
+            genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
+        audio_file.save( path )
+        return success_response( 'Zvučni zapis uspješno dodan' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti dodavati zvučne zapise', 403 )
+    except ValueError:
+        return error_response( 'Nisu uneseni ispravni podaci' )
+
 
 @app.route( '/admin/tracks/<int:track_id>/edit', methods = [ 'POST' ] )
 @login_required
 def edit_track( track_id ):
-    return not_implemented_response()
+    """Adds a new track with its metadata
+
+    Request should contain track metadata: `title`, `artist`, `album`, `duration`,
+    `file_format`, `sample_rate`, `bits_per_sample`, `genre`, `publisher`,
+    `carrier_type`, `year`
+    """
+    title           = request.values.get( 'title' )
+    artist          = request.values.get( 'artist' )
+    album           = request.values.get( 'album' )
+    duration        = int( request.values.get( 'duration' ) )
+    file_format     = request.values.get( 'file_format' )
+    sample_rate     = float( request.values.get( 'sample_rate' ) )
+    bits_per_sample = int( request.values.get( 'bits_per_sample' ) )
+    genre           = request.values.get( 'genre' )
+    publisher       = request.values.get( 'publisher' )
+    carrier_type    = request.values.get( 'carrier_type' )
+    year            = int( request.values.get( 'year' ) )
+
+    try:
+        validate_track_data( title, artist, album, duration, file_format, sample_rate,
+            bits_per_sample, genre, publisher, carrier_type, year )
+        g.user.edit_track( track_id, title = title, artist = artist, album = album, duration = duration,
+            file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,
+            genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
+        return success_response( 'Podaci o zvučnom zapisu uspješno promjenjeni' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti dodavati zvučne zapise', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji zvučni zapis s danim id-om', 404 )
+    except ValueError:
+        return error_response( 'Nisu uneseni ispravni podaci' )
 
 @app.route( '/admin/tracks/<int:track_id>/delete', methods = [ 'POST' ] )
 @login_required
 def delete_track( track_id ):
-    return not_implemented_response()
+    """Deletes track and its metadata
+
+    No request parameters required.
+    """
+    try:
+        path = Track.get( Track.id == track_id )
+        os.remove( path )
+        g.user.remove_track( track_id )
+        return success_response( 'Zvučni zapis uspješno izbrisan' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti brisati zvučne zapise', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji zvučni zapis s danim id-om', 404 )
+    except OSError:
+        return error_response( 'Greška u sustavu' )
 
 
 # Admin editors management
@@ -234,17 +392,57 @@ def delete_track( track_id ):
 @app.route( '/admin/editors/list', methods = [ 'GET' ] )
 @login_required
 def list_editors():
-    return not_implemented_response()
+    """Returns a list of all editors
+
+    Returns a list of dicts { first_name, last_name, email } representing
+    individual editors.
+    No request parameters required.
+    """
+    try:
+        editors = g.user.get_all_editors()
+        data = [{
+            'id'            : editor.id,
+            'first_name'    : editor.first_name,
+            'last_name'     : editor.last_name,
+            'email'         : editor.email
+        } for editor in editors ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Nije dozvoljeno dohvatiti popis urednika' )
 
 @app.route( '/admin/editors/add/<int:user_id>', methods = [ 'POST' ] )
 @login_required
 def add_editor( user_id ):
-    return not_implemented_response()
+    """Adds editorial privileges to user with `user_id`
+
+    No request parameters required.
+    """
+    try:
+        g.user.add_editor( user_id )
+        return success_response( 'Korisnik uspješno postavljen za urednika' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti postavljanja urednika', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+    except TypeError as e:
+        return error_response( str( e ) )
 
 @app.route( '/admin/editors/<int:editor_id>/remove', methods = [ 'POST' ] )
 @login_required
 def remove_editor( editor_id ):
-    return not_implemented_response()
+    """Revokes editorial privileges from user with `user_id`
+
+    No request parameters required.
+    """
+    try:
+        g.user.remove_editor( user_id )
+        return success_response( 'Korisniku uspješno oduzete uredničke ovlasti' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti za uklanjane urednika', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+    except TypeError as e:
+        return error_response( str( e ) )
 
 
 # Admin requests management
@@ -252,17 +450,63 @@ def remove_editor( editor_id ):
 @app.route( '/admin/requests/list', methods = [ 'GET' ] )
 @login_required
 def list_requests():
-    return not_implemented_response()
+    """Returns a list of all pending slot requests
+
+    Returns a list of dicts { editor : { first_name, last_name, email },
+        request : { time, days_bit_mask, start_date, end_date } }.
+
+    No request parameters required.
+    """
+    try:
+        requests = g.user.get_all_requests()
+        data = [{
+            'editor' : {
+                'id'            : req.editor.id,
+                'first_name'    : req.editor.first_name,
+                'last_name'     : req.editor.last_name,
+                'email'         : req.editor.email
+            },
+            'request' : {
+                'id'            : req.id,
+                'time'          : req.time,
+                'days_bit_mask' : req.days_bit_mask,
+                'start_date'    : req.start_date,
+                'end_date'      : req.end_date
+            }
+        } for req in requests ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti pregledavati zahtjeve za terminima', 403 )
 
 @app.route( '/admin/requests/<int:request_id>/allow', methods = [ 'POST' ] )
 @login_required
 def allow_request( request_id ):
-    return not_implemented_response()
+    """Allows a given request for slots
+
+    No request parameters required.
+    """
+    try:
+        g.user.allow_request( request_id )
+        return success_response( 'Zahtjev uspješno odobren' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti odobravati zahtjeve', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji zahtjev s danim id-om', 404 )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
 @login_required
 def deny_request( request_id ):
-    preturn not_implemented_response()ass
+    """Denies a given request for slots
+
+    No request parameters required.
+    """
+    try:
+        g.user.deny_request( request_id )
+        return success_response( 'Zahtjev uspješno odbijen' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti odbijati zahtjeve', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji zahtjev s danim id-om', 404 )
 
 
 # Admin user management
@@ -270,22 +514,92 @@ def deny_request( request_id ):
 @app.route( '/admin/users/list', methods = [ 'GET' ] )
 @login_required
 def list_users():
-    return not_implemented_response()
+    """Returns a list of all the users (excluding admins and owner)
+
+    Returns a list of dicts { first_name, last_name, email, account_type }
+    representing users.
+    No request parameters required.
+    """
+    try:
+        users = g.user.get_all_users()
+        data = [{
+            'id'            : user.id,
+            'first_name'    : user.first_name,
+            'last_name'     : user.last_name,
+            'email'         : user.email,
+            'account_type'  : user.account_type
+        } for user in users ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti dohvatiti popis svih korisnika', 403 )
 
 @app.route( '/admin/users/<int:user_id>/get', methods = [ 'GET' ] )
 @login_required
 def get_user_data( user_id ):
-    return not_implemented_response()
+    """Returns account data of user with a given id
+
+    No request parameters required.
+    """
+    try:
+        user = g.user.get_user_data( user_id )
+        data = {
+            'id'            : user.id,
+            'first_name'    : user.first_name,
+            'last_name'     : user.last_name,
+            'email'         : user.email,
+            'occupation'    : user.occupation,
+            'year_of_birth' : user.year_of_birth,
+            'account_type'  : user.account_type
+        }
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti pregledavati tuđe podatke', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
 
 @app.route( '/admin/users/<int:user_id>/modify', methods = [ 'POST' ] )
 @login_required
 def modify_user_data( user_id ):
-    return not_implemented_response()
+    """Modify user data
+
+    Request should contain `first_name`, `last_name`, `email`, `occupation`,
+    `year_of_birth` and `password_hash` arguments.
+
+    TODO: What if arguments not set, should we allow it?
+    """
+    first_name      = request.values.get( 'first_name' )
+    last_name       = request.values.get( 'last_name' )
+    email           = request.values.get( 'email' )
+    occupation      = request.values.get( 'occupation' )
+    year_of_birth   = int( request.values.get( 'year_of_birth' ) )
+
+    try:
+        validate_user_data( first_name, last_name, email, occupation, year_of_birth )
+        g.user.modify_user_data( user_id, first_name, last_name, email, occupation, year_of_birth )
+        return success_response( 'Korisnički podaci uspješno promjenjeni' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti mijenjati podatke ovog korisnika', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+    except ValueError:
+        return error_response( 'Uneseni su neispravni podaci' )
+    except peewee.IntegrityError:
+        return error_response( 'Email adresa se već koristi', 409 )
 
 @app.route( '/admin/users/<int:user_id>/delete', methods = [ 'POST' ] )
 @login_required
 def delete_user( user_id ):
-    return not_implemented_response()
+    """Deletes user with a given id
+
+    No request parameters required.
+    """
+    try:
+        g.user.delete_user_account( user_id )
+        return success_response( 'Korisnik uspješno izbrisan' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti obrisati ovog korisnika', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
 
 
 # Editor slot management
