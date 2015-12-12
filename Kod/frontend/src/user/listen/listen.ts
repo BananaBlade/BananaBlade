@@ -21,7 +21,7 @@ export class Listen {
 class Song {
   name: String;
   artist: String;
-  album: Sring;
+  album: String;
   duration: Number;
   genre: String;
   currentProgress: Number;

@@ -237,7 +237,6 @@ class SlotRequest( BaseModel ):
     start_date      = DateField()
     end_date        = DateField()
 
-
 class PlaylistTrack( BaseModel ):
     """Model of a track on a slot playlist"""
     slot            = ForeignKeyField( Slot, related_name = "tracks" )
@@ -265,3 +264,13 @@ class RadioStaion( BaseModel ):
     address         = CharField()
     email           = CharField()
     frequency       = FloatField()
+
+
+class Notification( BaseModel ):
+    """Model of a notification for various events"""
+    # TODO: Rethink properties
+    broadcaster     = ForeignKeyField( User, related_name='broadcaster_id' )
+    receiver        = ForeignKeyField( User, related_name='receiver_id' )
+    message         = CharField()
+    broadcast_date  = DateTimeField()
+    viewed          = BooleanField()

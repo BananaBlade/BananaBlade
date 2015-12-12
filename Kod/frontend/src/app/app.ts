@@ -22,6 +22,7 @@ import {
 import {Listen} from '../user/listen/listen';
 import {Settings} from '../user/settings/settings';
 import {Wishlist} from '../user/wishlist/wishlist';
+import {Dev} from '../dev/dev';
 
 
 @Component({
@@ -32,8 +33,9 @@ import {Wishlist} from '../user/wishlist/wishlist';
 @RouteConfig([
   new Route({ path: '/',         as: 'Listen',   component: Listen   }), //redirectTo: '/Listen' }),
   //new Route({ path: '/Listen',   as: 'Listen',   component: Listen   }),
-  new Route({ path: '/settings', as: 'Settings', component: Settings }),
-  new Route({ path: '/Wishlist', as: 'Wishlist', component: Wishlist })
+  new Route({ path: '/Settings', as: 'Settings', component: Settings }),
+  new Route({ path: '/Wishlist', as: 'Wishlist', component: Wishlist }),
+  new Route({ path: '/Dev', as: 'Dev', component: Dev })
 ])
 
 export class App {
