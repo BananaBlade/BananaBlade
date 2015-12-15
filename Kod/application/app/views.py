@@ -828,12 +828,28 @@ def get_track( track_id ):
 def search_tracks():
     return not_implemented_response()
 
+@app.route( '/tracks/wishlist', methods = [ 'GET' ] )
+@login_required
+def get_wishlist():
+    """Return the global wishlist
+
+    No request parameters required.
+    """
+    try:
+        wishlist = g.user.get_global_wishlist()
+        data = [{
+
+        } for wish in wishlist ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( '', 403 )
+
 
 # Stat routes
 
 @app.route( '/stats/wishlist', methods = [ 'GET' ] )
 @login_required
-def get_wishlist():
+def get_global_wishlist_stat():
     return not_implemented_response()
 
 @app.route( '/stats/active_users/count', methods = [ 'GET' ] )
