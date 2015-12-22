@@ -6,82 +6,106 @@
     <link rel = "stylesheet" href = "css/default.min.css">
 </head>
 <body>
-    <header class = "top-bar">
-        <div class = "app-title">
-            <div class = "app-name">
-                XYZ Radio
-            </div>
-            <div class = "app-descr">
-                144 MHz
+    <header class = "header-bar">
+        <div class = "app-box">
+            <div class = "app-name">WaveRadio</div>
+            <div class = "app-descr">99.4 MHz</div>
+        </div>
+        <div class = "user-box">
+            <input type = "text" name = "email"/>
+            <input type = "password" name = "password"/>
+            <button type = "submit">Prijavi se</button>
+            <button type = "button">Registriraj se</button>
         </div>
     </header>
-    <nav class = "side-bar">
-        <div class = "side-title"></div>
-        <ul class = "option-groups">
-            <li>
-                <div class = "option-group-name">Korisničke mogućnosti</div>
-                <ul class = "option-group-items">
-                    <li>Pregledaj listu želja</li>
+    <nav class = "nav-bar">
+        <div class = "nav-bar-top-spacer"></div>
+        <ul>
+            <li class = "nav-option-group">
+                <div class = "nav-option-group-name">Sve mogućnosti</div>
+            </li>
+            <li class = "nav-option-group">
+                <div class = "nav-option-group-name">Korisničke mogućnosti</div>
+                <ul>
+                    <li class = "option-group-item active">Pregledaj listu želja</li>
                 </ul>
             </li>
-            <li>
-                <div class = "option-group-name">Postavke računa</div>
-                <ul class = "option-group-items">
-                    <li>Pregledaj osobne podatke</li>
-                    <li>Promijeni lozinku</li>
-                    <li>Obriši račun</li>
+            <li class = "nav-option-group">
+                <div class = "nav-option-group-name">Postavke računa</div>
+                <ul>
+                    <li class = "option-group-item">Uredi osobne podatke</li>
+                    <li class = "option-group-item">Promijeni lozinku</li>
+                    <li class = "option-group-item">Obriši račun</li>
                 </ul>
             </li>
         </ul>
     </nav>
-    <div class = "center">
+    <div class = "center-area">
         <header class = "center-header">
-            Naziv mogućnosti
+            <div class = "view-path">Pregledaj listu želja</div>
         </header>
         <div class = "center-content">
             <header class = "content-header">
-                <button>Uredi</button>
+                <div class = "content-header-left"></div>
+                <div class = "content-header-right">
+                    <div class = "content-header-title">Lista želja</div>
+                    <div class = "content-header-subtitle">Sastavite svoju vlastitu
+                        listu želja te ju učinite dostupnom urednicima, kako bi i
+                        sami mogli sudjelovati u radu ove radio postaje</div>
+                </div>
             </header>
-            <div class = "content-main">
-                <ul class = "track-list">
-                    <li class = "track-item">
-                        <div class = "track-main">
-                            <div class = "track-title">Cello Suite in G mol</div>
-                            <div class = "info">
-                                <div class = "artist">London Philharmonic Orchestra</div>
-                                <div class = "album">Best of Johann Sebastian Bach</div>
-                            </div>
+            <nav class = "content-options">
+                <button>Uredi listu želja</button>
+                <button>Potvrdi listu želja</button>
+            </nav>
+            <ul class = "content-primary content-list">
+                <li class = "content-list-item">
+                    <div class = "content-list-item-content">
+                        <div class = "content-list-item-name">Naziv pjesme</div>
+                        <div class = "content-list-item-data">
+                            <div class = "content-list-item-data-item">Ime izvođača</div>
+                            <div class = "content-list-item-data-item">Naziv albuma</div>
                         </div>
-                        <div class = "track-side">
+                    </div>
+                    <div class = "content-list-item-options">
 
+                    </div>
+                </li>
+                <li class = "content-list-item">
+                    <div class = "content-list-item-content">
+                        <div class = "content-list-item-name">Naziv pjesme</div>
+                        <div class = "content-list-item-data">
+                            <div class = "content-list-item-data-item">Ime izvođača</div>
+                            <div class = "content-list-item-data-item">Naziv albuma</div>
                         </div>
-                    </li>
-                    <li class = "track-item">
-                        <div class = "track-main">
-                            <div class = "track-title">Riders on the Storm</div>
-                            <div class = "info">
-                                <div class = "artist">The Doors</div>
-                                <div class = "album">L.A. Woman</div>
-                            </div>
-                        </div>
-                        <div class = "track-side">
+                    </div>
+                    <div class = "content-list-item-options">
 
+                    </div>
+                </li>
+                <li class = "content-list-item">
+                    <div class = "content-list-item-content">
+                        <div class = "content-list-item-name">Naziv pjesme</div>
+                        <div class = "content-list-item-data">
+                            <div class = "content-list-item-data-item">Ime izvođača</div>
+                            <div class = "content-list-item-data-item">Naziv albuma</div>
                         </div>
-                    </li>
-                    <li class = "track-item">
-                        <div class = "track-main">
-                            <div class = "track-title"></div>
-                            <div class = "info">
+                    </div>
+                    <div class = "content-list-item-options">
 
-                            </div>
-                        </div>
-                        <div class = "track-side">
-
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </li>
+            </ul>
         </div>
+        <div class = "center-side">
+            <div class = "center-side-header">
+                <div class = "center-side-title">Manje važni podaci</div>
+                <div class = "center-side-subtitle">Kratki opis ovih podataka za bolje razumijevanje</div>
+            </div>
+            <div class = "center-side-content">idu ovdje</div>
+        </div>
+    </div>
+        <!--
         <div class = "center-side">
             <div class = "side-name">Lista želja korisnika</div>
             <ul class = "side-wishlist">
@@ -90,6 +114,6 @@
                 <li>Per aspera ad astra</li>
             </ul>
         </div>
-    </div>
+    </div> -->
 </body>
 </html>

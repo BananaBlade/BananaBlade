@@ -3,21 +3,149 @@
 $base_font     :     "Open Sans"
 $header_font   :     "Open Sans Condensed"
 
+$base_background_color :     #f2f2f2
+
+$dark_primary_color    :     #1976D2
+$primary_color         :     #2196F3
+$light_primary_color   :     #BBDEFB
+
+$accent_color          :     #FF5252
+$text_color            :     #212121
+$alt_text_color        :     #FFF
+$secondary_text_color  :     #777
+$tertiary_text_color   :     #AAA
+$border_color          :     #EAEAEA
+
+
 div, header, footer, section, article, aside, input, button
     box-sizing         :     border-box
 
+
+// Basic UI styles
+
+.title
+    //font-family        :     $header_font
+    font-size          :     2.5rem
+    font-weight        :     300
+    line-height        :     4rem
+
+.subtitle
+    color              :     $secondary_text_color
+    font-size          :     0.9rem
+
+.heading
+    font-family        :     $header_font
+    font-size          :     1.5rem
+    line-height        :     3rem
+
+.subheading
+    color              :     $tertiary_text_color
+    font-size          :     0.9rem
+    //font-size          :     1.25rem
+
+.body-primary
+    color              :     $text_color
+
+.body-secondary
+    color              :     $secondary_text_color
+
+input[type = "text"], input[type = "password"], input[type = "email"]
+    border             :     1px solid #ccc
+    display            :     inline-block
+    height             :     2rem
+
+button
+    border             :     1px solid #ccc
+    display            :     inline-block
+    height             :     2rem
+
+
+// HTML element styles
+
+b, strong
+    font-weight        :     700
+
+i, em
+    font-style         :     italic
+
+a[href]
+    color              :     $accent_color
+    text-decoration    :     none
+
+    &:href
+        text-decoration      :     underline
+
+
+// Basic layout and styles
 body
-    background         :     #eee
-    color              :     #222
+    background         :     $base_background_color
+    color              :     $text_color
     font-family        :     $base_font
     font-size          :     16px
     line-height        :     1.5rem
 
-.top-bar
+
+.header-bar
     background         :     #fff
-    border-bottom      :     1px solid #eaeaea
     height             :     3rem
     padding            :     0.75rem 1rem
+    position           :     fixed
+    top                :     0
+    width              :     100%
+    z-index            :     5
+
+.nav-bar
+    background         :     #fff
+    bottom             :     0
+    position           :     fixed
+    top                :     3rem
+    width              :     16rem
+
+.center-area
+    margin             :     3rem 0 0 16rem
+    position           :     relative
+
+
+// Central area styles
+
+.center-header
+    background         :     $dark_primary_color
+    color              :     $alt_text_color
+    font-family        :     $header_font
+    font-size          :     1.25rem
+    height             :     3rem
+    padding            :     0.75rem 2rem
+    position           :     fixed
+    top                :     3rem
+    width              :     100%
+    z-index            :     5
+
+.center-content
+    float              :     left
+    height             :     30rem
+    margin             :     2rem 5rem
+    padding-top        :     3rem
+    width              :     48rem
+
+.content-header
+    padding            :     0 0 0 0
+
+.content-options
+    padding            :     1rem 0 2rem 0
+
+.content-primary
+    background         :     #fff
+    box-shadow         :     0 0 4px 0 rgba( 0, 0, 0, 0.05 )
+
+.center-side
+    float              :     left
+    height             :     30rem
+    margin             :     2rem 0
+    padding            :     4rem 1.5rem 1rem 1.5rem
+    width              :     20rem
+
+
+// Top bar styles
 
 .app-name
     float              :     left
@@ -28,78 +156,99 @@ body
 .app-descr
     border-left        :     2px solid #eaeaea
     color              :     #ccc
+    display            :     none
     float              :     left
-    //font-family        :     $header_font
     font-size          :     1rem
     font-weight        :     300
     margin-left        :     0.75rem
     padding-left       :     0.75rem
 
-.side-bar
-    background         :     #fff
-    bottom             :     0
-    position           :     absolute
-    top                :     3rem
-    width              :     16rem
+.user-box
+    float              :     right
 
-.side-title
-    background         :     #09f
+    input[type = "text"], input[type = "password"], input[type = "email"], button
+        height               :     1.5rem
+
+// Sidebar styles
+
+.nav-bar-top-spacer
+    background         :     $primary_color
     height             :     3rem
     width              :     100%
 
-.option-groups li
-    padding            :     1rem 0
+.nav-option-group
+    padding-top        :     1rem
 
-.option-group-name
-    color              :     #555
+.nav-option-group-name
     font-family        :     $header_font
     font-size          :     1.1rem
-    padding            :     0.5rem 1rem
+    margin             :     0.25rem 0
+    padding            :     0.25rem 1rem
 
-.option-group-items li
-    color              :     #999
+    &.active
+        border-left          :    0.25rem solid $primary_color
+        color                :    $primary_color
+        padding-left         :    0.75rem
+
+.option-group-item
+    color              :     $secondary_text_color
     font-family        :     $header_font
-    //font-size          :     0.9rem
-    padding            :     0.25rem 1rem 0.25rem 2rem
+    margin             :     0.25rem 0
+    padding            :     0.125rem 1rem 0.125rem 2rem
 
-.center
-    margin-left        :     16rem
+    &.active
+        border-left          :     0.25rem solid $primary_color
+        padding-left         :     1.75rem
+        color                :     $primary_color
 
-.center-header
-    background         :     #07f
-    color              :     #fff
-    font-family        :     $header_font
-    font-size          :     1.25rem
-    height             :     3rem
-    padding            :     0.75rem 2rem
 
-.center-content
-    //border             :     1px solid #ddd
+// Content header styles
+
+// .content-header-left
+//     background         :     rgb(128, 190, 33)
+//     float              :     left
+//     margin-right       :     1rem
+//     height             :     7rem
+//     width              :     15%
+
+.content-header-title
+    @extend .title
+    color              :     $primary_color
+
+.content-header-subtitle
+    @extend .subtitle
+
+
+// Content list styles
+
+.content-list-item
+    border-bottom      :     1px solid $border_color
+    padding            :     0.5rem 1.5rem 1rem 1.5rem
+
+    &:last-child
+        border-bottom        :     none
+
+.content-list-item-name
+    @extend .heading
+
+.content-list-item-data
+    overflow           :     hidden
+
+.content-list-item-data-item
+    @extend .body-secondary
     float              :     left
-    height             :     30rem
-    margin             :     2rem 5rem
-    width              :     48rem
+    margin-right       :     1rem
 
-.content-header
-    padding            :     0 0 2rem 0
 
-.content-main
-    background         :     #fff
-    box-shadow         :     0 0 4px 0 rgba( 0, 0, 0, 0.05 )
+// Center side styles
 
-.track-item
-    border-bottom      :     1px solid #eaeaea
-    padding            :     1rem 1.5rem
+.center-side-header
+    padding-bottom     :     1.5rem
 
-.track-title
-    font-size          :     1.5rem
-    font-weight        :     300
-    line-height        :     2.5rem
+.center-side-title
+    @extend .heading
 
-.center-side
-    //border             :     1px solid #ddd
-    float              :     left
-    height             :     30rem
-    margin             :     2rem 0
-    padding            :     1rem 1.5rem
-    width              :     20rem0
+.center-side-subtitle
+    @extend .subheading
+
+.center-side-content
