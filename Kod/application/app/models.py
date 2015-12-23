@@ -12,6 +12,7 @@ class BaseModel( Model ):
     class Meta:
         database = db
 
+
 class Track( BaseModel ):
     """Track model
 
