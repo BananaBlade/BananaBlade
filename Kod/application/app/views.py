@@ -48,7 +48,10 @@ def show_settings():
 
 @app.route( '/player/get', methods = [ 'GET' ] )
 def get_currently_playing_track():
-    """Returns currently playing track as a file"""
+    """Returns currently playing track as a file
+
+    No request parameters required.
+    """
     try:
         track = Track.get_currently_playing()
         return send_file( track.path )
@@ -57,7 +60,10 @@ def get_currently_playing_track():
 
 @app.route( '/player/info', methods = [ 'GET' ] )
 def get_currently_playing_track_info():
-    """Returns informations about the currently playing track"""
+    """Returns informations about the currently playing track
+
+    No request parameters required.
+    """
     try:
         track = Track.get_currently_playing()
         data = {
@@ -160,7 +166,7 @@ def process_signout():
 def get_account_data():
     """Return user account data
 
-    No request arguments required.
+    No request parameters required.
     """
     data = {
         'id'            :   g.user.id,
@@ -235,7 +241,7 @@ def change_account_password():
 def get_wishlist():
     """Returns user's private wishlist
 
-    Returns a list of up to 10 dicts { title, artist, album, duration, genre, year }
+    Returns a list of up to 10 dicts { id, title, artist, album, duration, genre, year }
     describing tracks on user's wishlist.
 
     No request parameters required.
@@ -266,7 +272,7 @@ def set_wishlist():
     try:
         track_list = request.get_json()
         g.user.set_wishlist( track_list )
-        return success_response( 'Lista želja uspješno pohranjena' )
+        return success_response( 'Lista želja uspješno pohranjena', 201 )
     except AuthorizationError:
         return error_response( 'Korisnik nema mogućnost stvaranja svoje liste želja', 403 )
 
@@ -325,7 +331,7 @@ def add_track():
             file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,
             genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
         audio_file.save( path )
-        return success_response( 'Zvučni zapis uspješno dodan' )
+        return success_response( 'Zvučni zapis uspješno dodan', 201 )
     except AuthorizationError:
         return error_response( 'Korisnik nema ovlasti dodavati zvučne zapise', 403 )
     except ValueError:
@@ -394,7 +400,7 @@ def delete_track( track_id ):
 def list_editors():
     """Returns a list of all editors
 
-    Returns a list of dicts { first_name, last_name, email } representing
+    Returns a list of dicts { id, first_name, last_name, email } representing
     individual editors.
     No request parameters required.
     """
@@ -452,8 +458,8 @@ def remove_editor( editor_id ):
 def list_requests():
     """Returns a list of all pending slot requests
 
-    Returns a list of dicts { editor : { first_name, last_name, email },
-        request : { time, days_bit_mask, start_date, end_date } }.
+    Returns a list of dicts { editor : { id, first_name, last_name, email },
+        request : { id, time, days_bit_mask, start_date, end_date } }.
 
     No request parameters required.
     """
@@ -516,7 +522,7 @@ def deny_request( request_id ):
 def list_users():
     """Returns a list of all the users (excluding admins and owner)
 
-    Returns a list of dicts { first_name, last_name, email, account_type }
+    Returns a list of dicts { id, first_name, last_name, email, account_type }
     representing users.
     No request parameters required.
     """
@@ -607,22 +613,82 @@ def delete_user( user_id ):
 @app.route( '/editor/slots/list', methods = [ 'GET' ] )
 @login_required
 def list_editor_slots():
-    return not_implemented_response()
+    """Return a list of all editor's slots
+
+    No request parameters required.
+    """
+    try:
+        slots = g.user.get_all_slots()
+        data = [{
+            'id'    : slot.id,
+            'time'  : slot.time,
+            'count' : slot.count
+        } for slot in slots ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost pregleda svojih termina', 403 )
 
 @app.route( '/editor/slots/request', methods = [ 'POST' ] )
 @login_required
 def request_slot():
-    return not_implemented_response()
+    """Make a request for time slots
+
+    Request should contain `time`, `days_bit_mask`, `start_date` and `end_date`.
+    TODO: Check type conversions
+    """
+    time            = request.values.get( time )
+    days_bit_mask   = request.values.get( 'days_bit_mask' )
+    start_date      = request.values.get( 'start_date' )
+    end_date        = request.values.get( 'end_date' )
+
+    try:
+        g.user.request_slot( time, days_bit_mask, start_date, end_date )
+        return success_response( 'Zahtjev uspješno pohranjen', 201 )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost traženja termina', 403 )
 
 @app.route( '/editor/slots/<int:slot_id>/get_list', methods = [ 'GET' ] )
 @login_required
-def get_list( slot_id ):
-    return not_implemented_response()
+def get_playlist( slot_id ):
+    """Get current slot playlist
+
+    Returns a list of dicts { title, artist, album, genre, index, play_duration }
+    representing tracks on this slot's playlist.
+    No request parameters required.
+    """
+    try:
+        slot_items = g.user.get_slot_playlist( slot_id )
+        data = [{
+            'title'         :   item.track.title,
+            'artist'        :   item.track.artist,
+            'album'         :   item.track.album,
+            'genre'         :   item.track.genre,
+            'index'         :   item.index,
+            'play_duration' :   item.play_duration
+        } for item in slot_items ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost dohvaćanja liste za reprodukciju za ovaj termin', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji termin s danim id-om', 404 )
 
 @app.route( '/editor/slots/<int:slot_id>/set_list', methods = [ 'POST' ] )
 @login_required
-def set_list( slot_id ):
-    return not_implemented_response()
+def set_playlist( slot_id ):
+    """Set playlist for slot with a given id
+
+    Request should contain a list of ( index, track_id, play_duration ) representing
+    tracks to be placed on the slot's playlist.
+    """
+    track_list = request.get_json()
+
+    try:
+        g.user.set_slot_playlist( slot_id, track_list )
+        return success_response( 'Lista za reprodukciju uspješno pohranjena', 201 )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost sastavljanja lista za reprodukciju za ovaj termin', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji termin s danim id-om', 404 )
 
 
 # Owner admins management
@@ -630,17 +696,56 @@ def set_list( slot_id ):
 @app.route( '/owner/admins/list', methods = [ 'GET' ] )
 @login_required
 def list_admins():
-    return not_implemented_response()
+    """Return a list of all admins
+
+    Returns a list of dicts { id, first_name, last_name, email } representing administrators.
+    No request parameters required.
+    """
+    try:
+        admins = g.user.get_all_admins()
+        data = [{
+            'id'            : admin.id,
+            'first_name'    : admin.first_name,
+            'last_name'     : admin.last_name,
+            'email'         : admin.email
+        } for admin in admins ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema mogućnost pregledavanja popisa administratora', 403 )
 
 @app.route( '/owner/admins/add/<int:user_id>', methods = [ 'POST' ] )
 @login_required
 def add_admin( user_id ):
-    return not_implemented_response()
+    """Grant administrative privileges to user with `user_id`
+
+    No request parameters required.
+    """
+    try:
+        g.user.add_admin( user_id )
+        return success_response( 'Korisnik uspješno postavljen za administratora' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti postavljati administratore', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+    except TypeError as e:
+        return error_response( str( e ) )
 
 @login_required
 @app.route( '/owner/admins/<int:admin_id>/remove', methods = [ 'POST' ] )
 def remove_admin( admin_id ):
-    return not_implemented_response()
+    """Revoke administrative privileges from user with `admin_id`
+
+    No request parameters required.
+    """
+    try:
+        g.user.remove_admin( admin_id )
+        return success_response( 'Korisniku uspješno ukinute administratorske ovlasti' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti uklanjati administratore', 403 )
+    except DoesNotExist:
+        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+    except TypeError as e:
+        return error_response( str( e ) )
 
 
 # Owner radiostation management
@@ -648,7 +753,24 @@ def remove_admin( admin_id ):
 @app.route( '/owner/station/modify', methods = [ 'POST' ] )
 @login_required
 def modify_station_data():
-    return not_implemented_response()
+    """Modify radio station data
+
+    Request should contain `name`, `oib`, `address`, `email` and `frequency`.
+    """
+    name        = request.values.get( 'name' )
+    oib         = request.values.get( 'oib' )
+    address     = request.values.get( 'address' )
+    email       = request.values.get( 'email' )
+    frequency   = float( request.values.get( 'frequency' ) )
+
+    try:
+        validate_radio_station_data( name, oib, address, email, frequency )
+        g.user.modify_station_data( name, oib, address, email, frequency )
+        return success_response( 'Podaci o postaji uspješno promjenjeni' )
+    except AuthorizationError:
+        return error_response( 'Korisnik nema ovlasti mijenjati podatke o radio postaji', 403 )
+    except ValueError:
+        return error_response( 'Uneseni su neispravni podaci' )
 
 
 # Track routes
@@ -656,25 +778,79 @@ def modify_station_data():
 @app.route( '/tracks/list', methods = [ 'GET' ] )
 @login_required
 def list_tracks():
-    return not_implemented_response()
+    """Return a list of all tracks
+
+    No request parameters required.
+    """
+    tracks = Track.get_tracks()
+    data = [{
+        'id'                : track.id,
+        'title'             : track.title,
+        'artist'            : track.artist,
+        'album'             : track.album,
+        'duration'          : track.duration,
+        'file_format'       : track.file_format,
+        'sample_rate'       : track.sample_rate,
+        'bits_per_sample'   : track.bits_per_sample,
+        'genre'             : track.genre,
+        'publisher'         : track.publisher,
+        'carrier_type'      : track.carrier_type,
+        'year'              : track.year
+    } for track in tracks ]
+    return data_response( data )
 
 @app.route( '/tracks/<int:track_id>/get', methods = [ 'GET' ] )
 @login_required
 def get_track( track_id ):
-    return not_implemented_response()
+    """Return track data of track with `track_id`
+
+    No request parameters required.
+    """
+    track = Track.get( Track.id == track_id )
+    data = {
+        'id'                : track.id,
+        'title'             : track.title,
+        'artist'            : track.artist,
+        'album'             : track.album,
+        'duration'          : track.duration,
+        'file_format'       : track.file_format,
+        'sample_rate'       : track.sample_rate,
+        'bits_per_sample'   : track.bits_per_sample,
+        'genre'             : track.genre,
+        'publisher'         : track.publisher,
+        'carrier_type'      : track.carrier_type,
+        'year'              : track.year
+    }
+    return data_response( data )
 
 @app.route( '/tracks/search', methods = [ 'GET' ] )
 @login_required
 def search_tracks():
     return not_implemented_response()
 
+@app.route( '/tracks/wishlist', methods = [ 'GET' ] )
+@login_required
+def get_wishlist():
+    """Return the global wishlist
+
+    No request parameters required.
+    """
+    try:
+        wishlist = g.user.get_global_wishlist()
+        data = [{
+
+        } for wish in wishlist ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( '', 403 )
+
 
 # Stat routes
 
 @app.route( '/stats/wishlist', methods = [ 'GET' ] )
 @login_required
-def get_wishlist():
-    pasreturn not_implemented_response()s
+def get_global_wishlist_stat():
+    return not_implemented_response()
 
 @app.route( '/stats/active_users/count', methods = [ 'GET' ] )
 @login_required

@@ -57,14 +57,42 @@ def validate_user_data( first_name, last_name, email, year_of_birth, occupation,
 
 def validate_track_data( title, artist, album, duration, file_format, sample_rate, bits_per_sample,
     genre, publisher, carrier_type, year ):
-    """TODO: Implement"""
-    pass
+    """Combined validator for all track data fields
+
+    Raises ValueError
+    """
+    CharValidator( min_length = 1, max_length = 128 ).validate( title )
+    CharValidator( min_length = 1, max_length = 128 ).validate( artist )
+    CharValidator( min_length = 1, max_length = 64 ).validate( album )
+    IntValidator( minimum = 1 ).validate( duration )
+    CharValidator( min_length = 3, max_length = 32 ).validate( file_format )
+    FloatValidator( minimum = 8, maximum = 512 ).validate( sample_rate )
+    IntValidator( minimum = 4, maximum = 512 ).validate( bits_per_sample )
+    CharValidator( min_length = 2, max_length = 128 ).validate( genre )
+    CharValidator( min_length = 2, max_length = 64 ).validate( publisher )
+    CharValidator( min_length = 2, max_length = 64 ).validate( carrier_type )
+    IntValidator( minimum = -5000, maximum = 2100 ).validate( year )
+
+
+def validate_radio_station_data( name, oib, address, email, frequency ):
+    """Combined validator for radio station data fields
+
+    Raises ValueError
+    """
+    CharValidator( min_length = 3, max_length = 64 ).validate( name )
+    OIBValidator().validate( oib )
+    CharValidator( min_length = 4, max_length = 128 ).validate( address )
+    EmailValidator().validate( email )
+    FloatValidator( minimum = 0.5, maximum = 120 ).validate( frequency )
 
 
 def validate_filename( filename ):
     """Checks whether audio file name is valid ( ie. has correct extension )
 
     Supported extensions: MP3, WAV, OGG (...)
-    TODO: Implement
+
+    Raises ValueError
     """
-    pass
+    valid_extensions = [ 'mp3', 'wav', 'ogg' ]
+    if not '.' in filename or filename.rsplit( '.', maxsplit = 1 )[ 1 ] not in valid_extensions:
+        raise ValueError( 'Nepodržani nastavak datoteke' )

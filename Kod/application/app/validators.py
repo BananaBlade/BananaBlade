@@ -32,6 +32,19 @@ class IntValidator( Validator ):
             and ( arg <= self.maximum if self.maximum is not None else True ) )
 
 
+class FloatValidator( Validator ):
+    """Validate a float argument"""
+
+    def __init__( self, minimum = None, maximum = None ):
+        self.minimum = minimum
+        self.maximum = maximum
+
+    def validation_test( self, arg ):
+        return ( isinstance( arg, float )
+            and ( arg >= self.minimum if self.minimum is not None else True )
+            and ( arg <= self.maximum if self.maximum is not None else True ) )
+
+
 class CharValidator( Validator ):
     """Validate a string argument"""
 
@@ -52,3 +65,20 @@ class EmailValidator( CharValidator ):
 
     def __init__( self ):
         super().__init__( min_length = 5, max_length = 64, pattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" )
+
+
+class OIBValidator( Validator ):
+    """Validate an OIB number (Osobni Identifikacijski Broj)"""
+
+    def __init__( self ):
+        pass
+
+    def validation_test( self, arg ):
+        if arg is None or not arg.isdigit() or len( arg ) != 11: return False
+        num = 0
+        for a in arg:
+            num = ( num + int( a ) ) % 10
+            num = ( 2*num ) % 11 if num != 0 else 9
+        check = 11 - num
+        if check == 10: check == 0
+        return check == int( arg[ 10 ] )

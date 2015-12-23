@@ -381,6 +381,16 @@ class User( BaseModel ):
         self._assert_owner()
         RadioStation.modifiy_data( name, oib, address, email, frequency )
 
+    def get_all_admins( self ):
+        """Returns a list of all admins
+
+        Operation restricted to the owner.
+
+        Raises AuthorizationError
+        """
+        self._assert_owner()
+        return User.select().where( User.account_type == AccountType.ADMINISTRATOR )
+
     def add_admin( self, user_id ):
         """Makes user with a given id an administrator
 
@@ -449,9 +459,10 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         self._assert_editor()
-        return Slot.select().where( Slot.editor == self ).join( PlaylistTrack )
+        return ( Slot.select().where( ( Slot.editor == self ) & ( Slot.time > datetime.now() ) )
+            .join( PlaylistTrack, JOIN.LEFT_OUTER ).switch( Slot ).annotate( PlaylistTrack ) )
 
-    def request_slot( self, start_date, end_date, time, days_bit_mask ):
+    def request_slot( self, time, days_bit_mask, start_date, end_date ):
         """Request a new time slot
 
         Request is for one-hour slots starting at `time`, on the days encoded in
@@ -461,9 +472,9 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         self._assert_editor()
-        Request.make_request( start_date, end_date, time, days_bitmask, self )
+        Request.make_request( time, days_bit_mask, start_date, end_date, self )
 
-    def get_playlist( self, slot_id ):
+    def get_slot_playlist( self, slot_id ):
         """Returns stored playlist for a given slot
 
         Operation restricted to editors.
@@ -476,7 +487,7 @@ class User( BaseModel ):
             raise AuthorizationError( 'Nije dozvoljeno pregledavati liste drugih urednika' )
         return slot.get_slot_playlist()
 
-    def set_playlist( self, slot_id, track_list ):
+    def set_slot_playlist( self, slot_id, track_list ):
         """Sets playlist for a given slot
 
         Track list consists of triplets (index, track_id, play_duration).
@@ -593,14 +604,14 @@ class Slot( BaseModel ):
     time            = DateTimeField( unique = True );
     editor          = ForeignKeyField( User )
 
-    def get_slot_playlist( self ):
+    def get_playlist( self ):
         """Returns all tracks set to be played in a given slot
 
         Tracks are returned with extra data: index and play duration.
         """
         return PlaylistTrack.select().where( PlaylistTrack.slot == self ).join( Track )
 
-    def set_slot_playlist( self, track_list ):
+    def set_playlist( self, track_list ):
         """Makes a playlist for a given slot
 
         Track list consists of triplets (index, track_id, play_duration).
@@ -618,7 +629,7 @@ class SlotRequest( BaseModel ):
     end_date        = DateField()
 
     @classmethod
-    def make_request( cls, start_date, end_date, time, days_bit_mask, editor ):
+    def make_request( cls, time, days_bit_mask, start_date, end_date, editor ):
         """ """
         request = cls( time = time, editor = editor, days_bit_mask = days_bit_mask,
             start_date = start_date, end_date = end_date )
