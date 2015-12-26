@@ -372,7 +372,7 @@ class User( BaseModel ):
         request = SlotRequest.get( SlotRequest.id == request_id )
         request.deny()
 
-    def modify_station_data( self, name, oib, address, email, frequency ):
+    def modify_station_data( self, name, description, oib, address, email, frequency ):
         """Modifies radio station data
 
         Operation restricted to owner.
@@ -380,7 +380,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         self._assert_owner()
-        RadioStation.modifiy_data( name, oib, address, email, frequency )
+        RadioStation.modifiy_data( name, description, oib, address, email, frequency )
 
     def get_all_admins( self ):
         """Returns a list of all admins
@@ -724,16 +724,18 @@ class Wish( BaseModel ):
 class RadioStation( BaseModel ):
     """Radio station model - singleton table"""
     name            = CharField()
+    description     = TextField()
     oib             = CharField()
     address         = CharField()
     email           = CharField()
     frequency       = FloatField()
 
     @classmethod
-    def modifiy_data( name, oib, address, email, frequency ):
+    def modifiy_data( name, description, oib, address, email, frequency ):
         """Modify radio station data"""
         station = cls.get()
         if name is not None: station.name = name
+        if description is not None: station.description = description
         if oib is not None: station.oib = oib
         if address is not None: station.address = address
         if email is not None: station.email = email
