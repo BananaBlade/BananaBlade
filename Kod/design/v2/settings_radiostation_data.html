@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset = "UTF-8">
-    <title>Podaci korisnika &ndash; FM Radio</title>
+    <title>Uređivanje podataka radiopostaje&ndash; FM Radio</title>
     <link rel = "stylesheet" href = "css/default.min.css">
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
 </head>
@@ -29,12 +29,10 @@
                 <div class = "nav-option-group-name">Pregled mogućnosti</div>
             </li>
             <li class = "nav-option-group">
-                <div class = "nav-option-group-name">Administratorske mogućnosti</div>
+                <div class = "nav-option-group-name">Vlasničke mogućnosti</div>
                 <ul>
-                    <li class = "option-group-item">Uredi zvučne zapise</li>
-                    <li class = "option-group-item">Upravljaj urednicima</li>
-                    <li class = "option-group-item">Pregledaj zahtjeve</li>
-                    <li class = "option-group-item active">Upravljaj korisnicima</li>
+                    <li class = "option-group-item">Upravljaj administratorima</li>
+                    <li class = "option-group-item active">Pregledaj podatke o postaji</li>
                 </ul>
             </li>
             <li class = "nav-option-group">
@@ -52,17 +50,18 @@
     </nav>
     <div class = "center-area">
         <header class = "center-header">
-            <div class = "view-path">Upravljaj korisnicima &gt; Uredi korisničke podatke</div>
+            <div class = "view-path">Pregledaj podatke o postaji</div>
         </header>
         <div class = "center-content">
             <header class = "content-header">
                 <div class = "content-header-left">
-                    <div class = "content-header-title">Podaci o korisniku</div>
-                    <div class = "content-header-subtitle">Pregledajte i uredite
-                    podatke korisnika ove radiopostaje. <b>Oprez! Promjene mogu
-                    utjecati na korisnikovu mogućnost korištenja sustava.</b></div>
+                    <div class = "content-header-title">Podaci o postaji</div>
+                    <div class = "content-header-subtitle">Pregledajte i uređujte
+                        vaše osobne korisničke podatke, koji nam koriste kako
+                        bismo vam mogli pružiti što bolju uslugu slušanja i sudjelovanja
+                        u radu postaje.</div>
                 </div>
-                <div class = "content-header-right"><i class = "material-icons icon">account_box</i></div>
+                <div class = "content-header-right"><i class = "material-icons icon">radio</i></div>
             </header>
             <nav class = "content-options">
                 <button>Izmijeni podatke</button>
@@ -71,28 +70,28 @@
                 <form>
                     <fieldset disabled = "disabled">
                         <div class = "form-line">
-                            <label for = "first_name">Ime</label>
-                            <input type = "text" name = "first_name" value = "Slavko"/>
+                            <label for = "first_name">Naziv postaje</label>
+                            <input type = "text" name = "first_name" value = "Mirko"/>
                         </div>
                         <div class = "form-line">
-                            <label for = "last_name">Prezime</label>
-                            <input type = "text" name = "last_name" value = "Kovač"/>
+                            <label for = "last_name">Kratki opis</label>
+                            <textarea name = "">Opis radio postaje</textarea>
+                        </div>
+                        <div class = "form-line">
+                            <label for = "oib">OIB</label>
+                            <input type = "text" name = "oib" value = "98765432109"/>
+                        </div>
+                        <div class = "form-line">
+                            <label for = "address">Adresa postaje</label>
+                            <input type = "text" name = "address" value = "Unska 3, Zagreb"/>
                         </div>
                         <div class = "form-line">
                             <label for = "email">E-mail adresa</label>
-                            <input type = "email" name = "email" value = "skovac@mail.com"/>
+                            <input type = "email" name = "email" value = "fmradio@mail.com"/>
                         </div>
                         <div class = "form-line">
-                            <label for = "year_of_birth">Godina rođenja</label>
-                            <input type = "number" name = "year_of_birth" value = "1986" min = "1900" max = "2100"/>
-                        </div>
-                        <div class = "form-line">
-                            <label for = "occupation">Zanimanje</label>
-                            <input type = "text" name = "occupation" value = "keramičar"/>
-                        </div>
-                        <div class = "form-line">
-                            <label for = "account_type">Vrsta računa</label>
-                            <input type = "text" name = "account_type" value = "Administrator" disabled = "disabled" class = "account-type-input"/>
+                            <label for = "frequency">Frekvencija</label>
+                            <input type = "number" name = "frequency" value = "99.8" min = "90" max = "110"/>
                         </div>
                     </fieldset>
                 </form>

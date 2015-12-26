@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset = "UTF-8">
-    <title>Postavke &ndash; FM Radio</title>
+    <title>Lista želja &ndash; FM Radio</title>
     <link rel = "stylesheet" href = "css/default.min.css">
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
 </head>
@@ -65,54 +65,72 @@
                 <button>Uredi listu želja</button>
                 <button>Potvrdi listu želja</button>
             </nav>
-            <ul class = "content-primary content-list">
+            <!-- TODO: Hide x-es on each item when just viewing, show them when editing -->
+            <ul class = "content-primary content-list static">
                 <li class = "content-list-item">
                     <div class = "content-list-item-content">
-                        <div class = "content-list-item-name">Naziv pjesme</div>
+                        <div class = "content-list-item-name">Violin Concerto No. 5: Tempo di minuetto</div>
                         <div class = "content-list-item-data">
-                            <div class = "content-list-item-data-item">Ime izvođača</div>
-                            <div class = "content-list-item-data-item">Naziv albuma</div>
-                            <div class = "content-list-item-data-item">Godina izdanja</div>
+                            <div class = "content-list-item-data-item track-artist">Wolfgang A. Mozart</div>
+                            <div class = "content-list-item-data-item track-album">The Very Best of Mozart</div>
+                            <div class = "content-list-item-data-item track-year">2007</div>
+                            <div class = "content-list-item-data-item track-genre">Klasična glazba</div>
                         </div>
                     </div>
                     <div class = "content-list-item-options">
-
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
                     </div>
                 </li>
                 <li class = "content-list-item">
                     <div class = "content-list-item-content">
-                        <div class = "content-list-item-name">Naziv pjesme</div>
+                        <div class = "content-list-item-name">The Four Seasons, Op. 8, "Spring": Allegro</div>
                         <div class = "content-list-item-data">
-                            <div class = "content-list-item-data-item">Ime izvođača</div>
-                            <div class = "content-list-item-data-item">Naziv albuma</div>
-                            <div class = "content-list-item-data-item">Godina izdanja</div>
+                            <div class = "content-list-item-data-item track-artist">Antonio Vivaldi</div>
+                            <div class = "content-list-item-data-item track-album">The 50 Greatest Pieces of Classical Music</div>
+                            <div class = "content-list-item-data-item track-year">1997</div>
+                            <div class = "content-list-item-data-item track-genre">Klasična glazba</div>
                         </div>
                     </div>
                     <div class = "content-list-item-options">
-
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
                     </div>
                 </li>
                 <li class = "content-list-item">
                     <div class = "content-list-item-content">
-                        <div class = "content-list-item-name">Naziv pjesme</div>
+                        <div class = "content-list-item-name">St. Matthew Passion, BWV 244: O Haupt voll Blut und Wunden</div>
                         <div class = "content-list-item-data">
-                            <div class = "content-list-item-data-item">Ime izvođača</div>
-                            <div class = "content-list-item-data-item">Naziv albuma</div>
-                            <div class = "content-list-item-data-item">Godina izdanja</div>
+                            <div class = "content-list-item-data-item track-artist">Johann Sebastian Bach</div>
+                            <div class = "content-list-item-data-item track-album">The Very Best Of Bach</div>
+                            <div class = "content-list-item-data-item track-year">2005</div>
+                            <div class = "content-list-item-data-item track-genre">Klasična glazba</div>
                         </div>
                     </div>
                     <div class = "content-list-item-options">
-
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
                     </div>
                 </li>
-                <li class = "content-list-item content-list-search-item">
+                <li class = "content-list-item">
+                    <div class = "content-list-item-content">
+                        <div class = "content-list-item-name">Concerto No. 2</div>
+                        <div class = "content-list-item-data">
+                            <div class = "content-list-item-data-item track-artist">Niccolo Paganini</div>
+                            <div class = "content-list-item-data-item track-album">Nepoznati album</div>
+                            <div class = "content-list-item-data-item track-year">2004</div>
+                            <div class = "content-list-item-data-item track-genre">Klasična glazba</div>
+                        </div>
+                    </div>
+                    <div class = "content-list-item-options">
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
+                    </div>
+                </li>
+                <li class = "content-list-item content-list-search-item hidden">
                     <form>
                         <div class = "content-list-item-content">
-                            <label for = "add_track_search">Dodaj na listu</label>
-                            <input type = "text" name = "add_track_search" class = "item-search-input"/>
+                            <label for = "add-item-search">Dodaj na listu</label>
+                            <input type = "text" name = "add_track_search" class = "add-item-search"/>
                         </div>
                         <div class = "content-list-item-options">
-                            <button class = "raised item-search-add"><i class = "material-icons">add</i></button>
+                            <button class = "raised add-item-button"><i class = "material-icons">playlist_add</i></button>
                         </div>
                     </form>
                 </li>
@@ -120,22 +138,10 @@
         </div>
         <div class = "center-side">
             <div class = "center-side-header">
-                <div class = "center-side-title">Manje važni podaci</div>
-                <div class = "center-side-subtitle">Kratki opis ovih podataka za bolje razumijevanje</div>
-            </div>
-            <div class = "center-side-content">
+                <div class = "center-side-title">Zadnja potvrda</div>
+                <div class = "center-side-subtitle">Lista želja zadnji je put potvrđena prije <b>14 sati</b></div>
             </div>
         </div>
     </div>
-        <!--
-        <div class = "center-side">
-            <div class = "side-name">Lista želja korisnika</div>
-            <ul class = "side-wishlist">
-                <li>Lorem ipsum</li>
-                <li>Dolor sit amet</li>
-                <li>Per aspera ad astra</li>
-            </ul>
-        </div>
-    </div> -->
 </body>
 </html>
