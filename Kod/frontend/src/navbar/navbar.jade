@@ -1,0 +1,22 @@
+
+nav.nav-bar
+  .nav-bar-top-spacer
+  ul
+    li.nav-option-group
+      .nav-option-group-name Slušaj radio
+    li.nav-option-group
+      .nav-option-group-name Pregled mogućnosti
+    li.nav-option-group
+      .nav-option-group-name Korisničke mogućnosti
+      ul
+        li.option-group-item Pregledaj listu želja
+    li.nav-option-group
+      .nav-option-group-name Postavke računa
+      ul
+        li.option-group-item([routerLink] = '["/AccountData"]') Uredi osobne podatke
+        li.option-group-item([routerLink] = '["/AccountPassword"]') Promijeni lozinku
+        li.option-group-item([routerLink] = '["/AccountDelete"]') Obriši račun
+    li.nav-option-group
+      .nav-option-group-name Odjavi se
+
+  router-outlet

@@ -1,13 +1,13 @@
-///<reference path='../typings/tsd.d.ts'/>
 
-import { bootstrap, FORM_PROVIDERS } from 'angular2/angular2';
+import { FORM_PROVIDERS } from 'angular2/common';
 import { ROUTER_PROVIDERS } from 'angular2/router';
 import { HTTP_PROVIDERS } from 'angular2/http';
+import { bootstrap } from 'angular2/platform/browser';
 
-import { App } from './app/app';
+import { Header } from './header/header';
 
 bootstrap(
-  App,
+    Header,
   [
     FORM_PROVIDERS,
     ROUTER_PROVIDERS,

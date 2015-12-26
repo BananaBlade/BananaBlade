@@ -1,22 +1,14 @@
 {
-  "version": "1.5.0",
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "declaration": true,
-    "noImplicitAny": false,
-    "removeComments": false,
-    "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
-    "listFiles": true,
-    "outDir": "dist"
+    "target": "es5",
+    "module": "system",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "sourceMap": false
   },
   "exclude": [
     "node_modules"
-  ],
-  "files": [
-    "**/*.ts"
   ]
 }
