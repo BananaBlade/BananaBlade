@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
     selector: 'AddTrack'
 })
 @View({
-  templateUrl: './dest/user/AddTrack/AddTrack.html'
+        templateUrl: './dest/Settings/AddTrack/AddTrack.html'
 })
 export class AddTrack {
 

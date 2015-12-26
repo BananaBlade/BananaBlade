@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
     selector: 'AccountData'
 })
 @View({
-  templateUrl: './dest/user/AccountData/AccountData.html'
+        templateUrl: './dest/Settings/AccountData/AccountData.html'
 })
 export class AccountData {
 
