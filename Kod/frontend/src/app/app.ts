@@ -10,6 +10,7 @@ import { AccountData } from '../settings/AccountData/AccountData';
 import { AccountDelete } from '../settings/AccountDelete/AccountDelete';
 import { AccountPassword } from '../settings/AccountPassword/AccountPassword';
 import { AddTrack } from '../settings/AddTrack/AddTrack';
+import { AccountLogin } from '../settings/AccountLogin/AccountLogin';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { AddTrack } from '../settings/AddTrack/AddTrack';
     new Route({ path: '/', name: 'AccountData', component: AccountData }),
     new Route({ path: 'AccountPassword', name: 'AccountPassword', component: AccountPassword }),
     new Route({ path: 'AccountDelete', name: 'AccountDelete', component: AccountDelete }),
-    new Route({ path: 'AddTrack', name: 'AddTrack', component: AddTrack })
+    new Route({ path: 'AddTrack', name: 'AddTrack', component: AddTrack }),
+    new Route({ path: 'AccountLogin', name: 'AccountLogin', component: AccountLogin })
 ])
 
 export class App {

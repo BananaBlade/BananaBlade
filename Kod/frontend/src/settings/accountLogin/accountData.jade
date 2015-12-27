@@ -1,0 +1,37 @@
+.center-area
+      header.center-header
+        .view-path Uredi osobne podatke
+      .center-content
+        header.content-header
+          .content-header-left
+            .content-header-title Osobni podaci
+            .content-header-subtitle
+              | Pregledajte i uređujte
+              | vaše osobne korisničke podatke, koji nam koriste kako
+              | bismo vam mogli pružiti što bolju uslugu slušanja i sudjelovanja
+              | u radu postaje.
+          .content-header-right
+            i.material-icons.icon account_box
+        nav.content-options
+          button Izmijeni podatke
+        .content-primary.content-form
+          form
+            fieldset(disabled='disabled')
+              .form-line
+                label(for='first_name') Ime
+                input(type='text', name='first_name', value='Mirko')
+              .form-line
+                label(for='last_name') Prezime
+                input(type='text', name='last_name', value='Horvat')
+              .form-line
+                label(for='email') E-mail adresa
+                input(type='email', name='email', value='mhorvat@mail.com')
+              .form-line
+                label(for='year_of_birth') Godina rođenja
+                input(type='number', name='year_of_birth', value='1983', min='1900', max='2100')
+              .form-line
+                label(for='occupation') Zanimanje
+                input(type='text', name='occupation', value='vodoinstalater')
+              .form-line
+                label Vrsta računa
+                input.account-type-input(type='text', name='account_type', value='Administrator', disabled='disabled')
