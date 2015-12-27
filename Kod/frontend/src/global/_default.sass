@@ -18,7 +18,7 @@ $tertiary_text_color   :     #AAA
 $border_color          :     #EAEAEA
 
 
-div, header, footer, section, article, aside, input, button
+div, header, footer, section, article, aside, input, button, textarea, label, li, ul
     box-sizing         :     border-box
 
 
@@ -40,7 +40,6 @@ div, header, footer, section, article, aside, input, button
         family               :     $header_font
         size                 :     1.5rem
     line-height        :     2.5rem
-    //padding-bottom     :     0.5rem
 
 .subheading
     color              :     $secondary_text_color
@@ -52,7 +51,10 @@ div, header, footer, section, article, aside, input, button
 .body-secondary
     color              :     $secondary_text_color
 
-input, select
+.hidden
+    display            :     none
+
+input, select, textarea
     background         :     none
     border             :     none
     border-bottom      :     2px solid $border_color
@@ -70,7 +72,11 @@ input, select
 input[ type = "file" ]
     border             :     none
 
-// TODO: Deal with buttons
+textarea
+    resize             :     none
+    height             :     auto
+    min-height         :     2rem
+
 button
     +user-select
     background         :     none
@@ -83,6 +89,7 @@ button
         weight               :     700
     height             :     2rem
     letter-spacing     :     -0.5px
+    line-height        :     2rem
     outline            :     none
     text-transform     :     uppercase
 
@@ -97,9 +104,21 @@ button
         background           :     transparentize( $primary_color, 0.8 )
 
     &::-moz-focus-inner
-	    border 			     : 	   0
-	    margin 			     : 	   0
-    	padding 		     : 	   0
+        border               :     0
+        margin               :     0
+        padding              :     0
+
+    &.alt
+        color                :     $accent_color
+
+        &:hover
+            background           :     transparentize( $accent_color, 0.9 )
+
+        &:active
+            background           :     transparentize( $accent_color, 0.8 )
+
+        &:focus
+            outline              :     1px dotted $accent_color
 
     &.raised
         background           :     $primary_color
@@ -113,6 +132,9 @@ button
 
         &:hover
             background             :     $dark_primary_color
+
+    .material-icons
+        padding              :     0.25rem 0
 
 label
     @extend .body-secondary
@@ -129,8 +151,11 @@ i, em
     font-style         :     italic
 
 a
-    color              :     $accent_color
+    color              :     inherit
     text-decoration    :     none
+
+.page-content a
+    color              :     $accent_color
 
     &:hover
         text-decoration      :     underline
@@ -166,7 +191,6 @@ body
     bottom             :     0
     position           :     fixed
     top                :     3rem
-    left               :     0
     width              :     16rem
 
 .center-area
@@ -190,8 +214,7 @@ body
     z-index            :     5
 
 .center-content
-    top                :     3rem
-    position           :     fixed
+    float              :     left
     height             :     30rem
     margin             :     2rem 5rem
     padding-top        :     3rem
@@ -326,7 +349,6 @@ body
     background         :     $accent_color
     border-radius      :     50%
     box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.1 )
-    //display            :     none
     height             :     7.5rem
     text-align         :     center
 
@@ -342,7 +364,9 @@ body
 
 .content-header-title
     @extend .title
-    //color              :     $primary_color
+
+    &.smaller
+        font-size            :     2.25rem
 
 .content-header-subtitle
     @extend .subtitle
@@ -367,7 +391,7 @@ body
 .content-list-item
     +container
     border-bottom      :     1px solid $border_color
-    padding            :     1rem 1.5rem
+    padding            :     1rem 1rem 1rem 1.5rem
 
     &:last-child
         border-bottom        :     none
@@ -377,7 +401,16 @@ body
 
 .content-list-item-options
     +column( 1, 6 )
-    height             :     4rem
+
+    button
+        float                :     right
+
+        &.dim
+            opacity                :     0.4
+
+            &:hover
+                opacity                  :     1
+
 
 .content-list-item-name
     @extend .heading
@@ -391,16 +424,26 @@ body
     margin-right       :     1rem
 
 .content-list-search-item
+    background         :     $primary_color
+    color              :     $alt_text_color
 
+    label
+        color                :     $alt_text_color
+        display              :     block
+        margin-bottom        :     0.75rem
 
-.item-search-input
-    font               :
-        size                 :     1.25rem
-    height             :     3rem
-    line-height        :     3rem
+.add-item-search
+    border-bottom-color:     $dark_primary_color
+    color              :     $alt_text_color
+    font-size          :     1.25rem
+    margin-bottom      :     0.25rem
     width              :     100%
 
-.item-search-add
+    &:focus
+        border-bottom-color  :     $light_primary_color
+
+.add-item-button
+    background         :     none
     border-radius      :     50%
     float              :     right
     height             :     4rem
@@ -408,7 +451,11 @@ body
     text-align         :     center
     width              :     4rem
 
+    &:hover
+        box-shadow           :     0 1px 2px rgba( 0, 0, 0, 0.1 )
+
     .material-icons
+        color                :     $alt_text_color
         display              :     block
         font-size            :     3rem
 
@@ -429,7 +476,7 @@ body
         padding              :     0.25rem 2rem 0.25rem 0
         text-align           :     right
 
-    input, select
+    input, select, textarea
         +column( 3, 4 )
 
     .left-spacer
@@ -441,10 +488,13 @@ body
         float                :     right
 
 fieldset[ disabled ]
-    input
+    input, textarea
         border-bottom        :     none
         border               :     1px solid $border_color
         color                :     $text_color
+
+    .account-type-input
+        color                :     $primary_color
 
 .wide-labels .form-line
     label
@@ -466,6 +516,80 @@ fieldset[ disabled ]
 .account-type-input
     color              :     $primary_color
     font-family        :     $header_font
+
+
+// List styles
+
+.user-account-type, .track-artist, .track-duration
+    color              :     $primary_color
+    font-family        :     $header_font
+
+.user-occupation, .user-age, .track-album, .track-year, .track-artist-dim
+    color              :     $tertiary_text_color
+
+.user-mail, .track-genre
+    color              :     $tertiary_text_color
+    font-family        :     $header_font
+
+.progress-item
+    background         :     $primary_color
+
+    &.warning
+        background         :     $accent_color
+
+        .progress-bar
+            background           :      lighten( $accent_color, 10% )
+
+    .content-list-item-content
+        width              :     100%
+
+    label
+        +column( 1, 4 )
+        color                :     $alt_text_color
+        display              :     block
+
+    .progress-bar
+        +column( 3, 4 )
+        background           :     lighten( $primary_color, 10% )
+        height               :     1.5rem
+        position             :     relative
+        text-align           :     center
+
+    .progress-value
+        font-family          :     $header_font
+        position             :     absolute
+        width                :     100%
+        z-index              :     3
+
+    .progress-indicator
+        background           :     #fff
+        height               :     1.5rem
+        position             :     absolute
+        top                  :     0
+        z-index              :     2
+
+        &[data-value^='0']
+            width            :     1%
+        &[data-value^='1']
+            width            :     11%
+        &[data-value^='2']
+            width            :     21%
+        &[data-value^='3']
+            width            :     31%
+        &[data-value^='4']
+            width            :     41%
+        &[data-value^='5']
+            width            :     51%
+        &[data-value^='6']
+            width            :     61%
+        &[data-value^='7']
+            width            :     71%
+        &[data-value^='8']
+            width            :     81%
+        &[data-value^='9']
+            width            :     91%
+        &[data-value='100']
+            width            :     100%
 
 
 // Center side styles

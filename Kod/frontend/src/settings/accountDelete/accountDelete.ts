@@ -1,6 +1,7 @@
 
 import {View, Component} from 'angular2/core';
-import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
+import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/router';
+import {AuthHttp, tokenNotExpired, JwtHelper} from 'angular2-jwt';
 
 @Component({
     selector: 'AccountDelete'
@@ -8,6 +9,7 @@ import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
 @View({
         templateUrl: './dest/Settings/AccountDelete/AccountDelete.html'
 })
+@CanActivate(() => tokenNotExpired())
 export class AccountDelete {
 
 }
