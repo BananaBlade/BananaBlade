@@ -12,6 +12,13 @@ header.header-bar
 nav.nav-bar
   .nav-bar-top-spacer
   ul
+    li.nav-option-group( *ngFor="#group of navigation" )
+      .nav-option-group
+      .nav-option-group-name {{ group.Croatian }}
+      ul
+        li.option-group-item( *ngFor="#comp of group.components" [routerLink] = '["/{{comp.componentName}}"]' )
+          | {{comp.componentName}}
+
     li.nav-option-group
       .nav-option-group-name Slušaj radio
     li.nav-option-group
