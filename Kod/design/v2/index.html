@@ -39,8 +39,13 @@
                         </div>
                     </div>
                 </div>
+                <audio id = "radio-player" src = "media/paganini.mp3" autoplay = "autoplay" preload = "auto"></audio>
                 <div class = "player-controls">
-                    <button class = "play-button"><i class = "material-icons">play_circle_filled</i></button>
+                    <div class = "control-buttons">
+                        <button class = "volume-button"><i class = "material-icons">volume_down</i></button>
+                        <button class = "play-button" onclick = "document.getElementById('radio-player').play()"><i class = "material-icons">play_circle_filled</i></button>
+                        <button class = "volume-button"><i class = "material-icons">volume_up</i></button>
+                    </div>
                 </div>
             </div>
             <div class = "schedule-box">
@@ -80,29 +85,135 @@
     </div>
     <div class = "info-wrapper section-wrapper">
         <div class = "info-container section-container">
-            <div class = "radio-info info-box">
+            <div class = "popular-info">
+                <h2>Najpopularnije</h2>
+                <ul class = "popular-tracks-list">
+                    <li data-value = "20">
+                        <div class = "popular-track-name">Hello</div>
+                        <div class = "popular-track-info">Adele</div>
+                    </li>
+                    <li data-value = "17">
+                        <div class = "popular-track-name">Same Old Love</div>
+                        <div class = "popular-track-info">Selena Gomez</div>
+                    </li>
+                    <li data-value = "13">
+                        <div class = "popular-track-name">All I Want For Christmas Is You</div>
+                        <div class = "popular-track-info">Mariah Carey</div>
+                    </li>
+                    <li data-value = "9">
+                        <div class = "popular-track-name">In The Night</div>
+                        <div class = "popular-track-info">The Weeknd</div>
+                    </li>
+                    <li data-value = "8">
+                        <div class = "popular-track-name">On My Mind</div>
+                        <div class = "popular-track-info">Ellie Goulding</div>
+                    </li>
+                </ul>
+            </div>
+            <div class = "radio-info">
                 <h2>FM Radio</h2>
                 <p>Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     Duis aute irure dolor in reprehenderit in voluptate velit
                     esse cillum dolore eu fugiat nulla pariatur.</p>
             </div>
-            <div class = "popular-track-info info-box">
-                <h2>Najpopularniji zapisi</h2>
-            </div>
-            <div class = "popular-artist-info info-box">
-                <h2>Najpopularniji izvođači</h2>
-            </div>
         </div>
     </div>
     <div class = "register-wrapper section-wrapper">
         <div class = "register-container section-container">
-            register
+            <div class = "register-descr-box">
+                <h2>Postani dio FM Radija</h2>
+                <div class = "register-descr">
+                    <p>Registriraj se, postani korisnik <b>FM Radija</b> i sudjeluj
+                        u njegovom radu. Tvoje ideje, želje i prijedlozi mogu
+                        pomoći kako bi tvoj omiljeni radio postao još i bolji!</p>
+                    <p class = "roles-info">Kao korisnik, možeš biti:</p>
+                </div>
+                <ul class = "roles-list">
+                    <li class = "role">
+                        <div class = "role-container">
+                            <div class = "role-icon"><i class="material-icons">person</i></div>
+                            <div class = "role-name">Registrirani korisnik</div>
+                            <div class = "role-descr">Reci nam što želiš slušati i pomozi nam da program učinimo još boljim!</div>
+                        </div>
+                    </li>
+                    <li class = "role">
+                        <div class = "role-container">
+                            <div class = "role-icon"><i class="material-icons">edit</i></div>
+                            <div class = "role-name">Glazbeni urednik</div>
+                            <div class = "role-descr">Pomozi nam obogatiti program sastavljanjem vlastite glazbene emisije!</div>
+                        </div>
+                    </li>
+                    <li class = "role">
+                        <div class = "role-container">
+                            <div class = "role-icon"><i class="material-icons">build</i></div>
+                            <div class = "role-name">Administrator</div>
+                            <div class = "role-descr">Pomozi nam upravljati pjesmama, urednicima, korisnicima i terminima!</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class = "register-form-box">
+                <h2>Registriraj se</h2>
+                <form method = "post" class = "register-form">
+                    <div class = "form-line">
+                        <input type = "text" name = "first_name" placeholder = "Ime" pattern = ".{2,64}"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "text" name = "last_name" placeholder = "Prezime" pattern = ".{2,64}"/>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line">
+                        <input type = "email" name = "email" placeholder = "E-mail adresa"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "password" name = "password" placeholder = "Lozinka" pattern = ".{6,64}"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "password" name = "password2" placeholder = "Ponovljena lozinka" pattern = ".{6,64}"/>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line">
+                        <input type = "number" name = "year_of_birth" placeholder = "Godina rođenja" min = "1900" max = "2100"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "text" name = "occupation" placeholder = "Zanimanje" pattern = "[a-zA-Z]{2,64}"/>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line tos-line">
+                        <label for = "tos" class = "tos-label">Klikom na <b>registriraj se!</b> prihvaćate <a href = "">uvjete korištenja</a> ove aplikacije.</label>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line">
+                        <button class = "raised">Registriraj se!</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class = "footer-wrapper section-wrapper">
         <div class = "footer-container section-container">
-            footer
+            <div class = "footer-left">
+                <h2>FM Radio</h2>
+                <ul class = "radiostation-info-list">
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">Frekvencija</div>
+                        <div class = "rs-item-value">144.2 MHz</div>
+                    </li>
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">Adresa</div>
+                        <div class = "rs-item-value">Šmičiklasova 37, 10 000 Zagreb</div>
+                    </li>
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">Osobni Identifikacijski Broj</div>
+                        <div class = "rs-item-value">9876 5432 109</div>
+                    </li>
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">E-mail adresa</div>
+                        <div class = "rs-item-value">kontakt@fmradio.hr</div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </body>

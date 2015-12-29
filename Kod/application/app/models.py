@@ -157,7 +157,7 @@ class User( BaseModel ):
 
         Raises DoesNotExist
         """
-        user = cls.get( User.activation_code = activation_code )
+        user = cls.get( User.activation_code == activation_code )
         user.activated = True
         user.save()
 

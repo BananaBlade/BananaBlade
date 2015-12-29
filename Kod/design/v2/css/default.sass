@@ -1,5 +1,6 @@
 @import "reset"
 @import "utility"
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Open+Sans+Condensed:700&subset=latin-ext)
 
 $base_font     :     "Open Sans"
 $header_font   :     "Open Sans Condensed"
@@ -55,6 +56,18 @@ div, header, footer, section, article, aside, input, button, textarea, label, li
 .hidden
     display            :     none
 
+.centered
+    text-align         :     center
+
+.link
+    color              :     $accent_color
+    text-decoration    :     none
+
+    &:hover
+        cursor               :     pointer
+        text-decoration      :     underline
+
+
 h1, h2, h3, h4, h5, h6
     font-family        :     $header_font
 
@@ -76,6 +89,22 @@ input, select, textarea
 
     &:focus
         border-bottom-color  :     $primary_color
+
+    &:invalid, &:-moz-ui-invalid
+        border-bottom-color  :     $accent_color
+        box-shadow           :     none
+
+::-webkit-input-placeholder
+   color               :     $secondary_text_color
+
+:-moz-placeholder
+   color               :     $secondary_text_color
+
+::-moz-placeholder
+   color               :     $secondary_text_color
+
+:-ms-input-placeholder
+   color               :     $secondary_text_color
 
 input[ type = "file" ]
     border             :     none
@@ -378,7 +407,7 @@ body
     text-align         :     center
 
     .icon
-        color                :     $alt_text_color //accent_color
+        color                :     $alt_text_color
         font-size            :     5rem
         line-height          :     7.5rem
         text-shadow          :     0 2px 2px rgba( 0, 0, 0, 0.1 )
@@ -512,6 +541,10 @@ body
         +column( 1, 4 )
         float                :     right
 
+.spacer-line
+    display            :     block
+    height             :     1rem
+
 fieldset[ disabled ]
     input, textarea
         border-bottom        :     none
@@ -593,26 +626,10 @@ fieldset[ disabled ]
         top                  :     0
         z-index              :     2
 
-        &[data-value^='0']
-            width            :     1%
-        &[data-value^='1']
-            width            :     11%
-        &[data-value^='2']
-            width            :     21%
-        &[data-value^='3']
-            width            :     31%
-        &[data-value^='4']
-            width            :     41%
-        &[data-value^='5']
-            width            :     51%
-        &[data-value^='6']
-            width            :     61%
-        &[data-value^='7']
-            width            :     71%
-        &[data-value^='8']
-            width            :     81%
-        &[data-value^='9']
-            width            :     91%
+        @for $i from 0 through 9
+            &[ data-value^='#{$i}' ]
+                width              :     (10*$i+1) * 1%
+
         &[data-value='100']
             width            :     100%
 
@@ -643,9 +660,8 @@ fieldset[ disabled ]
     margin             :     0 auto
     width              :     70rem
 
-
 .player-wrapper
-    background         :     $accent2_color
+    background         :     darken( $accent2_color, 10% )
     color              :     $alt_text_color
 
 .info-wrapper
@@ -653,25 +669,26 @@ fieldset[ disabled ]
     color              :     $alt_text_color
 
 .register-wrapper
-    background         :     #fff
+    //background         :     #fff
 
 .footer-wrapper
-    height             :     15rem
-
+    background         :     darken( $accent2_color, 25% )
+    color              :     $alt_text_color
+    height             :     10rem
 
 .player-box
     +column( 2, 3 )
-    background         :     lighten( $accent2_color, 10% )
+    background         :     lighten( $accent2_color, 5% )
     min-height         :     21.5rem
     margin-top         :     -1rem
-    padding            :     1rem 2rem
+    padding            :     1rem 2rem 0 2rem
 
 .player-body
-    background         :     $accent2_color
+    background         :     darken( $accent2_color, 5% )
     margin-top         :     1rem
 
 .current-editor
-    background         :     darken( $accent2_color, 5% )
+    background         :     darken( $accent2_color, 10% )
     clear              :     left
     font-family        :     $header_font
     margin-bottom      :     2rem
@@ -698,7 +715,7 @@ fieldset[ disabled ]
 
 .player-track-info
     +container
-    background         :     darken( $accent2_color, 5% )
+    background         :     $accent2_color
     bottom             :     0
     left               :     0
     position           :     absolute
@@ -719,19 +736,46 @@ fieldset[ disabled ]
 .player-track-artist, .player-track-genre
     font-family        :     $header_font
 
-.play-button
-    margin             :     0 auto
-    height             :     auto
+.control-buttons
+    //+container
+    margin             :     0 auto 0 auto
+    overflow           :     hidden
+    width              :     16rem
+
+    button
+        float                :     left
+
+.volume-button
+    background         :     $alt_text_color
+    border-radius      :     50%
+    height             :     2.5rem
+    margin             :     2rem 1rem
+    text-align         :     center
+    width              :     2.5rem
 
     .material-icons
-        color                :     $alt_text_color
-        font-size            :     4rem
+        color                :     $accent2_color
+        font-size            :     1.5rem
+        line-height          :     2rem
+
+    &:hover
+        background           :     darken( $accent2_color, 10% )
+
+.play-button
+    border-radius      :     50%
+    height             :     auto
 
     &:hover
         background           :     none
 
     &:hover .material-icons
         color                :     darken( $accent2_color, 10% )
+
+    .material-icons
+        color                :     $alt_text_color
+        font-size            :     6rem
+
+
 
 .schedule-box
     +column( 1, 3 )
@@ -745,7 +789,7 @@ fieldset[ disabled ]
     padding            :     0.5rem 1rem
 
     &:nth-child(odd)
-        background           :     lighten( $accent2_color, 5% )
+        background           :     darken( $accent2_color, 2.5% )
 
     &:first-child
         background           :     $accent_color
@@ -757,28 +801,177 @@ fieldset[ disabled ]
     +column( 3, 4 )
     font-family        :     $header_font
 
-.info-box
+.popular-info
     +column( 1, 3 )
-    padding            :     0 2rem
-    position           :     relative
 
-    &:first-child
-        padding-left         :     0
+.popular-tracks-list
+    counter-reset      :     item_count
+    padding-top        :     1rem
 
-    &:last-child
-        padding-right        :     0
+    li
+        counter-increment    :     item_count
+        height               :     4rem
+        padding              :     0.5rem 2rem 0.5rem 4rem
+        position             :     relative
 
-    h2
-        text-align           :     center
+        &:before
+            color            :     $light_primary_color
+            content          :     counter( item_count )
+            font-size        :     2rem
+            font-weight      :     300
+            left             :     0
+            line-height      :     2rem
+            padding          :     1rem 1.5rem
+            position         :     absolute
+            top              :     0
+            z-index          :     3
 
-.radio-info
-    p
-        font-size            :     0.9rem
-        margin-bottom        :     1rem
-        text-align           :     justify
+        &:after
+            background       :     darken( $dark_primary_color, 10% )
+            //border-right     :     0.5rem solid #fff
+            content          :     " "
+            display          :     block
+            height           :     4rem
+            left             :     0
+            position         :     absolute
+            top              :     0
+            z-index          :     2
+
+        &:nth-child(even):after
+            background             :     lighten( $dark_primary_color, 10% )
+
+        & *
+            position         :     relative
+            z-index          :     3
+
+        @for $i from 1 through 20
+            &[ data-value^='#{$i}' ]:after
+                width              :     ($i*5) * 1%
+
+
+.popular-track-name
+    font-size          :     1.1rem
+    font-weight        :     300
+    height             :     1.5rem
+    overflow           :     hidden
 
 .popular-track-info
-    background         :     rgba( 255, 255, 255, 0.1 )
-    min-height         :     20rem
+    font-family        :     $header_font
+    font-size          :     0.9rem
 
-.popular-artist-info
+.radio-info
+    +column( 2, 3 )
+    padding-left       :     3rem
+
+.register-descr-box
+    +column( 2, 3 )
+    padding-right      :     3rem
+
+    p
+        color                :     $secondary_text_color
+        margin-bottom        :     1rem
+
+        b
+            color                  :     $text_color
+
+p.roles-info
+    color              :     $tertiary_text_color
+    font-family        :     $header_font
+    font-size          :     1.2rem
+    padding-top        :     1rem
+
+.roles-list
+    +container
+    margin-left        :     -1rem
+
+.role
+    +column( 1, 3 )
+    margin             :     1rem 0 2rem
+    padding            :     0 1rem
+
+.role-container
+    background         :     #fff
+    box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.1 )
+    padding            :     1rem 1rem 1.5rem 1rem
+
+.role-icon
+    background         :     $accent2_color
+    border-radius      :     50%
+    box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.15 )
+    height             :     8rem
+    margin             :     0 auto
+    padding            :     2rem
+    width              :     8rem
+
+    .material-icons
+        color                :     $alt_text_color
+        font-size            :     4rem
+        text-align           :     center
+        text-shadow          :     0 2px 2px rgba( 0, 0, 0, 0.25 )
+
+.role-name
+    font-family        :     $header_font
+    font-size          :     1.2rem
+    padding            :     1rem 0
+    text-align         :     center
+
+.role-descr
+    color              :     $secondary_text_color
+    font-size          :     0.85rem
+    text-align         :     center
+
+p.register-bait
+    color              :     $text_color
+    font-family        :     $header_font
+    font-size          :     1.1rem
+    margin-top         :     1.9rem
+    text-align         :     center
+
+.register-form-box
+    +column( 1, 3 )
+
+    h2
+        padding-bottom       :     1rem
+
+.register-form
+
+    input
+        width                :     100%
+
+    .form-line
+        padding              :     0.5rem 0
+
+    .tos-label
+        color                :     $tertiary_text_color
+        float                :     none
+        font-size            :     0.9rem
+        width                :     auto
+
+        a
+            @extend .link
+
+        b
+            color                  :     $secondary_text_color
+            text-transform         :     uppercase
+
+    button
+        float                :     left
+        margin               :     0 auto
+        width                :     10rem
+
+.footer-left
+    +column( 1, 2 )
+
+.item-group
+    //+column( 1, 2 )
+
+.radiostation-info-item
+    +column( 1, 2 )
+    padding            :     0.25rem 0
+
+.rs-item-name
+    color              :     rgba( 255, 255, 255, 0.4 )
+    font-family        :     $header_font
+
+.rs-item-value
+    color              :     #ddd
