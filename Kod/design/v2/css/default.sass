@@ -59,6 +59,12 @@ div, header, footer, section, article, aside, input, button, textarea, label, li
 .centered
     text-align         :     center
 
+.left
+    float              :     left !important
+
+.right
+    float              :     right !important
+
 .link
     color              :     $accent_color
     text-decoration    :     none
@@ -558,26 +564,28 @@ body
     height             :     1rem
 
 fieldset[ disabled ]
-    input, textarea
+    input, textarea, select
         border-bottom        :     none
         border               :     1px solid $border_color
         color                :     $text_color
 
     input[type = "file"]
         border               :     none
-        color                :     $light_primary_color
+        color                :     rgba( 255, 255, 255, 0.6 )
 
     .account-type-input
-        color                :     $primary_color
+        color                :     $text_color
 
 .wide-labels .form-line
     label
         +column( 1, 3 )
     input, select
         +column( 2, 3 )
+    .left-spacer
+        +column( 1, 3 )
 
 .emph-line
-    background         :     $primary_color
+    background         :     $accent2_color
     color              :     $alt_text_color
     margin-bottom      :     -1rem
     padding            :     2rem
@@ -588,7 +596,7 @@ fieldset[ disabled ]
         color                :     $alt_text_color
 
 .account-type-input
-    color              :     $primary_color
+    color              :     $text_color
     font-family        :     $header_font
 
 
