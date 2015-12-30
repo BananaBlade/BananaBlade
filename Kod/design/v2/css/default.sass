@@ -294,16 +294,21 @@ body
 
 .app-box
     float              :     left
-    padding            :     0.75rem 0
+    //padding            :     0.75rem 0
 
 .app-name
     color              :     $text_color
     float              :     left
     font               :
         family               :     $header_font
-        size                 :     1.2rem
+        size                 :     1.5rem
         weight               :     700
+    line-height        :     3rem 
     text-transform     :     uppercase
+
+    img
+        height               :     2.5rem !important
+        padding              :     0.25rem 0
 
 .app-descr
     border-left        :     2px solid #eaeaea
@@ -669,12 +674,12 @@ fieldset[ disabled ]
     color              :     $alt_text_color
 
 .register-wrapper
-    //background         :     #fff
 
 .footer-wrapper
     background         :     darken( $accent2_color, 25% )
     color              :     $alt_text_color
-    height             :     10rem
+    min-height         :     10rem
+    padding-bottom     :     2rem
 
 .player-box
     +column( 2, 3 )
@@ -863,6 +868,25 @@ fieldset[ disabled ]
     +column( 2, 3 )
     padding-left       :     3rem
 
+    h2
+        margin-bottom        :     1rem
+
+    p
+        text-align           :     justify
+
+.radio-image
+    height             :     17rem
+    padding-top        :     2rem
+    text-align         :     center
+
+    .material-icons
+        color                :     lighten( $dark_primary_color, 7.5% )
+        display              :     block
+        font-size            :     15rem
+        line-height          :     15rem
+        text-shadow          :     0 2px 1px rgba( 0, 0, 0, 0.05 )
+
+
 .register-descr-box
     +column( 2, 3 )
     padding-right      :     3rem
@@ -962,9 +986,6 @@ p.register-bait
 .footer-left
     +column( 1, 2 )
 
-.item-group
-    //+column( 1, 2 )
-
 .radiostation-info-item
     +column( 1, 2 )
     padding            :     0.25rem 0
@@ -975,3 +996,11 @@ p.register-bait
 
 .rs-item-value
     color              :     #ddd
+
+.footer-copy
+    clear              :     both
+    color              :     rgba( 255, 255, 255, 0.25 )
+    font-size          :     0.9rem
+    padding            :     5rem 0 1rem 0
+    //text-align         :     center
+    width              :     100%
