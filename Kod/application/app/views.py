@@ -14,7 +14,6 @@ from app.validators import CharValidator, EmailValidator
 #       TODO: Check track path on input for possible malicious attacks
 #       TODO: Setup cache to enable proper signing out (otherwise user could remain
 #             signed in for a while)
-#       TODO: Rethink index and settings pages - possibly combine them into one
 #       TODO: Reformulate error messages - decide upon unique format
 
 
@@ -830,7 +829,7 @@ def search_tracks():
 
 @app.route( '/tracks/wishlist', methods = [ 'GET' ] )
 @login_required
-def get_wishlist():
+def get_global_wishlist():
     """Return the global wishlist
 
     No request parameters required.

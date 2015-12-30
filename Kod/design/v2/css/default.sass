@@ -294,7 +294,6 @@ body
 
 .app-box
     float              :     left
-    //padding            :     0.75rem 0
 
 .app-name
     color              :     $text_color
@@ -303,12 +302,12 @@ body
         family               :     $header_font
         size                 :     1.5rem
         weight               :     700
-    line-height        :     3rem 
+    line-height        :     3rem
     text-transform     :     uppercase
 
     img
-        height               :     2.5rem !important
-        padding              :     0.25rem 0
+        height               :     2rem !important
+        padding              :     0.5rem 0
 
 .app-descr
     border-left        :     2px solid #eaeaea
@@ -433,6 +432,14 @@ body
 
 // Content options styles
 
+*[data-editable = "true"]
+    .uneditable-ui
+        display              :     none
+
+*[data-editable = "false"]
+    .editable-ui
+        display              :     none
+
 .content-options
     +container
 
@@ -555,6 +562,10 @@ fieldset[ disabled ]
         border-bottom        :     none
         border               :     1px solid $border_color
         color                :     $text_color
+
+    input[type = "file"]
+        border               :     none
+        color                :     $light_primary_color
 
     .account-type-input
         color                :     $primary_color

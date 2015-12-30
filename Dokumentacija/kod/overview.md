@@ -71,7 +71,7 @@
         - add_editor_slot : *@classmethod*
         - change_editor_slot (?)
         - remove_editor_slot (?)
-- **TrackList**:    A playlist of all tracks (TODO: think this through, what if track changed, update all?)
+- **TrackList**:    A playlist of all tracks
     - *attributes*:
         - track : *Track*
         - editor : *User*

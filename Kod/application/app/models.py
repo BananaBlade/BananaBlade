@@ -67,6 +67,11 @@ class Track( BaseModel ):
         pass    # TODO: Implement get_currently_playing()
 
     @classmethod
+    def get_most_popular( cls ):
+        """Returns a list of 5 most popular tracks"""
+        pass    # TODO: Implement get_most_popular()
+
+    @classmethod
     def get_tracks( cls, start = 0, limit = None ):
         """Returns a list of all tracks
 
