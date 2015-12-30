@@ -1,0 +1,5 @@
+dokumentacija
+-napraviti podijelu ostalih zahtjeva
+-staviti broj revizije na svaku stranicu dokumenta
+-stavit dob
+-kod baze podataka naznačiti tipove atributa

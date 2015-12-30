@@ -1,0 +1,607 @@
+@import "reset"
+@import "utility"
+
+$base_font     :     "Open Sans"
+$header_font   :     "Open Sans Condensed"
+
+$base_background_color :     #f3f3f3
+
+$dark_primary_color    :     #1976D2
+$primary_color         :     #2196F3
+$light_primary_color   :     #BBDEFB
+
+$accent_color          :     #FF5252
+$text_color            :     #212121
+$alt_text_color        :     #FFF
+$secondary_text_color  :     #777
+$tertiary_text_color   :     #AAA
+$border_color          :     #EAEAEA
+
+
+div, header, footer, section, article, aside, input, button, textarea, label, li, ul
+    box-sizing         :     border-box
+
+
+// Basic UI styles
+
+.title
+    font               :
+        size                 :     2.5rem
+        weight               :     300
+    line-height        :     4rem
+    text-transform     :     uppercase
+
+.subtitle
+    color              :     $secondary_text_color
+    font-size          :     0.9rem
+
+.heading
+    font               :
+        family               :     $header_font
+        size                 :     1.5rem
+    line-height        :     2.5rem
+
+.subheading
+    color              :     $secondary_text_color
+    font-size          :     0.9rem
+
+.body-primary
+    color              :     $text_color
+
+.body-secondary
+    color              :     $secondary_text_color
+
+.hidden
+    display            :     none
+
+input, select, textarea
+    background         :     none
+    border             :     none
+    border-bottom      :     2px solid $border_color
+    display            :     block
+    font               :
+        family               :     $base_font
+        size                 :     1rem
+    height             :     2rem
+    line-height        :     1.75rem
+    padding            :     0.125rem 0.5rem
+
+    &:focus
+        border-bottom-color  :     $primary_color
+
+input[ type = "file" ]
+    border             :     none
+
+textarea
+    resize             :     none
+    height             :     auto
+    min-height         :     2rem
+
+button
+    +user-select
+    background         :     none
+    border             :     none
+    color              :     $text_color
+    display            :     block
+    font               :
+        family               :     $base_font
+        size                 :     0.9rem
+        weight               :     700
+    height             :     2rem
+    letter-spacing     :     -0.5px
+    line-height        :     2rem
+    outline            :     none
+    text-transform     :     uppercase
+
+    &:hover
+        background           :     transparentize( $primary_color, 0.9 )
+        cursor               :     pointer
+
+    &:focus
+        outline              :     1px dotted $primary_color
+
+    &:active
+        background           :     transparentize( $primary_color, 0.8 )
+
+    &::-moz-focus-inner
+        border               :     0
+        margin               :     0
+        padding              :     0
+
+    &.alt
+        color                :     $accent_color
+
+        &:hover
+            background           :     transparentize( $accent_color, 0.9 )
+
+        &:active
+            background           :     transparentize( $accent_color, 0.8 )
+
+        &:focus
+            outline              :     1px dotted $accent_color
+
+    &.raised
+        background           :     $primary_color
+        color                :     $alt_text_color
+
+        &.alt
+            background             :     $accent_color
+
+            &:hover
+                background               :     darken( $accent_color, 10% )
+
+        &:hover
+            background             :     $dark_primary_color
+
+    .material-icons
+        padding              :     0.25rem 0
+
+label
+    @extend .body-secondary
+    font               :
+        family               :     $header_font
+
+
+// HTML element styles
+
+b, strong
+    font-weight        :     700
+
+i, em
+    font-style         :     italic
+
+a
+    color              :     inherit
+    text-decoration    :     none
+
+.page-content a
+    color              :     $accent_color
+
+    &:hover
+        text-decoration      :     underline
+
+img
+    display            :     block
+    height             :     auto !important
+    max-width          :     100%
+    width              :     auto
+
+
+// Basic layout and styles
+
+body
+    background         :     $base_background_color
+    color              :     $text_color
+    font               :
+        family               :     $base_font
+        size                 :     16px
+    line-height        :     1.5rem
+
+.header-bar
+    background         :     #fff
+    height             :     3rem
+    padding            :     0 1rem
+    position           :     fixed
+    top                :     0
+    width              :     100%
+    z-index            :     5
+
+.nav-bar
+    background         :     #fff
+    bottom             :     0
+    position           :     fixed
+    top                :     3rem
+    width              :     16rem
+
+.center-area
+    margin             :     3rem 0 0 16rem
+    position           :     relative
+
+
+// Central area styles
+
+.center-header
+    background         :     $dark_primary_color
+    color              :     $alt_text_color
+    font               :
+        family               :     $header_font
+        size                 :     1.25rem
+    height             :     3rem
+    padding            :     0.75rem 2rem
+    position           :     fixed
+    top                :     3rem
+    width              :     100%
+    z-index            :     5
+
+.center-content
+    float              :     left
+    height             :     30rem
+    margin             :     2rem 5rem
+    padding-top        :     3rem
+    width              :     48rem
+
+.content-header
+    margin-bottom      :     0.5rem
+    padding            :     0 0 0 0
+
+.content-options
+    margin-bottom      :     -1.5rem
+    padding            :     0.5rem 0
+
+.content-primary
+    background         :     #fff
+    box-shadow         :     0 0 4px 0 rgba( 0, 0, 0, 0.07 )
+    margin             :     3rem 0 4rem 0
+
+.center-side
+    float              :     left
+    height             :     30rem
+    margin             :     2rem 0
+    padding            :     4rem 1.5rem 1rem 1.5rem
+    width              :     20rem
+
+
+// Top bar styles
+
+.app-box
+    float              :     left
+    padding            :     0.75rem 0
+
+.app-name
+    color              :     $text_color
+    float              :     left
+    font               :
+        family               :     $header_font
+        size                 :     1.2rem
+        weight               :     700
+    text-transform     :     uppercase
+
+.app-descr
+    border-left        :     2px solid #eaeaea
+    color              :     #ccc
+    display            :     none
+    float              :     left
+    font               :
+        size                 :     1rem
+        weight               :     300
+    margin-left        :     0.75rem
+    padding-left       :     0.75rem
+
+.user-box
+    +container
+    float              :     right
+    line-height        :     2rem
+    height             :     2rem
+    padding            :     0.5rem 0
+
+    input
+        height               :     1.5rem
+        float                :     left
+        font-size            :     0.8rem
+        width                :     10rem
+
+    button
+        height               :     1.5rem
+        font-size            :     0.85rem
+
+.user-name-box
+    float              :     left
+    margin-right       :     0.5rem
+
+    .material-icons
+        font-size            :     2rem
+        float                :     right
+        line-height          :     2rem
+        margin-left          :     0.5rem
+
+.user-type
+    color              :     $tertiary_text_color
+    font-family        :     $base_font
+    font-size          :     0.9rem
+    margin-left        :     0.5rem
+
+.user-name
+    float              :     left
+    font-family        :     $header_font
+
+
+// Sidebar styles
+
+.nav-bar-top-spacer
+    background         :     $primary_color
+    height             :     3rem
+    width              :     100%
+
+.nav-option-group
+    padding-top        :     1rem
+
+.nav-option-group-name
+    font               :
+        family               :     $header_font
+        size                 :     1.1rem
+    margin             :     0.25rem 0
+    padding            :     0.25rem 1rem
+
+    &.active
+        border-left          :    0.25rem solid $primary_color
+        color                :    $primary_color
+        padding-left         :    0.75rem
+
+.option-group-item
+    color              :     $secondary_text_color
+    font-family        :     $header_font
+    margin             :     0.25rem 0
+    padding            :     0.125rem 1rem 0.125rem 2rem
+
+    &.active
+        border-left          :     0.25rem solid $primary_color
+        padding-left         :     1.75rem
+        color                :     $primary_color
+
+
+// Content header styles
+
+.content-header
+    +container
+
+.content-header-right
+    +column( 1, 6 )
+    background         :     $accent_color
+    border-radius      :     50%
+    box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.1 )
+    height             :     7.5rem
+    text-align         :     center
+
+    .icon
+        color                :     $alt_text_color //accent_color
+        font-size            :     5rem
+        line-height          :     7.5rem
+        text-shadow          :     0 2px 2px rgba( 0, 0, 0, 0.1 )
+
+.content-header-left
+    +column( 5, 6 )
+    padding-right      :     2rem
+
+.content-header-title
+    @extend .title
+
+    &.smaller
+        font-size            :     2.25rem
+
+.content-header-subtitle
+    @extend .subtitle
+
+
+// Content options styles
+
+.content-options
+    +container
+
+    button
+        color                :     $primary_color
+        float                :     left
+        margin-right         :     1rem
+
+        &.raised
+            color                  :     $alt_text_color
+
+
+// Content list styles
+
+.content-list-item
+    +container
+    border-bottom      :     1px solid $border_color
+    padding            :     1rem 1rem 1rem 1.5rem
+
+    &:last-child
+        border-bottom        :     none
+
+.content-list-item-content
+    +column( 5, 6 )
+
+.content-list-item-options
+    +column( 1, 6 )
+
+    button
+        float                :     right
+
+        &.dim
+            opacity                :     0.4
+
+            &:hover
+                opacity                  :     1
+
+
+.content-list-item-name
+    @extend .heading
+
+.content-list-item-data
+    overflow           :     hidden
+
+.content-list-item-data-item
+    @extend .body-secondary
+    float              :     left
+    margin-right       :     1rem
+
+.content-list-search-item
+    background         :     $primary_color
+    color              :     $alt_text_color
+
+    label
+        color                :     $alt_text_color
+        display              :     block
+        margin-bottom        :     0.75rem
+
+.add-item-search
+    border-bottom-color:     $dark_primary_color
+    color              :     $alt_text_color
+    font-size          :     1.25rem
+    margin-bottom      :     0.25rem
+    width              :     100%
+
+    &:focus
+        border-bottom-color  :     $light_primary_color
+
+.add-item-button
+    background         :     none
+    border-radius      :     50%
+    float              :     right
+    height             :     4rem
+    margin-top         :     0.5rem
+    text-align         :     center
+    width              :     4rem
+
+    &:hover
+        box-shadow           :     0 1px 2px rgba( 0, 0, 0, 0.1 )
+
+    .material-icons
+        color                :     $alt_text_color
+        display              :     block
+        font-size            :     3rem
+
+
+// Content form
+
+.content-form
+    padding            :     2rem 0
+
+.form-line
+    +container
+    padding            :     0.5rem 2rem
+
+    label
+        +column( 1, 4 )
+        box-sizing           :     border-box
+        line-height          :     1.5rem
+        padding              :     0.25rem 2rem 0.25rem 0
+        text-align           :     right
+
+    input, select, textarea
+        +column( 3, 4 )
+
+    .left-spacer
+        +column( 1, 4 )
+        height               :     1rem
+
+    button
+        +column( 1, 4 )
+        float                :     right
+
+fieldset[ disabled ]
+    input, textarea
+        border-bottom        :     none
+        border               :     1px solid $border_color
+        color                :     $text_color
+
+    .account-type-input
+        color                :     $primary_color
+
+.wide-labels .form-line
+    label
+        +column( 1, 3 )
+    input, select
+        +column( 2, 3 )
+
+.emph-line
+    background         :     $primary_color
+    color              :     $alt_text_color
+    margin-bottom      :     -1rem
+    padding            :     2rem
+    position           :     relative
+    top                :     -2rem
+
+    label
+        color                :     $alt_text_color
+
+.account-type-input
+    color              :     $primary_color
+    font-family        :     $header_font
+
+
+// List styles
+
+.user-account-type, .track-artist, .track-duration
+    color              :     $primary_color
+    font-family        :     $header_font
+
+.user-occupation, .user-age, .track-album, .track-year, .track-artist-dim
+    color              :     $tertiary_text_color
+
+.user-mail, .track-genre
+    color              :     $tertiary_text_color
+    font-family        :     $header_font
+
+.progress-item
+    background         :     $primary_color
+
+    &.warning
+        background         :     $accent_color
+
+        .progress-bar
+            background           :      lighten( $accent_color, 10% )
+
+    .content-list-item-content
+        width              :     100%
+
+    label
+        +column( 1, 4 )
+        color                :     $alt_text_color
+        display              :     block
+
+    .progress-bar
+        +column( 3, 4 )
+        background           :     lighten( $primary_color, 10% )
+        height               :     1.5rem
+        position             :     relative
+        text-align           :     center
+
+    .progress-value
+        font-family          :     $header_font
+        position             :     absolute
+        width                :     100%
+        z-index              :     3
+
+    .progress-indicator
+        background           :     #fff
+        height               :     1.5rem
+        position             :     absolute
+        top                  :     0
+        z-index              :     2
+
+        &[data-value^='0']
+            width            :     1%
+        &[data-value^='1']
+            width            :     11%
+        &[data-value^='2']
+            width            :     21%
+        &[data-value^='3']
+            width            :     31%
+        &[data-value^='4']
+            width            :     41%
+        &[data-value^='5']
+            width            :     51%
+        &[data-value^='6']
+            width            :     61%
+        &[data-value^='7']
+            width            :     71%
+        &[data-value^='8']
+            width            :     81%
+        &[data-value^='9']
+            width            :     91%
+        &[data-value='100']
+            width            :     100%
+
+
+// Center side styles
+
+.center-side-header
+    padding-top        :     0.5rem
+    padding-bottom     :     1.5rem
+
+.center-side-title
+    @extend .heading
+
+.center-side-subtitle
+    @extend .subheading
+
+.center-side-content

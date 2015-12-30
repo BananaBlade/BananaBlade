@@ -1,7 +1,56 @@
-.container
-  nav
-    ul
-      | <li [router-link]=["/Listen"]>Listen</li>
-      | <li [router-link]=["/Settings"]>Settings</li>
-      | <li [router-link]=["/Wishlist"]>Wishlist</li>
-  router-outlet
+header.header-bar
+  .app-box
+    a(href='')
+      .app-name FM Radio
+    .app-descr 99.4 MHz
+  .user-box
+    .user-name-box
+      i.material-icons.user-icon account_circle
+      .user-name
+        | Mirko Horvat
+        span.user-type administrator
+nav.nav-bar
+  .nav-bar-top-spacer
+  ul
+    li.nav-option-group( *ngFor="#group of navigation" )
+      .nav-option-group
+      .nav-option-group-name {{ group.Croatian }}
+      ul
+        li.option-group-item( *ngFor="#comp of group.components" [routerLink] = '["/{{comp.componentName}}"]' )
+          | {{comp.componentName}}
+
+    li.nav-option-group
+      .nav-option-group-name Slušaj radio
+    li.nav-option-group
+      .nav-option-group-name Pregled mogućnosti
+    li.nav-option-group
+      .nav-option-group-name Vlasnicke mogućnosti
+      ul
+        li.option-group-item([routerLink] = '["/ManageAdmins"]') Upravljaj administratorima
+        li.option-group-item([routerLink] = '["/ManageRadiostation"]') Pregledaj podatke o postaji
+    li.nav-option-group
+      .nav-option-group-name Administratorske mogućnosti
+      ul
+        li.option-group-item([routerLink] = '["/ManageTracks"]') Uredi zvucne zapise
+        li.option-group-item([routerLink] = '["/ManageEditors"]') Upravljaj urednicima
+        li.option-group-item([routerLink] = '["/AddTrack"]') Uredi zvucne zapise
+        li.option-group-item([routerLink] = '["/EditUser"]') Upravljaj korisnicima
+    li.nav-option-group
+      .nav-option-group-name Urednicke mogućnosti
+      ul
+        li.option-group-item([routerLink] = '["/MakePlaylist"]') Pregledaj termine
+    li.nav-option-group
+      .nav-option-group-name Korisničke mogućnosti
+      ul
+        li.option-group-item([routerLink] = '["/MakeWishlist"]') Pregledaj listu želja
+    li.nav-option-group
+      .nav-option-group-name Postavke računa
+      ul
+        li.option-group-item([routerLink] = '["/AccountData"]') Uredi osobne podatke
+        li.option-group-item([routerLink] = '["/AccountPassword"]') Promijeni lozinku
+        li.option-group-item([routerLink] = '["/AccountDelete"]') Obriši račun
+        li.option-group-item([routerLink] = '["/AccountLogin"]') Login
+    li.nav-option-group
+      .nav-option-group-name Odjavi se
+
+router-outlet
