@@ -1,4 +1,4 @@
-///<reference path='../../typings/tsd.d.ts'/>
+
 /*
 import {Directive, Attribute, ElementRef, DynamicComponentLoader} from 'angular2/angular2';
 import {Router, RouterOutlet, ComponentInstruction} from 'angular2/router';

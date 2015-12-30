@@ -1,0 +1,60 @@
+.center-area
+  header.center-header
+    .view-path Uredi zvučne zapise > Dodaj zvučni zapis
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Dodavanje zapisa
+        .content-header-subtitle
+          | Pregledajte i uređujte
+          | vaše osobne korisničke podatke, koji nam koriste kako
+          | bismo vam mogli pružiti što bolju uslugu slušanja i sudjelovanja
+          | u radu postaje.
+      .content-header-right
+        i.material-icons.icon audiotrack
+    .content-primary.content-form.wide-labels
+      form
+        .form-line.emph-line
+          label(for='file') Datoteka zapisa
+          input(type='file', accept='audio/*')
+        .form-line
+          label(for='title') Naslov zapisa
+          input(type='text', name='title')
+        .form-line
+          label(for='artist') Izvođač
+          input(type='text', name='artist')
+        .form-line
+          label(for='album') Album
+          input(type='text', name='album')
+        .form-line
+          label(for='duration') Trajanje zapisa
+          input(type='number', name='duration', min='1', max='1000')
+        .form-line
+          label(for='file_format') Format zapisa
+          // <input type = "text" name = "file_format"/>
+          select(name='file_format', id='')
+            option(value='0') MP3
+            option(value='1') WAV
+            option(value='2') OGG
+            option(value='-1') nešto drugo
+        .form-line
+          label(for='sample_rate') Frekvencija uzorkovanja
+          input(type='text', name='sample_rate')
+        .form-line
+          label(for='bits_per_sample') Broj bitova kvantizacije
+          input(type='number', name='bits_per_sample', min='1', max='64')
+        .form-line
+          label(for='genre') Žanr zapisa
+          input(type='text', name='genre')
+        .form-line
+          label(for='publisher') Izdavač
+          input(type='text', name='publisher')
+        .form-line
+          label(for='carrier_type') Vrsta nosača zvuka
+          input(type='text', name='carrier_type')
+        .form-line
+          label(for='year') Godina izdavanja
+          input(type='number', name='year', min='0', max='2100')
+        .form-line
+          .left-spacer
+          button.raised Dodaj zapis
