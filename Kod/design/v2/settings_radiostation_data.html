@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset = "UTF-8">
-    <title>Podaci radiopostaje &ndash; FM Radio</title>
+    <title>Podaci o postaji &ndash; FM Radio</title>
     <link rel = "stylesheet" href = "css/default.min.css">
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
     <link rel = "shortcut icon" type = "image/x-icon" href = "./img/draft/favicon.ico"/>
@@ -24,32 +24,32 @@
         <div class = "nav-bar-top-spacer"></div>
         <ul>
             <li class = "nav-option-group">
-                <div class = "nav-option-group-name">Slušaj radio</div>
+                <a href = ""><div class = "nav-option-group-name">Slušaj radio</div></a>
             </li>
             <li class = "nav-option-group">
-                <div class = "nav-option-group-name">Pregled mogućnosti</div>
+                <a href = ""><div class = "nav-option-group-name">Pregled mogućnosti</div></a>
             </li>
             <li class = "nav-option-group">
                 <div class = "nav-option-group-name">Vlasničke mogućnosti</div>
                 <ul>
-                    <li class = "option-group-item">Upravljaj administratorima</li>
-                    <li class = "option-group-item active">Pregledaj podatke o postaji</li>
+                    <a href = ""><li class = "option-group-item">Administratori</li></a>
+                    <a href = ""><li class = "option-group-item active">Podaci o postaji</li></a>
                 </ul>
             </li>
             <li class = "nav-option-group">
                 <div class = "nav-option-group-name">Postavke računa</div>
                 <ul>
-                    <li class = "option-group-item">Uredi osobne podatke</li>
-                    <li class = "option-group-item">Promijeni lozinku</li>
-                    <li class = "option-group-item">Obriši račun</li>
+                    <a href = ""><li class = "option-group-item">Osobni podaci</li></a>
+                    <a href = ""><li class = "option-group-item">Promjena lozinke</li></a>
+                    <a href = ""><li class = "option-group-item">Brisanje računa</li></a>
                 </ul>
             </li>
             <li class = "nav-option-group">
-                <div class = "nav-option-group-name">Odjavi se</div>
+                <a href = ""><div class = "nav-option-group-name">Odjavi se</div></a>
             </li>
         </ul>
     </nav>
-    <div class = "center-area">
+    <div class = "center-area" data-editable = "false">
         <header class = "center-header">
             <div class = "view-path">Pregledaj podatke o postaji</div>
         </header>
@@ -64,8 +64,8 @@
                 </div>
                 <div class = "content-header-right"><i class = "material-icons icon">radio</i></div>
             </header>
-            <nav class = "content-options">
-                <button>Izmijeni podatke</button>
+            <nav class = "content-options uneditable-ui">
+                <button>Izmijeni podatke o postaji</button>
             </nav>
             <div class = "content-primary content-form">
                 <form>
@@ -92,7 +92,12 @@
                         </div>
                         <div class = "form-line">
                             <label for = "frequency">Frekvencija</label>
-                            <input type = "number" name = "frequency" value = "99.8" min = "90" max = "110"/>
+                            <input type = "number" name = "frequency" value = "99.8" min = "80" max = "120" step = "0.1"/>
+                        </div>
+                        <div class = "form-line editable-ui">
+                            <div class = "left-spacer"></div>
+                            <button class = "raised alt right">Odustani</button>
+                            <button class = "raised left">Spremi promjene</button>
                         </div>
                     </fieldset>
                 </form>

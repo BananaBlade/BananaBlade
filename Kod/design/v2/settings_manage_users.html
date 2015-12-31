@@ -23,37 +23,35 @@
     <nav class = "nav-bar">
         <div class = "nav-bar-top-spacer"></div>
         <ul>
-            <ul>
-                <li class = "nav-option-group">
-                    <div class = "nav-option-group-name">Slušaj radio</div>
-                </li>
-                <li class = "nav-option-group">
-                    <div class = "nav-option-group-name">Pregled mogućnosti</div>
-                </li>
-                <li class = "nav-option-group">
-                    <div class = "nav-option-group-name">Administratorske mogućnosti</div>
-                    <ul>
-                        <li class = "option-group-item">Uredi zvučne zapise</li>
-                        <li class = "option-group-item">Upravljaj urednicima</li>
-                        <li class = "option-group-item">Pregledaj zahtjeve</li>
-                        <li class = "option-group-item active">Upravljaj korisnicima</li>
-                    </ul>
-                </li>
-                <li class = "nav-option-group">
-                    <div class = "nav-option-group-name">Postavke računa</div>
-                    <ul>
-                        <li class = "option-group-item">Uredi osobne podatke</li>
-                        <li class = "option-group-item">Promijeni lozinku</li>
-                        <li class = "option-group-item">Obriši račun</li>
-                    </ul>
-                </li>
-                <li class = "nav-option-group">
-                    <div class = "nav-option-group-name">Odjavi se</div>
-                </li>
-            </ul>
+            <li class = "nav-option-group">
+                <a href = ""><div class = "nav-option-group-name">Slušaj radio</div></a>
+            </li>
+            <li class = "nav-option-group">
+                <a href = ""><div class = "nav-option-group-name">Pregled mogućnosti</div></a>
+            </li>
+            <li class = "nav-option-group">
+                <div class = "nav-option-group-name">Administratorske mogućnosti</div>
+                <ul>
+                    <a href = ""><li class = "option-group-item">Zvučni zapisi</li></a>
+                    <a href = ""><li class = "option-group-item">Urednici</li></a>
+                    <a href = ""><li class = "option-group-item">Zahtjevi za terminima</li></a>
+                    <a href = ""><li class = "option-group-item active">Korisnici</li></a>
+                </ul>
+            </li>
+            <li class = "nav-option-group">
+                <div class = "nav-option-group-name">Postavke računa</div>
+                <ul>
+                    <a href = ""><li class = "option-group-item">Osobni podaci</li></a>
+                    <a href = ""><li class = "option-group-item">Promjena lozinke</li></a>
+                    <a href = ""><li class = "option-group-item">Brisanje računa</li></a>
+                </ul>
+            </li>
+            <li class = "nav-option-group">
+                <a href = ""><div class = "nav-option-group-name">Odjavi se</div></a>
+            </li>
         </ul>
     </nav>
-    <div class = "center-area">
+    <div class = "center-area" data-editable = "false">
         <header class = "center-header">
             <div class = "view-path">Upravljaj korisnicima</div>
         </header>
@@ -67,65 +65,67 @@
                 </div>
                 <div class = "content-header-right"><i class = "material-icons icon">group</i></div>
             </header>
+            <nav class = "content-options uneditable-ui">
+                <button>Uredi popis korisnika</button>
+            </nav>
+            <nav class = "content-options editable-ui">
+                <button>Završi uređivanje popisa</button>
+            </nav>
             <ul class = "content-primary content-list">
-                <li class = "content-list-item">
+                <li class = "content-list-item user-item" data-type = "1">
                     <div class = "content-list-item-content">
                         <div class = "content-list-item-name">Mirko Horvat</div>
                         <div class = "content-list-item-data">
-                            <div class = "content-list-item-data-item user-account-type">Korisnik</div>
+                            <div class = "content-list-item-data-item user-mail">mhorvat@mail.com</div>
                             <div class = "content-list-item-data-item user-age">48 godina</div>
                             <div class = "content-list-item-data-item user-occupation">Vodoinstalater</div>
-                            <div class = "content-list-item-data-item user-mail">mhorvat@mail.com</div>
                         </div>
                     </div>
-                    <div class = "content-list-item-options">
-                        <button class = "alt"><i class = "material-icons">clear</i></button>
+                    <div class = "content-list-item-options editable-ui">
                         <button class = "dim"><i class = "material-icons">edit</i></button>
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
                     </div>
                 </li>
-                <li class = "content-list-item">
+                <li class = "content-list-item user-item" data-type = "2">
                     <div class = "content-list-item-content">
                         <div class = "content-list-item-name">Slavko Kovač</div>
                         <div class = "content-list-item-data">
-                            <div class = "content-list-item-data-item user-account-type">Urednik</div>
+                            <div class = "content-list-item-data-item user-mail">skovac@mail.com</div>
                             <div class = "content-list-item-data-item user-age">36 godina</div>
                             <div class = "content-list-item-data-item user-occupation">Autolimar</div>
-                            <div class = "content-list-item-data-item user-mail">skovac@mail.com</div>
                         </div>
                     </div>
-                    <div class = "content-list-item-options">
-                        <button class = "alt"><i class = "material-icons">clear</i></button>
+                    <div class = "content-list-item-options editable-ui">
                         <button class = "dim"><i class = "material-icons">edit</i></button>
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
                     </div>
                 </li>
-                <li class = "content-list-item">
+                <li class = "content-list-item user-item" data-type = "2">
                     <div class = "content-list-item-content">
                         <div class = "content-list-item-name">Cheng Pong Ping Lee</div>
                         <div class = "content-list-item-data">
-                            <div class = "content-list-item-data-item user-account-type">Korisnik</div>
+                            <div class = "content-list-item-data-item user-mail">pongping@mail.com</div>
                             <div class = "content-list-item-data-item user-age">27 godina</div>
                             <div class = "content-list-item-data-item user-occupation">Sportaš</div>
-                            <div class = "content-list-item-data-item user-mail">pongping@mail.com</div>
                         </div>
                     </div>
-                    <div class = "content-list-item-options">
-                        <button class = "alt"><i class = "material-icons">clear</i></button>
+                    <div class = "content-list-item-options editable-ui">
                         <button class = "dim"><i class = "material-icons">edit</i></button>
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
                     </div>
                 </li>
-                <li class = "content-list-item">
+                <li class = "content-list-item user-item" data-type = "1">
                     <div class = "content-list-item-content">
                         <div class = "content-list-item-name">Janko Strižić</div>
                         <div class = "content-list-item-data">
-                            <div class = "content-list-item-data-item user-account-type">Korisnik</div>
+                            <div class = "content-list-item-data-item user-mail">jstrizic@mail.com</div>
                             <div class = "content-list-item-data-item user-age">25 godina</div>
                             <div class = "content-list-item-data-item user-occupation">Pastir</div>
-                            <div class = "content-list-item-data-item user-mail">jstrizic@mail.com</div>
                         </div>
                     </div>
-                    <div class = "content-list-item-options">
-                        <button class = "alt"><i class = "material-icons">clear</i></button>
+                    <div class = "content-list-item-options editable-ui">
                         <button class = "dim"><i class = "material-icons">edit</i></button>
+                        <button class = "alt"><i class = "material-icons">clear</i></button>
                     </div>
                 </li>
             </ul>

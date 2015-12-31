@@ -74,6 +74,8 @@ div, header, footer, section, article, aside, input, button, textarea, label, li
         text-decoration      :     underline
 
 
+//
+
 h1, h2, h3, h4, h5, h6
     font-family        :     $header_font
 
@@ -151,6 +153,18 @@ button
 	    margin 			     : 	   0
     	padding 		     : 	   0
 
+    &:disabled
+        background           :     none !important
+        color                :     $tertiary_text_color !important
+
+        &:hover
+            background             :     none
+            color                  :     $secondary_text_color
+            cursor                 :     default
+
+        &:active
+            background             :     none
+
     &.dim
         color                :     $tertiary_text_color
 
@@ -226,7 +240,7 @@ body
     color              :     $text_color
     font               :
         family               :     $base_font
-        size                 :     16px
+        size                 :     1rem
     line-height        :     1.5rem
 
 .header-bar
@@ -236,7 +250,7 @@ body
     position           :     fixed
     top                :     0
     width              :     100%
-    z-index            :     5
+    z-index            :     15
 
     &.unfixed
         position             :     relative
@@ -246,10 +260,10 @@ body
     bottom             :     0
     position           :     fixed
     top                :     3rem
-    width              :     16rem
+    //width              :     16rem
 
 .center-area
-    margin             :     3rem 0 0 16rem
+    margin-top         :     3rem
     position           :     relative
 
 
@@ -270,10 +284,8 @@ body
 
 .center-content
     float              :     left
-    height             :     30rem
-    margin             :     2rem 5rem
-    padding-top        :     3rem
-    width              :     48rem
+    margin             :     5rem 0 2rem 0
+    padding            :     0 4rem
 
 .content-header
     margin-bottom      :     0.5rem
@@ -290,10 +302,9 @@ body
 
 .center-side
     float              :     left
-    height             :     30rem
     margin             :     2rem 0
-    padding            :     4rem 1.5rem 1rem 1.5rem
-    width              :     20rem
+    padding            :     4rem 0 1rem 0
+    //width              :     20rem
 
 
 // Top bar styles
@@ -410,17 +421,18 @@ body
 
 .content-header-right
     +column( 1, 6 )
-    background         :     $accent_color
-    border-radius      :     50%
-    box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.1 )
-    height             :     7.5rem
-    text-align         :     center
 
     .icon
+        background           :     $accent_color
+        border-radius        :     50%
+        box-shadow           :     0 2px 4px rgba( 0, 0, 0, 0.1 )
         color                :     $alt_text_color
         font-size            :     5rem
+        height               :     7.5rem
         line-height          :     7.5rem
+        text-align           :     center
         text-shadow          :     0 2px 2px rgba( 0, 0, 0, 0.1 )
+        width                :     7.5rem
 
 .content-header-left
     +column( 5, 6 )
@@ -460,19 +472,67 @@ body
 
 // Content list styles
 
+.content-list
+    counter-reset      :     track_count
+
 .content-list-item
     +container
     border-bottom      :     1px solid $border_color
     padding            :     1rem 1rem 1rem 1.5rem
+    position           :     relative
 
     &:last-child
         border-bottom        :     none
 
 .content-list-item-content
-    +column( 5, 6 )
+    counter-increment  :     track_count
+    padding-left       :     4.5rem
+    padding-right      :     3rem
+
+    .progress-item &
+        counter-increment    :     none
+        padding-left         :     0
+
+    &:before
+        background           :     $accent2_color
+        border-radius        :     50%
+        color                :     $alt_text_color
+        display              :     block
+        float                :     left
+        font-family          :     "Material Icons"
+        font-size            :     2.5rem
+        height               :     4rem
+        left                 :     1rem
+        line-height          :     4rem
+        padding              :     0
+        position             :     absolute
+        text-align           :     center
+        width                :     4rem
+
+    .editor-item &:before, .user-item[data-type="2"] &:before
+        content              :     "edit"
+
+    .user-item[data-type="1"] &:before
+        content              :     "person"
+
+    .admin-item &:before, .user-item[data-type="3"] &:before
+        content              :     "build"
+
+    .user-item[data-type="4"] &:before
+        content              :     "vpn_key"
+
+    .track-item &:before
+        content              :     "audiotrack"
+        // content              :     counter( track_count )
+        // font-family          :     $base_font
+        // font-size            :     2rem
+        // font-weight          :     300
 
 .content-list-item-options
-    +column( 1, 6 )
+    position                 :     absolute
+    right                    :     1rem
+    top                      :     1rem
+    width                    :     2rem
 
     button
         float                :     right
@@ -483,21 +543,25 @@ body
             &:hover
                 opacity                  :     1
 
-
 .content-list-item-name
-    @extend .heading
+    font-size           :     1.5rem
+    font-weight         :     300
+    line-height         :     2rem
+    padding             :     0.25rem 0
 
 .content-list-item-data
-    overflow           :     hidden
+    +container
 
 .content-list-item-data-item
     @extend .body-secondary
     float              :     left
+    font-family        :     $header_font
     margin-right       :     1rem
 
 .content-list-search-item
     background         :     $primary_color
     color              :     $alt_text_color
+    padding-right      :     3rem
 
     label
         color                :     $alt_text_color
@@ -610,11 +674,10 @@ fieldset[ disabled ]
     color              :     $tertiary_text_color
 
 .user-mail, .track-genre
-    color              :     $tertiary_text_color
-    font-family        :     $header_font
+    color              :     $secondary_text_color
 
 .progress-item
-    background         :     $primary_color
+    background         :     $accent2_color
 
     &.warning
         background         :     $accent_color
@@ -632,7 +695,7 @@ fieldset[ disabled ]
 
     .progress-bar
         +column( 3, 4 )
-        background           :     lighten( $primary_color, 10% )
+        background           :     darken( $accent2_color, 10% )
         height               :     1.5rem
         position             :     relative
         text-align           :     center
@@ -644,7 +707,7 @@ fieldset[ disabled ]
         z-index              :     3
 
     .progress-indicator
-        background           :     #fff
+        background           :     lighten( $accent2_color, 55% )
         height               :     1.5rem
         position             :     absolute
         top                  :     0
@@ -662,7 +725,7 @@ fieldset[ disabled ]
 
 .center-side-header
     padding-top        :     0.5rem
-    padding-bottom     :     1.5rem
+    padding-bottom     :     2rem
 
 .center-side-title
     @extend .heading
@@ -671,6 +734,44 @@ fieldset[ disabled ]
     @extend .subheading
 
 .center-side-content
+    padding-bottom    :     4rem
+
+.global-wishlist-item
+    +container
+    padding           :     0.25rem 1rem 0.25rem 1rem
+
+    &:nth-child(odd)
+        background          :    #fff
+
+.gw-track
+    +column( 5, 6 )
+
+.gw-track-name
+    font-weight       :     300
+    height            :     1.5rem
+    overflow          :     hidden
+
+.gw-track-artist
+    color             :     $tertiary_text_color
+    font-family       :     $header_font
+    font-size         :     0.9rem
+    height            :     1.5rem
+    overflow          :     hidden
+
+.gw-option
+    +column( 1, 6 )
+    height            :     3rem
+    padding           :     0.5rem 0
+
+    button
+        border-radius       :     50%
+        float               :     right
+        width               :     2rem
+
+    .material-icons
+        color               :     $primary_color
+        font-size           :     1.5rem
+        line-height         :     1.5rem
 
 
 // Index styles
@@ -698,6 +799,7 @@ fieldset[ disabled ]
     background         :     darken( $accent2_color, 25% )
     color              :     $alt_text_color
     min-height         :     10rem
+    padding            :     0
     padding-bottom     :     2rem
 
 .player-box
@@ -761,7 +863,6 @@ fieldset[ disabled ]
     font-family        :     $header_font
 
 .control-buttons
-    //+container
     margin             :     0 auto 0 auto
     overflow           :     hidden
     width              :     16rem
@@ -852,7 +953,6 @@ fieldset[ disabled ]
 
         &:after
             background       :     darken( $dark_primary_color, 10% )
-            //border-right     :     0.5rem solid #fff
             content          :     " "
             display          :     block
             height           :     4rem
@@ -1002,8 +1102,18 @@ p.register-bait
         margin               :     0 auto
         width                :     10rem
 
+.footer-container
+    padding            :     2rem 0
+
 .footer-left
     +column( 1, 2 )
+    padding            :     3rem 0
+
+.footer-right
+    +column( 1, 2 )
+    background         :     url( "../img/draft/logo_icon.png" ) no-repeat right 12px
+    height             :     250px
+    opacity            :     0.5
 
 .radiostation-info-item
     +column( 1, 2 )
@@ -1020,6 +1130,111 @@ p.register-bait
     clear              :     both
     color              :     rgba( 255, 255, 255, 0.25 )
     font-size          :     0.9rem
-    padding            :     5rem 0 1rem 0
-    //text-align         :     center
+    padding            :     3rem 0 1rem 0
     width              :     100%
+
+
+// Media queries
+
+@media screen and (max-width : 560px)
+    html
+        font-size            :     11px !important
+
+@media screen and (max-width : 959px)
+    html
+        font-size            :     13px
+
+    .nav-bar
+        background           :     none
+        width                :     3rem
+        z-index              :     10
+
+        *:not(.nav-bar-top-spacer)
+            display                :     none
+
+        &:hover
+            background             :     #fff
+            box-shadow             :     0 0 4px rgba( 0, 0, 0, 0.2 )
+            width                  :     14rem
+
+            *
+                display                  :     block
+
+        .nav-bar-top-spacer
+            cursor                 :     pointer
+            text-align             :     center
+
+            &:after
+                content                :     "menu"
+                color                  :     #fff
+                display                :     block
+                font-family            :     "Material Icons"
+                font-size              :     2rem
+                line-height            :     3rem
+                width                  :     39px
+
+    .center-area
+        margin-left          :     3rem
+
+    .center-content
+        padding              :     0 3rem 0 0
+        width                :     100%
+
+    .center-side
+        margin-top           :     -2rem
+        padding              :     0 2rem
+        width                :     100%
+
+@media screen and (min-width : 960px) and (max-width : 1279px)
+    html
+        font-size            :     14px
+
+    .nav-bar
+        width                :     14rem
+
+    .center-area
+        margin-left          :     14rem
+
+    .center-content
+        padding              :     0 2rem
+        width                :     70%
+
+    .center-side
+        padding-right        :     1rem
+        width                :     30%
+
+@media screen and (min-width : 1280px) and (max-width : 1499px)
+    html
+        font-size            :     16px
+
+    .nav-bar
+        width                :     15rem
+
+    .center-area
+        margin-left          :     15rem
+
+    .center-content
+        width                :     70%
+
+    .center-side
+        padding-right        :     2rem
+        width                :     30%
+
+
+@media screen and (min-width : 1500px)
+    html
+        font-size            :     16px
+
+    .nav-bar
+        width                :     16rem
+
+    .center-area
+        margin-left          :     16rem
+
+    .center-content
+        padding              :     0 5%
+        width                :     70%
+
+    .center-side
+        padding-right        :     5%
+        width                :     30%
