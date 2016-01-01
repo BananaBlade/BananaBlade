@@ -7,7 +7,7 @@
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
     <link rel = "shortcut icon" type = "image/x-icon" href = "./img/draft/favicon.ico"/>
 </head>
-<body>
+<body data-account-type = "4">
     <header class = "header-bar">
         <div class = "app-box">
             <a href = ""><div class = "app-name"><img src = "./img/draft/logo.png" alt = "FM Radio"/></div></a>
@@ -34,6 +34,7 @@
                 <ul>
                     <a href = ""><li class = "option-group-item">Administratori</li></a>
                     <a href = ""><li class = "option-group-item active">Podaci o postaji</li></a>
+                    <a href = ""><li class = "option-group-item">Statistike</li></a>
                 </ul>
             </li>
             <li class = "nav-option-group">
@@ -72,19 +73,19 @@
                     <fieldset disabled = "disabled">
                         <div class = "form-line">
                             <label for = "first_name">Naziv postaje</label>
-                            <input type = "text" name = "first_name" value = "Mirko"/>
+                            <input type = "text" name = "first_name" value = "Mirko" pattern = ".{2,64}"/>
                         </div>
                         <div class = "form-line">
-                            <label for = "last_name">Kratki opis</label>
-                            <textarea name = "">Opis radio postaje</textarea>
+                            <label for = "description">Kratki opis</label>
+                            <textarea name = "description">Opis radio postaje</textarea>
                         </div>
                         <div class = "form-line">
                             <label for = "oib">OIB</label>
-                            <input type = "text" name = "oib" value = "98765432109"/>
+                            <input type = "text" name = "oib" value = "98765432109" pattern = "[0-9]{11}"/>
                         </div>
                         <div class = "form-line">
                             <label for = "address">Adresa postaje</label>
-                            <input type = "text" name = "address" value = "Unska 3, Zagreb"/>
+                            <input type = "text" name = "address" value = "Unska 3, Zagreb" pattern = ".{3,128}"/>
                         </div>
                         <div class = "form-line">
                             <label for = "email">E-mail adresa</label>

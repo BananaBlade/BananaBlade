@@ -7,7 +7,7 @@
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
     <link rel = "shortcut icon" type = "image/x-icon" href = "./img/draft/favicon.ico"/>
 </head>
-<body>
+<body data-account-type = "3">
     <header class = "header-bar">
         <div class = "app-box">
             <a href = ""><div class = "app-name"><img src = "./img/draft/logo.png" alt = "FM Radio"/></div></a>
@@ -36,6 +36,7 @@
                     <a href = ""><li class = "option-group-item">Urednici</li></a>
                     <a href = ""><li class = "option-group-item">Zahtjevi za terminima</li></a>
                     <a href = ""><li class = "option-group-item active">Korisnici</li></a>
+                    <a href = ""><li class = "option-group-item">Statistike</li></a>
                 </ul>
             </li>
             <li class = "nav-option-group">
@@ -73,11 +74,11 @@
                     <fieldset disabled = "disabled">
                         <div class = "form-line">
                             <label for = "first_name">Ime</label>
-                            <input type = "text" name = "first_name" value = "Slavko"/>
+                            <input type = "text" name = "first_name" value = "Slavko" pattern = ".{2,64}"/>
                         </div>
                         <div class = "form-line">
                             <label for = "last_name">Prezime</label>
-                            <input type = "text" name = "last_name" value = "Kovač"/>
+                            <input type = "text" name = "last_name" value = "Kovač" pattern = ".{2,64}"/>
                         </div>
                         <div class = "form-line">
                             <label for = "email">E-mail adresa</label>
@@ -89,7 +90,7 @@
                         </div>
                         <div class = "form-line">
                             <label for = "occupation">Zanimanje</label>
-                            <input type = "text" name = "occupation" value = "keramičar"/>
+                            <input type = "text" name = "occupation" value = "keramičar" pattern = ".{2,64}"/>
                         </div>
                         <div class = "form-line">
                             <label for = "account_type">Vrsta računa</label>

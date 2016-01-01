@@ -1,5 +1,8 @@
 from flask import jsonify
+from flask.ext.mail import Message
+
 from app.validators import *
+from app import mail
 
 
 # TODO: Write a few comments
@@ -25,6 +28,14 @@ def success_response( message, code = 200 ):
 
 def not_implemented_response():
     return error_response( 'Funkcija još nije implementirana', 501 )
+
+
+# Mail helpers
+
+def send_mail( title, content, recipient ):
+    message = Message( title, recipients = [ recipient ] )
+    message.body = content
+    mail.send( message )
 
 
 # Validation helpers

@@ -390,6 +390,15 @@ body
 .nav-option-group
     padding-top        :     1rem
 
+.nav-special-select
+    .nav-option-group
+        display              :     none
+
+    *[data-account-type = "1"] & .user-nav-group, *[data-account-type = "2"] & .editor-nav-group,
+    *[data-account-type = "3"] & .admin-nav-group, *[data-account-type = "4"] & .owner-nav-group
+        display              :     block
+
+
 .nav-option-group-name
     font               :
         family               :     $header_font
@@ -402,6 +411,9 @@ body
         color                :    $primary_color
         padding-left         :    0.75rem
 
+    a &:hover
+        color                :    $accent_color
+
 .option-group-item
     color              :     $secondary_text_color
     font-family        :     $header_font
@@ -412,6 +424,9 @@ body
         border-left          :     0.25rem solid $primary_color
         padding-left         :     1.75rem
         color                :     $primary_color
+
+    &:hover
+        color                :     $accent_color
 
 
 // Content header styles
@@ -523,10 +538,9 @@ body
 
     .track-item &:before
         content              :     "audiotrack"
-        // content              :     counter( track_count )
-        // font-family          :     $base_font
-        // font-size            :     2rem
-        // font-weight          :     300
+
+    .request-item &:before
+        content              :     "event_available"
 
 .content-list-item-options
     position                 :     absolute
@@ -643,7 +657,7 @@ fieldset[ disabled ]
 .wide-labels .form-line
     label
         +column( 1, 3 )
-    input, select
+    input, select, textarea
         +column( 2, 3 )
     .left-spacer
         +column( 1, 3 )
@@ -664,17 +678,97 @@ fieldset[ disabled ]
     font-family        :     $header_font
 
 
+// Content boxes
+
+.content-boxes
+    +container
+    margin             :     0 -1rem
+    padding            :     2rem 0
+
+.content-box-wrapper
+    +column( 1, 1 )
+    padding            :     1rem
+
+.content-box
+    +container
+    background         :     #fff
+    box-shadow         :     0 0 4px 0 rgba( 0, 0, 0, 0.07 )
+    min-height         :     8rem
+    padding            :     1.5rem 1.5rem 1.5rem 8rem
+    position           :     relative
+
+.content-box-icon
+    background         :     $accent2_color
+    border-radius      :     50%
+    height             :     5rem
+    left               :     1.5rem
+    position           :     absolute
+    text-align         :     center
+    top                :     1.5rem
+    width              :     5rem
+
+    .material-icons
+        color                :     $alt_text_color
+        font-size            :     3rem
+        line-height          :     5rem
+
+.content-box-info
+    +column( 2, 5 )
+    padding-right            :     2rem
+
+    h2
+        line-height          :     2rem
+        padding              :     0.5rem 0
+
+    p
+        color                :     $secondary_text_color
+        font-size            :     0.9rem
+
+.content-box-options
+    +column( 3, 5 )
+    border-left        :     1px solid $border_color
+    min-height         :     5rem
+    padding-left       :     2rem
+
+    li
+        padding              :     0.5rem 0
+
+    .option-name
+        color                :     $primary_color
+        font-family          :     $header_font
+        font-size            :     1.1rem
+        line-height          :     2rem
+
+        &:hover
+            color                  :      $accent_color
+
+    .option-descr
+        color                :     $secondary_text_color
+        font-size            :     0.9rem
+        line-height          :     1.25rem
+
+.account-type-select
+    display             :     none
+
+*[data-account-type = "1"] .user-select, *[data-account-type = "2"] .editor-select,
+*[data-account-type = "3"] .admin-select, *[data-account-type = "4"] .owner-select
+    display             :     block
+
+
+
 // List styles
 
 .user-account-type, .track-artist, .track-duration
     color              :     $primary_color
-    font-family        :     $header_font
 
-.user-occupation, .user-age, .track-album, .track-year, .track-artist-dim
+.user-occupation, .user-age, .track-album, .track-year, .track-artist-dim, .request-date-interval, .request-collisions-negative
     color              :     $tertiary_text_color
 
-.user-mail, .track-genre
+.user-mail, .track-genre, .request-editor
     color              :     $secondary_text_color
+
+.request-collisions-positive
+    color              :     $accent_color
 
 .progress-item
     background         :     $accent2_color

@@ -1,3 +1,2 @@
 flask
-PyJWT
-flask-cors
+Flask-Mail

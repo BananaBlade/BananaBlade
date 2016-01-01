@@ -43,6 +43,14 @@ def show_settings():
     return 'Settings'
 
 
+# Debug routes
+
+@app.route( '/dbg/mail' )
+def dbg_send_mail():
+    send_mail( 'FlaskMail', 'Bok! Cemo da vidimo hoce li da radi', 'zjurelinac@gmail.com' )
+    return 'Sent'
+
+
 # Play routes
 
 @app.route( '/player/get', methods = [ 'GET' ] )
