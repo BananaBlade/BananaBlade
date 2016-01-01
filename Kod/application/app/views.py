@@ -51,7 +51,7 @@ def dbg_send_mail():
     return 'Sent'
 
 
-# Play routes
+# Player routes
 
 @app.route( '/player/get', methods = [ 'GET' ] )
 def get_currently_playing_track():
@@ -72,8 +72,9 @@ def get_currently_playing_track_info():
     No request parameters required.
     """
     try:
-        track = Track.get_currently_playing()
+        track, editor = Track.get_currently_playing()
         data = {
+            'editor'            : editor.first_name + ' ' + editor.last_name,
             'id'                : track.id,
             'title'             : track.title,
             'artist'            : track.artist,
@@ -91,6 +92,7 @@ def get_currently_playing_track_info():
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis', 404 )
 
+@app.route( '/player/schedule' )
 
 # User auth
 

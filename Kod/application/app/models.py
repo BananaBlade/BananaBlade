@@ -60,7 +60,7 @@ class Track( BaseModel ):
 
     @classmethod
     def get_currently_playing( cls ):
-        """Returns the currently playing track
+        """Returns the currently playing track and the editor who selected it
 
         Raises DoesNotExist
         """
