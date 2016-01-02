@@ -139,14 +139,14 @@ button
     text-transform     :     uppercase
 
     &:hover
-        background           :     transparentize( $primary_color, 0.9 )
+        background           :     fade-out( $primary_color, 0.9 )
         cursor               :     pointer
 
     &:focus
         outline              :     1px dotted $primary_color
 
     &:active
-        background           :     transparentize( $primary_color, 0.8 )
+        background           :     fade-out( $primary_color, 0.8 )
 
     &::-moz-focus-inner
 	    border 			     : 	   0
@@ -900,49 +900,46 @@ fieldset[ disabled ]
 
 .stat-item-display
     background        :     $accent2_color
-    color             :     #fff
+    color             :     $alt_text_color
     margin-bottom     :     -1px
     padding           :     0.5rem 1rem 1rem 1rem
     position          :     relative
 
-
 .stat-track-name, .stat-editor-name
-    @extend .content-list-item-name
+    font-size         :     1.5rem
+    font-weight       :     300
+    line-height       :     2rem
+    padding           :     0.25rem 0
 
 .stat-track-info, .stat-editor-info
-    @extend .content-list-item-data
+    +container
 
 .stat-track-info-item
-    @extend .content-list-item-data-item
+    color             :     rgba( 255, 255, 255, 0.4 )
+    float             :     left
+    font-family       :     $header_font
+    margin-right      :     2rem
 
-.stat-track-artist
-    @extend .track-artist
-
-.stat-track-album
-    @extend .track-album
-
-.stat-track-year
-    @extend .track-year
-
-.stat-editor-mail
-    @extend .user-mail
-
-.stat-editor-age
-    @extend .user-age
-
-.stat-editor-occupation
-    @extend .user-occupation
+.stat-track-artist, .stat-editor-mail
+    color             :     $alt_text_color
 
 .stat-item-option
-    background        :     $base_background_color
+    background        :     $accent2_color
+    color             :     $alt_text_color
     padding           :     1rem 5rem 1rem 1rem
     position          :     relative
 
+    label
+        color               :     $alt_text_color
+
 .choose-search
+    border-bottom-color:    fade-out( $alt_text_color, 0.75 )
+    color             :     $alt_text_color
     width             :     100%
 
+
     &:focus
-        border-bottom-color :     $accent2_color
+        border-bottom-color :     $alt_text_color
 
 .stat-option-button
     position          :     absolute
@@ -950,7 +947,7 @@ fieldset[ disabled ]
     top               :     1.25rem
 
     button
-        background          :     $accent2_color
+        background          :     none
         border-radius       :     50%
         height              :     3rem
         width               :     3rem
@@ -966,10 +963,23 @@ fieldset[ disabled ]
     margin            :     0 0 0 -1rem
     padding           :     1rem 0 0 0
 
+    button
+        &:hover
+            background      :     fade-out( $accent2_color, 0.85 )
+
+        &:active
+            background      :     fade-out( $accent2_color, 0.7 )
+
+        &:focus
+            outline         :     1px dotted $accent2_color
+
 .stat-list
     border-top        :     1px solid $border_color
     margin-left       :     -1rem
     padding           :     1rem 0
+
+    &.no-border
+        border              :     none
 
     li
         color               :     $secondary_text_color
@@ -993,7 +1003,7 @@ fieldset[ disabled ]
         &:nth-child(even)
             background            :     $base_background_color
 
-.wish-stat-list
+.track-stat-list
     counter-reset         :     wish_count
 
     li
@@ -1006,15 +1016,15 @@ fieldset[ disabled ]
             font-size           :     1.5rem
             font-weight         :     300
 
-.wish-stat-track-name:after
+.track-stat-list-track-name:after
     content               :     ', '
 
-.wish-stat-track-artist
+.track-stat-list-track-artist
     font-family           :     $base_font
     font-size             :     1rem
     line-height           :     0
 
-.wish-stat-wish-count
+.track-stat-list-wish-count
     position              :     absolute
     right                 :     1.25rem
     top                   :     0.5rem

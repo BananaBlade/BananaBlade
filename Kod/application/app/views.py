@@ -46,12 +46,6 @@ def show_settings():
 
 # Debug routes
 
-@app.route( '/dbg/mail' )
-def dbg_send_mail():
-    send_mail( 'FlaskMail', 'Bok! Cemo da vidimo hoce li da radi', 'fm.radio.postaja@gmail.com', 'zjurelinac@gmail.com' )
-    return 'Sent'
-
-
 # Player routes
 
 @app.route( '/player/get', methods = [ 'GET' ] )
@@ -178,6 +172,16 @@ def process_signout():
 
 
 # User account management
+
+@app.route( '/user/account/type', methods = [ 'GET' ] )
+@login_required
+def get_account_type():
+    """Return user account type
+
+    No request parameters required.
+    """
+    data = { 'account_type' : g.user.account_type }
+    return data_response( data )
 
 @app.route( '/user/account/get', methods = [ 'GET' ] )
 @login_required
@@ -347,7 +351,7 @@ def add_track():
 
         validate_filename( audio_file.filename )
         filename = secure_filename( audio_file.filename )
-        path = os.path.join( app.config['UPLOAD_FOLDER'], filename )
+        path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
 
         g.user.add_track( title = title, path = path, artist = artist, album = album, duration = duration,
             file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,

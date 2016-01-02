@@ -711,7 +711,8 @@ class Wish( BaseModel ):
         cls.delete().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).execute()
         time_now = datetime.now()
         for track_id in track_list:
-            wish = cls( track_id = track_id, user = user, date_time = time_now )
+            # TODO: Try to do this without Track.get query
+            wish = cls( track = Track.get( Track.id == track_id ), user = user, date_time = time_now )
             wish.save()
 
     @classmethod

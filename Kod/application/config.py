@@ -14,7 +14,7 @@ DATABASE = 'radio.db'
 WTF_CSRF_ENABLED = True
 WTF_CSRF_SECRET_KEY = "somethingimpossibletoguess"
 
-UPLOAD_FOLDER = "/tracks"
+UPLOAD_FOLDER = "/static/audio"
 
 MAIL_SERVER = "smtp.gmail.com"
 MAIL_PORT = 465
