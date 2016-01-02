@@ -863,467 +863,627 @@ fieldset[ disabled ]
         line-height         :     1.5rem
 
 
+// Statistics styles
+
+.stat
+    padding           :     1rem 0
+
+.single-stat
+    +container
+    border-top        :     1px solid $border_color
+    padding           :     1rem 0
+
+.single-stat-number
+    background        :     $accent2_color
+    border-radius     :     50%
+    color             :     $alt_text_color
+    float             :     left
+    font-size         :     1.5rem
+    line-height       :     3rem
+    margin-right      :     1rem
+    text-align        :     center
+    width             :     3rem
+
+.single-stat-descr
+    color             :     $secondary_text_color
+    font-family       :     $header_font
+    font-size         :     1.25rem
+    line-height       :     3rem
+
+.stat-track-wrapper
+    border-top        :     1px solid $border_color
+    margin-left       :     -1rem
+    padding-top       :     1rem
+
+*[data-state = "display"] .stat-item-option, *[data-state = "change"] .stat-display
+    display           :     none
+
+.stat-item-display
+    background        :     $accent2_color
+    color             :     #fff
+    margin-bottom     :     -1px
+    padding           :     0.5rem 1rem 1rem 1rem
+    position          :     relative
+
+
+.stat-track-name, .stat-editor-name
+    @extend .content-list-item-name
+
+.stat-track-info, .stat-editor-info
+    @extend .content-list-item-data
+
+.stat-track-info-item
+    @extend .content-list-item-data-item
+
+.stat-track-artist
+    @extend .track-artist
+
+.stat-track-album
+    @extend .track-album
+
+.stat-track-year
+    @extend .track-year
+
+.stat-editor-mail
+    @extend .user-mail
+
+.stat-editor-age
+    @extend .user-age
+
+.stat-editor-occupation
+    @extend .user-occupation
+
+.stat-item-option
+    background        :     $base_background_color
+    padding           :     1rem 5rem 1rem 1rem
+    position          :     relative
+
+.choose-search
+    width             :     100%
+
+    &:focus
+        border-bottom-color :     $accent2_color
+
+.stat-option-button
+    position          :     absolute
+    right             :     1rem
+    top               :     1.25rem
+
+    button
+        background          :     $accent2_color
+        border-radius       :     50%
+        height              :     3rem
+        width               :     3rem
+
+        .material-icons
+            font-size             :     2rem
+
+        &:hover
+            background            :     darken( $accent2_color, 10% )
+
+.stat-buttons
+    border-top        :     1px solid $border_color
+    margin            :     0 0 0 -1rem
+    padding           :     1rem 0 0 0
+
+.stat-list
+    border-top        :     1px solid $border_color
+    margin-left       :     -1rem
+    padding           :     1rem 0
+
+    li
+        color               :     $secondary_text_color
+        font-family         :     $header_font
+        font-size           :     1.25rem
+        line-height         :     3rem
+        padding             :     0.5rem 0 0.5rem 1rem
+        position            :     relative
+
+        &:before
+            background            :     $accent2_color
+            border-radius         :     50%
+            color                 :     $alt_text_color
+            display               :     block
+            float                 :     left
+            font-family           :     "Material Icons"
+            margin-right          :     1rem
+            text-align            :     center
+            width                 :     3rem
+
+        &:nth-child(even)
+            background            :     $base_background_color
+
+.wish-stat-list
+    counter-reset         :     wish_count
+
+    li
+        counter-increment       :     wish_count
+        padding-right           :     3.5rem
+
+        &:before
+            content             :     '#' counter( wish_count )
+            font-family         :     $base_font
+            font-size           :     1.5rem
+            font-weight         :     300
+
+.wish-stat-track-name:after
+    content               :     ', '
+
+.wish-stat-track-artist
+    font-family           :     $base_font
+    font-size             :     1rem
+    line-height           :     0
+
+.wish-stat-wish-count
+    position              :     absolute
+    right                 :     1.25rem
+    top                   :     0.5rem
+
+.active-admins-stat-list li:before
+    content               :     "build"
+
+
 // Index styles
 
 .section-wrapper
-    min-height         :     30rem
-    padding            :     5rem 0
+    min-height        :     30rem
+    padding           :     5rem 0
 
 .section-container
     +container
-    margin             :     0 auto
-    width              :     70rem
+    margin            :     0 auto
+    width             :     70rem
 
 .player-wrapper
-    background         :     darken( $accent2_color, 10% )
-    color              :     $alt_text_color
+    background        :     darken( $accent2_color, 10% )
+    color             :     $alt_text_color
 
 .info-wrapper
-    background         :     $dark_primary_color
-    color              :     $alt_text_color
+    background        :     $dark_primary_color
+    color             :     $alt_text_color
 
 .register-wrapper
 
 .footer-wrapper
-    background         :     darken( $accent2_color, 25% )
-    color              :     $alt_text_color
-    min-height         :     10rem
-    padding            :     0
-    padding-bottom     :     2rem
+    background        :     darken( $accent2_color, 25% )
+    color             :     $alt_text_color
+    min-height        :     10rem
+    padding           :     0
+    padding-bottom    :     2rem
 
 .player-box
     +column( 2, 3 )
-    background         :     lighten( $accent2_color, 5% )
-    min-height         :     21.5rem
-    margin-top         :     -1rem
-    padding            :     1rem 2rem 0 2rem
+    background        :     lighten( $accent2_color, 5% )
+    min-height        :     21.5rem
+    margin-top        :     -1rem
+    padding           :     1rem 2rem 0 2rem
 
 .player-body
-    background         :     darken( $accent2_color, 5% )
-    margin-top         :     1rem
+    background        :     darken( $accent2_color, 5% )
+    margin-top        :     1rem
 
 .current-editor
-    background         :     darken( $accent2_color, 10% )
-    clear              :     left
-    font-family        :     $header_font
-    margin-bottom      :     2rem
-    padding            :     0.5rem 1rem
+    background        :     darken( $accent2_color, 10% )
+    clear             :     left
+    font-family       :     $header_font
+    margin-bottom     :     2rem
+    padding           :     0.5rem 1rem
 
     span
-        opacity              :     0.65
+        opacity             :     0.65
 
 .player-track
     +container
-    height             :     10.5rem
-    position           :     relative
+    height            :     10.5rem
+    position          :     relative
 
 .player-track-title
-    line-height        :     3rem
-    float              :     left
-    font               :
-        size                 :     2.5rem
-        weight               :     300
-    letter-spacing     :     -1px
-    max-height         :     6rem
-    overflow           :     hidden
-    text-align         :     center
+    line-height       :     3rem
+    float             :     left
+    font              :
+        size                :     2.5rem
+        weight              :     300
+    letter-spacing    :     -1px
+    max-height        :     6rem
+    overflow          :     hidden
+    text-align        :     center
 
 .player-track-info
     +container
-    background         :     $accent2_color
-    bottom             :     0
-    left               :     0
-    position           :     absolute
-    width              :     100%
+    background        :     $accent2_color
+    bottom            :     0
+    left              :     0
+    position          :     absolute
+    width             :     100%
 
 .player-track-info-item
     +column( 1, 4 )
-    color              :     rgba( 255, 255, 255, 0.75 )
-    height             :     2.5rem
-    line-height        :     2.5rem
-    overflow           :     hidden
-    padding            :     0 0.5rem
-    text-align         :     center
+    color             :     rgba( 255, 255, 255, 0.75 )
+    height            :     2.5rem
+    line-height       :     2.5rem
+    overflow          :     hidden
+    padding           :     0 0.5rem
+    text-align        :     center
 
     &:nth-child(odd)
-        background           :     darken( $accent2_color, 10% )
+        background          :     darken( $accent2_color, 10% )
 
 .player-track-artist, .player-track-genre
-    font-family        :     $header_font
+    font-family       :     $header_font
 
 .control-buttons
-    margin             :     0 auto 0 auto
-    overflow           :     hidden
-    width              :     16rem
+    margin            :     0 auto 0 auto
+    overflow          :     hidden
+    width             :     16rem
 
     button
-        float                :     left
+        float               :     left
 
 .volume-button
-    background         :     $alt_text_color
-    border-radius      :     50%
-    height             :     2.5rem
-    margin             :     2rem 1rem
-    text-align         :     center
-    width              :     2.5rem
+    background        :     $alt_text_color
+    border-radius     :     50%
+    height            :     2.5rem
+    margin            :     2rem 1rem
+    text-align        :     center
+    width             :     2.5rem
 
     .material-icons
-        color                :     $accent2_color
-        font-size            :     1.5rem
-        line-height          :     2rem
+        color               :     $accent2_color
+        font-size           :     1.5rem
+        line-height         :     2rem
 
     &:hover
-        background           :     darken( $accent2_color, 10% )
+        background          :     darken( $accent2_color, 10% )
 
 .play-button
-    border-radius      :     50%
-    height             :     auto
+    border-radius     :     50%
+    height            :     auto
 
     &:hover
-        background           :     none
+        background          :     none
 
     &:hover .material-icons
-        color                :     darken( $accent2_color, 10% )
+        color               :     darken( $accent2_color, 10% )
 
     .material-icons
-        color                :     $alt_text_color
-        font-size            :     6rem
+        color               :     $alt_text_color
+        font-size           :     6rem
 
 
 
 .schedule-box
     +column( 1, 3 )
-    padding            :     0 2rem
+    padding           :     0 2rem
 
     h2
-        margin-bottom        :     1rem
+        margin-bottom       :     1rem
 
 .schedule-item
     +container
-    padding            :     0.5rem 1rem
+    padding           :     0.5rem 1rem
 
     &:nth-child(odd)
-        background           :     darken( $accent2_color, 2.5% )
+        background          :     darken( $accent2_color, 2.5% )
 
     &:first-child
-        background           :     $accent_color
+        background          :     $accent_color
 
 .item-time
     +column( 1, 4 )
 
 .item-editor
     +column( 3, 4 )
-    font-family        :     $header_font
+    font-family       :     $header_font
 
 .popular-info
     +column( 1, 3 )
 
 .popular-tracks-list
-    counter-reset      :     item_count
-    padding-top        :     1rem
+    counter-reset     :     item_count
+    padding-top       :     1rem
 
     li
-        counter-increment    :     item_count
-        height               :     4rem
-        padding              :     0.5rem 2rem 0.5rem 4rem
-        position             :     relative
+        counter-increment   :     item_count
+        height              :     4rem
+        padding             :     0.5rem 2rem 0.5rem 4rem
+        position            :     relative
 
         &:before
-            color            :     $light_primary_color
-            content          :     counter( item_count )
-            font-size        :     2rem
-            font-weight      :     300
-            left             :     0
-            line-height      :     2rem
-            padding          :     1rem 1.5rem
-            position         :     absolute
-            top              :     0
-            z-index          :     3
+            color           :     $light_primary_color
+            content         :     counter( item_count )
+            font-size       :     2rem
+            font-weight     :     300
+            left            :     0
+            line-height     :     2rem
+            padding         :     1rem 1.5rem
+            position        :     absolute
+            top             :     0
+            z-index         :     3
 
         &:after
-            background       :     darken( $dark_primary_color, 10% )
-            content          :     " "
-            display          :     block
-            height           :     4rem
-            left             :     0
-            position         :     absolute
-            top              :     0
-            z-index          :     2
+            background      :     darken( $dark_primary_color, 10% )
+            content         :     " "
+            display         :     block
+            height          :     4rem
+            left            :     0
+            position        :     absolute
+            top             :     0
+            z-index         :     2
 
         &:nth-child(even):after
-            background             :     lighten( $dark_primary_color, 10% )
+            background            :     lighten( $dark_primary_color, 10% )
 
         & *
-            position         :     relative
-            z-index          :     3
+            position        :     relative
+            z-index         :     3
 
         @for $i from 1 through 20
             &[ data-value^='#{$i}' ]:after
-                width              :     ($i*5) * 1%
+                width             :     ($i*5) * 1%
 
 
 .popular-track-name
-    font-size          :     1.1rem
-    font-weight        :     300
-    height             :     1.5rem
-    overflow           :     hidden
+    font-size         :     1.1rem
+    font-weight       :     300
+    height            :     1.5rem
+    overflow          :     hidden
 
 .popular-track-info
-    font-family        :     $header_font
-    font-size          :     0.9rem
+    font-family       :     $header_font
+    font-size         :     0.9rem
 
 .radio-info
     +column( 2, 3 )
-    padding-left       :     3rem
+    padding-left      :     3rem
 
     h2
-        margin-bottom        :     1rem
+        margin-bottom       :     1rem
 
     p
-        text-align           :     justify
+        text-align          :     justify
 
 .radio-image
-    height             :     17rem
-    padding-top        :     2rem
-    text-align         :     center
+    height            :     17rem
+    padding-top       :     2rem
+    text-align        :     center
 
     .material-icons
-        color                :     lighten( $dark_primary_color, 7.5% )
-        display              :     block
-        font-size            :     15rem
-        line-height          :     15rem
-        text-shadow          :     0 2px 1px rgba( 0, 0, 0, 0.05 )
+        color               :     lighten( $dark_primary_color, 7.5% )
+        display             :     block
+        font-size           :     15rem
+        line-height         :     15rem
+        text-shadow         :     0 2px 1px rgba( 0, 0, 0, 0.05 )
 
 
 .register-descr-box
     +column( 2, 3 )
-    padding-right      :     3rem
+    padding-right     :     3rem
 
     p
-        color                :     $secondary_text_color
-        margin-bottom        :     1rem
+        color               :     $secondary_text_color
+        margin-bottom       :     1rem
 
         b
-            color                  :     $text_color
+            color                 :     $text_color
 
 p.roles-info
-    color              :     $tertiary_text_color
-    font-family        :     $header_font
-    font-size          :     1.2rem
-    padding-top        :     1rem
+    color             :     $tertiary_text_color
+    font-family       :     $header_font
+    font-size         :     1.2rem
+    padding-top       :     1rem
 
 .roles-list
     +container
-    margin-left        :     -1rem
+    margin-left       :     -1rem
 
 .role
     +column( 1, 3 )
-    margin             :     1rem 0 2rem
-    padding            :     0 1rem
+    margin            :     1rem 0 2rem
+    padding           :     0 1rem
 
 .role-container
-    background         :     #fff
-    box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.1 )
-    padding            :     1rem 1rem 1.5rem 1rem
+    background        :     #fff
+    box-shadow        :     0 2px 4px rgba( 0, 0, 0, 0.1 )
+    padding           :     1rem 1rem 1.5rem 1rem
 
 .role-icon
-    background         :     $accent2_color
-    border-radius      :     50%
-    box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.15 )
-    height             :     8rem
-    margin             :     0 auto
-    padding            :     2rem
-    width              :     8rem
+    background        :     $accent2_color
+    border-radius     :     50%
+    box-shadow        :     0 2px 4px rgba( 0, 0, 0, 0.15 )
+    height            :     8rem
+    margin            :     0 auto
+    padding           :     2rem
+    width             :     8rem
 
     .material-icons
-        color                :     $alt_text_color
-        font-size            :     4rem
-        text-align           :     center
-        text-shadow          :     0 2px 2px rgba( 0, 0, 0, 0.25 )
+        color               :     $alt_text_color
+        font-size           :     4rem
+        text-align          :     center
+        text-shadow         :     0 2px 2px rgba( 0, 0, 0, 0.25 )
 
 .role-name
-    font-family        :     $header_font
-    font-size          :     1.2rem
-    padding            :     1rem 0
-    text-align         :     center
+    font-family       :     $header_font
+    font-size         :     1.2rem
+    padding           :     1rem 0
+    text-align        :     center
 
 .role-descr
-    color              :     $secondary_text_color
-    font-size          :     0.85rem
-    text-align         :     center
+    color             :     $secondary_text_color
+    font-size         :     0.85rem
+    text-align        :     center
 
 p.register-bait
-    color              :     $text_color
-    font-family        :     $header_font
-    font-size          :     1.1rem
-    margin-top         :     1.9rem
-    text-align         :     center
+    color             :     $text_color
+    font-family       :     $header_font
+    font-size         :     1.1rem
+    margin-top        :     1.9rem
+    text-align        :     center
 
 .register-form-box
     +column( 1, 3 )
 
     h2
-        padding-bottom       :     1rem
+        padding-bottom      :     1rem
 
 .register-form
 
     input
-        width                :     100%
+        width               :     100%
 
     .form-line
-        padding              :     0.5rem 0
+        padding             :     0.5rem 0
 
     .tos-label
-        color                :     $tertiary_text_color
-        float                :     none
-        font-size            :     0.9rem
-        width                :     auto
+        color               :     $tertiary_text_color
+        float               :     none
+        font-size           :     0.9rem
+        width               :     auto
 
         a
             @extend .link
 
         b
-            color                  :     $secondary_text_color
-            text-transform         :     uppercase
+            color                 :     $secondary_text_color
+            text-transform        :     uppercase
 
     button
-        float                :     left
-        margin               :     0 auto
-        width                :     10rem
+        float               :     left
+        margin              :     0 auto
+        width               :     10rem
 
 .footer-container
-    padding            :     2rem 0
+    padding           :     2rem 0
 
 .footer-left
     +column( 1, 2 )
-    padding            :     3rem 0
+    padding           :     3rem 0
 
 .footer-right
     +column( 1, 2 )
-    background         :     url( "../img/draft/logo_icon.png" ) no-repeat right 12px
-    height             :     250px
-    opacity            :     0.5
+    background        :     url( "../img/draft/logo_icon.png" ) no-repeat right 12px
+    height            :     250px
+    opacity           :     0.5
 
 .radiostation-info-item
     +column( 1, 2 )
-    padding            :     0.25rem 0
+    padding           :     0.25rem 0
 
 .rs-item-name
-    color              :     rgba( 255, 255, 255, 0.4 )
-    font-family        :     $header_font
+    color             :     rgba( 255, 255, 255, 0.4 )
+    font-family       :     $header_font
 
 .rs-item-value
-    color              :     #ddd
+    color             :     #ddd
 
 .footer-copy
-    clear              :     both
-    color              :     rgba( 255, 255, 255, 0.25 )
-    font-size          :     0.9rem
-    padding            :     3rem 0 1rem 0
-    width              :     100%
+    clear             :     both
+    color             :     rgba( 255, 255, 255, 0.25 )
+    font-size         :     0.9rem
+    padding           :     3rem 0 1rem 0
+    width             :     100%
 
 
 // Media queries
 
 @media screen and (max-width : 560px)
     html
-        font-size            :     11px !important
+        font-size           :     11px !important
 
 @media screen and (max-width : 959px)
     html
-        font-size            :     13px
+        font-size           :     13px
 
     .nav-bar
-        background           :     none
-        width                :     3rem
-        z-index              :     10
+        background          :     none
+        width               :     3rem
+        z-index             :     10
 
         *:not(.nav-bar-top-spacer)
-            display                :     none
+            display               :     none
 
         &:hover
-            background             :     #fff
-            box-shadow             :     0 0 4px rgba( 0, 0, 0, 0.2 )
-            width                  :     14rem
+            background            :     #fff
+            box-shadow            :     0 0 4px rgba( 0, 0, 0, 0.2 )
+            width                 :     14rem
 
             *
-                display                  :     block
+                display                 :     block
 
         .nav-bar-top-spacer
-            cursor                 :     pointer
-            text-align             :     center
+            cursor                :     pointer
+            text-align            :     center
 
             &:after
-                content                :     "menu"
-                color                  :     #fff
-                display                :     block
-                font-family            :     "Material Icons"
-                font-size              :     2rem
-                line-height            :     3rem
-                width                  :     39px
+                content                 :     "menu"
+                color                   :     #fff
+                display                 :     block
+                font-family             :     "Material Icons"
+                font-size               :     2rem
+                line-height             :     3rem
+                width                   :     39px
 
     .center-area
-        margin-left          :     3rem
+        margin-left         :     3rem
 
     .center-content
-        padding              :     0 3rem 0 0
-        width                :     100%
+        padding             :     0 3rem 0 0
+        width               :     100%
 
     .center-side
-        margin-top           :     -2rem
-        padding              :     0 2rem
-        width                :     100%
+        margin-top          :     -2rem
+        padding             :     0 2rem
+        width               :     100%
 
 @media screen and (min-width : 960px) and (max-width : 1279px)
     html
-        font-size            :     14px
+        font-size           :     14px
 
     .nav-bar
-        width                :     14rem
+        width               :     14rem
 
     .center-area
-        margin-left          :     14rem
+        margin-left         :     14rem
 
     .center-content
-        padding              :     0 2rem
-        width                :     70%
+        padding             :     0 2rem
+        width               :     70%
 
     .center-side
-        padding-right        :     1rem
-        width                :     30%
+        padding-right       :     1rem
+        width               :     30%
 
 @media screen and (min-width : 1280px) and (max-width : 1499px)
     html
-        font-size            :     16px
+        font-size           :     16px
 
     .nav-bar
-        width                :     15rem
+        width               :     15rem
 
     .center-area
-        margin-left          :     15rem
+        margin-left         :     15rem
 
     .center-content
-        width                :     70%
+        width               :     70%
 
     .center-side
-        padding-right        :     2rem
-        width                :     30%
+        padding-right       :     2rem
+        width               :     30%
 
 
 @media screen and (min-width : 1500px)
     html
-        font-size            :     16px
+        font-size           :     16px
 
     .nav-bar
-        width                :     16rem
+        width               :     16rem
 
     .center-area
-        margin-left          :     16rem
+        margin-left         :     16rem
 
     .center-content
-        padding              :     0 5%
-        width                :     70%
+        padding             :     0 5%
+        width               :     70%
 
     .center-side
-        padding-right        :     5%
-        width                :     30%
+        padding-right       :     5%
+        width               :     30%

@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 
 from flask import g, redirect, request, render_template, send_file, session
 from peewee import DoesNotExist
@@ -47,7 +48,7 @@ def show_settings():
 
 @app.route( '/dbg/mail' )
 def dbg_send_mail():
-    send_mail( 'FlaskMail', 'Bok! Cemo da vidimo hoce li da radi', 'zjurelinac@gmail.com' )
+    send_mail( 'FlaskMail', 'Bok! Cemo da vidimo hoce li da radi', 'fm.radio.postaja@gmail.com', 'zjurelinac@gmail.com' )
     return 'Sent'
 
 
@@ -93,6 +94,9 @@ def get_currently_playing_track_info():
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis', 404 )
 
 @app.route( '/player/schedule' )
+def get_next_on_schedule():
+    """ """
+    pass
 
 # User auth
 
@@ -136,7 +140,11 @@ def process_registration():
         validate_user_data( first_name, last_name, email, year_of_birth, occupation,
             password = password, password2 = password2 )
         user = User.create_user( first_name, last_name, occupation, email, password )
-        # TODO: Send email with the activation code
+
+        rs = RadioStation.get()
+        body = render_template( 'mail/activate.html', activation_code = user.activation_code )
+        send_mail( '{} - Aktivacija korisničkog računa'.format( rs.name ), body, rs.email, recipient = user.email )
+
         return success_response( 'Registracija uspješna', 201 )
     except ValueError:
         return error_response( 'Uneseni su neispravni podaci' )
@@ -152,8 +160,8 @@ def process_activation( activation_code ):
     TODO: Style the response page
     """
     try:
-        User.activate_user( activation_code )
-        return 'Račun aktiviran'
+        User.activate_user( urllib.parse.quote( activation_code ) )
+        return 'Račun uspješno aktiviran'
     except DoesNotExist:
         return 'Ne postoji korisnik s danim aktivacijskim kodom', 400
 
@@ -235,12 +243,12 @@ def change_account_password():
     Request should contain `old_password`, `new_password` and `new_password2`.
     """
     old_password    = request.values.get( 'old_password' )
-    new_password    = request.values.get( 'new_password' )
+    new_password1    = request.values.get( 'new_password1' )
     new_password2   = request.values.get( 'new_password2' )
 
     try:
         validate_equal( new_password, new_password2 )
-        g.user.change_password( old_password, new_password, new_password2 )
+        g.user.change_password( old_password, new_password1, new_password2 )
         return success_response( 'Lozinka uspješno promjenjena' )
     except AuthenticationError:
         return error_response( 'Stara lozinka nije ispravna' )

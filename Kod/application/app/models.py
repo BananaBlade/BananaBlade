@@ -1,11 +1,12 @@
 import peewee
 
 from datetime import datetime, timedelta
+from flask import render_template, request
 from peewee import *
 
-from app import db
+from app import app, db
 from app.definitions import *
-from app.helpers import generate_activation_code
+from app.helpers import generate_activation_code, generate_random_string, hash_password, send_mail
 
 class BaseModel( Model ):
     """Tell peewee to use app-specific database"""
@@ -124,7 +125,7 @@ class User( BaseModel ):
         """
         user = cls.get( User.email == email )
         user._authenticate( password )
-        
+
         if not user.activated:
             raise AuthenticationError( 'Korisnički račun nije aktiviran' )
         return user
@@ -136,7 +137,7 @@ class User( BaseModel ):
         Sets basic user info given as arguments, as well as activation_code and
         last_active.
 
-        Raises peewee.IntegrityError
+        Raises peewee.IntegrityError, DoesNotExist
         """
         salt = generate_random_string( 64 )
         user = cls( first_name = first_name, last_name = last_name, occupation = occupation,
@@ -144,6 +145,7 @@ class User( BaseModel ):
         user.save()
         user.last_active = datetime.now()
         user.activation_code = generate_activation_code( user.id, user.last_active )
+
         user.save()
         return user
 
@@ -151,12 +153,14 @@ class User( BaseModel ):
     def delete_user( cls, user_id ):
         """Deletes a user with a given id
 
-        TODO: Decide whether to recursively delete everything depending on this
-              user - wishes, playlists, slots and requests.
+        Also deletes all user's slot requests, unconfirmed wishes and unfilled slots.
 
         Raises DoesNotExist
         """
-        cls.delete().where( User.id == user_id ).execute()
+        user = cls.get( User.id == user_id )
+        SlotRequest.delete().where( SlotRequest.editor == user )
+        Wish.delete().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) )
+        user.delete_instance()
 
     @classmethod
     def activate_user( cls, activation_code ):
@@ -226,7 +230,7 @@ class User( BaseModel ):
 
         Raises AuthenticationError
         """
-        if self.password_hash != hash_password( password, self.salt ):
+        if self.password_hash != hash_password( password, self.password_salt ):
             raise AuthenticationError( 'Neispravna lozinka' )
 
     def _assert_admin( self ):

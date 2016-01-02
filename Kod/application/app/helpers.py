@@ -1,5 +1,9 @@
 import random
 import string
+import urllib.parse
+
+from binascii import b2a_base64
+from hashlib import pbkdf2_hmac, sha256
 
 from flask import jsonify
 from flask.ext.mail import Message
@@ -13,54 +17,79 @@ from app import mail
 # Authentication helpers
 
 def generate_random_string( length ):
-    source = string.lowercase + string.uppercase + string.punctuation
+    """Generate a random string of a given length containing uppercase and lowercase letters, digits and ASCII punctuation."""
+    source = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
     return ''.join( random.choice( source ) for i in range( length ) )
 
 def hash_password( password, salt ):
-    pass
+    """Returns a password hash made with PBKDF2 algorithm"""
+    return b2a_base64( pbkdf2_hmac( 'sha512', password.encode( 'ascii' ), salt.encode( 'ascii' ), 100000 ) ).decode( 'ascii' )
 
 def generate_activation_code( user_id, activation_time ):
     """TODO: Come up with a way to generate unique activation code for each user_id
     and registration_time, but with random elements"""
-    return str( user_id ).rjust( 64, 'A' )
+    uid_hash = b2a_base64( sha256( str( user_id ).encode( 'ascii' ) ).digest() ).decode( 'ascii' )
+    act_hash = b2a_base64( sha256( str( activation_time ).encode( 'ascii' ) ).digest() ).decode( 'ascii' )
+    rnd_hash = b2a_base64( sha256( str( generate_random_string( 32 ) ).encode( 'ascii' ) ).digest() ).decode( 'ascii' )
+    return urllib.parse.quote( urllib.parse.quote( uid_hash + act_hash + rnd_hash, safe = '' ) )[ :256 ]
 
 
 # JSON response helpers
 
 def data_response( data, code = 200 ):
+    """ """
     return jsonify( { 'data' : data } ), code
 
 def error_response( message, code = 400 ):
+    """ """
     return jsonify( { 'error_message' : message } ), code
 
 def success_response( message, code = 200 ):
+    """ """
     return jsonify( { 'success_message' : message } ), code
 
 def not_implemented_response():
+    """ """
     return error_response( 'Funkcija još nije implementirana', 501 )
 
 
 # Mail helpers
 
-def send_mail( title, content, recipient ):
-    message = Message( title, recipients = [ recipient ] )
-    message.body = content
+def send_mail( title, content, sender, recipient ):
+    """Sends an email using Flask-Mail extension via GMail SMTP server
+
+    Mail configuration is in app config file.
+
+    Raises BadHeaderError (and some others perhaps)
+    """
+    message = Message( title, sender = sender, recipients = [ recipient ], charset = 'UTF8' )
+    message.html = content
     mail.send( message )
 
 
 # Validation helpers
 
 def validate_email( email ):
-    """ """
+    """Validates an email address argument with a default Regex pattern
+
+    Raises ValueError
+    """
     EmailValidator().validate( email )
 
 def validate_password( password ):
-    """ """
+    """Validates a password argument - tests whether length is within (6, 64)
+
+    Raises ValueError
+    """
     CharValidator( min_length = 6, max_length = 64 ).validate( password )
 
 def validate_equal( password1, password2 ):
+    """Simply compares whether two password arguments are the same
+
+    Raises ValueError
+    """
     if password1 != password2:
-        raise ValueError( 'Lozinke se une podudaraju' )
+        raise ValueError( 'Lozinke se ne podudaraju' )
 
 def validate_user_data( first_name, last_name, email, year_of_birth, occupation, password ):
     """Combined validator for all user data fields
