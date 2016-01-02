@@ -100,14 +100,14 @@ def get_currently_playing_track_info():
 def process_login():
     """Process user login
 
-    Request should contain `email` and `password_hash` arguments.
+    Request should contain `email` and `password` arguments.
     """
     email           = request.values.get( 'email' )
-    password_hash   = request.values.get( 'password_hash' )
+    password   = request.values.get( 'password' )
 
     try:
         EmailValidator().validate( email )
-        user = User.authenticate_user( email, password_hash )
+        user = User.authenticate_user( email, password )
         session[ 'user_id' ] = user.id
         return success_response( 'Uspješna prijava' )
     except ValueError:
@@ -122,19 +122,20 @@ def process_registration():
     """Process user registration
 
     Request should contain `first_name`, `last_name`, `email`, `occupation`,
-    `year_of_birth` and `password_hash` arguments.
+    `year_of_birth` and `password` arguments.
     """
     first_name      = request.values.get( 'first_name' )
     last_name       = request.values.get( 'last_name' )
     email           = request.values.get( 'email' )
     occupation      = request.values.get( 'occupation' )
     year_of_birth   = int( request.values.get( 'year_of_birth' ) )
-    password_hash   = request.values.get( 'password_hash' )
+    password        = request.values.get( 'password' )
+    password2       = request.values.get( 'password2' )
 
     try:
         validate_user_data( first_name, last_name, email, year_of_birth, occupation,
-            password_hash = password_hash )
-        user = User.create_user( first_name, last_name, occupation, email, password_hash )
+            password = password, password2 = password2 )
+        user = User.create_user( first_name, last_name, occupation, email, password )
         # TODO: Send email with the activation code
         return success_response( 'Registracija uspješna', 201 )
     except ValueError:
@@ -215,12 +216,12 @@ def modify_account_data():
 def delete_account():
     """Deletes current user's account
 
-    Request should contain `password_hash`.
+    Request should contain `password`.
     """
-    password_hash = request.values.get( 'password_hash' )
+    password = request.values.get( 'password' )
 
     try:
-        g.user.delete_account( password_hash )
+        g.user.delete_account( password )
         session.clear()
         return success_response( 'Korisnički račun uspješno izbrisan' )
     except AuthenticationError:
@@ -231,16 +232,20 @@ def delete_account():
 def change_account_password():
     """Changes user account password
 
-    Request should contain `old_password_hash` and `new_password_hash`.
+    Request should contain `old_password`, `new_password` and `new_password2`.
     """
-    old_password_hash = request.values.get( 'old_password_hash' )
-    new_password_hash = request.values.get( 'new_password_hash' )
+    old_password    = request.values.get( 'old_password' )
+    new_password    = request.values.get( 'new_password' )
+    new_password2   = request.values.get( 'new_password2' )
 
     try:
-        g.user.change_password( old_password_hash, new_password_hash )
+        validate_equal( new_password, new_password2 )
+        g.user.change_password( old_password, new_password, new_password2 )
         return success_response( 'Lozinka uspješno promjenjena' )
     except AuthenticationError:
         return error_response( 'Stara lozinka nije ispravna' )
+    except ValueError:
+        return error_response( 'Nove lozinke se ne podudaraju' )
 
 
 # User wishlist management
@@ -578,7 +583,7 @@ def modify_user_data( user_id ):
     """Modify user data
 
     Request should contain `first_name`, `last_name`, `email`, `occupation`,
-    `year_of_birth` and `password_hash` arguments.
+    and `year_of_birth` arguments.
 
     TODO: What if arguments not set, should we allow it?
     """

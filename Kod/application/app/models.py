@@ -107,13 +107,14 @@ class User( BaseModel ):
     year_of_birth   = IntegerField()
     email           = CharField( unique = True )
     password_hash   = CharField()
+    password_salt   = CharField()
     account_type    = IntegerField( default = AccountType.USER )
     last_active     = DateTimeField( null = True )
     activated       = BooleanField( default = False )
     activation_code = CharField( null = True, unique = True )
 
     @classmethod
-    def authenticate_user( cls, email, password_hash ):
+    def authenticate_user( cls, email, password ):
         """Attempts to authenticate a user with a given email and password
 
         Tests existance of user with a given email, password correctness and
@@ -122,14 +123,14 @@ class User( BaseModel ):
         Raises AuthenticationError, DoesNotExist
         """
         user = cls.get( User.email == email )
-        if user.password_hash != password_hash:
-            raise AuthenticationError( 'Neispravna lozinka' )
+        user._authenticate( password )
+        
         if not user.activated:
             raise AuthenticationError( 'Korisnički račun nije aktiviran' )
         return user
 
     @classmethod
-    def create_user( cls, first_name, last_name, occupation, year_of_birth, email, password_hash ):
+    def create_user( cls, first_name, last_name, occupation, year_of_birth, email, password ):
         """Creates a new user and stores it into the database
 
         Sets basic user info given as arguments, as well as activation_code and
@@ -137,8 +138,9 @@ class User( BaseModel ):
 
         Raises peewee.IntegrityError
         """
+        salt = generate_random_string( 64 )
         user = cls( first_name = first_name, last_name = last_name, occupation = occupation,
-            year_of_birth = year_of_birth, email = email, password_hash = password_hash )
+            year_of_birth = year_of_birth, email = email, password_hash = hash_password( password, salt ), password_salt = salt )
         user.save()
         user.last_active = datetime.now()
         user.activation_code = generate_activation_code( user.id, user.last_active )
@@ -179,17 +181,16 @@ class User( BaseModel ):
         moment = datetime.now() - timedelta.seconds( 600 )
         return cls.select().where( User.last_active > moment ).count()
 
-    def change_password( self, old_password_hash, new_password_hash ):
+    def change_password( self, old_password, new_password ):
         """Changes account password
 
-        First checks to see if old_password_hash matches the existing password.
+        First checks to see if old_password matches the existing password.
 
         Raises AuthenticationError
         """
-        if self.password_hash != old_password_hash:
-            raise AuthenticationError( 'Neispravna stara lozinka' )
+        self._authenticate( old_password )
 
-        self.password_hash = new_password_hash
+        self.password_hash = hash_password( new_password )
         self.save()
 
     def modify_account( self, first_name, last_name, email, occupation, year_of_birth ):
@@ -204,15 +205,14 @@ class User( BaseModel ):
         if email is not None: self.email = email
         self.save()
 
-    def delete_account( self, password_hash ):
+    def delete_account( self, password ):
         """Deletes user account
 
         First checks to see if account password is equal to the given one.
 
         Raises AuthenticationError
         """
-        if self.password_hash != password_hash:
-            raise AuthenticationError( 'Neispravna lozinka' )
+        self._authenticate( password )
 
         User.delete_user( self.id )
 
@@ -220,6 +220,14 @@ class User( BaseModel ):
         """Sets last_active field to now"""
         self.last_active = datetime.now()
         self.save()
+
+    def _authenticate( self, password ):
+        """Checks whether a given password matches the account one
+
+        Raises AuthenticationError
+        """
+        if self.password_hash != hash_password( password, self.salt ):
+            raise AuthenticationError( 'Neispravna lozinka' )
 
     def _assert_admin( self ):
         """Checks whether user is an administrator

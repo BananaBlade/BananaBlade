@@ -1,3 +1,6 @@
+import random
+import string
+
 from flask import jsonify
 from flask.ext.mail import Message
 
@@ -8,6 +11,13 @@ from app import mail
 # TODO: Write a few comments
 
 # Authentication helpers
+
+def generate_random_string( length ):
+    source = string.lowercase + string.uppercase + string.punctuation
+    return ''.join( random.choice( source ) for i in range( length ) )
+
+def hash_password( password, salt ):
+    pass
 
 def generate_activation_code( user_id, activation_time ):
     """TODO: Come up with a way to generate unique activation code for each user_id
@@ -44,17 +54,16 @@ def validate_email( email ):
     """ """
     EmailValidator().validate( email )
 
-def validate_password_hash( password_hash ):
+def validate_password( password ):
     """ """
-    CharValidator( min_length = 64, max_length = 64 ).validate( password_hash )
+    CharValidator( min_length = 6, max_length = 64 ).validate( password )
 
+def validate_equal( password1, password2 ):
+    if password1 != password2:
+        raise ValueError( 'Lozinke se une podudaraju' )
 
-def validate_user_data( first_name, last_name, email, year_of_birth, occupation, password_hash = 0 ):
+def validate_user_data( first_name, last_name, email, year_of_birth, occupation, password ):
     """Combined validator for all user data fields
-
-    Note: `password_hash` is by default set to 0, which is int and not a string,
-    so it could be recognized when function is called with `password_hash` equal
-    to None - say, when it wasn't provided in the request, but it should have been.
 
     Raises ValueError
     """
@@ -63,7 +72,7 @@ def validate_user_data( first_name, last_name, email, year_of_birth, occupation,
     CharValidator( min_length = 2, max_length = 64 ).validate( occupation )
     IntValidator( minimum = 1900, maximum = 2100 ).validate( year_of_birth )
     validate_email( email )
-    if password_hash != 0: validate_password_hash( password_hash )
+    validate_password( password )
 
 
 def validate_track_data( title, artist, album, duration, file_format, sample_rate, bits_per_sample,

@@ -7,7 +7,7 @@
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
     <link rel = "shortcut icon" type = "image/x-icon" href = "./img/draft/favicon.ico"/>
 </head>
-<body data-account-type = "2">
+<body data-account-type = "3">
     <header class = "header-bar">
         <div class = "app-box">
             <a href = ""><div class = "app-name"><img src = "./img/draft/logo.png" alt = "FM Radio"/></div></a>
@@ -29,13 +29,21 @@
             <li class = "nav-option-group">
                 <a href = ""><div class = "nav-option-group-name">Pregled mogućnosti</div></a>
             </li>
-            <li class = "nav-option-group">
+            <li class = "nav-option-group account-type-select admin-select">
                 <div class = "nav-option-group-name">Administratorske mogućnosti</div>
                 <ul>
                     <a href = ""><li class = "option-group-item">Zvučni zapisi</li></a>
                     <a href = ""><li class = "option-group-item">Urednici</li></a>
                     <a href = ""><li class = "option-group-item">Zahtjevi za terminima</li></a>
                     <a href = ""><li class = "option-group-item">Korisnici</li></a>
+                    <a href = ""><li class = "option-group-item active">Statistike</li></a>
+                </ul>
+            </li>
+            <li class = "nav-option-group account-type-select owner-select">
+                <div class = "nav-option-group-name">Vlasničke mogućnosti</div>
+                <ul>
+                    <a href = ""><li class = "option-group-item">Administratori</li></a>
+                    <a href = ""><li class = "option-group-item">Podaci o postaji</li></a>
                     <a href = ""><li class = "option-group-item active">Statistike</li></a>
                 </ul>
             </li>
@@ -60,45 +68,47 @@
             <header class = "content-header">
                 <div class = "content-header-left">
                     <div class = "content-header-title">Statistike</div>
-                    <div class = "content-header-subtitle">Pregledajte razne statistike o radu radiopostaje</div>
+                    <div class = "content-header-subtitle">Pregledajte razne statistike o radu radiopostaje i njenim korisnicima.</div>
                 </div>
                 <div class = "content-header-right"><i class = "material-icons icon">donut_small</i></div>
             </header>
             <div class = "content-boxes">
-                <div class = "content-box">
-                    <div class = "content-box-icon">
-                        <i class = "material-icons">graphic_eq</i>
+                <div class = "account-type-select admin-select">
+                    <div class = "content-box">
+                        <div class = "content-box-icon">
+                            <i class = "material-icons">graphic_eq</i>
+                        </div>
+                        <div class = "content-box-content">
+                            <h2 class = "content-box-name">Učestalost puštanja pojedinih zapisa</h2>
+                            <p class = "content-box-descr">Pogledajte koliko je puta koji zapis puštan u programu radiopostaje.</p>
+                        </div>
                     </div>
-                    <div class = "content-box-content">
-                        <h2 class = "content-box-name">Učestalost puštanja pojedinih zapisa</h2>
-                        <p class = "content-box-descr"></p>
+                    <div class = "content-box">
+                        <div class = "content-box-icon">
+                            <i class = "material-icons">star</i>
+                        </div>
+                        <div class = "content-box-content">
+                            <h2 class = "content-box-name">Preference urednika</h2>
+                            <p class = "content-box-descr">Pogledajte koje su zapise pojedini urednici najčešće puštali.</p>
+                        </div>
                     </div>
-                </div>
-                <div class = "content-box">
-                    <div class = "content-box-icon">
-                        <i class = "material-icons">star</i>
+                    <div class = "content-box">
+                        <div class = "content-box-icon">
+                            <i class = "material-icons">assignment</i>
+                        </div>
+                        <div class = "content-box-content">
+                            <h2 class = "content-box-name">Ukupna lista želja korisnika</h2>
+                            <p class = "content-box-descr">Pogledajte ukupnu listu želja korisnika radiopostaje.</p>
+                        </div>
                     </div>
-                    <div class = "content-box-content">
-                        <h2 class = "content-box-name">Preference urednika</h2>
-                        <p class = "content-box-descr"></p>
-                    </div>
-                </div>
-                <div class = "content-box">
-                    <div class = "content-box-icon">
-                        <i class = "material-icons">assignment</i>
-                    </div>
-                    <div class = "content-box-content">
-                        <h2 class = "content-box-name">Ukupna lista želja korisnika</h2>
-                        <p class = "content-box-descr"></p>
-                    </div>
-                </div>
-                <div class = "content-box">
-                    <div class = "content-box-icon">
-                        <i class = "material-icons">trending_up</i>
-                    </div>
-                    <div class = "content-box-content">
-                        <h2 class = "content-box-name">Popularnost najtraženijeg zapisa</h2>
-                        <p class = "content-box-descr"></p>
+                    <div class = "content-box">
+                        <div class = "content-box-icon">
+                            <i class = "material-icons">trending_up</i>
+                        </div>
+                        <div class = "content-box-content">
+                            <h2 class = "content-box-name">Popularnost najtraženijeg zapisa</h2>
+                            <p class = "content-box-descr">Pogledajte kako se popularnost trenutno najtraženijeg zapisa mijenjala kroz vrijeme.</p>
+                        </div>
                     </div>
                 </div>
                 <div class = "content-box">
@@ -107,7 +117,10 @@
                     </div>
                     <div class = "content-box-content">
                         <h2 class = "content-box-name">Aktivnost korisnika</h2>
-                        <p class = "content-box-descr"></p>
+                        <p class = "content-box-descr">Pogledajte koliko je korisnika bilo aktivno u proteklih 10 minuta.</p>
+                        <div class = "stat user-activity-stat">
+                            Broj aktivnih korisnika: 17
+                        </div>
                     </div>
                 </div>
                 <div class = "content-box">
@@ -116,7 +129,7 @@
                     </div>
                     <div class = "content-box-content">
                         <h2 class = "content-box-name">Aktivnost administratora</h2>
-                        <p class = "content-box-descr"></p>
+                        <p class = "content-box-descr">Pogledajte koji su sve administratori trenutno aktivni.</p>
                     </div>
                 </div>
             </div>
