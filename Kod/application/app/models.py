@@ -57,7 +57,7 @@ class Track( BaseModel ):
     @classmethod
     def delete_track( cls, track_id ):
         """Deletes a track with a given id"""
-        cls.delete().where( Track.id == track__id ).execute()
+        cls.delete().where( Track.id == track_id ).execute()
 
     @classmethod
     def get_currently_playing( cls ):
@@ -65,7 +65,8 @@ class Track( BaseModel ):
 
         Raises DoesNotExist
         """
-        pass    # TODO: Implement get_currently_playing()
+        time_now = datetime.now().replace( minute = 0, second = 0, microsecond = 0 )
+        slot = Slot.get( Slot.time == time_now ).join( PlaylistTrack ).join( Track )
 
     @classmethod
     def get_most_popular( cls ):
@@ -83,11 +84,8 @@ class Track( BaseModel ):
         return query
 
     @classmethod
-    def search_tracks( **search_terms ):
-        """Returns a list of tracks matching search parameters
-
-        TODO: Decide how exactly to perform searching
-        """
+    def search_tracks( term ):
+        """Returns a list of tracks matching search parameters"""
         pass
 
 
@@ -169,21 +167,28 @@ class User( BaseModel ):
         Raises DoesNotExist
         """
         user = cls.get( User.activation_code == activation_code )
+        if user.activated:
+            raise ValueError( 'Korisnički račun je već aktivan')
         user.activated = True
         user.save()
 
     @classmethod
     def list_active_admins( cls ):
         """Returns a list of all the admins active within the last 10 minutes"""
-        moment = datetime.now() - timedelta.seconds( 600 )
+        moment = datetime.now() - timedelta( seconds = 600 )
         return cls.select().where( ( User.account_type == AccountType.ADMINISTRATOR ) &
             ( User.last_active > moment ) ).order_by( User.last_name, User.first_name )
 
     @classmethod
     def count_active_users( cls ):
         """Returns a number of users active within the last 10 minutes"""
-        moment = datetime.now() - timedelta.seconds( 600 )
+        moment = datetime.now() - timedelta( seconds = 600 )
         return cls.select().where( User.last_active > moment ).count()
+
+    @classmethod
+    def search_basic_users( cls, term ):
+        """Returns a list of basic users containing `term` in their names"""
+        pass
 
     def change_password( self, old_password, new_password ):
         """Changes account password
@@ -194,11 +199,12 @@ class User( BaseModel ):
         """
         self._authenticate( old_password )
 
-        self.password_hash = hash_password( new_password )
+        self.password_hash = hash_password( new_password, self.password_salt )
         self.save()
 
-    def modify_account( self, first_name, last_name, email, occupation, year_of_birth ):
-        """Changes account data
+    def modify_account( self, first_name = None, last_name = None, email = None,
+        occupation = None, year_of_birth = None ):
+        """Changes user account data
 
         Raises peewee.IntegrityError
         """
@@ -289,7 +295,8 @@ class User( BaseModel ):
             raise AuthorizationError( 'Nije dozvoljeno pristupiti podacima ovog korisnika' )
         return user
 
-    def modify_user_account( self, user_id, first_name, last_name, email, occupation, year_of_birth ):
+    def modify_user_account( self, user_id, first_name = None, last_name = None,
+        email = None, occupation = None, year_of_birth = None ):
         """Modifies account data of a user with a given id
 
         User whose data is modified has to be either editor or basic user.
@@ -301,7 +308,7 @@ class User( BaseModel ):
         user = User.get( User.id == user_id )
         if user.account_type not in [ AccountType.USER, AccountType.EDITOR ]:
             raise AuthorizationError( 'Nije dozvoljeno mijenjati podactke ovog korisnika' )
-        user.modify_account_data( first_name, last_name, occupation, year_of_birth, email )
+        user.modify_account( first_name, last_name, occupation, year_of_birth, email )
 
     def delete_user_account( self, user_id ):
         """Deletes user account with a given id
@@ -389,7 +396,7 @@ class User( BaseModel ):
         request = SlotRequest.get( SlotRequest.id == request_id )
         request.deny()
 
-    def modify_station_data( self, name, description, oib, address, email, frequency ):
+    def modify_station_data( self, name = None, description = None, oib = None, address = None, email = None, frequency = None ):
         """Modifies radio station data
 
         Operation restricted to owner.
@@ -519,13 +526,13 @@ class User( BaseModel ):
             raise AuthorizationError( 'Nije dozvoljeno mijenjati liste drugih urednika' )
         slot.set_slot_playlist( track_list )
 
-    def get_all_tracks( self ):
+    def get_all_tracks( self, start = 0, limit = None ):
         """Returns a list of all tracks"""
-        return Track.get_tracks()
+        return Track.get_tracks( start, limit )
 
-    def search_tracks( self, **search_params ):
-        """Returns a list of all tracks matching given search parameters"""
-        return Track.search_tracks( search_params )
+    def search_tracks( self, term ):
+        """Returns a list of all tracks containing `term` in its metadata"""
+        return Track.search_tracks( term )
 
     def get_wishlist( self ):
         """Returns user's wishlist
@@ -543,9 +550,11 @@ class User( BaseModel ):
         Track list contains up to ten track ids.
         Restricted to basic users.
 
-        Raises AuthorizationError, DoesNotExist
+        Raises AuthorizationError, DoesNotExist, ValueError
         """
         self._assert_user()
+        if len( track_list ) > 10:
+            raise ValueError( 'Previše zapisa na listi želja' )
         Wish.set_user_wishlist( self, track_list )
 
     def confirm_wishlist( self ):
@@ -569,17 +578,9 @@ class User( BaseModel ):
             raise AuthorizationError( 'Pregled globalne liste želja nije dozvoljen' )
         return Wish.get_global_wishlist()
 
-    def get_global_wishlist_stat( self, **params ):
-        """Returns various global wishlist statistics
-
-        Restricted to administrators and owner.
-
-        Raises AuthorizationError
-        """
-        if self.account_type < AccountType.ADMINISTRATOR:
-            raise AuthorizationError( 'Pregled statistika globalne liste želja nije dozvoljen' )
-
-        # TODO: obtain statistics
+    def get_most_wished_track_stat( self, **params ):
+        """Return statistics about the most wished track"""
+        pass
 
     def get_active_users_count_stat( self ):
         """Returns a number of currently active users
@@ -603,7 +604,7 @@ class User( BaseModel ):
             raise AuthorizationError( 'Pregled trenutno aktivnih administratora nije dozvoljen' )
         return User.list_active_admins()
 
-    def get_editor_preferred_tracks_stat( self, editor_id, **params ):
+    def get_editor_preferred_tracks_stat( self, editor_id ):
         """Returns a list of tracks most often played by this editor
 
         Restricted to administrators.
@@ -616,11 +617,20 @@ class User( BaseModel ):
             raise TypeError( 'Odabrani korisnik nije urednik' )
         return PlaylistTrack.get_editor_preferred_tracks( editor_id )
 
+    def search_users( self, term ):
+        """Get a list of (basic) users containing `term` in their names
+
+        Raises AuthorizationError
+        """
+        if editor.account_type < AccountType.ADMINISTRATOR:
+            raise AuthorizationError( 'Pretraživanje popisa korisnika nije dozvoljeno' )
+        pass
+
 
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
     time            = DateTimeField( unique = True );
-    editor          = ForeignKeyField( User )
+    editor          = ForeignKeyField( User, related_name = 'assigned_slots' )
 
     def get_playlist( self ):
         """Returns all tracks set to be played in a given slot
@@ -641,7 +651,7 @@ class Slot( BaseModel ):
 class SlotRequest( BaseModel ):
     """Model of a request for allocating a time slot to the editor"""
     time            = TimeField();
-    editor          = ForeignKeyField( User )
+    editor          = ForeignKeyField( User, related_name = 'slot_requests' )
     days_bit_mask   = IntegerField()    # Bitmask
     start_date      = DateField()
     end_date        = DateField()
@@ -689,8 +699,8 @@ class PlaylistTrack( BaseModel ):
 
 class Wish( BaseModel ):
     """Model of a wishlist - all users' wishes"""
-    track           = ForeignKeyField( Track )
-    user            = ForeignKeyField( User )
+    track           = ForeignKeyField( Track, related_name = 'wishes' )
+    user            = ForeignKeyField( User, related_name = 'wishes' )
     date_time       = DateTimeField()
     is_temporary    = BooleanField( default = True )
 
@@ -723,20 +733,20 @@ class Wish( BaseModel ):
         Has to check that user hasn't already confirmed any wishlist within last 24 hours.
 
         Raises AuthorizationError, EnvironmentError"""
-        wishes = cls.get_user_wishlist( user )
         time_now = datetime.now()
 
-        # TODO: Check for confirmations within last 24 hours
+        last_confirmed_wish = ( Wish.select().where( ( Wish.user == user ) &
+            ( Wish.is_temporary == False ) ).order_by( Wish.date_time.desc() ).get() )
+        if last_confirmed_wish.date_time - time_now < timedelta( days = 1 ):
+            raise EnvironmentError
+        ( Wish.update( is_temporary = True ).update( date_time = time_now )
+            .where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).execute() )
 
-        for wish in wishes:
-            wish.is_temporary = False
-            wish.date_time = time_now
-            wish.save()
 
     @classmethod
-    def get_global_wishlist( cls ):
+    def get_global_wishlist( cls, start = 0, limit = None ):
         """Returns a list of all tracks on wishlists, with occurrence count"""
-        pass    # TODO: Implement get_global_wishlist()
+        pass #Wish.select().where( Wish.is_temporary == False ).
 
 
 class RadioStation( BaseModel ):

@@ -1,0 +1,98 @@
+################################################################################
+#                                                                              #
+#                      Function/method testing status                          #
+#                                                                              #
+################################################################################
+
+    Tracks
+================================================================================
+    - add_track()                   [OK]
+    - edit_track()                  [OK]
+    - delete_track()                [OK]
+    - get_currently_playing()       [NOT IMPLEMENTED]
+    - get_most_popular()            [NOT IMPLEMENTED]
+    - get_tracks()                  [OK]
+    - search_tracks()               [NOT IMPLEMENTED]
+
+
+    User
+================================================================================
+    - authenticate_user()           [OK]
+    - create_user()                 [OK]
+    - delete_user()                 [OK] (extra testing for deleting related data)
+    - activate_user()               [OK]
+    - list_active_admins()          [OK]
+    - count_active_users()          [OK]
+    - search_basic_users()          []
+    - change_password()             [OK]
+    - modify_account()              [OK]
+    - delete_account()              [OK]
+    - update_activity()             [OK]
+    - _authenticate()               [OK]
+    - _assert_admin()               [OK]
+    - _assert_editor()              [OK]
+    - _assert_owner()               [OK]
+    - _assert_user()                [OK]
+    - get_all_users()               [OK]
+    - get_user()                    [OK]
+    - modify_user_account()         [OK]
+    - delete_user_account()         [OK]
+    - get_all_editors()             [NOT TESTED]
+    - add_editor()                  []
+    - remove_editor()               []
+    - get_all_requests()            []
+    - allow_request()               []
+    - deny_request()                []
+    - modify_station_data()         []
+    - get_all_admins()              []
+    - add_admin()                   []
+    - remove_admin()                []
+    - add_track()                   []
+    - edit_track()                  []
+    - remove_track()                []
+    - get_all_slots()               []
+    - request_slot()                []
+    - get_slot_playlist()           []
+    - set_slot_playlist()           []
+    - get_all_tracks()              []
+    - search_tracks()               []
+    - get_wishlist()                [OK]
+    - set_wishlist()                [OK]
+    - confirm_wishlist()            []
+    - get_global_wishlist()         []
+    - get_active_users_count_stat() []
+    - get_active_admins_list_stat() []
+    - get_editor_preferred_tracks_stat()    []
+    - search_users()                []
+
+
+    Slot
+================================================================================
+    - get_playlist()                []
+    - set_playlist()                []
+
+
+    SlotRequest
+================================================================================
+    - make_request()                []
+    - allow()                       []
+    - deny()                        []
+
+
+    PlaylistTrack
+================================================================================
+    - make_item()                   []
+    - get_editor_preferred_tracks() []
+
+
+    Wish
+================================================================================
+    - get_user_wishlist()           [OK]
+    - set_user_wishlist()           [OK]
+    - confirm_user_wishlist()       []
+    - get_global_wishlist()         []
+
+
+    RadioStation
+================================================================================
+    - modify_station_data()         []

@@ -157,7 +157,9 @@ def process_activation( activation_code ):
         User.activate_user( urllib.parse.quote( activation_code ) )
         return 'Račun uspješno aktiviran'
     except DoesNotExist:
-        return 'Ne postoji korisnik s danim aktivacijskim kodom', 400
+        return 'Ne postoji korisnik s danim aktivacijskim kodom', 404
+    except ValueError as e:
+        return str( e ), 400
 
 @app.route( '/user/auth/signout', methods = [ 'GET' ] )
 @login_required
