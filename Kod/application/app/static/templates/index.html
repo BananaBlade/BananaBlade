@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset = "UTF-8">
+    <title>Listen to FM Radio</title>
+    <link rel = "stylesheet" href = "css/default.min.css">
+    <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
+    <link rel = "shortcut icon" type = "image/x-icon" href = "./img/draft/favicon.ico"/>
+</head>
+<body>
+    <header class = "header-bar unfixed">
+        <div class = "app-box">
+            <a href = ""><div class = "app-name"><img src = "./img/draft/logo.png" alt = "FM Radio"/></div></a>
+            <div class = "app-descr">99.4 MHz</div>
+        </div>
+        <div class = "user-box">
+            <div class = "user-name-box">
+                <form>
+                    <input type = "email" name = "email" placeholder = "E-mail"/>
+                    <input type = "password" name = "password" placeholder = "Lozinka"/>
+                    <button type = "submit">Prijavi se</button>
+                    <button type = "button" class = "dim">Registriraj se</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class = "player-wrapper section-wrapper">
+        <div class = "player-container section-container">
+            <div class = "player-box">
+                <header class = "player-header">
+                    <h2>Trenutno na programu</h2>
+                </header>
+                <div class = "player-body">
+                    <div class = "current-editor"><span>Urednik:</span> Mirko Marković </div>
+                    <div class = "player-track">
+                        <div class = "player-track-title">Violin Concerto No. 5: Tempo di minuetto</div>
+                        <div class = "player-track-info">
+                            <div class = "player-track-info-item player-track-artist">Wolfgang A. Mozart</div>
+                            <div class = "player-track-info-item player-track-album">The Very Best of Mozart</div>
+                            <div class = "player-track-info-item player-track-year">2007</div>
+                            <div class = "player-track-info-item player-track-genre">Klasična glazba</div>
+                        </div>
+                    </div>
+                </div>
+                <audio id = "radio-player" src = "media/paganini.mp3" autoplay = "autoplay" preload = "auto"></audio>
+                <div class = "player-controls">
+                    <div class = "control-buttons">
+                        <button class = "volume-button"><i class = "material-icons">volume_down</i></button>
+                        <button class = "play-button" onclick = "document.getElementById('radio-player').play()"><i class = "material-icons">play_circle_filled</i></button>
+                        <button class = "volume-button"><i class = "material-icons">volume_up</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class = "schedule-box">
+                <h2>Raspored emitiranja</h2>
+                <ul class = "schedule">
+                    <li class = "schedule-item">
+                        <div class = "item-time">10:00</div>
+                        <div class = "item-editor">Mirko Marković</div>
+                    </li>
+                    <li class = "schedule-item">
+                        <div class = "item-time">11:00</div>
+                        <div class = "item-editor">Andrija Abramović</div>
+                    </li>
+                    <li class = "schedule-item">
+                        <div class = "item-time">12:00</div>
+                        <div class = "item-editor">Borislav Borković</div>
+                    </li>
+                    <li class = "schedule-item">
+                        <div class = "item-time">13:00</div>
+                        <div class = "item-editor">Cvjeta Zuzorić</div>
+                    </li>
+                    <li class = "schedule-item">
+                        <div class = "item-time">14:00</div>
+                        <div class = "item-editor">Domagoj Delić</div>
+                    </li>
+                    <li class = "schedule-item">
+                        <div class = "item-time">15:00</div>
+                        <div class = "item-editor">Edi Ekler</div>
+                    </li>
+                    <li class = "schedule-item">
+                        <div class = "item-time">16:00</div>
+                        <div class = "item-editor">Filip Franjić</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class = "info-wrapper section-wrapper">
+        <div class = "info-container section-container">
+            <div class = "popular-info">
+                <h2>Najpopularnije</h2>
+                <ul class = "popular-tracks-list">
+                    <li data-value = "20">
+                        <div class = "popular-track-name">Hello</div>
+                        <div class = "popular-track-info">Adele</div>
+                    </li>
+                    <li data-value = "17">
+                        <div class = "popular-track-name">Same Old Love</div>
+                        <div class = "popular-track-info">Selena Gomez</div>
+                    </li>
+                    <li data-value = "13">
+                        <div class = "popular-track-name">All I Want For Christmas Is You</div>
+                        <div class = "popular-track-info">Mariah Carey</div>
+                    </li>
+                    <li data-value = "9">
+                        <div class = "popular-track-name">In The Night</div>
+                        <div class = "popular-track-info">The Weeknd</div>
+                    </li>
+                    <li data-value = "8">
+                        <div class = "popular-track-name">On My Mind</div>
+                        <div class = "popular-track-info">Ellie Goulding</div>
+                    </li>
+                </ul>
+            </div>
+            <div class = "radio-info">
+                <h2>FM Radio</h2>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                    accusantium doloremque laudantium, totam rem aperiam, eaque
+                    ipsa quae ab illo inventore veritatis et quasi architecto beatae
+                    vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
+                    voluptas sit aspernatur aut odit aut fugit, sed quia</p>
+                    <div class = "radio-image">
+                        <i class = "material-icons">blur_on</i>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class = "register-wrapper section-wrapper">
+        <div class = "register-container section-container">
+            <div class = "register-descr-box">
+                <h2>Postani dio FM Radija</h2>
+                <div class = "register-descr">
+                    <p>Registriraj se, postani korisnik <b>FM Radija</b> i sudjeluj
+                        u njegovom radu. Tvoje ideje, želje i prijedlozi mogu
+                        pomoći kako bi tvoj omiljeni radio postao još i bolji!</p>
+                    <p class = "roles-info">Kao korisnik, možeš biti:</p>
+                </div>
+                <ul class = "roles-list">
+                    <li class = "role">
+                        <div class = "role-container">
+                            <div class = "role-icon"><i class="material-icons">person</i></div>
+                            <div class = "role-name">Registrirani korisnik</div>
+                            <div class = "role-descr">Reci nam što želiš slušati i pomozi nam da program učinimo još boljim!</div>
+                        </div>
+                    </li>
+                    <li class = "role">
+                        <div class = "role-container">
+                            <div class = "role-icon"><i class="material-icons">edit</i></div>
+                            <div class = "role-name">Glazbeni urednik</div>
+                            <div class = "role-descr">Pomozi nam obogatiti program sastavljanjem vlastite glazbene emisije!</div>
+                        </div>
+                    </li>
+                    <li class = "role">
+                        <div class = "role-container">
+                            <div class = "role-icon"><i class="material-icons">build</i></div>
+                            <div class = "role-name">Administrator</div>
+                            <div class = "role-descr">Pomozi nam upravljati pjesmama, urednicima, korisnicima i terminima!</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class = "register-form-box">
+                <h2>Registriraj se</h2>
+                <form method = "post" class = "register-form">
+                    <div class = "form-line">
+                        <input type = "text" name = "first_name" placeholder = "Ime" pattern = ".{2,64}"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "text" name = "last_name" placeholder = "Prezime" pattern = ".{2,64}"/>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line">
+                        <input type = "email" name = "email" placeholder = "E-mail adresa"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "password" name = "password" placeholder = "Lozinka" pattern = ".{6,64}"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "password" name = "password2" placeholder = "Ponovljena lozinka" pattern = ".{6,64}"/>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line">
+                        <input type = "number" name = "year_of_birth" placeholder = "Godina rođenja" min = "1900" max = "2100"/>
+                    </div>
+                    <div class = "form-line">
+                        <input type = "text" name = "occupation" placeholder = "Zanimanje" pattern = ".{2,64}"/>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line tos-line">
+                        <label for = "tos" class = "tos-label">Klikom na <b>registriraj se!</b> prihvaćate <a href = "">uvjete korištenja</a> ove aplikacije.</label>
+                    </div>
+                    <div class = "form-line spacer-line"></div>
+                    <div class = "form-line">
+                        <button class = "raised">Registriraj se!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class = "footer-wrapper section-wrapper">
+        <div class = "footer-container section-container">
+            <div class = "footer-left">
+                <h2>FM Radio</h2>
+                <ul class = "radiostation-info-list">
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">Frekvencija</div>
+                        <div class = "rs-item-value">144.2 MHz</div>
+                    </li>
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">Adresa</div>
+                        <div class = "rs-item-value">Šmičiklasova 37, 10 000 Zagreb</div>
+                    </li>
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">Osobni Identifikacijski Broj</div>
+                        <div class = "rs-item-value">9876 5432 109</div>
+                    </li>
+                    <li class = "radiostation-info-item">
+                        <div class = "rs-item-name">E-mail adresa</div>
+                        <div class = "rs-item-value">kontakt@fmradio.hr</div>
+                    </li>
+                </ul>
+            </div>
+            <div class = "footer-right"></div>
+            <div class = "footer-copy">
+                Copyright &copy; 2015-16 <b>FM Radio</b>. Sva prava pridržana. Izrada i održavanje: <i>Bananablade&trade;</i>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

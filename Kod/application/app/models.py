@@ -1,12 +1,12 @@
 import peewee
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from flask import render_template, request
 from peewee import *
 
 from app import app, db
 from app.definitions import *
-from app.helpers import generate_activation_code, generate_random_string, hash_password, send_mail
+from app.helpers import *
 
 class BaseModel( Model ):
     """Tell peewee to use app-specific database"""
@@ -63,15 +63,34 @@ class Track( BaseModel ):
     def get_currently_playing( cls ):
         """Returns the currently playing track and the editor who selected it
 
-        Raises DoesNotExist
+        Raises DoesNotExist, IndexError
+        TODO: Possible error upon first track on the list
         """
-        time_now = datetime.now().replace( minute = 0, second = 0, microsecond = 0 )
-        slot = Slot.get( Slot.time == time_now ).join( PlaylistTrack ).join( Track )
+        current_time = datetime.now()
+        start_time = current_time.replace( minute = 0, second = 0, microsecond = 0 )
+        slot = Slot.get( Slot.time == start_time )
+        playlist = iter( slot.get_playlist().order_by( PlaylistTrack.index ) )
+        ptrack = next( playlist )
+        try:
+            while True:
+                if start_time > current_time - timedelta( seconds = ptrack.play_duration ):
+                    print( current_time, start_time )
+                    return ptrack, ( current_time - start_time ).total_seconds(), slot.editor
+                ptrack = next( playlist )
+                start_time += timedelta( seconds = ptrack.play_duration )
+        except StopIteration:
+            raise IndexError
 
     @classmethod
     def get_most_popular( cls ):
-        """Returns a list of 5 most popular tracks"""
-        pass    # TODO: Implement get_most_popular()
+        """Returns a list of 5 most popular tracks
+
+        Popularity is calculated as 3*number_of_times_played + 2*number_of_times_wished.
+        """
+        return ( Track.select( Track,
+            ( fn.Count( fn.Distinct( PlaylistTrack.id ) )*3 + fn.Count( fn.Distinct( Wish.id ) )*2 ).alias( 'popularity') )
+            .join( PlaylistTrack, JOIN.LEFT_OUTER ).switch( Track ).join( Wish, JOIN.LEFT_OUTER )
+            .group_by( Track ).order_by( SQL( 'popularity DESC' ) ).limit( 5 ) )
 
     @classmethod
     def get_tracks( cls, start = 0, limit = None ):
@@ -84,9 +103,24 @@ class Track( BaseModel ):
         return query
 
     @classmethod
-    def search_tracks( term ):
-        """Returns a list of tracks matching search parameters"""
-        pass
+    def search_tracks( cls, term ):
+        """Returns a list of tracks matching search parameters
+
+        Search term must be at least 3 characters long.
+        Results are ordered by relevance:
+            - Title containing the term is worth 4 pts
+            - Artist containing the term is worth 3 pts
+            - Album containing the term is worth 2 pts
+        Points are summed and tracks ordered by their scores.
+
+        Raises ValueError
+        """
+        if len( term ) < 3:
+            raise ValueError
+        results = [ ( calc_track_score( track, term ), track ) for track in
+            Track.select().where( Track.title.contains( term ) | Track.artist.contains( term ) | Track.album.contains( term ) ) ]
+        results.sort( key = lambda x : x[ 0 ], reverse = True )
+        return map( lambda x : x[ 1 ], results )
 
 
 class User( BaseModel ):
@@ -95,10 +129,15 @@ class User( BaseModel ):
     Contains basic user info and some extra, app-specific data:
         - account_type      :: type of user account, can be USER, EDITOR, ADMIN, OWNER
         - last_active       :: date and time of last user activity (user is considered
-            active if last_active is within last 10 minutes )
+                               active if last_active is within last 10 minutes )
         - activation_code   :: unique code generated from user_id, registration time,
-            and some random data, used for account activation via link sent to email
+                               and some random data, used for account activation via link
+                               sent to email
         - activated         :: whether account is already activated
+        - password_salt     :: a random string of characters added to the password before
+                               hashing to prevent some types of malicious attacks
+
+        NOTE: User password must contain only ASCII symbols (possibly relaxed in the future)
     """
     first_name      = CharField()
     last_name       = CharField()
@@ -187,8 +226,22 @@ class User( BaseModel ):
 
     @classmethod
     def search_basic_users( cls, term ):
-        """Returns a list of basic users containing `term` in their names"""
-        pass
+        """Returns a list of basic users containing `term` in their names
+
+        Search term must be at least 2 characters long.
+        Results are ordered by relevance:
+            - Last_name containing the term is worth 3 pts
+            - First_name containing the term is worth 2 pts
+        Points are summed and users ordered by their scores.
+
+        Raises ValueError
+        """
+        if len( term ) < 2:
+            raise ValueError
+        results = [ ( calc_user_score( user, term ), user ) for user in
+            User.select().where( User.first_name.contains( term ) | User.last_name.contains( term ) ) ]
+        results.sort( key = lambda x : x[ 0 ], reverse = True )
+        return map( lambda x : x[ 1 ], results )
 
     def change_password( self, old_password, new_password ):
         """Changes account password
@@ -346,7 +399,7 @@ class User( BaseModel ):
         user = User.get( User.id == user_id )
         if user.account_type != AccountType.USER:
             raise TypeError( 'Korisnika nije moguće postaviti za urednika, već ima neku ulogu' )
-        user.account_type = AccountType.E
+        user.account_type = AccountType.EDITOR
         user.save()
 
     def remove_editor( self, editor_id ):
@@ -361,8 +414,18 @@ class User( BaseModel ):
         editor = User.get( User.id == editor_id )
         if editor.account_type != AccountType.EDITOR:
             raise TypeError( 'Korisniku nije mu moguće oduzeti uredničke ovlasti jer nije urednik' )
-        user.account_type = AccountType.USER
-        user.save()
+        editor.account_type = AccountType.USER
+        editor.save()
+
+    def get_requests( self ):
+        """Returns a list of all editor's slot pending requests
+
+        Operation restricted to editors.
+
+        Raises AuthorizationError
+        """
+        self._assert_editor()
+        return SlotRequest.select().where( SlotRequest.editor == self ).join( User )
 
     def get_all_requests( self ):
         """Returns a list of all slot pending requests
@@ -440,11 +503,11 @@ class User( BaseModel ):
         Raises AuthorizationError, TypeError, DoesNotExist
         """
         self._assert_owner()
-        user = User.get( User.id == user_id )
-        if user.account_type != AccountType.ADMINISTRATOR:
+        admin = User.get( User.id == admin_id )
+        if admin.account_type != AccountType.ADMINISTRATOR:
             raise TypeError( 'Korisniku nije moguće oduzeti administratorske ovlasti jer nije administrator' )
-        user.account_type = AccountType.USER
-        user.save()
+        admin.account_type = AccountType.USER
+        admin.save()
 
     def add_track( self, **track_data ):
         """Adds a new track into system
@@ -454,7 +517,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         self._assert_admin()
-        Track.add_track( track_data )
+        Track.add_track( **track_data )
 
     def edit_track( self, track_id , **track_data ):
         """Edits track data
@@ -464,7 +527,7 @@ class User( BaseModel ):
         Raises AuthorizationError, DoesNotExist
         """
         self._assert_admin()
-        Track.edit_track( track_id, track_data )
+        Track.edit_track( track_id, **track_data )
 
     def remove_track( self, track_id ):
         """Removes a track from the system
@@ -476,16 +539,27 @@ class User( BaseModel ):
         self._assert_admin()
         Track.delete_track( track_id )
 
-    def get_all_slots( self ):
-        """Returns a list of all the slots allocated to the editor
+    def get_slots( self ):
+        """Returns a list of all future slots allocated to the editor
 
         Operation restricted to editors.
 
         Raises AuthorizationError
         """
         self._assert_editor()
-        return ( Slot.select().where( ( Slot.editor == self ) & ( Slot.time > datetime.now() ) )
-            .join( PlaylistTrack, JOIN.LEFT_OUTER ).switch( Slot ).annotate( PlaylistTrack ) )
+        return ( Slot.select( Slot, fn.Count( SQL( '*' ) ).alias( 'count' ) )
+            .where( ( Slot.editor == self ) & ( Slot.time > datetime.now() ) )
+            .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
+
+    def get_all_slots( self ):
+        """Returns a list of all future slots allocated to anyone
+
+        Operation restricted to admins.
+
+        Raises AuthorizationError
+        """
+        self._assert_admin()
+        return Slot.get_slots()
 
     def request_slot( self, time, days_bit_mask, start_date, end_date ):
         """Request a new time slot
@@ -497,7 +571,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         self._assert_editor()
-        Request.make_request( time, days_bit_mask, start_date, end_date, self )
+        SlotRequest.make_request( time, days_bit_mask, start_date, end_date, self )
 
     def get_slot_playlist( self, slot_id ):
         """Returns stored playlist for a given slot
@@ -510,7 +584,7 @@ class User( BaseModel ):
         slot = Slot.get( Slot.id == slot_id )
         if slot.editor != self:
             raise AuthorizationError( 'Nije dozvoljeno pregledavati liste drugih urednika' )
-        return slot.get_slot_playlist()
+        return slot.get_playlist()
 
     def set_slot_playlist( self, slot_id, track_list ):
         """Sets playlist for a given slot
@@ -524,7 +598,7 @@ class User( BaseModel ):
         slot = Slot.get( Slot.id == slot_id )
         if slot.editor != self:
             raise AuthorizationError( 'Nije dozvoljeno mijenjati liste drugih urednika' )
-        slot.set_slot_playlist( track_list )
+        slot.set_playlist( track_list )
 
     def get_all_tracks( self, start = 0, limit = None ):
         """Returns a list of all tracks"""
@@ -578,9 +652,10 @@ class User( BaseModel ):
             raise AuthorizationError( 'Pregled globalne liste želja nije dozvoljen' )
         return Wish.get_global_wishlist()
 
-    def get_most_wished_track_stat( self, **params ):
+    def get_most_wished_track_stat( self, start_date, end_date ):
         """Return statistics about the most wished track"""
-        pass
+        track = Wish.get_global_wishlist().first().track
+        return track
 
     def get_active_users_count_stat( self ):
         """Returns a number of currently active users
@@ -622,15 +697,22 @@ class User( BaseModel ):
 
         Raises AuthorizationError
         """
-        if editor.account_type < AccountType.ADMINISTRATOR:
+        if self.account_type < AccountType.ADMINISTRATOR:
             raise AuthorizationError( 'Pretraživanje popisa korisnika nije dozvoljeno' )
-        pass
+        return User.search_basic_users( term )
 
 
 class Slot( BaseModel ):
     """Model of a single time slot assigned to an editor"""
     time            = DateTimeField( unique = True );
     editor          = ForeignKeyField( User, related_name = 'assigned_slots' )
+
+    @classmethod
+    def get_slots( cls ):
+        """Return a list of all future assigned slots"""
+        return ( cls.select( Slot, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
+            .where( Slot.time > datetime.now() )
+            .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
 
     def get_playlist( self ):
         """Returns all tracks set to be played in a given slot
@@ -644,15 +726,17 @@ class Slot( BaseModel ):
 
         Track list consists of triplets (index, track_id, play_duration).
         """
-        for index, track_id, duration in track_list:
-            PlaylistTrack.make_item( self, index, track_id, duration )
+        PlaylistTrack.delete().where( PlaylistTrack.slot == self ).execute()
+        data = [ { 'slot' : self, 'track' : Track.get( Track.id == t_id ), 'index' : i, 'play_duration' : d }
+            for i, t_id, d in track_list ]
+        PlaylistTrack.insert_many( data ).execute()
 
 
 class SlotRequest( BaseModel ):
     """Model of a request for allocating a time slot to the editor"""
     time            = TimeField();
     editor          = ForeignKeyField( User, related_name = 'slot_requests' )
-    days_bit_mask   = IntegerField()    # Bitmask
+    days_bit_mask   = IntegerField()
     start_date      = DateField()
     end_date        = DateField()
 
@@ -664,8 +748,14 @@ class SlotRequest( BaseModel ):
         request.save()
 
     def allow( self ):
-        """ """
-        pass    # TODO: Implement allow()
+        """Allow a slot request
+
+        Raises peewee.IntegrityError
+        """
+        times = generate_times( self.time, self.days_bit_mask, self.start_date, self.end_date )
+        data = [ { 'time' : t, 'editor' : self.editor } for t in times ]
+        Slot.insert_many( data ).execute()
+        self.delete_instance()
 
     def deny( self ):
         """Denies slot request by removing it from the database"""
@@ -679,22 +769,13 @@ class PlaylistTrack( BaseModel ):
     index           = IntegerField()
     play_duration   = IntegerField()
 
-    class Meta:
-        primary_key = CompositeKey( 'slot', 'track', 'index' )
-
-    @classmethod
-    def make_item( cls, slot, index, track_id, duration ):
-        """Make a new PlaylistTrack item
-
-        Equivalent to placing a track onto slot's playlist.
-        """
-        item = cls( slot = slot, track_id = track_id, index = index, play_duration = duration )
-        item.save()
-
     @classmethod
     def get_editor_preferred_tracks( cls, editor_id ):
         """Return a list of tracks most often played by this editor"""
-        pass    # TODO: Implement get_editor_preferred_tracks()
+        editor = User.get( User.id == editor_id )
+        return ( PlaylistTrack.select( Track, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
+            .join( Slot ).where( Slot.editor == editor ).switch( PlaylistTrack )
+            .join( Track ).group_by( Track ).order_by( 'count DESC' ) )
 
 
 class Wish( BaseModel ):
@@ -720,10 +801,9 @@ class Wish( BaseModel ):
         """
         cls.delete().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).execute()
         time_now = datetime.now()
-        for track_id in track_list:
-            # TODO: Try to do this without Track.get query
-            wish = cls( track = Track.get( Track.id == track_id ), user = user, date_time = time_now )
-            wish.save()
+        data = [ { 'track' : Track.get( Track.id == track_id ), 'user' : user, 'date_time' : time_now }
+            for track_id in track_list ]
+        cls.insert_many( data ).execute()
 
     @classmethod
     def confirm_user_wishlist( cls, user ):
@@ -736,17 +816,19 @@ class Wish( BaseModel ):
         time_now = datetime.now()
 
         last_confirmed_wish = ( Wish.select().where( ( Wish.user == user ) &
-            ( Wish.is_temporary == False ) ).order_by( Wish.date_time.desc() ).get() )
-        if last_confirmed_wish.date_time - time_now < timedelta( days = 1 ):
+            ( Wish.is_temporary == False ) ).order_by( Wish.date_time.desc() ).first() )
+        if last_confirmed_wish is not None and last_confirmed_wish.date_time - time_now < timedelta( days = 1 ):
             raise EnvironmentError
-        ( Wish.update( is_temporary = True ).update( date_time = time_now )
+        ( Wish.update( is_temporary = False, date_time = time_now )
             .where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).execute() )
 
 
     @classmethod
     def get_global_wishlist( cls, start = 0, limit = None ):
         """Returns a list of all tracks on wishlists, with occurrence count"""
-        pass #Wish.select().where( Wish.is_temporary == False ).
+        return ( Wish.select( Wish, fn.Count( Wish.id ).alias( 'count' ) )
+            .where( Wish.is_temporary == False ).join( Track ).group_by( Track )
+            .order_by( SQL( 'count' ).desc() ) )
 
 
 class RadioStation( BaseModel ):
@@ -758,8 +840,11 @@ class RadioStation( BaseModel ):
     email           = CharField()
     frequency       = FloatField()
 
+    class Meta:
+        primary_key = False
+
     @classmethod
-    def modifiy_data( name, description, oib, address, email, frequency ):
+    def modifiy_data( cls, name = None, description = None, oib = None, address = None, email = None, frequency = None ):
         """Modify radio station data"""
         station = cls.get()
         if name is not None: station.name = name
@@ -768,4 +853,6 @@ class RadioStation( BaseModel ):
         if address is not None: station.address = address
         if email is not None: station.email = email
         if frequency is not None: station.frequency = frequency
-        station.save()
+        RadioStation.update( name = station.name, description = station.description,
+            oib = station.oib, address = station.address, email = station.email,
+            frequency = station.frequency ).execute()

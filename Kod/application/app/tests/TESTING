@@ -9,10 +9,10 @@
     - add_track()                   [OK]
     - edit_track()                  [OK]
     - delete_track()                [OK]
-    - get_currently_playing()       [NOT IMPLEMENTED]
-    - get_most_popular()            [NOT IMPLEMENTED]
+    - get_currently_playing()       [OK]
+    - get_most_popular()            [OK]
     - get_tracks()                  [OK]
-    - search_tracks()               [NOT IMPLEMENTED]
+    - search_tracks()               [OK]
 
 
     User
@@ -23,7 +23,7 @@
     - activate_user()               [OK]
     - list_active_admins()          [OK]
     - count_active_users()          [OK]
-    - search_basic_users()          []
+    - search_basic_users()          [OK]
     - change_password()             [OK]
     - modify_account()              [OK]
     - delete_account()              [OK]
@@ -37,62 +37,64 @@
     - get_user()                    [OK]
     - modify_user_account()         [OK]
     - delete_user_account()         [OK]
-    - get_all_editors()             [NOT TESTED]
-    - add_editor()                  []
-    - remove_editor()               []
-    - get_all_requests()            []
-    - allow_request()               []
-    - deny_request()                []
-    - modify_station_data()         []
-    - get_all_admins()              []
-    - add_admin()                   []
-    - remove_admin()                []
-    - add_track()                   []
-    - edit_track()                  []
-    - remove_track()                []
-    - get_all_slots()               []
-    - request_slot()                []
-    - get_slot_playlist()           []
-    - set_slot_playlist()           []
-    - get_all_tracks()              []
-    - search_tracks()               []
+    - get_all_editors()             [OK]
+    - add_editor()                  [OK]
+    - remove_editor()               [OK]
+    - get_requests()                [OK]
+    - get_all_requests()            [OK]
+    - allow_request()               [OK]
+    - deny_request()                [OK]
+    - modify_station_data()         [OK]
+    - get_all_admins()              [OK]
+    - add_admin()                   [OK]
+    - remove_admin()                [OK]
+    - add_track()                   [OK]
+    - edit_track()                  [OK]
+    - remove_track()                [OK]
+    - get_all_slots()               [OK]
+    - get_slots()                   [OK]
+    - request_slot()                [OK]
+    - get_slot_playlist()           [OK]
+    - set_slot_playlist()           [OK]
+    - get_all_tracks()              [OK]
+    - search_tracks()               [OK]
     - get_wishlist()                [OK]
     - set_wishlist()                [OK]
-    - confirm_wishlist()            []
-    - get_global_wishlist()         []
-    - get_active_users_count_stat() []
-    - get_active_admins_list_stat() []
-    - get_editor_preferred_tracks_stat()    []
-    - search_users()                []
+    - confirm_wishlist()            [OK]
+    - get_global_wishlist()         [OK]
+    - get_active_users_count_stat() [OK]
+    - get_active_admins_list_stat() [OK]
+    - get_editor_preferred_tracks_stat()    [OK]
+    - search_users()                [OK]
 
 
     Slot
 ================================================================================
-    - get_playlist()                []
-    - set_playlist()                []
+    - get_slots()                   [OK]
+    - get_playlist()                [OK]
+    - set_playlist()                [OK]
 
 
     SlotRequest
 ================================================================================
-    - make_request()                []
-    - allow()                       []
-    - deny()                        []
+    - make_request()                [OK]
+    - allow()                       [OK]
+    - deny()                        [OK]
 
 
     PlaylistTrack
 ================================================================================
-    - make_item()                   []
-    - get_editor_preferred_tracks() []
+    - get_editor_preferred_tracks() [OK]
 
 
     Wish
 ================================================================================
     - get_user_wishlist()           [OK]
     - set_user_wishlist()           [OK]
-    - confirm_user_wishlist()       []
-    - get_global_wishlist()         []
+    - confirm_user_wishlist()       [OK]
+    - get_global_wishlist()         [OK]
 
 
     RadioStation
 ================================================================================
-    - modify_station_data()         []
+    - modify_station_data()         [OK]

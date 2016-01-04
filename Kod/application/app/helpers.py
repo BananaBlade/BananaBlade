@@ -3,6 +3,7 @@ import string
 import urllib.parse
 
 from binascii import b2a_base64
+from datetime import date, datetime, time, timedelta
 from hashlib import pbkdf2_hmac, sha256
 
 from flask import jsonify
@@ -12,7 +13,6 @@ from app.validators import *
 from app import mail
 
 
-# TODO: Write a few comments
 
 # Authentication helpers
 
@@ -26,13 +26,47 @@ def hash_password( password, salt ):
     return b2a_base64( pbkdf2_hmac( 'sha512', password.encode( 'ascii' ), salt.encode( 'ascii' ), 100000 ) ).decode( 'ascii' )
 
 def generate_activation_code( user_id, activation_time ):
-    """TODO: Come up with a way to generate unique activation code for each user_id
-    and registration_time, but with random elements"""
+    """Generate unique user activagtion code, using user_id and registration_time, but with random elements"""
     uid_hash = b2a_base64( sha256( str( user_id ).encode( 'ascii' ) ).digest() ).decode( 'ascii' )
     act_hash = b2a_base64( sha256( str( activation_time ).encode( 'ascii' ) ).digest() ).decode( 'ascii' )
     rnd_hash = b2a_base64( sha256( str( generate_random_string( 32 ) ).encode( 'ascii' ) ).digest() ).decode( 'ascii' )
     return urllib.parse.quote( urllib.parse.quote( uid_hash + act_hash + rnd_hash, safe = '' ) )[ :256 ]
 
+
+# Query ranking helpers
+
+def calc_track_score( track, term ):
+    return ( ( 4 if term in track.title else 0 )
+           + ( 3 if term in track.artist else 0 )
+           + ( 2 if term in track.album else 0 ) )
+
+def calc_user_score( user, term ):
+    return ( ( 3 if term in user.last_name else 0 )
+           + ( 2 if term in user.first_name else 0 ) )
+
+
+# Date helpers
+
+def deconstruct_bitmask( bitmask ):
+    days = [ d if bitmask & ( 1<<d ) else -1 for d in range( 7 ) ]
+    return filter( lambda x : x >= 0, days )
+
+def generate_times( time, bitmask, start_date, end_date ):
+    days = list( deconstruct_bitmask( bitmask ) )
+    current_date = start_date - timedelta( days = start_date.weekday() + days[ 0 ] )
+    current = datetime.combine( current_date, time )
+    end_time = datetime.combine( end_date, time )
+    day_index = 0
+    times = []
+    while current <= end_time:
+        times.append( current )
+        if day_index < len( days )-1:
+            current += timedelta( days = days[ day_index+1 ] - days[ day_index ] )
+            day_index += 1
+        else:
+            current += timedelta( days = 7 - days[ day_index ] )
+            day_index = 0
+    return times
 
 # JSON response helpers
 

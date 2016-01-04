@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset = "UTF-8">
+    <title>Brisanje računa &ndash; FM Radio</title>
+    <link rel = "stylesheet" href = "css/default.min.css">
+    <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
+    <link rel = "shortcut icon" type = "image/x-icon" href = "./img/draft/favicon.ico"/>
+</head>
+<body data-account-type = "1">
+    <header class = "header-bar">
+        <div class = "app-box">
+            <a href = ""><div class = "app-name"><img src = "./img/draft/logo.png" alt = "FM Radio"/></div></a>
+            <div class = "app-descr">99.4 MHz</div>
+        </div>
+        <div class = "user-box">
+            <div class = "user-name-box">
+                <i class = "material-icons user-icon">account_circle</i>
+                <div class = "user-name">Mirko Horvat<span class = "user-type">administrator</span></div>
+            </div>
+        </div>
+    </header>
+    <nav class = "nav-bar">
+        <div class = "nav-bar-top-spacer"></div>
+        <ul>
+            <li class = "nav-option-group">
+                <a href = ""><div class = "nav-option-group-name">Slušaj radio</div></a>
+            </li>
+            <li class = "nav-option-group">
+                <a href = ""><div class = "nav-option-group-name">Pregled mogućnosti</div></a>
+            </li>
+            <div class = "nav-special-select">
+                <li class = "nav-option-group user-nav-group">
+                    <div class = "nav-option-group-name">Korisničke mogućnosti</div>
+                    <ul>
+                        <a href = ""><li class = "option-group-item">Lista želja</li></a>
+                    </ul>
+                </li>
+                <li class = "nav-option-group editor-nav-group">
+                    <div class = "nav-option-group-name">Uredničke mogućnosti</div>
+                    <ul>
+                        <a href = ""><li class = "option-group-item">Termini reprodukcije</li></a>
+                    </ul>
+                </li>
+                <li class = "nav-option-group admin-nav-group">
+                    <div class = "nav-option-group-name">Administratorske mogućnosti</div>
+                    <ul>
+                        <a href = ""><li class = "option-group-item">Zvučni zapisi</li></a>
+                        <a href = ""><li class = "option-group-item">Urednici</li></a>
+                        <a href = ""><li class = "option-group-item">Zahtjevi za terminima</li></a>
+                        <a href = ""><li class = "option-group-item">Korisnici</li></a>
+                        <a href = ""><li class = "option-group-item">Statistike</li></a>
+                    </ul>
+                </li>
+                <li class = "nav-option-group owner-nav-group">
+                    <div class = "nav-option-group-name">Vlasničke mogućnosti</div>
+                    <ul>
+                        <a href = ""><li class = "option-group-item">Administratori</li></a>
+                        <a href = ""><li class = "option-group-item">Podaci o postaji</li></a>
+                        <a href = ""><li class = "option-group-item">Statistike</li></a>
+                    </ul>
+                </li>
+            </div>
+            <li class = "nav-option-group">
+                <div class = "nav-option-group-name">Postavke računa</div>
+                <ul>
+                    <a href = ""><li class = "option-group-item">Osobni podaci</li></a>
+                    <a href = ""><li class = "option-group-item">Promjena lozinke</li></a>
+                    <a href = ""><li class = "option-group-item active">Brisanje računa</li></a>
+                </ul>
+            </li>
+            <li class = "nav-option-group">
+                <a href = ""><div class = "nav-option-group-name">Odjavi se</div></a>
+            </li>
+        </ul>
+    </nav>
+    <div class = "center-area">
+        <header class = "center-header">
+            <div class = "view-path">Obriši račun</div>
+        </header>
+        <div class = "center-content">
+            <header class = "content-header">
+                <div class = "content-header-left">
+                    <div class = "content-header-title">Brisanje računa</div>
+                    <div class = "content-header-subtitle">Zauvijek obrišite svoj
+                        korisnički račun i sve uz njega vezane podatke. <b>Oprez! Jednom
+                        kada to odlučite učiniti, više nema povratka.</b></div>
+                </div>
+                <div class = "content-header-right"><i class = "material-icons icon">block</i></div>
+            </header>
+            <div class = "content-primary content-form">
+                <form>
+                    <div class = "form-line">
+                        <label for = "old_password">Lozinka (za potvrdu)</label>
+                        <input type = "password" name = "password" value = ""/>
+                    </div>
+                    <div class = "form-line">
+                        <div class = "left-spacer"></div>
+                        <button class = "raised alt">Obriši račun</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -12,7 +12,6 @@ from app.models import *
 from app.validators import CharValidator, EmailValidator
 
 # Various todos:
-#       TODO: Check track path on input for possible malicious attacks
 #       TODO: Setup cache to enable proper signing out (otherwise user could remain
 #             signed in for a while)
 #       TODO: Reformulate error messages - decide upon unique format
@@ -33,18 +32,8 @@ def preprocess_request():
 @app.route( '/' )
 def show_index():
     """Displays the index page"""
-    # TODO: Implement
     return 'Index'
 
-@app.route( '/settings' )
-@login_required
-def show_settings():
-    """Displays the settings page - where frontend app is located"""
-    # TODO: Implement
-    return 'Settings'
-
-
-# Debug routes
 
 # Player routes
 
@@ -55,10 +44,12 @@ def get_currently_playing_track():
     No request parameters required.
     """
     try:
-        track = Track.get_currently_playing()
-        return send_file( track.path )
+        pt, _, _ = Track.get_currently_playing()
+        return send_file( pt.track.path )
     except DoesNotExist:
-        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis', 404 )
+        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: trenutno se ne ništa ne emitira', 404 )
+    except IndexError:
+        return error_response( 'Greška na listi za reprodukciju, nije moguće dohvatiti trenutno svirani zapis', 404 )
 
 @app.route( '/player/info', methods = [ 'GET' ] )
 def get_currently_playing_track_info():
@@ -67,9 +58,11 @@ def get_currently_playing_track_info():
     No request parameters required.
     """
     try:
-        track, editor = Track.get_currently_playing()
+        pt, time, editor = Track.get_currently_playing()
+        track = pt.track
         data = {
             'editor'            : editor.first_name + ' ' + editor.last_name,
+            'time'              : time,
             'id'                : track.id,
             'title'             : track.title,
             'artist'            : track.artist,
@@ -598,8 +591,6 @@ def modify_user_data( user_id ):
 
     Request should contain `first_name`, `last_name`, `email`, `occupation`,
     and `year_of_birth` arguments.
-
-    TODO: What if arguments not set, should we allow it?
     """
     first_name      = request.values.get( 'first_name' )
     last_name       = request.values.get( 'last_name' )

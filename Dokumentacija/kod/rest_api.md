@@ -3,7 +3,6 @@
 ## API actions
 
 # IMPORTANT: Modified, for newer version see Docs
-# NOTE: Listing all tracks for regular user, for use in making wishlists
 
 - **/user**, different user actions
     - **/auth**, actions related to user authentication
