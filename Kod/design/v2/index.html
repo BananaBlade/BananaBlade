@@ -7,20 +7,23 @@
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
     <link rel = "shortcut icon" type = "image/x-icon" href = "./img/draft/favicon.ico"/>
 </head>
-<body>
+<body data-logged-in = "no">
     <header class = "header-bar unfixed">
         <div class = "app-box">
             <a href = ""><div class = "app-name"><img src = "./img/draft/logo.png" alt = "FM Radio"/></div></a>
-            <div class = "app-descr">99.4 MHz</div>
         </div>
         <div class = "user-box">
-            <div class = "user-name-box">
-                <form>
+            <div class = "user-form-box">
+                <form method = "post" action = "/user/auth/login">
                     <input type = "email" name = "email" placeholder = "E-mail"/>
                     <input type = "password" name = "password" placeholder = "Lozinka"/>
                     <button type = "submit">Prijavi se</button>
-                    <button type = "button" class = "dim">Registriraj se</button>
+                    <a href = "#register"><button type = "button" class = "dim">Registriraj se</button></a>
                 </form>
+            </div>
+            <div class = "user-name-box">
+                <i class = "material-icons user-icon">account_circle</i>
+                <div class = "user-name">Mirko Horvat<span class = "user-type">administrator</span></div>
             </div>
         </div>
     </header>
@@ -42,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <audio id = "radio-player" src = "media/paganini.mp3" autoplay = "autoplay" preload = "auto"></audio>
+                <audio id = "radio-player" src = "media/paganini.mp3" preload = "auto"></audio>
                 <div class = "player-controls">
                     <div class = "control-buttons">
                         <button class = "volume-button"><i class = "material-icons">volume_down</i></button>
@@ -127,7 +130,7 @@
         </div>
     </div>
     <div class = "register-wrapper section-wrapper">
-        <div class = "register-container section-container">
+        <div class = "register-container section-container" id = "register">
             <div class = "register-descr-box">
                 <h2>Postani dio FM Radija</h2>
                 <div class = "register-descr">
@@ -162,7 +165,7 @@
             </div>
             <div class = "register-form-box">
                 <h2>Registriraj se</h2>
-                <form method = "post" class = "register-form">
+                <form method = "post" class = "register-form" action = "user/auth/register">
                     <div class = "form-line">
                         <input type = "text" name = "first_name" placeholder = "Ime" pattern = ".{2,64}"/>
                     </div>

@@ -86,17 +86,21 @@ h2
 input, select, textarea
     background         :     none
     border             :     none
-    border-bottom      :     2px solid $border_color
+    border-bottom      :     0.125rem solid $border_color
+    box-shadow         :     none
     display            :     block
     font               :
         family               :     $base_font
         size                 :     1rem
     height             :     2rem
     line-height        :     1.75rem
+    outline            :     none
     padding            :     0.125rem 0.5rem
 
     &:focus
         border-bottom-color  :     $primary_color
+        box-shadow           :     none
+        outline              :     none
 
     &:invalid, &:-moz-ui-invalid
         border-bottom-color  :     $accent_color
@@ -126,6 +130,7 @@ button
     +user-select
     background         :     none
     border             :     none
+    box-shadow         :     none
     color              :     $text_color
     display            :     block
     font               :
@@ -260,7 +265,6 @@ body
     bottom             :     0
     position           :     fixed
     top                :     3rem
-    //width              :     16rem
 
 .center-area
     margin-top         :     3rem
@@ -304,7 +308,6 @@ body
     float              :     left
     margin             :     2rem 0
     padding            :     4rem 0 1rem 0
-    //width              :     20rem
 
 
 // Top bar styles
@@ -348,6 +351,7 @@ body
         height               :     1.5rem
         float                :     left
         font-size            :     0.8rem
+        line-height          :     1.25rem
         margin               :     0.25rem 0
         width                :     10rem
 
@@ -360,14 +364,19 @@ body
         padding              :     0 0.75rem
 
 .user-name-box
-    float              :     left
-    margin-right       :     0.5rem
+    padding-right      :     0.25rem
 
     .material-icons
         font-size            :     2rem
         float                :     right
         line-height          :     2rem
         margin-left          :     0.5rem
+
+.user-form-box
+    padding-right      :     0.5rem
+
+*[data-logged-in = "no"] .user-name-box, *[data-logged-in = "yes"] .user-form-box, *[data-logged-in = "yes"] .register-wrapper
+    display            :     none
 
 .user-type
     color              :     $tertiary_text_color
@@ -863,6 +872,75 @@ fieldset[ disabled ]
         line-height         :     1.5rem
 
 
+// Editor slots styles
+
+.calendar-wrapper
+    padding           :     1.5rem
+
+.large-calendar
+    background        :     $base_background_color
+    border            :     1px solid $border_color
+    height            :     20rem
+    padding           :     1rem
+
+*[data-status = "view"] .calendar-option, *[data-status = "change"] .calendar-actions
+    display           :     none
+
+.calendar-actions
+    overflow          :     hidden
+    padding           :     0 1.5rem 1.5rem 1.5rem
+
+    button
+        color               :     $secondary_text_color
+        float               :     right
+
+        &:hover
+            color                 :     $text_color
+
+.calendar-option
+    background        :     $primary_color
+    color             :     $alt_text_color
+    padding           :     1.5rem
+
+    h3
+        font-size           :     1.2rem
+        line-height         :     2rem
+
+    label
+        color               :     fade-out( $alt_text_color, 0.4 )
+
+    input, select
+        border-bottom-color :     fade-out( $alt_text_color, 0.8 )
+        color               :     $alt_text_color
+
+        &:focus
+            border-bottom-color   :     #fff
+
+    option
+        background          :     #fff
+        color               :     $text_color
+
+.day-checks
+    +column( 3, 4 )
+
+    input
+        box-sizing            :     border-box
+        margin                :     0
+        width                 :     2rem
+
+.check-labels
+    +container
+    clear             :     both
+
+    li
+        float               :     left
+        font-family         :     $header_font
+        padding-right       :     2px
+        text-align          :     center
+        width               :     2rem
+
+
+
 // Statistics styles
 
 .stat
@@ -895,7 +973,7 @@ fieldset[ disabled ]
     margin-left       :     -1rem
     padding-top       :     1rem
 
-*[data-state = "display"] .stat-item-option, *[data-state = "change"] .stat-display
+*[data-state = "view"] .stat-item-option, *[data-state = "change"] .stat-display
     display           :     none
 
 .stat-item-display
@@ -1392,6 +1470,61 @@ p.register-bait
     padding           :     3rem 0 1rem 0
     width             :     100%
 
+
+// Message views styles
+
+.message-wrapper
+    margin-top        :     3rem
+    position          :     fixed
+    height            :     100%
+    width             :     100%
+
+    &[data-type = "success"]
+        background          :     $dark_primary_color
+        color               :     $alt_text_color
+
+        h1:after
+            content               :     "done"
+
+    &[data-type = "error"]
+        background          :     $accent_color
+        color               :     $alt_text_color
+
+        h1:after
+            content               :     "close"
+
+    &[data-type = "info"]
+        background          :     $accent2_color
+        color               :     $alt_text_color
+
+        h1:after
+            content               :     "message"
+
+.message-container
+    width             :     60rem
+
+.message-header
+    padding-bottom    :     2rem
+
+    h1
+        font-size           :     2rem
+        line-height         :     3rem
+
+        &:after
+            display               :     block
+            font-family           :     "Material Icons"
+            font-size             :     8rem
+            float                 :     right
+            margin-right          :     1rem
+
+
+.message-content
+
+    p
+        color               :     fade-out( $alt_text_color, 0.1 )
+        font-size           :     1.1rem
+        line-height         :     1.75rem
+        width               :     50rem
 
 // Media queries
 
