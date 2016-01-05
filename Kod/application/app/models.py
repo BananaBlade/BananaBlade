@@ -239,7 +239,8 @@ class User( BaseModel ):
         if len( term ) < 2:
             raise ValueError
         results = [ ( calc_user_score( user, term ), user ) for user in
-            User.select().where( User.first_name.contains( term ) | User.last_name.contains( term ) ) ]
+            User.select().where( ( User.account_type == AccountType.USER ) & 
+            ( User.first_name.contains( term ) | User.last_name.contains( term ) ) ) ]
         results.sort( key = lambda x : x[ 0 ], reverse = True )
         return map( lambda x : x[ 1 ], results )
 

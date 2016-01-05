@@ -124,3 +124,49 @@
     - /user/account/modify          [OK]
     - /user/account/delete          [OK]
     - /user/account/change_password [OK]
+
+    - /user/wishlist/get            []
+    - /user/wishlist/set            []
+    - /user/wishlist/confirm        []
+
+    - /admin/tracks/add             []
+    - /admin/tracks/<id>/edit       []
+    - /admin/tracks/<id>/delete     []
+
+    - /admin/editors/list           []
+    - /admin/editors/add/<id>       []
+    - /admin/editors/<id>/remove    []
+
+    - /admin/requests/list          []
+    - /admin/requests/<id>/allow    []
+    - /admin/requests/<id>/deny     []
+
+    - /admin/users/list             []
+    - /admin/users/<id>/get         []
+    - /admin/users/<id>/modify      []
+    - /admin/users/<id>/delete      []
+
+    - /editor/slots/list            []
+    - /editor/slots/request         []
+    - /editor/slots/<id>/get_list   []
+    - /editor/slots/<id>/set_list   []
+
+    - /owner/admins/list            [OK]
+    - /owner/admins/add/<id>        [OK]
+    - /owner/admins/<id>/remove     [OK]
+
+    - /owner/station/modify         []
+
+    - /tracks/list                  [OK]
+    - /tracks/search                [OK]
+    - /tracks/wishlist              [OK]
+    - /tracks/popular               []
+
+    - /users/search                 [OK]
+
+    - /stats/tracks/<id>            []
+    - /stats/wishlist               []
+    - /stats/tracks/most_wanted     []
+    - /stats/editors/<id>/preferred_tracks []
+    - /stats/active_users/count     []
+    - /stats/active_admins/list     []

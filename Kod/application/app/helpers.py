@@ -125,43 +125,46 @@ def validate_equal( password1, password2 ):
     if password1 != password2:
         raise ValueError( 'Lozinke se ne podudaraju.' )
 
-def validate_user_data( first_name, last_name, occupation, year_of_birth, email, password = None, allow_nones = False ):
+def validate_user_data( first_name, last_name, occupation, year_of_birth, email, password = None ):
     """Combined validator for all user data fields
-
-    If `allow_nones` is set to True, None arguments are allowed.
 
     Raises ValueError
     """
-    if not allow_nones or first_name is not None:
-        CharValidator( min_length = 2, max_length = 64, message = 'Ime nije ispravno.' ).validate( first_name )
-    if not allow_nones or last_name is not None:
-        CharValidator( min_length = 2, max_length = 64, message = 'Prezime nije ispravno.' ).validate( last_name )
-    if not allow_nones or occupation is not None:
-        CharValidator( min_length = 2, max_length = 64, message = 'Zanimanje nije ispravno.' ).validate( occupation )
-    if not allow_nones or year_of_birth is not None:
-        IntValidator( minimum = 1900, maximum = 2100, message = 'Godina rođenja nije ispravna.' ).validate( year_of_birth )
-    if not allow_nones or email is not None:
-        validate_email( email )
-    if not allow_nones or password is not None:
-        validate_password( password )
+    CharValidator( min_length = 2, max_length = 64, message = 'Ime nije ispravno.' ).validate( first_name )
+    CharValidator( min_length = 2, max_length = 64, message = 'Prezime nije ispravno.' ).validate( last_name )
+    CharValidator( min_length = 2, max_length = 64, message = 'Zanimanje nije ispravno.' ).validate( occupation )
+    IntValidator( minimum = 1900, maximum = 2100, message = 'Godina rođenja nije ispravna.' ).validate( year_of_birth )
+    validate_email( email )
+    validate_password( password )
 
 def validate_track_data( title, artist, album, duration, file_format, sample_rate, bits_per_sample,
     genre, publisher, carrier_type, year ):
     """Combined validator for all track data fields
 
+    Only the `title`, `artist` and `duration` are mandatory.
+
     Raises ValueError
     """
-    CharValidator( min_length = 1, max_length = 128 ).validate( title )
-    CharValidator( min_length = 1, max_length = 128 ).validate( artist )
-    CharValidator( min_length = 1, max_length = 64 ).validate( album )
+    CharValidator( min_length = 1, max_length = 128, message = 'Naziv zapisa nije ispravan.' ).validate( title )
+    CharValidator( min_length = 1, max_length = 128, message = 'Naziv izvođača nije ispravan.' ).validate( artist )
     IntValidator( minimum = 1 ).validate( duration )
-    CharValidator( min_length = 3, max_length = 32 ).validate( file_format )
-    FloatValidator( minimum = 8, maximum = 512 ).validate( sample_rate )
-    IntValidator( minimum = 4, maximum = 512 ).validate( bits_per_sample )
-    CharValidator( min_length = 2, max_length = 128 ).validate( genre )
-    CharValidator( min_length = 2, max_length = 64 ).validate( publisher )
-    CharValidator( min_length = 2, max_length = 64 ).validate( carrier_type )
-    IntValidator( minimum = -5000, maximum = 2100 ).validate( year )
+
+    if album is not None:
+        CharValidator( min_length = 1, max_length = 64, message = 'Naziv albuma nije ispravan.' ).validate( album )
+    if file_format is not None:
+        CharValidator( min_length = 3, max_length = 32, message = 'Naziv formata zapisa nije ispravan.' ).validate( file_format )
+    if sample_rate is not None:
+        FloatValidator( minimum = 8, maximum = 512, message = 'Vrijednost frekvencija uzorkovanja nije ispravna.' ).validate( sample_rate )
+    if bits_per_sample is not None:
+        IntValidator( minimum = 4, maximum = 512, message = 'Vrijednost broja bitova kvantizacije nije ispravna.' ).validate( bits_per_sample )
+    if genre is not None:
+        CharValidator( min_length = 2, max_length = 128, message = 'Žanr zapisa nije ispravnog oblika.' ).validate( genre )
+    if publisher is not None:
+        CharValidator( min_length = 2, max_length = 64, message = 'Naziv izdavača nije ispravan.' ).validate( publisher )
+    if carrier_type is not None:
+        CharValidator( min_length = 2, max_length = 64, message = 'Vrsta nosača zvuka nije ispravna.' ).validate( carrier_type )
+    if year is not None:
+        IntValidator( minimum = -5000, maximum = 2100, message = 'Godina izdavanja nije ispravnog oblika.' ).validate( year )
 
 
 def validate_radio_station_data( name, description, oib, address, email, frequency ):
