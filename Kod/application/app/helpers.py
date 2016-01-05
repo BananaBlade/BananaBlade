@@ -115,7 +115,7 @@ def validate_password( password ):
 
     Raises ValueError
     """
-    CharValidator( min_length = 6, max_length = 64 ).validate( password )
+    CharValidator( min_length = 6, max_length = 64, message = 'Lozinka nije ispravnog oblika.' ).validate( password )
 
 def validate_equal( password1, password2 ):
     """Simply compares whether two password arguments are the same
@@ -123,20 +123,27 @@ def validate_equal( password1, password2 ):
     Raises ValueError
     """
     if password1 != password2:
-        raise ValueError( 'Lozinke se ne podudaraju' )
+        raise ValueError( 'Lozinke se ne podudaraju.' )
 
-def validate_user_data( first_name, last_name, email, year_of_birth, occupation, password ):
+def validate_user_data( first_name, last_name, occupation, year_of_birth, email, password = None, allow_nones = False ):
     """Combined validator for all user data fields
+
+    If `allow_nones` is set to True, None arguments are allowed.
 
     Raises ValueError
     """
-    CharValidator( min_length = 2, max_length = 64 ).validate( first_name )
-    CharValidator( min_length = 2, max_length = 64 ).validate( last_name )
-    CharValidator( min_length = 2, max_length = 64 ).validate( occupation )
-    IntValidator( minimum = 1900, maximum = 2100 ).validate( year_of_birth )
-    validate_email( email )
-    validate_password( password )
-
+    if not allow_nones or first_name is not None:
+        CharValidator( min_length = 2, max_length = 64, message = 'Ime nije ispravno.' ).validate( first_name )
+    if not allow_nones or last_name is not None:
+        CharValidator( min_length = 2, max_length = 64, message = 'Prezime nije ispravno.' ).validate( last_name )
+    if not allow_nones or occupation is not None:
+        CharValidator( min_length = 2, max_length = 64, message = 'Zanimanje nije ispravno.' ).validate( occupation )
+    if not allow_nones or year_of_birth is not None:
+        IntValidator( minimum = 1900, maximum = 2100, message = 'Godina rođenja nije ispravna.' ).validate( year_of_birth )
+    if not allow_nones or email is not None:
+        validate_email( email )
+    if not allow_nones or password is not None:
+        validate_password( password )
 
 def validate_track_data( title, artist, album, duration, file_format, sample_rate, bits_per_sample,
     genre, publisher, carrier_type, year ):
@@ -157,16 +164,16 @@ def validate_track_data( title, artist, album, duration, file_format, sample_rat
     IntValidator( minimum = -5000, maximum = 2100 ).validate( year )
 
 
-def validate_radio_station_data( name, oib, address, email, frequency ):
+def validate_radio_station_data( name, description, oib, address, email, frequency ):
     """Combined validator for radio station data fields
 
     Raises ValueError
     """
-    CharValidator( min_length = 3, max_length = 64 ).validate( name )
+    CharValidator( min_length = 3, max_length = 64, message = 'Ime postaje nije ispravnog oblika.' ).validate( name )
     OIBValidator().validate( oib )
-    CharValidator( min_length = 4, max_length = 128 ).validate( address )
+    CharValidator( min_length = 4, max_length = 128, message = 'Adresa nije ispravna.' ).validate( address )
     EmailValidator().validate( email )
-    FloatValidator( minimum = 0.5, maximum = 120 ).validate( frequency )
+    FloatValidator( minimum = 0.5, maximum = 120, message = 'Vrijednost frekvencije nije ispravna.' ).validate( frequency )
 
 
 def validate_filename( filename ):
@@ -178,4 +185,4 @@ def validate_filename( filename ):
     """
     valid_extensions = [ 'mp3', 'wav', 'ogg' ]
     if not '.' in filename or filename.rsplit( '.', maxsplit = 1 )[ 1 ] not in valid_extensions:
-        raise ValueError( 'Nepodržani nastavak datoteke' )
+        raise ValueError( 'Nepodržani nastavak datoteke.' )

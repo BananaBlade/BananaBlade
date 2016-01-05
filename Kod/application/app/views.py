@@ -14,7 +14,6 @@ from app.validators import CharValidator, EmailValidator
 # Various todos:
 #       TODO: Setup cache to enable proper signing out (otherwise user could remain
 #             signed in for a while)
-#       TODO: Reformulate error messages - decide upon unique format
 
 
 # Pre-request setup
@@ -50,6 +49,8 @@ def get_currently_playing_track():
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: trenutno se ne ništa ne emitira', 404 )
     except IndexError:
         return error_response( 'Greška na listi za reprodukciju, nije moguće dohvatiti trenutno svirani zapis', 404 )
+    except:
+        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis.', 404 )
 
 @app.route( '/player/info', methods = [ 'GET' ] )
 def get_currently_playing_track_info():
@@ -78,12 +79,24 @@ def get_currently_playing_track_info():
         }
         return data_response( data )
     except DoesNotExist:
-        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis', 404 )
+        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis.', 404 )
+    except:
+        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis.', 404 )
 
 @app.route( '/player/schedule' )
 def get_next_on_schedule():
-    """ """
-    pass
+    """Returns a list of current and 6 next assigned slots
+
+    No request parameters required.
+    """
+    try:
+        data = [{
+            'time'      :   slot.time,
+            'editor'    :   slot.editor.first_name + ' ' + slot.editor.last_name
+        } for slot in Slot.get_next_on_schedule() ]
+        return data_response( data )
+    except:
+        return error_response( 'Nije moguće dohvatiti raspored.' )
 
 # User auth
 
@@ -94,19 +107,22 @@ def process_login():
     Request should contain `email` and `password` arguments.
     """
     email           = request.values.get( 'email' )
-    password   = request.values.get( 'password' )
+    password        = request.values.get( 'password' )
 
     try:
         EmailValidator().validate( email )
+        validate_password( password )
         user = User.authenticate_user( email, password )
         session[ 'user_id' ] = user.id
-        return success_response( 'Uspješna prijava' )
-    except ValueError:
-        return error_response( 'Email adresa nije ispravna' )
+        return success_response( 'Uspješna prijava.' )
+    except ValueError as e:
+        return error_response( 'Uneseni su neispravni podaci: ' + str( e ) )
     except DoesNotExist:
-        return error_response( 'Ne postoji korisnik s danom email adresom', 404 )
+        return error_response( 'Ne postoji korisnik s danom email adresom.', 404 )
     except AuthenticationError as e:
         return error_response( str( e ) )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/user/auth/register', methods = [ 'POST' ] )
 def process_registration():
@@ -117,42 +133,49 @@ def process_registration():
     """
     first_name      = request.values.get( 'first_name' )
     last_name       = request.values.get( 'last_name' )
-    email           = request.values.get( 'email' )
     occupation      = request.values.get( 'occupation' )
-    year_of_birth   = int( request.values.get( 'year_of_birth' ) )
+    year_of_birth   = request.values.get( 'year_of_birth' )
+    email           = request.values.get( 'email' )
     password        = request.values.get( 'password' )
     password2       = request.values.get( 'password2' )
 
+    if year_of_birth is not None:
+        year_of_birth = int( year_of_birth )
+
     try:
-        validate_user_data( first_name, last_name, email, year_of_birth, occupation,
-            password = password, password2 = password2 )
-        user = User.create_user( first_name, last_name, occupation, email, password )
+        validate_user_data( first_name, last_name, occupation, year_of_birth, email,
+            password = password )
+        validate_equal( password, password2 )
+        user = User.create_user( first_name, last_name, occupation, year_of_birth, email, password )
 
         rs = RadioStation.get()
         body = render_template( 'mail/activate.html', activation_code = user.activation_code )
         send_mail( '{} - Aktivacija korisničkog računa'.format( rs.name ), body, rs.email, recipient = user.email )
 
-        return success_response( 'Registracija uspješna', 201 )
-    except ValueError:
-        return error_response( 'Uneseni su neispravni podaci' )
+        return success_response( 'Registracija uspješna.', 201 )
+    except ValueError as e:
+        return error_response( 'Uneseni su neispravni podaci: ' + str( e ) )
     except peewee.IntegrityError:
-        return error_response( 'Već postoji korisnik s danom email adresom', 409 )
+        return error_response( 'Već postoji korisnik s danom email adresom.', 409 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/user/auth/activate/<activation_code>', methods = [ 'GET' ] )
 def process_activation( activation_code ):
     """Process account activation
 
     No request parameters required, `activation_code` obtained from the URL
-
-    TODO: Style the response page
     """
     try:
         User.activate_user( urllib.parse.quote( activation_code ) )
-        return 'Račun uspješno aktiviran'
+        return render_template( 'message_response.html', message = { 'type' : 'success', 'title' : 'Račun aktiviran',
+            'text' : 'Vaš korisnički račun uspješno je aktiviran i sada se možete prijavljivati u sustav.' } )
     except DoesNotExist:
-        return 'Ne postoji korisnik s danim aktivacijskim kodom', 404
+        return render_template( 'message_response.html', message = { 'type' : 'error', 'title' : 'Pogreška pri aktivaciji računa',
+            'text' : 'Ne postoji korisnički račun s danim aktivacijskim kodom, provjerite jeste li kliknuli na ispravnu poveznicu.' } ), 404
     except ValueError as e:
-        return str( e ), 400
+        return render_template( 'message_response.html', message = { 'type' : 'error', 'title' : 'Pogreška pri aktivaciji računa',
+        'text' : 'Vaš korisnički račun već je aktiviran.'} ), 400
 
 @app.route( '/user/auth/signout', methods = [ 'GET' ] )
 @login_required
@@ -206,17 +229,22 @@ def modify_account_data():
     first_name      = request.values.get( 'first_name' )
     last_name       = request.values.get( 'last_name' )
     email           = request.values.get( 'email' )
-    year_of_birth   = int( request.values.get( 'year_of_birth' ) )
+    year_of_birth   = request.values.get( 'year_of_birth' )
     occupation      = request.values.get( 'occupation' )
 
+    if year_of_birth is not None:
+        year_of_birth = int( year_of_birth )
+
     try:
-        validate_user_data( first_name, last_name, email, year_of_birth, occupation )
-        g.user.modify_account( first_name, last_name, email, year_of_birth, occupation )
-        return success_response( 'Korisnički podaci uspješno promjenjeni' )
-    except ValueError:
-        return error_response( 'Nisu uneseni ispravni podaci' )
+        validate_user_data( first_name, last_name, occupation, year_of_birth, email, allow_nones = True )
+        g.user.modify_account( first_name, last_name, occupation, year_of_birth, email )
+        return success_response( 'Korisnički podaci uspješno promjenjeni.' )
+    except ValueError as e:
+        return error_response( 'Nisu uneseni ispravni podaci: ' + str( e ) )
     except peewee.IntegrityError:
-        return error_response( 'Email adresa se već koristi', 409 )
+        return error_response( 'Email adresa se već koristi.', 409 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/user/account/delete', methods = [ 'POST' ] )
 @login_required
@@ -230,9 +258,13 @@ def delete_account():
     try:
         g.user.delete_account( password )
         session.clear()
-        return success_response( 'Korisnički račun uspješno izbrisan' )
+        return success_response( 'Korisnički račun uspješno izbrisan.' )
     except AuthenticationError:
-        return error_response( 'Nije unesena ispravna lozinka' )
+        return error_response( 'Nije unesena ispravna lozinka.' )
+    except DoesNotExist:
+        return error_response( 'Korisnički račun ne postoji.' )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/user/account/change_password', methods = [ 'POST' ] )
 @login_required
@@ -242,17 +274,20 @@ def change_account_password():
     Request should contain `old_password`, `new_password` and `new_password2`.
     """
     old_password    = request.values.get( 'old_password' )
-    new_password1    = request.values.get( 'new_password1' )
+    new_password1   = request.values.get( 'new_password1' )
     new_password2   = request.values.get( 'new_password2' )
 
     try:
-        validate_equal( new_password, new_password2 )
-        g.user.change_password( old_password, new_password1, new_password2 )
+        validate_password( new_password1 )
+        validate_equal( new_password1, new_password2 )
+        g.user.change_password( old_password, new_password1 )
         return success_response( 'Lozinka uspješno promjenjena' )
     except AuthenticationError:
         return error_response( 'Stara lozinka nije ispravna' )
-    except ValueError:
-        return error_response( 'Nove lozinke se ne podudaraju' )
+    except ValueError as e:
+        return error_response( str( e ) )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 
 # User wishlist management
@@ -281,6 +316,8 @@ def get_wishlist():
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Korisnik nema mogućnost pregledavanja svoje liste želja', 403 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/user/wishlist/set', methods = [ 'POST' ] )
 @login_required
@@ -296,6 +333,8 @@ def set_wishlist():
         return success_response( 'Lista želja uspješno pohranjena', 201 )
     except AuthorizationError:
         return error_response( 'Korisnik nema mogućnost stvaranja svoje liste želja', 403 )
+    except:
+        return error_response( 'Nevaljan zahtjev' )
 
 @app.route( '/user/wishlist/confirm', methods = [ 'POST' ] )
 @login_required
@@ -311,6 +350,8 @@ def confirm_wishlist():
         return error_response( 'Korisnik nema mogućnost potvrđivanja svoje liste želja', 403 )
     except EnvironmentError:
         return error_response( 'Nije moguće potvrditi listu želja, to je već učinjeno unutar proteklih 24 sata', 409 )
+    except:
+        return error_response( 'Nevaljan zahtjev' )
 
 
 # Admin track management
@@ -329,20 +370,32 @@ def add_track():
     title           = request.values.get( 'title' )
     artist          = request.values.get( 'artist' )
     album           = request.values.get( 'album' )
-    duration        = int( request.values.get( 'duration' ) )
+    duration        = request.values.get( 'duration' )
     file_format     = request.values.get( 'file_format' )
-    sample_rate     = float( request.values.get( 'sample_rate' ) )
-    bits_per_sample = int( request.values.get( 'bits_per_sample' ) )
+    sample_rate     = request.values.get( 'sample_rate' )
+    bits_per_sample = request.values.get( 'bits_per_sample' )
     genre           = request.values.get( 'genre' )
     publisher       = request.values.get( 'publisher' )
     carrier_type    = request.values.get( 'carrier_type' )
-    year            = int( request.values.get( 'year' ) )
+    year            = request.values.get( 'year' )
     audio_file      = request.files.get( 'audio_file' )
+
+    if duration is not None:
+        duration = int( duration )
+
+    if sample_rate is not None:
+        sample_rate = float( sample_rate )
+
+    if bits_per_sample is not None:
+        bits_per_sample = int( bits_per_sample )
+
+    if year is not None:
+        year = int( year )
 
     try:
         validate_track_data( title, artist, album, duration, file_format, sample_rate,
             bits_per_sample, genre, publisher, carrier_type, year )
-        if audio_file is None: raise ValueError
+        if audio_file is None: raise ValueError( 'Nije priložena zvučna datoteka.' )
 
         validate_filename( audio_file.filename )
         filename = secure_filename( audio_file.filename )
@@ -352,11 +405,13 @@ def add_track():
             file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,
             genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
         audio_file.save( path )
-        return success_response( 'Zvučni zapis uspješno dodan', 201 )
+        return success_response( 'Zvučni zapis uspješno dodan.', 201 )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti dodavati zvučne zapise', 403 )
-    except ValueError:
-        return error_response( 'Nisu uneseni ispravni podaci' )
+        return error_response( 'Korisnik nema ovlasti dodavati zvučne zapise.', 403 )
+    except ValueError as e:
+        return error_response( 'Nisu uneseni ispravni podaci: ' + str( e ) )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 
 @app.route( '/admin/tracks/<int:track_id>/edit', methods = [ 'POST' ] )
@@ -371,14 +426,26 @@ def edit_track( track_id ):
     title           = request.values.get( 'title' )
     artist          = request.values.get( 'artist' )
     album           = request.values.get( 'album' )
-    duration        = int( request.values.get( 'duration' ) )
+    duration        = request.values.get( 'duration' )
     file_format     = request.values.get( 'file_format' )
-    sample_rate     = float( request.values.get( 'sample_rate' ) )
-    bits_per_sample = int( request.values.get( 'bits_per_sample' ) )
+    sample_rate     = request.values.get( 'sample_rate' )
+    bits_per_sample = request.values.get( 'bits_per_sample' )
     genre           = request.values.get( 'genre' )
     publisher       = request.values.get( 'publisher' )
     carrier_type    = request.values.get( 'carrier_type' )
-    year            = int( request.values.get( 'year' ) )
+    year            = request.values.get( 'year' )
+
+    if duration is not None:
+        duration = int( duration )
+
+    if sample_rate is not None:
+        sample_rate = float( sample_rate )
+
+    if bits_per_sample is not None:
+        bits_per_sample = int( bits_per_sample )
+
+    if year is not None:
+        year = int( year )
 
     try:
         validate_track_data( title, artist, album, duration, file_format, sample_rate,
@@ -386,13 +453,15 @@ def edit_track( track_id ):
         g.user.edit_track( track_id, title = title, artist = artist, album = album, duration = duration,
             file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,
             genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
-        return success_response( 'Podaci o zvučnom zapisu uspješno promjenjeni' )
+        return success_response( 'Podaci o zvučnom zapisu uspješno promjenjeni.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti dodavati zvučne zapise', 403 )
+        return error_response( 'Korisnik nema ovlasti dodavati zvučne zapise.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji zvučni zapis s danim id-om', 404 )
-    except ValueError:
-        return error_response( 'Nisu uneseni ispravni podaci' )
+        return error_response( 'Ne postoji zvučni zapis s danim id-om.', 404 )
+    except ValueError as e:
+        return error_response( 'Nisu uneseni ispravni podaci: ' + str( e ) )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/admin/tracks/<int:track_id>/delete', methods = [ 'POST' ] )
 @login_required
@@ -405,13 +474,15 @@ def delete_track( track_id ):
         path = Track.get( Track.id == track_id )
         os.remove( path )
         g.user.remove_track( track_id )
-        return success_response( 'Zvučni zapis uspješno izbrisan' )
+        return success_response( 'Zvučni zapis uspješno izbrisan.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti brisati zvučne zapise', 403 )
+        return error_response( 'Korisnik nema ovlasti brisati zvučne zapise.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji zvučni zapis s danim id-om', 404 )
+        return error_response( 'Ne postoji zvučni zapis s danim id-om.', 404 )
     except OSError:
-        return error_response( 'Greška u sustavu' )
+        return error_response( 'Greška u sustavu.' )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 
 # Admin editors management
@@ -435,7 +506,7 @@ def list_editors():
         } for editor in editors ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Nije dozvoljeno dohvatiti popis urednika' )
+        return error_response( 'Nije dozvoljeno dohvatiti popis urednika.' )
 
 @app.route( '/admin/editors/add/<int:user_id>', methods = [ 'POST' ] )
 @login_required
@@ -446,13 +517,15 @@ def add_editor( user_id ):
     """
     try:
         g.user.add_editor( user_id )
-        return success_response( 'Korisnik uspješno postavljen za urednika' )
+        return success_response( 'Korisnik uspješno postavljen za urednika.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti postavljanja urednika', 403 )
+        return error_response( 'Korisnik nema ovlasti postavljanja urednika.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+        return error_response( 'Ne postoji korisnik s danim id-om.', 404 )
     except TypeError as e:
         return error_response( str( e ) )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/admin/editors/<int:editor_id>/remove', methods = [ 'POST' ] )
 @login_required
@@ -463,13 +536,15 @@ def remove_editor( editor_id ):
     """
     try:
         g.user.remove_editor( user_id )
-        return success_response( 'Korisniku uspješno oduzete uredničke ovlasti' )
+        return success_response( 'Korisniku uspješno oduzete uredničke ovlasti.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti za uklanjane urednika', 403 )
+        return error_response( 'Korisnik nema ovlasti za uklanjane urednika.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+        return error_response( 'Ne postoji korisnik s danim id-om.', 404 )
     except TypeError as e:
         return error_response( str( e ) )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 
 # Admin requests management
@@ -503,7 +578,7 @@ def list_requests():
         } for req in requests ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti pregledavati zahtjeve za terminima', 403 )
+        return error_response( 'Korisnik nema ovlasti pregledavati zahtjeve za terminima.', 403 )
 
 @app.route( '/admin/requests/<int:request_id>/allow', methods = [ 'POST' ] )
 @login_required
@@ -514,11 +589,13 @@ def allow_request( request_id ):
     """
     try:
         g.user.allow_request( request_id )
-        return success_response( 'Zahtjev uspješno odobren' )
+        return success_response( 'Zahtjev uspješno odobren.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti odobravati zahtjeve', 403 )
+        return error_response( 'Korisnik nema ovlasti odobravati zahtjeve.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji zahtjev s danim id-om', 404 )
+        return error_response( 'Ne postoji zahtjev s danim id-om.', 404 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
 @login_required
@@ -529,11 +606,13 @@ def deny_request( request_id ):
     """
     try:
         g.user.deny_request( request_id )
-        return success_response( 'Zahtjev uspješno odbijen' )
+        return success_response( 'Zahtjev uspješno odbijen.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti odbijati zahtjeve', 403 )
+        return error_response( 'Korisnik nema ovlasti odbijati zahtjeve.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji zahtjev s danim id-om', 404 )
+        return error_response( 'Ne postoji zahtjev s danim id-om.', 404 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 
 # Admin user management
@@ -558,7 +637,9 @@ def list_users():
         } for user in users ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti dohvatiti popis svih korisnika', 403 )
+        return error_response( 'Korisnik nema ovlasti dohvatiti popis svih korisnika.', 403 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/admin/users/<int:user_id>/get', methods = [ 'GET' ] )
 @login_required
@@ -580,9 +661,11 @@ def get_user_data( user_id ):
         }
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti pregledavati tuđe podatke', 403 )
+        return error_response( 'Korisnik nema ovlasti pregledavati tuđe podatke.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+        return error_response( 'Ne postoji korisnik s danim id-om.', 404 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/admin/users/<int:user_id>/modify', methods = [ 'POST' ] )
 @login_required
@@ -596,20 +679,26 @@ def modify_user_data( user_id ):
     last_name       = request.values.get( 'last_name' )
     email           = request.values.get( 'email' )
     occupation      = request.values.get( 'occupation' )
-    year_of_birth   = int( request.values.get( 'year_of_birth' ) )
+    year_of_birth   = request.values.get( 'year_of_birth' )
+
+    if year_of_birth is not None:
+        year_of_birth = int( year_of_birth )
 
     try:
+        # TODO: Change
         validate_user_data( first_name, last_name, email, occupation, year_of_birth )
         g.user.modify_user_data( user_id, first_name, last_name, email, occupation, year_of_birth )
-        return success_response( 'Korisnički podaci uspješno promjenjeni' )
+        return success_response( 'Korisnički podaci uspješno promjenjeni.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti mijenjati podatke ovog korisnika', 403 )
+        return error_response( 'Korisnik nema ovlasti mijenjati podatke ovog korisnika.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
-    except ValueError:
-        return error_response( 'Uneseni su neispravni podaci' )
+        return error_response( 'Ne postoji korisnik s danim id-om.', 404 )
+    except ValueError as e:
+        return error_response( 'Uneseni su neispravni podaci: ' + str( e ) )
     except peewee.IntegrityError:
-        return error_response( 'Email adresa se već koristi', 409 )
+        return error_response( 'Email adresa se već koristi.', 409 )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev.' )
 
 @app.route( '/admin/users/<int:user_id>/delete', methods = [ 'POST' ] )
 @login_required
@@ -620,11 +709,13 @@ def delete_user( user_id ):
     """
     try:
         g.user.delete_user_account( user_id )
-        return success_response( 'Korisnik uspješno izbrisan' )
+        return success_response( 'Korisnik uspješno izbrisan.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti obrisati ovog korisnika', 403 )
+        return error_response( 'Korisnik nema ovlasti obrisati ovog korisnika.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+        return error_response( 'Ne postoji korisnik s danim id-om.', 404 )
+    except:
+        return error_response( 'Nevaljan zahtjev.' )
 
 
 # Editor slot management
@@ -646,6 +737,8 @@ def list_editor_slots():
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Korisnik nema mogućnost pregleda svojih termina', 403 )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 @app.route( '/editor/slots/request', methods = [ 'POST' ] )
 @login_required
@@ -665,6 +758,8 @@ def request_slot():
         return success_response( 'Zahtjev uspješno pohranjen', 201 )
     except AuthorizationError:
         return error_response( 'Korisnik nema mogućnost traženja termina', 403 )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 @app.route( '/editor/slots/<int:slot_id>/get_list', methods = [ 'GET' ] )
 @login_required
@@ -690,6 +785,8 @@ def get_playlist( slot_id ):
         return error_response( 'Korisnik nema mogućnost dohvaćanja liste za reprodukciju za ovaj termin', 403 )
     except DoesNotExist:
         return error_response( 'Ne postoji termin s danim id-om', 404 )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 @app.route( '/editor/slots/<int:slot_id>/set_list', methods = [ 'POST' ] )
 @login_required
@@ -708,6 +805,8 @@ def set_playlist( slot_id ):
         return error_response( 'Korisnik nema mogućnost sastavljanja lista za reprodukciju za ovaj termin', 403 )
     except DoesNotExist:
         return error_response( 'Ne postoji termin s danim id-om', 404 )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 
 # Owner admins management
@@ -731,6 +830,8 @@ def list_admins():
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Korisnik nema mogućnost pregledavanja popisa administratora', 403 )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 @app.route( '/owner/admins/add/<int:user_id>', methods = [ 'POST' ] )
 @login_required
@@ -748,6 +849,8 @@ def add_admin( user_id ):
         return error_response( 'Ne postoji korisnik s danim id-om', 404 )
     except TypeError as e:
         return error_response( str( e ) )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 @login_required
 @app.route( '/owner/admins/<int:admin_id>/remove', methods = [ 'POST' ] )
@@ -765,6 +868,8 @@ def remove_admin( admin_id ):
         return error_response( 'Ne postoji korisnik s danim id-om', 404 )
     except TypeError as e:
         return error_response( str( e ) )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 
 # Owner radiostation management
@@ -788,8 +893,10 @@ def modify_station_data():
         return success_response( 'Podaci o postaji uspješno promjenjeni' )
     except AuthorizationError:
         return error_response( 'Korisnik nema ovlasti mijenjati podatke o radio postaji', 403 )
-    except ValueError:
-        return error_response( 'Uneseni su neispravni podaci' )
+    except ValueError as e:
+        return error_response( 'Uneseni su neispravni podaci: ' + str( e ) )
+    except Exception:
+        return error_response( 'Nevaljan zahtjev' )
 
 
 # Track routes

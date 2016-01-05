@@ -7,7 +7,7 @@ class Validator( metaclass = ABCMeta ):
 
     @abstractmethod
     def __init__( self ):
-        pass
+        self.message = None
 
     @abstractmethod
     def validation_test( self, arg ):
@@ -16,15 +16,16 @@ class Validator( metaclass = ABCMeta ):
 
     def validate( self, arg ):
         if not self.validation_test( arg ):
-            raise ValueError( 'Validation of {} failed'.format( arg ) )
+            raise ValueError( 'Validation of {} failed'.format( arg ) if self.message is None else self.message )
 
 
 class IntValidator( Validator ):
     """Validate an integer argument"""
 
-    def __init__( self, minimum = None, maximum = None ):
+    def __init__( self, minimum = None, maximum = None, message = None ):
         self.minimum = minimum
         self.maximum = maximum
+        self.message = message
 
     def validation_test( self, arg ):
         return ( isinstance( arg, int )
@@ -35,9 +36,10 @@ class IntValidator( Validator ):
 class FloatValidator( Validator ):
     """Validate a float argument"""
 
-    def __init__( self, minimum = None, maximum = None ):
+    def __init__( self, minimum = None, maximum = None, message = None ):
         self.minimum = minimum
         self.maximum = maximum
+        self.message = message
 
     def validation_test( self, arg ):
         return ( isinstance( arg, float )
@@ -48,10 +50,11 @@ class FloatValidator( Validator ):
 class CharValidator( Validator ):
     """Validate a string argument"""
 
-    def __init__( self, max_length = None, min_length = None, pattern = None ):
+    def __init__( self, max_length = None, min_length = None, pattern = None, message = None ):
         self.min_length = min_length
         self.max_length = max_length
         self.pattern = pattern
+        self.message = message
 
     def validation_test( self, arg ):
         return ( isinstance( arg, str )
@@ -63,15 +66,15 @@ class CharValidator( Validator ):
 class EmailValidator( CharValidator ):
     """Validate an email address"""
 
-    def __init__( self ):
-        super().__init__( min_length = 5, max_length = 64, pattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" )
+    def __init__( self, message = 'Email adresa nije ispravnog oblika.' ):
+        super().__init__( min_length = 5, max_length = 64, pattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", message = message )
 
 
 class OIBValidator( Validator ):
     """Validate an OIB number (Osobni Identifikacijski Broj)"""
 
-    def __init__( self ):
-        pass
+    def __init__( self, message = 'OIB nije ispravan.' ):
+        self.message = message
 
     def validation_test( self, arg ):
         if arg is None or not arg.isdigit() or len( arg ) != 11: return False

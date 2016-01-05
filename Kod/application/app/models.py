@@ -255,8 +255,8 @@ class User( BaseModel ):
         self.password_hash = hash_password( new_password, self.password_salt )
         self.save()
 
-    def modify_account( self, first_name = None, last_name = None, email = None,
-        occupation = None, year_of_birth = None ):
+    def modify_account( self, first_name = None, last_name = None, occupation = None,
+        year_of_birth = None, email = None ):
         """Changes user account data
 
         Raises peewee.IntegrityError
@@ -349,7 +349,7 @@ class User( BaseModel ):
         return user
 
     def modify_user_account( self, user_id, first_name = None, last_name = None,
-        email = None, occupation = None, year_of_birth = None ):
+        occupation = None, year_of_birth = None, email = None ):
         """Modifies account data of a user with a given id
 
         User whose data is modified has to be either editor or basic user.
@@ -709,10 +709,15 @@ class Slot( BaseModel ):
 
     @classmethod
     def get_slots( cls ):
-        """Return a list of all future assigned slots"""
+        """Returns a list of all future assigned slots"""
         return ( cls.select( Slot, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
             .where( Slot.time > datetime.now() )
             .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
+
+    @classmethod
+    def get_next_on_schedule( cls ):
+        """Returns a list of the current and next six slots on the schedule"""
+        return cls.select().where( Slot.time > datetime.now() - timedelta( hours = 1 ) ).join( User ).limit( 7 )
 
     def get_playlist( self ):
         """Returns all tracks set to be played in a given slot

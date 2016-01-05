@@ -98,3 +98,29 @@
     RadioStation
 ================================================================================
     - modify_station_data()         [OK]
+
+
+################################################################################
+################################################################################
+################################################################################
+
+
+
+    Views
+================================================================================
+    - /                             [NOT IMPLEMENTED]
+
+    - /player/get                   [OK]
+    - /player/info                  [OK]
+    - /player/schedule              [OK]
+
+    - /user/auth/login              [OK]
+    - /user/auth/register           [OK]
+    - /user/auth/activate           [OK]
+    - /user/auth/signout            [OK]
+
+    - /user/account/type            [OK]
+    - /user/account/get             [OK]
+    - /user/account/modify          [OK]
+    - /user/account/delete          [OK]
+    - /user/account/change_password [OK]
