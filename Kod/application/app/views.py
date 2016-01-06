@@ -323,7 +323,7 @@ def get_wishlist():
         } for wish in wishlist ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Listu želja nije moguće dohvatiti: Korisnik nema mogućnost pregledavanja svoje liste želja', 403 )
+        return error_response( 'Listu želja nije moguće dohvatiti: Nedozvoljena mogućnost', 403 )
     except:
         return error_response( 'Listu želja nije moguće dohvatiti: Nevaljan zahtjev.' )
 
@@ -336,11 +336,11 @@ def set_wishlist():
     on the user's wishlist. Parameters are JSON-encoded.
     """
     try:
-        track_list = request.get_json()
+        track_list = request.get_json().get( 'track_list' )
         g.user.set_wishlist( track_list )
         return success_response( 'Lista želja uspješno pohranjena.', 201 )
     except AuthorizationError:
-        return error_response( 'Listu želja nije moguće pohraniti: Korisnik nema mogućnost stvaranja svoje liste želja.', 403 )
+        return error_response( 'Listu želja nije moguće pohraniti: Nedozvoljena mogućnost.', 403 )
     except:
         return error_response( 'Listu želja nije moguće pohraniti: Nevaljan zahtjev.' )
 
@@ -355,7 +355,7 @@ def confirm_wishlist():
         g.user.confirm_wishlist()
         return success_response( 'Lista želja uspješno potvrđena.' )
     except AuthorizationError:
-        return error_response( 'Listu želja nije moguće potvrditi: Korisnik nema mogućnost potvrđivanja svoje liste želja.', 403 )
+        return error_response( 'Listu želja nije moguće potvrditi: Nedozvoljena mogućnost.', 403 )
     except EnvironmentError:
         return error_response( 'Listu želja nije moguće potvrditi: To je već učinjeno unutar proteklih 24 sata.', 409 )
     except:
@@ -408,12 +408,42 @@ def add_track():
             genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
         return success_response( 'Zvučni zapis uspješno dodan.', 201 )
     except AuthorizationError:
-        return error_response( 'Dodavanje zapisa nije uspjelo: Korisnik nema ovlasti dodavati zvučne zapise.', 403 )
+        return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
     except ValueError as e:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nisu uneseni ispravni podaci: ' + str( e ) )
     except:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
 
+@app.route( '/admin/tracks/<int:track_id>/get', methods = [ 'GET' ] )
+@login_required
+def get_track( track_id ):
+    """Returns data of a track having `track_id`
+
+    No request params.
+    """
+    try:
+        track = g.user.get_track( track_id )
+        data = {
+            'title'             : track.title,
+            'path'              : track.path,
+            'artist'            : track.artist,
+            'album'             : track.album,
+            'genre'             : track.genre,
+            'year'              : track.year,
+            'duration'          : track.duration,
+            'file_format'       : track.file_format,
+            'sample_rate'       : track.sample_rate,
+            'bits_per_sample'   : track.bits_per_sample,
+            'publisher'         : track.publisher,
+            'carrier_type'      : track.carrier_type
+        }
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Neuspješno dohvaćanje podataka o zapisu: Nedovoljne ovlasti.', 403 )
+    except DoesNotExist:
+        return error_response( 'Neuspješno dohvaćanje podataka o zapisu: Ne postoji zapis s danim id-om.', 404 )
+    except:
+        return error_response( 'Neuspješno dohvaćanje podataka o zapisu.' )
 
 @app.route( '/admin/tracks/<int:track_id>/edit', methods = [ 'POST' ] )
 @login_required
@@ -449,7 +479,7 @@ def edit_track( track_id ):
             genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
         return success_response( 'Podaci o zvučnom zapisu uspješno promjenjeni.' )
     except AuthorizationError:
-        return error_response( 'Promjena podataka nije uspjela: Korisnik nema ovlasti uređivati zvučne zapise.', 403 )
+        return error_response( 'Promjena podataka nije uspjela: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Promjena podataka nije uspjela: Ne postoji zvučni zapis s danim id-om.', 404 )
     except ValueError as e:
@@ -465,12 +495,12 @@ def delete_track( track_id ):
     No request params.
     """
     try:
-        path = Track.get( Track.id == track_id )
+        path = 'app/' + Track.get( Track.id == track_id ).path
         os.remove( path )
         g.user.remove_track( track_id )
         return success_response( 'Zvučni zapis uspješno izbrisan.' )
     except AuthorizationError:
-        return error_response( 'Brisanje nije uspjelo: Korisnik nema ovlasti brisati zvučne zapise.', 403 )
+        return error_response( 'Brisanje nije uspjelo: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Brisanje nije uspjelo: Ne postoji zvučni zapis s danim id-om.', 404 )
     except OSError:
@@ -496,11 +526,15 @@ def list_editors():
             'id'            : editor.id,
             'first_name'    : editor.first_name,
             'last_name'     : editor.last_name,
+            'occupation'    : editor.occupation,
+            'year_of_birth' : editor.year_of_birth,
             'email'         : editor.email
         } for editor in editors ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Dohvaćanje popisa nije uspjelo: Korisnik ima nedovoljne ovlasti.', 403 )
+        return error_response( 'Dohvaćanje popisa nije uspjelo: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Dohvaćanje popisa nije uspjelo.' )
 
 @app.route( '/admin/editors/add/<int:user_id>', methods = [ 'POST' ] )
 @login_required
@@ -513,7 +547,7 @@ def add_editor( user_id ):
         g.user.add_editor( user_id )
         return success_response( 'Korisnik uspješno postavljen za urednika.' )
     except AuthorizationError:
-        return error_response( 'Neuspješno postavljanje urednika: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno postavljanje urednika: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno postavljanje urednika: Ne postoji korisnik s danim id-om.', 404 )
     except TypeError as e:
@@ -529,10 +563,10 @@ def remove_editor( editor_id ):
     No request params.
     """
     try:
-        g.user.remove_editor( user_id )
+        g.user.remove_editor( editor_id )
         return success_response( 'Korisniku uspješno oduzete uredničke ovlasti.' )
     except AuthorizationError:
-        return error_response( 'Neuspješno uklanjanje urednika: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno uklanjanje urednika: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno uklanjanje urednika: Ne postoji korisnik s danim id-om.', 404 )
     except TypeError as e:
@@ -569,7 +603,9 @@ def list_requests():
         } for req in requests ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje popisa zahtjeva: Korisnik nema ovlasti pregledavati zahtjeve za terminima.', 403 )
+        return error_response( 'Neuspješno dohvaćanje popisa zahtjeva: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Neuspješno dohvaćanje popisa zahtjeva.' )
 
 @app.route( '/admin/requests/<int:request_id>/allow', methods = [ 'POST' ] )
 @login_required
@@ -582,7 +618,7 @@ def allow_request( request_id ):
         g.user.allow_request( request_id )
         return success_response( 'Zahtjev uspješno odobren.' )
     except AuthorizationError:
-        return error_response( 'Neuspješno odobravanje zahtjeva: Korisnik nema ovlasti odobravati zahtjeve.', 403 )
+        return error_response( 'Neuspješno odobravanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim id-om.', 404 )
     except:
@@ -599,7 +635,7 @@ def deny_request( request_id ):
         g.user.deny_request( request_id )
         return success_response( 'Zahtjev uspješno odbijen.' )
     except AuthorizationError:
-        return error_response( 'Neuspješno odbijanje zahtjeva: Korisnik nema ovlasti odbijati zahtjeve.', 403 )
+        return error_response( 'Neuspješno odbijanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno odbijanje zahtjeva: Ne postoji zahtjev s danim id-om.', 404 )
     except:
@@ -630,7 +666,7 @@ def list_users():
         } for user in users ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje popisa korisnika: Korisnik nema ovlasti dohvatiti popis svih korisnika.', 403 )
+        return error_response( 'Neuspješno dohvaćanje popisa korisnika: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Neuspješno dohvaćanje popisa korisnika: Nevaljan zahtjev.' )
 
@@ -642,7 +678,7 @@ def get_user_data( user_id ):
     No request params.
     """
     try:
-        user = g.user.get_user_data( user_id )
+        user = g.user.get_user( user_id )
         data = {
             'id'            : user.id,
             'first_name'    : user.first_name,
@@ -654,7 +690,7 @@ def get_user_data( user_id ):
         }
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje korisničkih podataka: Korisnik nema ovlasti pregledavati tuđe podatke.', 403 )
+        return error_response( 'Neuspješno dohvaćanje korisničkih podataka: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno dohvaćanje korisničkih podataka: Ne postoji korisnik s danim id-om.', 404 )
     except:
@@ -677,11 +713,11 @@ def modify_user_data( user_id ):
     if year_of_birth is not None: year_of_birth = int( year_of_birth )
 
     try:
-        validate_user_data( first_name, last_name, occupation, year_of_birth, email )
+        validate_user_data( first_name, last_name, occupation, year_of_birth, email, no_password = True )
         g.user.modify_user_account( user_id, first_name, last_name, occupation, year_of_birth, email )
         return success_response( 'Korisnički podaci uspješno promjenjeni.' )
     except AuthorizationError:
-        return error_response( 'Neuspješna promjena korisničkih podataka: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješna promjena korisničkih podataka: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješna promjena korisničkih podataka: Ne postoji korisnik s danim id-om.', 404 )
     except ValueError as e:
@@ -702,7 +738,7 @@ def delete_user( user_id ):
         g.user.delete_user_account( user_id )
         return success_response( 'Korisnik uspješno izbrisan.' )
     except AuthorizationError:
-        return error_response( 'Neuspješno brisanje korisnika: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno brisanje korisnika: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno brisanje korisnika: Ne postoji korisnik s danim id-om.', 404 )
     except:
@@ -727,7 +763,7 @@ def list_editor_slots():
         } for slot in slots ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje popisa termina: Korisnik nema mogućnost pregleda svojih termina.', 403 )
+        return error_response( 'Neuspješno dohvaćanje popisa termina: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Neuspješno dohvaćanje popisa termina: Nevaljan zahtjev.' )
 
@@ -737,7 +773,6 @@ def request_slot():
     """Make a request for time slots
 
     Request should contain `time`, `days_bit_mask`, `start_date` and `end_date`.
-    TODO: Check type conversions
     """
     time            = request.values.get( time )
     days_bit_mask   = request.values.get( 'days_bit_mask' )
@@ -751,7 +786,7 @@ def request_slot():
         g.user.request_slot( time, days_bit_mask, start_date, end_date )
         return success_response( 'Zahtjev uspješno pohranjen.', 201 )
     except AuthorizationError:
-        return error_response( 'Neuspješno pohranjivanje zahtjeva: Korisnik nema mogućnost traženja termina.', 403 )
+        return error_response( 'Neuspješno pohranjivanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nevaljan zahtjev.' )
 
@@ -775,7 +810,7 @@ def get_playlist( slot_id ):
         } for item in slot_items ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
     except:
@@ -796,7 +831,7 @@ def set_playlist( slot_id ):
         g.user.set_slot_playlist( slot_id, track_list )
         return success_response( 'Lista za reprodukciju uspješno pohranjena', 201 )
     except AuthorizationError:
-        return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
     except:
@@ -823,7 +858,7 @@ def list_admins():
         } for admin in admins ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje popisa administratora: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno dohvaćanje popisa administratora: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Neuspješno dohvaćanje popisa administratora: Nevaljan zahtjev.' )
 
@@ -838,7 +873,7 @@ def add_admin( user_id ):
         g.user.add_admin( user_id )
         return success_response( 'Korisnik uspješno postavljen za administratora.' )
     except AuthorizationError:
-        return error_response( 'Neuspješno postavljanje administatora: Korisnik nema ovlasti postavljati administratore.', 403 )
+        return error_response( 'Neuspješno postavljanje administatora: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno postavljanje administatora: Ne postoji korisnik s danim id-om.', 404 )
     except TypeError as e:
@@ -855,15 +890,15 @@ def remove_admin( admin_id ):
     """
     try:
         g.user.remove_admin( admin_id )
-        return success_response( 'Korisniku uspješno ukinute administratorske ovlasti' )
+        return success_response( 'Korisniku uspješno ukinute administratorske ovlasti.' )
     except AuthorizationError:
-        return error_response( 'Korisnik nema ovlasti uklanjati administratore', 403 )
+        return error_response( 'Neuspješno uklanjanje administratora: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Ne postoji korisnik s danim id-om', 404 )
+        return error_response( 'Neuspješno uklanjanje administratora: Ne postoji korisnik s danim id-om.', 404 )
     except TypeError as e:
-        return error_response( str( e ) )
+        return error_response( 'Neuspješno uklanjanje administratora: ' + str( e ) )
     except:
-        return error_response( 'Nevaljan zahtjev' )
+        return error_response( 'Neuspješno uklanjanje administratora: Nevaljan zahtjev.' )
 
 
 # Owner radiostation management
@@ -885,11 +920,11 @@ def modify_station_data():
     if frequency is not None: frequency = float( frequency )
 
     try:
-        validate_radio_station_data( name, oib, address, email, frequency )
-        g.user.modify_station_data( name, oib, address, email, frequency )
+        validate_radio_station_data( name, description, oib, address, email, frequency )
+        g.user.modify_station_data( name, description, oib, address, email, frequency )
         return success_response( 'Podaci o postaji uspješno promjenjeni.' )
     except AuthorizationError:
-        return error_response( 'Neuspješna promjena podataka: Korisnik nema ovlasti mijenjati podatke o radio postaji.', 403 )
+        return error_response( 'Neuspješna promjena podataka: Nedovoljne ovlasti.', 403 )
     except ValueError as e:
         return error_response( 'Neuspješna promjena podataka: Uneseni su neispravni podaci: ' + str( e ) )
     except:
@@ -954,14 +989,24 @@ def get_global_wishlist():
         } for wish in wishlist ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje ukupne liste želja: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno dohvaćanje ukupne liste želja: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Neuspješno dohvaćanje ukupne liste želja.' )
 
 @app.route( '/tracks/popular', methods = [ 'GET' ] )
 def get_most_popular_tracks():
-    """Returns a list of 5 most popular tracks"""
-    return not_implemented_response()
+    """Returns a list of 5 most popular tracks
+
+    No request params.
+    """
+    tracks = Track.get_most_popular()
+    data = [{
+        'title'     : track.title,
+        'artist'    : track.artist,
+        'popularity': track.popularity
+    } for track in tracks ]
+    return data_response( data )
+
 
 # User routes
 
@@ -983,48 +1028,165 @@ def search_users():
         } for user in users ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Neuspješno pretraživanje korisnika: Korisnik nema dovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno pretraživanje korisnika: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Neuspješno pretraživanje korisnika.' )
 
+
 # Stat routes
 
-@app.route( '/stats/tracks/<int:track_id>', methods = [ 'GET' ] )
+@app.route( '/stats/tracks/<int:track_id>/play_count', methods = [ 'GET' ] )
 @login_required
 def get_track_play_stat( track_id ):
-    return not_implemented_response()
+    """Returns the number of times track was played.
 
-@app.route( '/stats/wishlist', methods = [ 'GET' ] )
+    No request params.
+    """
+    try:
+        count = g.user.get_total_track_play_count_stat( track_id )
+        data = { 'count' : count }
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Neuspješno dohvaćanje broja reproduciranja zapisa: Nedovoljne ovlasti.', 403 )
+    except DoesNotExist:
+        return error_response( 'Neuspješno dohvaćanje broja reproduciranja zapisa: Ne postoji zapis s danim id-om.', 404 )
+    except:
+        return error_response( 'Neuspješno dohvaćanje broja reproduciranja zapisa.' )
+
+@app.route( '/stats/tracks/wishlist', methods = [ 'GET' ] )
 @login_required
 def get_global_wishlist_stat():
-    return not_implemented_response()
+    """Returns the global users' wishlist
+
+    No request params.
+    """
+    try:
+        wishlist = g.user.get_global_wishlist()
+        data = [{
+            'id'                : wish.track.id,
+            'title'             : wish.track.title,
+            'artist'            : wish.track.artist,
+            'album'             : wish.track.album,
+            'genre'             : wish.track.genre,
+            'count'             : wish.count
+        } for wish in wishlist ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Neuspješno dohvaćanje ukupne liste želja: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Neuspješno dohvaćanje ukupne liste želja.' )
 
 @app.route( '/stats/tracks/most_wanted', methods = [ 'GET' ] )
 @login_required
-def get_most_wanted_track_stat():
-    return not_implemented_response()
+def get_most_wished_track():
+    """Returns track that is most wanted by the users
+
+    No request params.
+    """
+    try:
+        track = g.user.get_most_wished_track()
+        data = {
+            'title'     : track.title,
+            'artist'    : track.artist,
+            'album'     : track.album,
+            'year'      : track.year,
+            'genre'     : track.genre
+        }
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Nije moguće dohvatiti podatke o najtraženijem zapisu: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Nije moguće dohvatiti podatke o najtraženijem zapisu.' )
+
+@app.route( '/stats/tracks/most_wanted/wish_count/<start_date>/<end_date>', methods = [ 'GET' ] )
+@login_required
+def get_most_wished_track_stat( start_date, end_date ):
+    """Returns number of times most wanted track was played between `start_date` and `end_date`
+
+    `start_date` and `end_date` should be in DD-MM-YYYY format and passed via URL,
+    as declared in `@app.route` above.
+    """
+    try:
+        start_date = datetime_from_string( start_date )
+        end_date = datetime_from_string( end_date )
+        print ( '{}; {}'.format( start_date, end_date ) )
+        count = g.user.get_most_wished_track_stat( start_date, end_date )
+        data = { 'count' : count }
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Nije moguće dohvatiti podatke o reprodukciji najtraženijeg zapisa: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Nije moguće dohvatiti podatke o reprodukciji najtraženijeg zapisa.' )
 
 @app.route( '/stats/editors/<int:editor_id>/preferred_tracks', methods = [ 'GET' ] )
 @login_required
 def get_editor_preferred_tracks( editor_id ):
-    return not_implemented_response()
+    """Returns a list of tracks most often played by this editor
+
+    No request params.
+    """
+    try:
+        tracks = g.user.get_editor_preferred_tracks_stat( editor_id )
+        data = [{
+            'title'     : pt.track.title,
+            'artist'    : pt.track.artist,
+            'count'     : pt.count
+        } for pt in tracks ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Neuspjelo dohvaćanje preferenci urednika: Nedovoljne ovlasti.', 403 )
+    except DoesNotExist:
+        return error_response( 'Neuspjelo dohvaćanje preferenci urednika: Ne postoji korisnik s danim id-om.', 404 )
+    except:
+        return error_response( 'Neuspjelo dohvaćanje preferenci urednika: Nevaljan zahtjev.' )
 
 @app.route( '/stats/active_users/count', methods = [ 'GET' ] )
 @login_required
 def get_active_users_count():
-    return not_implemented_response()
+    """Returns number of all users active within the last ten minutes
+
+    No request params.
+    """
+    try:
+        count = g.user.get_active_users_count_stat()
+        data = { 'count' : count }
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Neuspjelo dohvaćanje broja aktivnih korisnika: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Neuspjelo dohvaćanje broja aktivnih korisnika: Nevaljan zahtjev.' )
 
 @app.route( '/stats/active_admins/list', methods = [ 'GET' ] )
 @login_required
 def get_active_admins_list():
-    return not_implemented_response()
+    """Returns a list of all admins active within the last ten minutes
+
+    No request params.
+    """
+    try:
+        admins = g.user.get_active_admins_list_stat()
+        data = [{
+            'first_name'    : admin.first_name,
+            'last_name'     : admin.last_name,
+            'email'         : admin.email
+        } for admin in admins ]
+        return data_response( data )
+    except AuthorizationError:
+        return error_response( 'Neuspjelo dohvaćanje popisa aktivnih administratora: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Neuspjelo dohvaćanje popisa aktivnih administratora: Nevaljan zahtjev.' )
 
 
 # Error handlers
 
-# TODO: Instead of returning messages in each view, only raise exceptions and catch them later with a handler
+@app.errorhandler(400)
+def handle_400( error ):
+    """Handle all uncaught 400 errors"""
+    app.logger.error( error.to_dict() )
+    return error_response( 'Greška, zahtjev nije moguće ispuniti.', 400 )
 
 @app.errorhandler(500)
 def handle_500( error ):
+    """Handles all internal server errors"""
     app.logger.error( error.to_dict() )
     return error_response( 'Greška, zahtjev nije moguće ispuniti.', 500 )

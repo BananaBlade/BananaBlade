@@ -19,7 +19,7 @@
 ================================================================================
     - authenticate_user()           [OK]
     - create_user()                 [OK]
-    - delete_user()                 [OK] (extra testing for deleting related data)
+    - delete_user()                 [OK]
     - activate_user()               [OK]
     - list_active_admins()          [OK]
     - count_active_users()          [OK]
@@ -125,26 +125,27 @@
     - /user/account/delete          [OK]
     - /user/account/change_password [OK]
 
-    - /user/wishlist/get            []
-    - /user/wishlist/set            []
-    - /user/wishlist/confirm        []
+    - /user/wishlist/get            [OK]
+    - /user/wishlist/set            [OK]
+    - /user/wishlist/confirm        [OK]
 
     - /admin/tracks/add             []
-    - /admin/tracks/<id>/edit       []
-    - /admin/tracks/<id>/delete     []
+    - /admin/tracks/<id>/get        [OK]
+    - /admin/tracks/<id>/edit       [OK]
+    - /admin/tracks/<id>/delete     [OK]
 
-    - /admin/editors/list           []
-    - /admin/editors/add/<id>       []
-    - /admin/editors/<id>/remove    []
+    - /admin/editors/list           [OK]
+    - /admin/editors/add/<id>       [OK]
+    - /admin/editors/<id>/remove    [OK]
 
     - /admin/requests/list          []
     - /admin/requests/<id>/allow    []
     - /admin/requests/<id>/deny     []
 
-    - /admin/users/list             []
-    - /admin/users/<id>/get         []
-    - /admin/users/<id>/modify      []
-    - /admin/users/<id>/delete      []
+    - /admin/users/list             [OK]
+    - /admin/users/<id>/get         [OK]
+    - /admin/users/<id>/modify      [OK]
+    - /admin/users/<id>/delete      [OK]
 
     - /editor/slots/list            []
     - /editor/slots/request         []
@@ -155,18 +156,19 @@
     - /owner/admins/add/<id>        [OK]
     - /owner/admins/<id>/remove     [OK]
 
-    - /owner/station/modify         []
+    - /owner/station/modify         [OK]
 
     - /tracks/list                  [OK]
     - /tracks/search                [OK]
     - /tracks/wishlist              [OK]
-    - /tracks/popular               []
+    - /tracks/popular               [OK]
 
     - /users/search                 [OK]
 
-    - /stats/tracks/<id>            []
-    - /stats/wishlist               []
-    - /stats/tracks/most_wanted     []
-    - /stats/editors/<id>/preferred_tracks []
-    - /stats/active_users/count     []
-    - /stats/active_admins/list     []
+    - /stats/tracks/<id>/play_count [OK]
+    - /stats/tracks/wishlist        [OK]
+    - /stats/tracks/most_wished     [OK]
+    - /stats/tracks/most_wished/wish_count/<start>/<end>    [OK]
+    - /stats/editors/<id>/preferred_tracks                  [OK]
+    - /stats/active_users/count     [OK]
+    - /stats/active_admins/list     [OK]

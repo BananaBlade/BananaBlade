@@ -68,6 +68,9 @@ def generate_times( time, bitmask, start_date, end_date ):
             day_index = 0
     return times
 
+def datetime_from_string( date_string ):
+    return datetime.strptime( date_string, "%d-%m-%Y" )
+
 # JSON response helpers
 
 def data_response( data, code = 200 ):
@@ -125,7 +128,7 @@ def validate_equal( password1, password2 ):
     if password1 != password2:
         raise ValueError( 'Lozinke se ne podudaraju.' )
 
-def validate_user_data( first_name, last_name, occupation, year_of_birth, email, password = None ):
+def validate_user_data( first_name, last_name, occupation, year_of_birth, email, password = None, no_password = False ):
     """Combined validator for all user data fields
 
     Raises ValueError
@@ -135,7 +138,7 @@ def validate_user_data( first_name, last_name, occupation, year_of_birth, email,
     CharValidator( min_length = 2, max_length = 64, message = 'Zanimanje nije ispravno.' ).validate( occupation )
     IntValidator( minimum = 1900, maximum = 2100, message = 'Godina rođenja nije ispravna.' ).validate( year_of_birth )
     validate_email( email )
-    validate_password( password )
+    if not no_password: validate_password( password )
 
 def validate_track_data( title, artist, album, duration, file_format, sample_rate, bits_per_sample,
     genre, publisher, carrier_type, year ):

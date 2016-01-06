@@ -78,10 +78,10 @@ class OIBValidator( Validator ):
 
     def validation_test( self, arg ):
         if arg is None or not arg.isdigit() or len( arg ) != 11: return False
-        num = 0
-        for a in arg:
+        num = 10
+        for a in arg[ :-1 ]:
             num = ( num + int( a ) ) % 10
             num = ( 2*num ) % 11 if num != 0 else 9
         check = 11 - num
-        if check == 10: check == 0
+        if check == 10: check = 0
         return check == int( arg[ 10 ] )

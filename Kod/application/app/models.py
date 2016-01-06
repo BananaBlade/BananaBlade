@@ -122,6 +122,11 @@ class Track( BaseModel ):
         results.sort( key = lambda x : x[ 0 ], reverse = True )
         return map( lambda x : x[ 1 ], results )
 
+    def get_total_play_count( self ):
+        """Returns a number of times this track was played"""
+        return ( Track.select( Track, fn.Count( SQL( '*' ) ).alias( 'count' ) )
+            .where( Track.id == self.id ).join( PlaylistTrack ).group_by( Track ).first().count )
+
 
 class User( BaseModel ):
     """Model for all registered users
@@ -195,8 +200,8 @@ class User( BaseModel ):
         Raises DoesNotExist
         """
         user = cls.get( User.id == user_id )
-        SlotRequest.delete().where( SlotRequest.editor == user )
-        Wish.delete().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) )
+        SlotRequest.delete().where( SlotRequest.editor == user ).execute()
+        Wish.delete().where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).execute()
         user.delete_instance()
 
     @classmethod
@@ -239,7 +244,7 @@ class User( BaseModel ):
         if len( term ) < 2:
             raise ValueError
         results = [ ( calc_user_score( user, term ), user ) for user in
-            User.select().where( ( User.account_type == AccountType.USER ) & 
+            User.select().where( ( User.account_type == AccountType.USER ) &
             ( User.first_name.contains( term ) | User.last_name.contains( term ) ) ) ]
         results.sort( key = lambda x : x[ 0 ], reverse = True )
         return map( lambda x : x[ 1 ], results )
@@ -291,7 +296,7 @@ class User( BaseModel ):
         Raises AuthenticationError
         """
         if self.password_hash != hash_password( password, self.password_salt ):
-            raise AuthenticationError( 'Neispravna lozinka' )
+            raise AuthenticationError( 'Neispravna lozinka.' )
 
     def _assert_admin( self ):
         """Checks whether user is an administrator
@@ -299,7 +304,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         if self.account_type != AccountType.ADMINISTRATOR:
-            raise AuthorizationError( 'Korisnik nije administrator' )
+            raise AuthorizationError( 'Korisnik nije administrator.' )
 
     def _assert_editor( self ):
         """Checks whether user is an editor
@@ -307,7 +312,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         if self.account_type != AccountType.EDITOR:
-            raise AuthorizationError( 'Korisnik nije urednik' )
+            raise AuthorizationError( 'Korisnik nije urednik.' )
 
     def _assert_owner( self ):
         """Checks whether user is an owner
@@ -315,7 +320,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         if self.account_type != AccountType.OWNER:
-            raise AuthorizationError( 'Korisnik nije vlasnik' )
+            raise AuthorizationError( 'Korisnik nije vlasnik.' )
 
     def _assert_user( self ):
         """Checks whether user is a basic user
@@ -346,7 +351,7 @@ class User( BaseModel ):
         self._assert_admin()
         user = User.get( User.id == user_id )
         if user.account_type not in [ AccountType.USER, AccountType.EDITOR ]:
-            raise AuthorizationError( 'Nije dozvoljeno pristupiti podacima ovog korisnika' )
+            raise AuthorizationError( 'Nije dozvoljeno pristupiti podacima ovog korisnika.' )
         return user
 
     def modify_user_account( self, user_id, first_name = None, last_name = None,
@@ -361,7 +366,7 @@ class User( BaseModel ):
         self._assert_admin()
         user = User.get( User.id == user_id )
         if user.account_type not in [ AccountType.USER, AccountType.EDITOR ]:
-            raise AuthorizationError( 'Nije dozvoljeno mijenjati podactke ovog korisnika' )
+            raise AuthorizationError( 'Nije dozvoljeno mijenjati podactke ovog korisnika.' )
         user.modify_account( first_name, last_name, occupation, year_of_birth, email )
 
     def delete_user_account( self, user_id ):
@@ -375,7 +380,7 @@ class User( BaseModel ):
         self._assert_admin()
         user = User.get( User.id == user_id )
         if user.account_type not in [ AccountType.USER, AccountType.EDITOR ]:
-            raise AuthorizationError( 'Nije dozvoljeno mijenjati podactke ovog korisnika' )
+            raise AuthorizationError( 'Nije dozvoljeno mijenjati podactke ovog korisnika.' )
         User.delete_user( user.id )
 
     def get_all_editors( self ):
@@ -399,7 +404,7 @@ class User( BaseModel ):
         self._assert_admin()
         user = User.get( User.id == user_id )
         if user.account_type != AccountType.USER:
-            raise TypeError( 'Korisnika nije moguće postaviti za urednika, već ima neku ulogu' )
+            raise TypeError( 'Korisnika nije moguće postaviti za urednika, već ima neku ulogu.' )
         user.account_type = AccountType.EDITOR
         user.save()
 
@@ -414,7 +419,7 @@ class User( BaseModel ):
         self._assert_admin()
         editor = User.get( User.id == editor_id )
         if editor.account_type != AccountType.EDITOR:
-            raise TypeError( 'Korisniku nije mu moguće oduzeti uredničke ovlasti jer nije urednik' )
+            raise TypeError( 'Korisniku nije mu moguće oduzeti uredničke ovlasti jer nije urednik.' )
         editor.account_type = AccountType.USER
         editor.save()
 
@@ -491,7 +496,7 @@ class User( BaseModel ):
         self._assert_owner()
         user = User.get( User.id == user_id )
         if user.account_type != AccountType.USER:
-            raise TypeError( 'Korisnika nije moguće postaviti za administratora, već ima neku ulogu' )
+            raise TypeError( 'Korisnika nije moguće postaviti za administratora, već ima neku ulogu.' )
         user.account_type = AccountType.ADMINISTRATOR
         user.save()
 
@@ -506,7 +511,7 @@ class User( BaseModel ):
         self._assert_owner()
         admin = User.get( User.id == admin_id )
         if admin.account_type != AccountType.ADMINISTRATOR:
-            raise TypeError( 'Korisniku nije moguće oduzeti administratorske ovlasti jer nije administrator' )
+            raise TypeError( 'Korisniku nije moguće oduzeti administratorske ovlasti jer nije administrator.' )
         admin.account_type = AccountType.USER
         admin.save()
 
@@ -519,6 +524,16 @@ class User( BaseModel ):
         """
         self._assert_admin()
         Track.add_track( **track_data )
+
+    def get_track( self, track_id ):
+        """Returns track data
+
+        Operation restricted to administrators.
+
+        Raises AuthorizationError, DoesNotExist
+        """
+        self._assert_admin()
+        return Track.get( Track.id == track_id )
 
     def edit_track( self, track_id , **track_data ):
         """Edits track data
@@ -584,7 +599,7 @@ class User( BaseModel ):
         self._assert_editor()
         slot = Slot.get( Slot.id == slot_id )
         if slot.editor != self:
-            raise AuthorizationError( 'Nije dozvoljeno pregledavati liste drugih urednika' )
+            raise AuthorizationError( 'Nije dozvoljeno pregledavati liste drugih urednika.' )
         return slot.get_playlist()
 
     def set_slot_playlist( self, slot_id, track_list ):
@@ -598,7 +613,7 @@ class User( BaseModel ):
         self._assert_editor()
         slot = Slot.get( Slot.id == slot_id )
         if slot.editor != self:
-            raise AuthorizationError( 'Nije dozvoljeno mijenjati liste drugih urednika' )
+            raise AuthorizationError( 'Nije dozvoljeno mijenjati liste drugih urednika.' )
         slot.set_playlist( track_list )
 
     def get_all_tracks( self, start = 0, limit = None ):
@@ -629,7 +644,7 @@ class User( BaseModel ):
         """
         self._assert_user()
         if len( track_list ) > 10:
-            raise ValueError( 'Previše zapisa na listi želja' )
+            raise ValueError( 'Previše zapisa na listi želja.' )
         Wish.set_user_wishlist( self, track_list )
 
     def confirm_wishlist( self ):
@@ -650,13 +665,41 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         if self.account_type < AccountType.EDITOR:
-            raise AuthorizationError( 'Pregled globalne liste želja nije dozvoljen' )
+            raise AuthorizationError( 'Pregled globalne liste želja nije dozvoljen.' )
         return Wish.get_global_wishlist()
 
-    def get_most_wished_track_stat( self, start_date, end_date ):
-        """Return statistics about the most wished track"""
+    def get_total_track_play_count_stat( self, track_id ):
+        """Return total play count for a given track
+
+        Restricted to administrators.
+
+        Raises AuthorizationError, DoesNotExist
+        """
+        self._assert_admin()
+        track = Track.get( Track.id == track_id )
+        return track.get_total_play_count()
+
+    def get_most_wished_track( self ):
+        """Return the most wished track
+
+        Restricted to administrators.
+
+        Raises AuthorizationError, DoesNotExist
+        """
+        self._assert_admin()
         track = Wish.get_global_wishlist().first().track
         return track
+
+    def get_most_wished_track_stat( self, start_date, end_date ):
+        """Return number of times the most wished track was played between two dates
+
+        Restricted to administrators.
+
+        Raises AuthorizationError, DoesNotExist
+        """
+        track = self.get_most_wished_track()
+        return Wish.select( fn.Count( Wish.id ) ).where( ( Wish.track == track )
+            & ( Wish.is_temporary == False ) & ( Wish.date_time.between( start_date, end_date ) ) ).scalar()
 
     def get_active_users_count_stat( self ):
         """Returns a number of currently active users
@@ -666,7 +709,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         if self.account_type < AccountType.ADMINISTRATOR:
-            raise AuthorizationError( 'Dohvaćanje broja trenutnih korisnika nije dozvoljeno' )
+            raise AuthorizationError( 'Dohvaćanje broja trenutnih korisnika nije dozvoljeno.' )
         return User.count_active_users()
 
     def get_active_admins_list_stat( self ):
@@ -677,7 +720,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         if self.account_type < AccountType.ADMINISTRATOR:
-            raise AuthorizationError( 'Pregled trenutno aktivnih administratora nije dozvoljen' )
+            raise AuthorizationError( 'Pregled trenutno aktivnih administratora nije dozvoljen.' )
         return User.list_active_admins()
 
     def get_editor_preferred_tracks_stat( self, editor_id ):
@@ -823,7 +866,7 @@ class Wish( BaseModel ):
 
         last_confirmed_wish = ( Wish.select().where( ( Wish.user == user ) &
             ( Wish.is_temporary == False ) ).order_by( Wish.date_time.desc() ).first() )
-        if last_confirmed_wish is not None and last_confirmed_wish.date_time - time_now < timedelta( days = 1 ):
+        if last_confirmed_wish is not None and last_confirmed_wish.date_time > time_now - timedelta( days = 1 ):
             raise EnvironmentError
         ( Wish.update( is_temporary = False, date_time = time_now )
             .where( ( Wish.user == user ) & ( Wish.is_temporary == True ) ).execute() )
