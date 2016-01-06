@@ -129,7 +129,7 @@
     - /user/wishlist/set            [OK]
     - /user/wishlist/confirm        [OK]
 
-    - /admin/tracks/add             []
+    - /admin/tracks/add             []      (untested, could not simulate file upload)
     - /admin/tracks/<id>/get        [OK]
     - /admin/tracks/<id>/edit       [OK]
     - /admin/tracks/<id>/delete     [OK]
@@ -138,19 +138,19 @@
     - /admin/editors/add/<id>       [OK]
     - /admin/editors/<id>/remove    [OK]
 
-    - /admin/requests/list          []
-    - /admin/requests/<id>/allow    []
-    - /admin/requests/<id>/deny     []
+    - /admin/requests/list          [OK]
+    - /admin/requests/<id>/allow    [OK]
+    - /admin/requests/<id>/deny     [OK]
 
     - /admin/users/list             [OK]
     - /admin/users/<id>/get         [OK]
     - /admin/users/<id>/modify      [OK]
     - /admin/users/<id>/delete      [OK]
 
-    - /editor/slots/list            []
-    - /editor/slots/request         []
-    - /editor/slots/<id>/get_list   []
-    - /editor/slots/<id>/set_list   []
+    - /editor/slots/list            [OK]
+    - /editor/slots/request         [OK]
+    - /editor/slots/<id>/get_list   [OK]
+    - /editor/slots/<id>/set_list   [OK]
 
     - /owner/admins/list            [OK]
     - /owner/admins/add/<id>        [OK]

@@ -563,7 +563,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         self._assert_editor()
-        return ( Slot.select( Slot, fn.Count( SQL( '*' ) ).alias( 'count' ) )
+        return ( Slot.select( Slot, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
             .where( ( Slot.editor == self ) & ( Slot.time > datetime.now() ) )
             .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
 

@@ -53,19 +53,13 @@ def deconstruct_bitmask( bitmask ):
 
 def generate_times( time, bitmask, start_date, end_date ):
     days = list( deconstruct_bitmask( bitmask ) )
-    current_date = start_date - timedelta( days = start_date.weekday() + days[ 0 ] )
-    current = datetime.combine( current_date, time )
-    end_time = datetime.combine( end_date, time )
-    day_index = 0
+    current = datetime.combine( start_date, time )
+    end = datetime.combine( end_date, time )
     times = []
-    while current <= end_time:
-        times.append( current )
-        if day_index < len( days )-1:
-            current += timedelta( days = days[ day_index+1 ] - days[ day_index ] )
-            day_index += 1
-        else:
-            current += timedelta( days = 7 - days[ day_index ] )
-            day_index = 0
+    while current <= end:
+        if current.weekday() in days:
+            times.append( current )
+        current += timedelta( days = 1 )
     return times
 
 def datetime_from_string( date_string ):

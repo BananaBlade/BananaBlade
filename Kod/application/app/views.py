@@ -591,10 +591,10 @@ def list_requests():
         requests = g.user.get_all_requests()
         data = [{
             'id'            : req.id,
-            'time'          : req.time,
+            'time'          : req.time.isoformat(),
             'days_bit_mask' : req.days_bit_mask,
-            'start_date'    : req.start_date,
-            'end_date'      : req.end_date,
+            'start_date'    : req.start_date.isoformat(),
+            'end_date'      : req.end_date.isoformat(),
             'editor'        : {
                 'id'            : req.editor.id,
                 'first_name'    : req.editor.first_name,
@@ -755,7 +755,7 @@ def list_editor_slots():
     No request params.
     """
     try:
-        slots = g.user.get_all_slots()
+        slots = g.user.get_slots()
         data = [{
             'id'    : slot.id,
             'time'  : slot.time,
@@ -773,17 +773,21 @@ def request_slot():
     """Make a request for time slots
 
     Request should contain `time`, `days_bit_mask`, `start_date` and `end_date`.
+    `time` should be an integer between 0 and 23 (hour), and dates should be in
+    DD-MM-YYYY format.
     """
-    time            = request.values.get( time )
+    request_time    = request.values.get( 'time' )
     days_bit_mask   = request.values.get( 'days_bit_mask' )
     start_date      = request.values.get( 'start_date' )
     end_date        = request.values.get( 'end_date' )
 
-    # TODO: Convert from string to time objects
+    if request_time is not None: request_time = time( hour = int( request_time ) )
     if days_bit_mask is not None: days_bit_mask = int( days_bit_mask )
+    if start_date is not None: start_date = datetime_from_string( start_date ).date()
+    if end_date is not None: end_date = datetime_from_string( end_date ).date()
 
     try:
-        g.user.request_slot( time, days_bit_mask, start_date, end_date )
+        g.user.request_slot( request_time, days_bit_mask, start_date, end_date )
         return success_response( 'Zahtjev uspješno pohranjen.', 201 )
     except AuthorizationError:
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nedovoljne ovlasti.', 403 )
@@ -824,9 +828,9 @@ def set_playlist( slot_id ):
     Request should contain a list of ( index, track_id, play_duration ) representing
     tracks to be placed on the slot's playlist.
     """
-    track_list = request.get_json()
 
     try:
+        track_list = request.get_json().get( 'track_list' )
         # TODO: Perform a check for list correctness
         g.user.set_slot_playlist( slot_id, track_list )
         return success_response( 'Lista za reprodukciju uspješno pohranjena', 201 )
