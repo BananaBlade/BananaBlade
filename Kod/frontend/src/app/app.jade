@@ -16,40 +16,8 @@ nav.nav-bar
       .nav-option-group
       .nav-option-group-name {{ group.Croatian }}
       ul
-        li.option-group-item( *ngFor="#comp of group.components" [routerLink] = '["/{{comp.componentName}}"]' )
-          | {{comp.componentName}}
-
-    li.nav-option-group
-      .nav-option-group-name Slušaj radio
-    li.nav-option-group
-      .nav-option-group-name Pregled mogućnosti
-    li.nav-option-group
-      .nav-option-group-name Vlasnicke mogućnosti
-      ul
-        li.option-group-item([routerLink] = '["/ManageAdmins"]') Upravljaj administratorima
-        li.option-group-item([routerLink] = '["/ManageRadiostation"]') Pregledaj podatke o postaji
-    li.nav-option-group
-      .nav-option-group-name Administratorske mogućnosti
-      ul
-        li.option-group-item([routerLink] = '["/ManageTracks"]') Uredi zvucne zapise
-        li.option-group-item([routerLink] = '["/ManageEditors"]') Upravljaj urednicima
-        li.option-group-item([routerLink] = '["/AddTrack"]') Uredi zvucne zapise
-        li.option-group-item([routerLink] = '["/EditUser"]') Upravljaj korisnicima
-    li.nav-option-group
-      .nav-option-group-name Urednicke mogućnosti
-      ul
-        li.option-group-item([routerLink] = '["/MakePlaylist"]') Pregledaj termine
-    li.nav-option-group
-      .nav-option-group-name Korisničke mogućnosti
-      ul
-        li.option-group-item([routerLink] = '["/MakeWishlist"]') Pregledaj listu želja
-    li.nav-option-group
-      .nav-option-group-name Postavke računa
-      ul
-        li.option-group-item([routerLink] = '["/AccountData"]') Uredi osobne podatke
-        li.option-group-item([routerLink] = '["/AccountPassword"]') Promijeni lozinku
-        li.option-group-item([routerLink] = '["/AccountDelete"]') Obriši račun
-        li.option-group-item([routerLink] = '["/AccountLogin"]') Login
+        li.option-group-item( [routerLink]='[comp.componentName]' )( *ngFor="#comp of group.components" )
+          | {{comp.Croatian}}
     li.nav-option-group
       .nav-option-group-name Odjavi se
 

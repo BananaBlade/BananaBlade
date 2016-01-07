@@ -61,20 +61,51 @@ export class App {
     this.router = router;
 
     this.navigation = [
-      { 
-        'Croatian' : 'Slusaj radio',
-        'components' : []
-      },
-      { 
-        'Croatian': 'Pregled mogućnosti',
-        'components' : []
-      },
-      {
-        'Croatian': 'Vlasničke mogućnosti',
-        'components': [
-          { 'Croatian': 'Upravljaj administratorima', 'componentName': 'ManageAdmins', 'componentObject': ManageAdmins },
-          { 'Croatian': 'Pregledaj podatke o postaji', 'componentName': 'ManageRadiostation', 'componentObject': ManageRadiostation }
-      ]}
+        {
+            'Croatian': 'Slusaj radio',
+            'components': []
+        },
+        {
+            'Croatian': 'Pregled mogućnosti',
+            'components': []
+        },
+        {
+            'Croatian': 'Vlasničke mogućnosti',
+            'components': [
+                { 'Croatian': 'Upravljaj administratorima', 'componentName': 'ManageAdmins', 'componentObject': ManageAdmins },
+                { 'Croatian': 'Pregledaj podatke o postaji', 'componentName': 'ManageRadiostation', 'componentObject': ManageRadiostation }
+            ]
+        },
+        {
+            'Croatian': 'Administratorske modućnosti',
+            'components': [
+                { 'Croatian': 'Uredi zvučne zapise', 'componentName': 'ManageTracks', 'componentObject': ManageTracks },
+                { 'Croatian': 'Upravljaj urednicima', 'componentName': 'ManageEditors', 'componentObject': ManageEditors },
+                { 'Croatian': 'Dodaj pjesmu', 'componentName': 'AddTrack', 'componentObject': AddTrack },
+                { 'Croatian': 'Upravljaj korisnicima', 'componentName': 'EditUser', 'componentObject': EditUser },
+            ]
+        },
+        {
+            'Croatian': 'Uredničke mogućnosti',
+            'components': [
+                { 'Croatian': 'Pregledaj termine', 'componentName': 'MakePlaylist', 'componentObject': MakePlaylist }
+            ]
+        },
+        {
+            'Croatian': 'Korisničke mogućnosti',
+            'components': [
+                { 'Croatian': 'Pregledaj listu želja', 'componentName': 'MakeWishlist', 'componentObject': MakeWishlist }
+            ]
+        },
+        {
+            'Croatian': 'Postavke računa',
+            'components': [
+                { 'Croatian': 'Uredi osobne podatke', 'componentName': 'AccountData', 'componentObject': AccountData },
+                { 'Croatian': 'Promijeni lozinku', 'componentName': 'AccountPassword', 'componentObject': AccountPassword },
+                { 'Croatian': 'Obriši račun', 'componentName': 'AccountDelete', 'componentObject': AccountDelete }
+              //  { 'Croatian': 'Login', 'componentName': 'Login', 'componentObject': Logi}
+            ]
+        }
     ];
   };
 }
