@@ -935,6 +935,29 @@ def modify_station_data():
         return error_response( 'Neuspješna promjena podataka: Nevaljan zahtjev.' )
 
 
+# Station routes
+
+@app.route( '/station/get', methods = [ 'GET' ] )
+def get_station_data():
+    """Returns radio station data
+
+    No request params.
+    """
+    try:
+        station = RadioStation.get()
+        data = {
+            'name'          : station.name,
+            'description'   : station.description,
+            'oib'           : station.oib,
+            'address'       : station.address,
+            'email'         : station.email,
+            'frequency'     : station.frequency
+        }
+        return data_response( data )
+    except:
+        return error_response( 'Neuspješno dohvaćanje podataka o radiopostaji.' )
+
+
 # Track routes
 
 @app.route( '/tracks/list', methods = [ 'GET' ] )
