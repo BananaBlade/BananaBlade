@@ -6,6 +6,8 @@ import {
 import { Http } from 'angular2/http';
 import 'rxjs/Rx';
 
+import { urlEncode } from '../App/UrlEncoder';
+
 @Component({ 
     selector: 'header-bar',
     templateUrl: './dest/App/HeaderBar.html',
@@ -38,8 +40,16 @@ export class HeaderBar {
     }
 
     onSubmit(value: string) {
-        console.log('gs');
-        this.http.post('http://localhost:5000/user/auth/login', JSON.stringify({ 'email': this.emailModel, 'password': this.passwordModel }))
-            .map((res) => res.json()).map((text) => console.log(text)).subscribe((val) => console.log(val));
+        let data = { 'email': this.emailModel, 'password': this.passwordModel };
+
+        this.http.post('http://localhost:5000/user/auth/login', urlEncode(data))
+            .map((res) => res.json()).map((text) => {
+                console.log('map');
+                console.log(text);
+                return text;
+            }).subscribe((val) => {
+                console.log('subscribe');
+                console.log(val);
+            });
     }
 }

@@ -117,6 +117,11 @@ def process_login():
 
     Request should contain `email` and `password` arguments.
     """
+    print('alalahahahah')
+    print(request.values)
+    print(request.values.get('email'))
+    print(request.form.get('email'))
+
     email           = request.values.get( 'email' )
     password        = request.values.get( 'password' )
 
