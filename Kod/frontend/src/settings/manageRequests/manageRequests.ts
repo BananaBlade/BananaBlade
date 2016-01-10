@@ -3,11 +3,11 @@ import {View, Component} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/router';
 
 @Component({
-  selector: 'MakeWishlist'
+    selector: 'ManageRequests'
 })
 @View({
-    templateUrl: './dest/Settings/MakeWishlist/MakeWishlist.html'
+        templateUrl: './dest/Settings/ManageRequests/ManageRequests.html'
 })
-export class MakeWishlist {
+export class ManageRequests {
 
 }

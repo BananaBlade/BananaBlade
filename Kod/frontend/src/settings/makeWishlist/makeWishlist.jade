@@ -1,4 +1,4 @@
-.center-area
+.center-area(data-editable='false')
   header.center-header
     .view-path Pregledaj listu želja
   .center-content
@@ -10,13 +10,15 @@
           | listu želja te ju učinite dostupnom svim urednicima, kako biste i
           | sami mogli sudjelovati u radu ove radio postaje.
       .content-header-right
-        i.material-icons.icon receipt
-    nav.content-options
+        i.material-icons.icon assignment
+    nav.content-options.uneditable-ui
       button Uredi listu želja
-      button Potvrdi listu želja
-    // TODO: Hide x-es on each item when just viewing, show them when editing
-    ul.content-primary.content-list.static
-      li.content-list-item
+      button(disabled='') Potvrdi listu želja
+    nav.content-options.editable-ui
+      button Spremi listu želja
+      button Odustani od promjena
+    ul.content-primary.content-list
+      li.content-list-item.track-item
         .content-list-item-content
           .content-list-item-name Violin Concerto No. 5: Tempo di minuetto
           .content-list-item-data
@@ -25,9 +27,9 @@
             .content-list-item-data-item.track-year 2007
             .content-list-item-data-item.track-genre Klasična glazba
         .content-list-item-options
-          button.alt
+          button.alt.editable-ui
             i.material-icons clear
-      li.content-list-item
+      li.content-list-item.track-item
         .content-list-item-content
           .content-list-item-name The Four Seasons, Op. 8, "Spring": Allegro
           .content-list-item-data
@@ -35,10 +37,10 @@
             .content-list-item-data-item.track-album The 50 Greatest Pieces of Classical Music
             .content-list-item-data-item.track-year 1997
             .content-list-item-data-item.track-genre Klasična glazba
-        .content-list-item-options
+        .content-list-item-options.editable-ui
           button.alt
             i.material-icons clear
-      li.content-list-item
+      li.content-list-item.track-item
         .content-list-item-content
           .content-list-item-name St. Matthew Passion, BWV 244: O Haupt voll Blut und Wunden
           .content-list-item-data
@@ -46,10 +48,10 @@
             .content-list-item-data-item.track-album The Very Best Of Bach
             .content-list-item-data-item.track-year 2005
             .content-list-item-data-item.track-genre Klasična glazba
-        .content-list-item-options
+        .content-list-item-options.editable-ui
           button.alt
             i.material-icons clear
-      li.content-list-item
+      li.content-list-item.track-item
         .content-list-item-content
           .content-list-item-name Concerto No. 2
           .content-list-item-data
@@ -57,20 +59,55 @@
             .content-list-item-data-item.track-album Nepoznati album
             .content-list-item-data-item.track-year 2004
             .content-list-item-data-item.track-genre Klasična glazba
-        .content-list-item-options
+        .content-list-item-options.editable-ui
           button.alt
             i.material-icons clear
-      li.content-list-item.content-list-search-item.hidden
+      li.content-list-item.content-list-search-item.editable-ui
         form
           .content-list-item-content
-            label(for='add-item-search') Dodaj na listu
+            label(for='add_track_search') Dodaj na listu
             input.add-item-search(type='text', name='add_track_search')
           .content-list-item-options
             button.raised.add-item-button
               i.material-icons playlist_add
   .center-side
     .center-side-header
-      .center-side-title Zadnja potvrda
-      .center-side-subtitle
-        | Lista želja zadnji je put potvrđena prije 
-        b 14 sati
+      .center-side-title Želje drugih korisnika
+      .center-side-subtitle Pogledajte što drugi korisnici žele slušati u programu radio postaje.
+    .center-side-content
+      ul.global-wishlist
+        li.global-wishlist-item
+          .gw-track
+            .gw-track-name Hello
+            .gw-track-artist Adele
+          .gw-option.editable-ui
+            button
+              i.material-icons playlist_add
+        li.global-wishlist-item
+          .gw-track
+            .gw-track-name Same Old Love
+            .gw-track-artist Selena Gomez
+          .gw-option.editable-ui
+            button
+              i.material-icons playlist_add
+        li.global-wishlist-item
+          .gw-track
+            .gw-track-name All I Want For Christmas Is You
+            .gw-track-artist Mariah Carey
+          .gw-option.editable-ui
+            button
+              i.material-icons playlist_add
+        li.global-wishlist-item
+          .gw-track
+            .gw-track-name In The Night
+            .gw-track-artist The Weeknd
+          .gw-option.editable-ui
+            button
+              i.material-icons playlist_add
+        li.global-wishlist-item
+          .gw-track
+            .gw-track-name On My Mind
+            .gw-track-artist Ellie Goulding
+          .gw-option.editable-ui
+            button
+              i.material-icons playlist_add

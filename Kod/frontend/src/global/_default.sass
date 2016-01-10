@@ -1,5 +1,7 @@
 @import "reset"
 @import "utility"
+@import "components"
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Open+Sans+Condensed:700&subset=latin-ext)
 
 $base_font     :     "Open Sans"
 $header_font   :     "Open Sans Condensed"
@@ -11,6 +13,7 @@ $primary_color         :     #2196F3
 $light_primary_color   :     #BBDEFB
 
 $accent_color          :     #FF5252
+$accent2_color         :     #512DA8
 $text_color            :     #212121
 $alt_text_color        :     #FFF
 $secondary_text_color  :     #777
@@ -54,20 +57,67 @@ div, header, footer, section, article, aside, input, button, textarea, label, li
 .hidden
     display            :     none
 
+.centered
+    text-align         :     center
+
+.left
+    float              :     left !important
+
+.right
+    float              :     right !important
+
+.link
+    color              :     $accent_color
+    text-decoration    :     none
+
+    &:hover
+        cursor               :     pointer
+        text-decoration      :     underline
+
+
+//
+
+h1, h2, h3, h4, h5, h6
+    font-family        :     $header_font
+
+h2
+    font-size          :     1.4rem
+    line-height        :     3rem
+
 input, select, textarea
     background         :     none
     border             :     none
-    border-bottom      :     2px solid $border_color
+    border-bottom      :     0.125rem solid $border_color
+    box-shadow         :     none
     display            :     block
     font               :
         family               :     $base_font
         size                 :     1rem
     height             :     2rem
     line-height        :     1.75rem
+    outline            :     none
     padding            :     0.125rem 0.5rem
 
     &:focus
         border-bottom-color  :     $primary_color
+        box-shadow           :     none
+        outline              :     none
+
+    &:invalid, &:-moz-ui-invalid
+        border-bottom-color  :     $accent_color
+        box-shadow           :     none
+
+::-webkit-input-placeholder
+   color               :     $secondary_text_color
+
+:-moz-placeholder
+   color               :     $secondary_text_color
+
+::-moz-placeholder
+   color               :     $secondary_text_color
+
+:-ms-input-placeholder
+   color               :     $secondary_text_color
 
 input[ type = "file" ]
     border             :     none
@@ -81,6 +131,7 @@ button
     +user-select
     background         :     none
     border             :     none
+    box-shadow         :     none
     color              :     $text_color
     display            :     block
     font               :
@@ -94,19 +145,37 @@ button
     text-transform     :     uppercase
 
     &:hover
-        background           :     transparentize( $primary_color, 0.9 )
+        background           :     fade-out( $primary_color, 0.9 )
         cursor               :     pointer
 
     &:focus
         outline              :     1px dotted $primary_color
 
     &:active
-        background           :     transparentize( $primary_color, 0.8 )
+        background           :     fade-out( $primary_color, 0.8 )
 
     &::-moz-focus-inner
         border               :     0
         margin               :     0
         padding              :     0
+
+    &:disabled
+        background           :     none !important
+        color                :     $tertiary_text_color !important
+
+        &:hover
+            background             :     none
+            color                  :     $secondary_text_color
+            cursor                 :     default
+
+        &:active
+            background             :     none
+
+    &.dim
+        color                :     $tertiary_text_color
+
+        &:hover
+            color                  :     $secondary_text_color
 
     &.alt
         color                :     $accent_color
@@ -135,6 +204,9 @@ button
 
     .material-icons
         padding              :     0.25rem 0
+
+.material-icons
+    display            :     block !important
 
 label
     @extend .body-secondary
@@ -174,7 +246,7 @@ body
     color              :     $text_color
     font               :
         family               :     $base_font
-        size                 :     16px
+        size                 :     1rem
     line-height        :     1.5rem
 
 .header-bar
@@ -184,17 +256,19 @@ body
     position           :     fixed
     top                :     0
     width              :     100%
-    z-index            :     5
+    z-index            :     15
+
+    &.unfixed
+        position             :     relative
 
 .nav-bar
     background         :     #fff
     bottom             :     0
     position           :     fixed
     top                :     3rem
-    width              :     16rem
 
 .center-area
-    margin             :     3rem 0 0 16rem
+    margin-top         :     3rem
     position           :     relative
 
 
@@ -215,10 +289,8 @@ body
 
 .center-content
     float              :     left
-    height             :     30rem
-    margin             :     2rem 5rem
-    padding-top        :     3rem
-    width              :     48rem
+    margin             :     5rem 0 2rem 0
+    padding            :     0 4rem
 
 .content-header
     margin-bottom      :     0.5rem
@@ -235,26 +307,28 @@ body
 
 .center-side
     float              :     left
-    height             :     30rem
     margin             :     2rem 0
-    padding            :     4rem 1.5rem 1rem 1.5rem
-    width              :     20rem
+    padding            :     4rem 0 1rem 0
 
 
 // Top bar styles
 
 .app-box
     float              :     left
-    padding            :     0.75rem 0
 
 .app-name
     color              :     $text_color
     float              :     left
     font               :
         family               :     $header_font
-        size                 :     1.2rem
+        size                 :     1.5rem
         weight               :     700
+    line-height        :     3rem
     text-transform     :     uppercase
+
+    img
+        height               :     2rem !important
+        padding              :     0.5rem 0
 
 .app-descr
     border-left        :     2px solid #eaeaea
@@ -278,21 +352,32 @@ body
         height               :     1.5rem
         float                :     left
         font-size            :     0.8rem
+        line-height          :     1.25rem
+        margin               :     0.25rem 0
         width                :     10rem
 
     button
         height               :     1.5rem
+        line-height          :     1.5rem
+        float                :     left
         font-size            :     0.85rem
+        margin               :     0.25rem 0
+        padding              :     0 0.75rem
 
 .user-name-box
-    float              :     left
-    margin-right       :     0.5rem
+    padding-right      :     0.25rem
 
     .material-icons
         font-size            :     2rem
         float                :     right
         line-height          :     2rem
         margin-left          :     0.5rem
+
+.user-form-box
+    padding-right      :     0.5rem
+
+*[data-logged-in = "no"] .user-name-box, *[data-logged-in = "yes"] .user-form-box, *[data-logged-in = "yes"] .register-wrapper
+    display            :     none
 
 .user-type
     color              :     $tertiary_text_color
@@ -315,6 +400,15 @@ body
 .nav-option-group
     padding-top        :     1rem
 
+.nav-special-select
+    .nav-option-group
+        display              :     none
+
+    *[data-account-type = "1"] & .user-nav-group, *[data-account-type = "2"] & .editor-nav-group,
+    *[data-account-type = "3"] & .admin-nav-group, *[data-account-type = "4"] & .owner-nav-group
+        display              :     block
+
+
 .nav-option-group-name
     font               :
         family               :     $header_font
@@ -327,6 +421,9 @@ body
         color                :    $primary_color
         padding-left         :    0.75rem
 
+    a &:hover
+        color                :    $accent_color
+
 .option-group-item
     color              :     $secondary_text_color
     font-family        :     $header_font
@@ -338,6 +435,9 @@ body
         padding-left         :     1.75rem
         color                :     $primary_color
 
+    &:hover
+        color                :     $accent_color
+
 
 // Content header styles
 
@@ -346,17 +446,18 @@ body
 
 .content-header-right
     +column( 1, 6 )
-    background         :     $accent_color
-    border-radius      :     50%
-    box-shadow         :     0 2px 4px rgba( 0, 0, 0, 0.1 )
-    height             :     7.5rem
-    text-align         :     center
 
     .icon
-        color                :     $alt_text_color //accent_color
+        background           :     $accent_color
+        border-radius        :     50%
+        box-shadow           :     0 2px 4px rgba( 0, 0, 0, 0.1 )
+        color                :     $alt_text_color
         font-size            :     5rem
+        height               :     7.5rem
         line-height          :     7.5rem
+        text-align           :     center
         text-shadow          :     0 2px 2px rgba( 0, 0, 0, 0.1 )
+        width                :     7.5rem
 
 .content-header-left
     +column( 5, 6 )
@@ -374,6 +475,14 @@ body
 
 // Content options styles
 
+*[data-editable = "true"]
+    .uneditable-ui
+        display              :     none
+
+*[data-editable = "false"]
+    .editable-ui
+        display              :     none
+
 .content-options
     +container
 
@@ -388,19 +497,66 @@ body
 
 // Content list styles
 
+.content-list
+    counter-reset      :     track_count
+
 .content-list-item
     +container
     border-bottom      :     1px solid $border_color
     padding            :     1rem 1rem 1rem 1.5rem
+    position           :     relative
 
     &:last-child
         border-bottom        :     none
 
 .content-list-item-content
-    +column( 5, 6 )
+    counter-increment  :     track_count
+    padding-left       :     4.5rem
+    padding-right      :     3rem
+
+    .progress-item &
+        counter-increment    :     none
+        padding-left         :     0
+
+    &:before
+        background           :     $accent2_color
+        border-radius        :     50%
+        color                :     $alt_text_color
+        display              :     block
+        float                :     left
+        font-family          :     "Material Icons"
+        font-size            :     2.5rem
+        height               :     4rem
+        left                 :     1rem
+        line-height          :     4rem
+        padding              :     0
+        position             :     absolute
+        text-align           :     center
+        width                :     4rem
+
+    .editor-item &:before, .user-item[data-type="2"] &:before
+        content              :     "edit"
+
+    .user-item[data-type="1"] &:before
+        content              :     "person"
+
+    .admin-item &:before, .user-item[data-type="3"] &:before
+        content              :     "build"
+
+    .user-item[data-type="4"] &:before
+        content              :     "vpn_key"
+
+    .track-item &:before
+        content              :     "audiotrack"
+
+    .request-item &:before
+        content              :     "event_available"
 
 .content-list-item-options
-    +column( 1, 6 )
+    position                 :     absolute
+    right                    :     1rem
+    top                      :     1rem
+    width                    :     2rem
 
     button
         float                :     right
@@ -411,21 +567,25 @@ body
             &:hover
                 opacity                  :     1
 
-
 .content-list-item-name
-    @extend .heading
+    font-size           :     1.5rem
+    font-weight         :     300
+    line-height         :     2rem
+    padding             :     0.25rem 0
 
 .content-list-item-data
-    overflow           :     hidden
+    +container
 
 .content-list-item-data-item
     @extend .body-secondary
     float              :     left
+    font-family        :     $header_font
     margin-right       :     1rem
 
 .content-list-search-item
     background         :     $primary_color
     color              :     $alt_text_color
+    padding-right      :     3rem
 
     label
         color                :     $alt_text_color
@@ -487,23 +647,33 @@ body
         +column( 1, 4 )
         float                :     right
 
+.spacer-line
+    display            :     block
+    height             :     1rem
+
 fieldset[ disabled ]
-    input, textarea
+    input, textarea, select
         border-bottom        :     none
         border               :     1px solid $border_color
         color                :     $text_color
 
+    input[type = "file"]
+        border               :     none
+        color                :     rgba( 255, 255, 255, 0.6 )
+
     .account-type-input
-        color                :     $primary_color
+        color                :     $text_color
 
 .wide-labels .form-line
     label
         +column( 1, 3 )
-    input, select
+    input, select, textarea
         +column( 2, 3 )
+    .left-spacer
+        +column( 1, 3 )
 
 .emph-line
-    background         :     $primary_color
+    background         :     $accent2_color
     color              :     $alt_text_color
     margin-bottom      :     -1rem
     padding            :     2rem
@@ -514,25 +684,99 @@ fieldset[ disabled ]
         color                :     $alt_text_color
 
 .account-type-input
-    color              :     $primary_color
+    color              :     $text_color
     font-family        :     $header_font
+
+
+// Content boxes
+
+.content-boxes
+    padding            :     1rem 0
+
+.content-box
+    +container
+    background         :     #fff
+    box-shadow         :     0 0 4px 0 rgba( 0, 0, 0, 0.07 )
+    margin             :     2rem 0
+    min-height         :     8rem
+    padding            :     1.5rem 1.5rem 1.5rem 8rem
+    position           :     relative
+
+.content-box-icon
+    background         :     $accent2_color
+    border-radius      :     50%
+    height             :     5rem
+    left               :     1.5rem
+    position           :     absolute
+    text-align         :     center
+    top                :     1.5rem
+    width              :     5rem
+
+    .material-icons
+        color                :     $alt_text_color
+        font-size            :     3rem
+        line-height          :     5rem
+
+.content-box-info
+    +column( 2, 5 )
+    padding-right            :     2rem
+
+.content-box-name
+    line-height          :     2rem
+    padding              :     0.5rem 0
+
+.content-box-descr
+    color                :     $secondary_text_color
+    font-size            :     0.9rem
+
+.content-box-options
+    +column( 3, 5 )
+    border-left        :     1px solid $border_color
+    min-height         :     5rem
+    padding-left       :     2rem
+
+    li
+        padding              :     0.5rem 0
+
+    .option-name
+        color                :     $primary_color
+        font-family          :     $header_font
+        font-size            :     1.1rem
+        line-height          :     2rem
+
+        &:hover
+            color                  :      $accent_color
+
+    .option-descr
+        color                :     $secondary_text_color
+        font-size            :     0.9rem
+        line-height          :     1.25rem
+
+.account-type-select
+    display             :     none
+
+*[data-account-type = "1"] .user-select, *[data-account-type = "2"] .editor-select,
+*[data-account-type = "3"] .admin-select, *[data-account-type = "4"] .owner-select
+    display             :     block
+
 
 
 // List styles
 
 .user-account-type, .track-artist, .track-duration
     color              :     $primary_color
-    font-family        :     $header_font
 
-.user-occupation, .user-age, .track-album, .track-year, .track-artist-dim
+.user-occupation, .user-age, .track-album, .track-year, .track-artist-dim, .request-date-interval, .request-collisions-negative
     color              :     $tertiary_text_color
 
-.user-mail, .track-genre
-    color              :     $tertiary_text_color
-    font-family        :     $header_font
+.user-mail, .track-genre, .request-editor
+    color              :     $secondary_text_color
+
+.request-collisions-positive
+    color              :     $accent_color
 
 .progress-item
-    background         :     $primary_color
+    background         :     $accent2_color
 
     &.warning
         background         :     $accent_color
@@ -550,7 +794,7 @@ fieldset[ disabled ]
 
     .progress-bar
         +column( 3, 4 )
-        background           :     lighten( $primary_color, 10% )
+        background           :     darken( $accent2_color, 10% )
         height               :     1.5rem
         position             :     relative
         text-align           :     center
@@ -562,32 +806,16 @@ fieldset[ disabled ]
         z-index              :     3
 
     .progress-indicator
-        background           :     #fff
+        background           :     lighten( $accent2_color, 55% )
         height               :     1.5rem
         position             :     absolute
         top                  :     0
         z-index              :     2
 
-        &[data-value^='0']
-            width            :     1%
-        &[data-value^='1']
-            width            :     11%
-        &[data-value^='2']
-            width            :     21%
-        &[data-value^='3']
-            width            :     31%
-        &[data-value^='4']
-            width            :     41%
-        &[data-value^='5']
-            width            :     51%
-        &[data-value^='6']
-            width            :     61%
-        &[data-value^='7']
-            width            :     71%
-        &[data-value^='8']
-            width            :     81%
-        &[data-value^='9']
-            width            :     91%
+        @for $i from 0 through 9
+            &[ data-value^='#{$i}' ]
+                width              :     (10*$i+1) * 1%
+
         &[data-value='100']
             width            :     100%
 
@@ -596,7 +824,7 @@ fieldset[ disabled ]
 
 .center-side-header
     padding-top        :     0.5rem
-    padding-bottom     :     1.5rem
+    padding-bottom     :     2rem
 
 .center-side-title
     @extend .heading
@@ -605,3 +833,801 @@ fieldset[ disabled ]
     @extend .subheading
 
 .center-side-content
+    padding-bottom    :     4rem
+
+.global-wishlist-item
+    +container
+    padding           :     0.25rem 1rem 0.25rem 1rem
+
+    &:nth-child(odd)
+        background          :    #fff
+
+.gw-track
+    +column( 5, 6 )
+
+.gw-track-name
+    font-weight       :     300
+    height            :     1.5rem
+    overflow          :     hidden
+
+.gw-track-artist
+    color             :     $tertiary_text_color
+    font-family       :     $header_font
+    font-size         :     0.9rem
+    height            :     1.5rem
+    overflow          :     hidden
+
+.gw-option
+    +column( 1, 6 )
+    height            :     3rem
+    padding           :     0.5rem 0
+
+    button
+        border-radius       :     50%
+        float               :     right
+        width               :     2rem
+
+    .material-icons
+        color               :     $primary_color
+        font-size           :     1.5rem
+        line-height         :     1.5rem
+
+
+// Editor slots styles
+
+.calendar-wrapper
+    padding           :     1.5rem
+
+.large-calendar
+    background        :     $base_background_color
+    border            :     1px solid $border_color
+    height            :     20rem
+    padding           :     1rem
+
+*[data-status = "view"] .calendar-option, *[data-status = "change"] .calendar-actions
+    display           :     none
+
+.calendar-actions
+    overflow          :     hidden
+    padding           :     0 1.5rem 1.5rem 1.5rem
+
+    button
+        color               :     $secondary_text_color
+        float               :     right
+
+        &:hover
+            color                 :     $text_color
+
+.calendar-option
+    background        :     $primary_color
+    color             :     $alt_text_color
+    padding           :     1.5rem
+
+    h3
+        font-size           :     1.2rem
+        line-height         :     2rem
+
+    label
+        color               :     fade-out( $alt_text_color, 0.4 )
+
+    input, select
+        border-bottom-color :     fade-out( $alt_text_color, 0.8 )
+        color               :     $alt_text_color
+
+        &:focus
+            border-bottom-color   :     #fff
+
+    option
+        background          :     #fff
+        color               :     $text_color
+
+.day-checks
+    +column( 3, 4 )
+
+    input
+        box-sizing            :     border-box
+        margin                :     0
+        width                 :     2rem
+
+.check-labels
+    +container
+    clear             :     both
+
+    li
+        float               :     left
+        font-family         :     $header_font
+        padding-right       :     2px
+        text-align          :     center
+        width               :     2rem
+
+
+
+// Statistics styles
+
+.stat
+    padding           :     1rem 0
+
+.single-stat
+    +container
+    border-top        :     1px solid $border_color
+    padding           :     1rem 0
+
+.single-stat-number
+    background        :     $accent2_color
+    border-radius     :     50%
+    color             :     $alt_text_color
+    float             :     left
+    font-size         :     1.5rem
+    line-height       :     3rem
+    margin-right      :     1rem
+    text-align        :     center
+    width             :     3rem
+
+.single-stat-descr
+    color             :     $secondary_text_color
+    font-family       :     $header_font
+    font-size         :     1.25rem
+    line-height       :     3rem
+
+.stat-track-wrapper
+    border-top        :     1px solid $border_color
+    margin-left       :     -1rem
+    padding-top       :     1rem
+
+*[data-state = "view"] .stat-item-option, *[data-state = "change"] .stat-display
+    display           :     none
+
+.stat-item-display
+    background        :     $accent2_color
+    color             :     $alt_text_color
+    margin-bottom     :     -1px
+    padding           :     0.5rem 1rem 1rem 1rem
+    position          :     relative
+
+.stat-track-name, .stat-editor-name
+    font-size         :     1.5rem
+    font-weight       :     300
+    line-height       :     2rem
+    padding           :     0.25rem 0
+
+.stat-track-info, .stat-editor-info
+    +container
+
+.stat-track-info-item
+    color             :     rgba( 255, 255, 255, 0.4 )
+    float             :     left
+    font-family       :     $header_font
+    margin-right      :     2rem
+
+.stat-track-artist, .stat-editor-mail
+    color             :     $alt_text_color
+
+.stat-item-option
+    background        :     $accent2_color
+    color             :     $alt_text_color
+    padding           :     1rem 5rem 1rem 1rem
+    position          :     relative
+
+    label
+        color               :     $alt_text_color
+
+.choose-search
+    border-bottom-color:    fade-out( $alt_text_color, 0.75 )
+    color             :     $alt_text_color
+    width             :     100%
+
+
+    &:focus
+        border-bottom-color :     $alt_text_color
+
+.stat-option-button
+    position          :     absolute
+    right             :     1rem
+    top               :     1.25rem
+
+    button
+        background          :     none
+        border-radius       :     50%
+        height              :     3rem
+        width               :     3rem
+
+        .material-icons
+            font-size             :     2rem
+
+        &:hover
+            background            :     darken( $accent2_color, 10% )
+
+.stat-buttons
+    border-top        :     1px solid $border_color
+    margin            :     0 0 0 -1rem
+    padding           :     1rem 0 0 0
+
+    button
+        &:hover
+            background      :     fade-out( $accent2_color, 0.85 )
+
+        &:active
+            background      :     fade-out( $accent2_color, 0.7 )
+
+        &:focus
+            outline         :     1px dotted $accent2_color
+
+.stat-list
+    border-top        :     1px solid $border_color
+    margin-left       :     -1rem
+    padding           :     1rem 0
+
+    &.no-border
+        border              :     none
+
+    li
+        color               :     $secondary_text_color
+        font-family         :     $header_font
+        font-size           :     1.25rem
+        line-height         :     3rem
+        padding             :     0.5rem 0 0.5rem 1rem
+        position            :     relative
+
+        &:before
+            background            :     $accent2_color
+            border-radius         :     50%
+            color                 :     $alt_text_color
+            display               :     block
+            float                 :     left
+            font-family           :     "Material Icons"
+            margin-right          :     1rem
+            text-align            :     center
+            width                 :     3rem
+
+        &:nth-child(even)
+            background            :     $base_background_color
+
+.track-stat-list
+    counter-reset         :     wish_count
+
+    li
+        counter-increment       :     wish_count
+        padding-right           :     3.5rem
+
+        &:before
+            content             :     '#' counter( wish_count )
+            font-family         :     $base_font
+            font-size           :     1.5rem
+            font-weight         :     300
+
+.track-stat-list-track-name:after
+    content               :     ', '
+
+.track-stat-list-track-artist
+    font-family           :     $base_font
+    font-size             :     1rem
+    line-height           :     0
+
+.track-stat-list-wish-count
+    position              :     absolute
+    right                 :     1.25rem
+    top                   :     0.5rem
+
+.active-admins-stat-list li:before
+    content               :     "build"
+
+
+// Index styles
+
+.section-wrapper
+    min-height        :     30rem
+    padding           :     5rem 0
+
+.section-container
+    +container
+    margin            :     0 auto
+    width             :     70rem
+
+.player-wrapper
+    background        :     darken( $accent2_color, 10% )
+    color             :     $alt_text_color
+
+.info-wrapper
+    background        :     $dark_primary_color
+    color             :     $alt_text_color
+
+.register-wrapper
+
+.footer-wrapper
+    background        :     darken( $accent2_color, 25% )
+    color             :     $alt_text_color
+    min-height        :     10rem
+    padding           :     0
+    padding-bottom    :     2rem
+
+.player-box
+    +column( 2, 3 )
+    background        :     lighten( $accent2_color, 5% )
+    min-height        :     21.5rem
+    margin-top        :     -1rem
+    padding           :     1rem 2rem 0 2rem
+
+.player-body
+    background        :     darken( $accent2_color, 5% )
+    margin-top        :     1rem
+
+.current-editor
+    background        :     darken( $accent2_color, 10% )
+    clear             :     left
+    font-family       :     $header_font
+    margin-bottom     :     2rem
+    padding           :     0.5rem 1rem
+
+    span
+        opacity             :     0.65
+
+.player-track
+    +container
+    height            :     10.5rem
+    position          :     relative
+
+.player-track-title
+    line-height       :     3rem
+    float             :     left
+    font              :
+        size                :     2.5rem
+        weight              :     300
+    letter-spacing    :     -1px
+    max-height        :     6rem
+    overflow          :     hidden
+    text-align        :     center
+
+.player-track-info
+    +container
+    background        :     $accent2_color
+    bottom            :     0
+    left              :     0
+    position          :     absolute
+    width             :     100%
+
+.player-track-info-item
+    +column( 1, 4 )
+    color             :     rgba( 255, 255, 255, 0.75 )
+    height            :     2.5rem
+    line-height       :     2.5rem
+    overflow          :     hidden
+    padding           :     0 0.5rem
+    text-align        :     center
+
+    &:nth-child(odd)
+        background          :     darken( $accent2_color, 10% )
+
+.player-track-artist, .player-track-genre
+    font-family       :     $header_font
+
+.control-buttons
+    margin            :     0 auto 0 auto
+    overflow          :     hidden
+    width             :     16rem
+
+    button
+        float               :     left
+
+.volume-button
+    background        :     $alt_text_color
+    border-radius     :     50%
+    height            :     2.5rem
+    margin            :     2rem 1rem
+    text-align        :     center
+    width             :     2.5rem
+
+    .material-icons
+        color               :     $accent2_color
+        font-size           :     1.5rem
+        line-height         :     2rem
+
+    &:hover
+        background          :     darken( $accent2_color, 10% )
+
+.play-button
+    border-radius     :     50%
+    height            :     auto
+
+    &:hover
+        background          :     none
+
+    &:hover .material-icons
+        color               :     darken( $accent2_color, 10% )
+
+    .material-icons
+        color               :     $alt_text_color
+        font-size           :     6rem
+
+
+
+.schedule-box
+    +column( 1, 3 )
+    padding           :     0 2rem
+
+    h2
+        margin-bottom       :     1rem
+
+.schedule-item
+    +container
+    padding           :     0.5rem 1rem
+
+    &:nth-child(odd)
+        background          :     darken( $accent2_color, 2.5% )
+
+    &:first-child
+        background          :     $accent_color
+
+.item-time
+    +column( 1, 4 )
+
+.item-editor
+    +column( 3, 4 )
+    font-family       :     $header_font
+
+.popular-info
+    +column( 1, 3 )
+
+.popular-tracks-list
+    counter-reset     :     item_count
+    padding-top       :     1rem
+
+    li
+        counter-increment   :     item_count
+        height              :     4rem
+        padding             :     0.5rem 2rem 0.5rem 4rem
+        position            :     relative
+
+        &:before
+            color           :     $light_primary_color
+            content         :     counter( item_count )
+            font-size       :     2rem
+            font-weight     :     300
+            left            :     0
+            line-height     :     2rem
+            padding         :     1rem 1.5rem
+            position        :     absolute
+            top             :     0
+            z-index         :     3
+
+        &:after
+            background      :     darken( $dark_primary_color, 10% )
+            content         :     " "
+            display         :     block
+            height          :     4rem
+            left            :     0
+            position        :     absolute
+            top             :     0
+            z-index         :     2
+
+        &:nth-child(even):after
+            background            :     lighten( $dark_primary_color, 10% )
+
+        & *
+            position        :     relative
+            z-index         :     3
+
+        @for $i from 1 through 20
+            &[ data-value^='#{$i}' ]:after
+                width             :     ($i*5) * 1%
+
+
+.popular-track-name
+    font-size         :     1.1rem
+    font-weight       :     300
+    height            :     1.5rem
+    overflow          :     hidden
+
+.popular-track-info
+    font-family       :     $header_font
+    font-size         :     0.9rem
+
+.radio-info
+    +column( 2, 3 )
+    padding-left      :     3rem
+
+    h2
+        margin-bottom       :     1rem
+
+    p
+        text-align          :     justify
+
+.radio-image
+    height            :     17rem
+    padding-top       :     2rem
+    text-align        :     center
+
+    .material-icons
+        color               :     lighten( $dark_primary_color, 7.5% )
+        display             :     block
+        font-size           :     15rem
+        line-height         :     15rem
+        text-shadow         :     0 2px 1px rgba( 0, 0, 0, 0.05 )
+
+
+.register-descr-box
+    +column( 2, 3 )
+    padding-right     :     3rem
+
+    p
+        color               :     $secondary_text_color
+        margin-bottom       :     1rem
+
+        b
+            color                 :     $text_color
+
+p.roles-info
+    color             :     $tertiary_text_color
+    font-family       :     $header_font
+    font-size         :     1.2rem
+    padding-top       :     1rem
+
+.roles-list
+    +container
+    margin-left       :     -1rem
+
+.role
+    +column( 1, 3 )
+    margin            :     1rem 0 2rem
+    padding           :     0 1rem
+
+.role-container
+    background        :     #fff
+    box-shadow        :     0 2px 4px rgba( 0, 0, 0, 0.1 )
+    padding           :     1rem 1rem 1.5rem 1rem
+
+.role-icon
+    background        :     $accent2_color
+    border-radius     :     50%
+    box-shadow        :     0 2px 4px rgba( 0, 0, 0, 0.15 )
+    height            :     8rem
+    margin            :     0 auto
+    padding           :     2rem
+    width             :     8rem
+
+    .material-icons
+        color               :     $alt_text_color
+        font-size           :     4rem
+        text-align          :     center
+        text-shadow         :     0 2px 2px rgba( 0, 0, 0, 0.25 )
+
+.role-name
+    font-family       :     $header_font
+    font-size         :     1.2rem
+    padding           :     1rem 0
+    text-align        :     center
+
+.role-descr
+    color             :     $secondary_text_color
+    font-size         :     0.85rem
+    text-align        :     center
+
+p.register-bait
+    color             :     $text_color
+    font-family       :     $header_font
+    font-size         :     1.1rem
+    margin-top        :     1.9rem
+    text-align        :     center
+
+.register-form-box
+    +column( 1, 3 )
+
+    h2
+        padding-bottom      :     1rem
+
+.register-form
+
+    input
+        width               :     100%
+
+    .form-line
+        padding             :     0.5rem 0
+
+    .tos-label
+        color               :     $tertiary_text_color
+        float               :     none
+        font-size           :     0.9rem
+        width               :     auto
+
+        a
+            @extend .link
+
+        b
+            color                 :     $secondary_text_color
+            text-transform        :     uppercase
+
+    button
+        float               :     left
+        margin              :     0 auto
+        width               :     10rem
+
+.footer-container
+    padding           :     2rem 0
+
+.footer-left
+    +column( 1, 2 )
+    padding           :     3rem 0
+
+.footer-right
+    +column( 1, 2 )
+    background        :     url( "../img/draft/logo_icon.png" ) no-repeat right 12px
+    height            :     250px
+    opacity           :     0.5
+
+.radiostation-info-item
+    +column( 1, 2 )
+    padding           :     0.25rem 0
+
+.rs-item-name
+    color             :     rgba( 255, 255, 255, 0.4 )
+    font-family       :     $header_font
+
+.rs-item-value
+    color             :     #ddd
+
+.footer-copy
+    clear             :     both
+    color             :     rgba( 255, 255, 255, 0.25 )
+    font-size         :     0.9rem
+    padding           :     3rem 0 1rem 0
+    width             :     100%
+
+
+// Message views styles
+
+.message-wrapper
+    margin-top        :     3rem
+    position          :     fixed
+    height            :     100%
+    width             :     100%
+
+    &[data-type = "success"]
+        background          :     $dark_primary_color
+        color               :     $alt_text_color
+
+        h1:after
+            content               :     "done"
+
+    &[data-type = "error"]
+        background          :     $accent_color
+        color               :     $alt_text_color
+
+        h1:after
+            content               :     "close"
+
+    &[data-type = "info"]
+        background          :     $accent2_color
+        color               :     $alt_text_color
+
+        h1:after
+            content               :     "message"
+
+.message-container
+    width             :     60rem
+
+.message-header
+    padding-bottom    :     2rem
+
+    h1
+        font-size           :     2rem
+        line-height         :     3rem
+
+        &:after
+            display               :     block
+            font-family           :     "Material Icons"
+            font-size             :     6rem
+            float                 :     right
+            margin-right          :     1rem
+
+
+.message-content
+
+    p
+        color               :     fade-out( $alt_text_color, 0.1 )
+        font-size           :     1.1rem
+        line-height         :     1.75rem
+        width               :     50rem
+
+// Media queries
+
+@media screen and (max-width : 560px)
+    html
+        font-size           :     11px !important
+
+@media screen and (max-width : 959px)
+    html
+        font-size           :     13px
+
+    .nav-bar
+        background          :     none
+        width               :     3rem
+        z-index             :     10
+
+        *:not(.nav-bar-top-spacer)
+            display               :     none
+
+        &:hover
+            background            :     #fff
+            box-shadow            :     0 0 4px rgba( 0, 0, 0, 0.2 )
+            width                 :     14rem
+
+            *
+                display                 :     block
+
+        .nav-bar-top-spacer
+            cursor                :     pointer
+            text-align            :     center
+
+            &:after
+                content                 :     "menu"
+                color                   :     #fff
+                display                 :     block
+                font-family             :     "Material Icons"
+                font-size               :     2rem
+                line-height             :     3rem
+                width                   :     39px
+
+    .center-area
+        margin-left         :     3rem
+
+    .center-content
+        padding             :     0 3rem 0 0
+        width               :     100%
+
+    .center-side
+        margin-top          :     -2rem
+        padding             :     0 2rem
+        width               :     100%
+
+@media screen and (min-width : 960px) and (max-width : 1279px)
+    html
+        font-size           :     14px
+
+    .nav-bar
+        width               :     14rem
+
+    .center-area
+        margin-left         :     14rem
+
+    .center-content
+        padding             :     0 2rem
+        width               :     70%
+
+    .center-side
+        padding-right       :     1rem
+        width               :     30%
+
+@media screen and (min-width : 1280px) and (max-width : 1499px)
+    html
+        font-size           :     16px
+
+    .nav-bar
+        width               :     15rem
+
+    .center-area
+        margin-left         :     15rem
+
+    .center-content
+        width               :     70%
+
+    .center-side
+        padding-right       :     2rem
+        width               :     30%
+
+
+@media screen and (min-width : 1500px)
+    html
+        font-size           :     16px
+
+    .nav-bar
+        width               :     16rem
+
+    .center-area
+        margin-left         :     16rem
+
+    .center-content
+        padding             :     0 5%
+        width               :     70%
+
+    .center-side
+        padding-right       :     5%
+        width               :     30%

@@ -1,2 +1,6 @@
 flask
+peewee
 Flask-Mail
+flask-cors
+gunicorn
+virtualenv

@@ -5,19 +5,19 @@
 // Simple fluid grid
 
 =clear
-	&:before, &:after
-		content 		: 	""
-		display 		: 	table
+  &:before, &:after
+    content     :   ""
+    display     :   table
 
-	&:after
-		clear 			: 	both
+  &:after
+    clear       :   both
 
 =container
-	+clear
+  +clear
 
 =column( $x, $n )
-	float 		: 	left
-	width 		: 	100% * $x / $n
+  float     :   left
+  width     :   100% * $x / $n
 
 
 // UI helpers

@@ -1,15 +1,13 @@
 .center-area
   header.center-header
-    .view-path Uredi zvučne zapise > Dodaj zvučni zapis
+    .view-path Zvučni zapisi > Dodaj zvučni zapis
   .center-content
     header.content-header
       .content-header-left
         .content-header-title Dodavanje zapisa
         .content-header-subtitle
-          | Pregledajte i uređujte
-          | vaše osobne korisničke podatke, koji nam koriste kako
-          | bismo vam mogli pružiti što bolju uslugu slušanja i sudjelovanja
-          | u radu postaje.
+          | Dodajte novi zvučni zapis i njegove
+          | metapodatke u sustav i tako omogućite njegovo korištenje u programu radio postaje.
       .content-header-right
         i.material-icons.icon audiotrack
     .content-primary.content-form.wide-labels
@@ -27,18 +25,17 @@
           label(for='album') Album
           input(type='text', name='album')
         .form-line
-          label(for='duration') Trajanje zapisa
+          label(for='duration') Trajanje zapisa (s)
           input(type='number', name='duration', min='1', max='1000')
         .form-line
           label(for='file_format') Format zapisa
           // <input type = "text" name = "file_format"/>
-          select(name='file_format', id='')
+          select(name='file_format')
             option(value='0') MP3
             option(value='1') WAV
             option(value='2') OGG
-            option(value='-1') nešto drugo
         .form-line
-          label(for='sample_rate') Frekvencija uzorkovanja
+          label(for='sample_rate') Frekvencija uzorkovanja (kHz)
           input(type='text', name='sample_rate')
         .form-line
           label(for='bits_per_sample') Broj bitova kvantizacije
