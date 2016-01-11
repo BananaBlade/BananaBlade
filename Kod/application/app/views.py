@@ -39,7 +39,7 @@ def add_header( response ):
 
 @app.route( '/cdn/<path:filepath>' )
 def serve_static_files( filepath ):
-    print( folder )
+    folder = app.config[ 'CDN_ROOT' ]
     return send_from_directory( folder, filepath )
 
 
