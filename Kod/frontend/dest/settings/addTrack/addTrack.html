@@ -1,0 +1,79 @@
+
+<div class="center-area">
+  <header class="center-header">
+    <div class="view-path">Zvučni zapisi > Dodaj zvučni zapis</div>
+  </header>
+  <div class="center-content">
+    <header class="content-header">
+      <div class="content-header-left">
+        <div class="content-header-title">Dodavanje zapisa</div>
+        <div class="content-header-subtitle">
+          Dodajte novi zvučni zapis i njegove
+          metapodatke u sustav i tako omogućite njegovo korištenje u programu radio postaje.
+        </div>
+      </div>
+      <div class="content-header-right"><i class="material-icons icon">audiotrack</i></div>
+    </header>
+    <div class="content-primary content-form wide-labels">
+      <form>
+        <div class="form-line emph-line">
+          <label for="file">Datoteka zapisa</label>
+          <input type="file" accept="audio/*"/>
+        </div>
+        <div class="form-line">
+          <label for="title">Naslov zapisa</label>
+          <input type="text" name="title"/>
+        </div>
+        <div class="form-line">
+          <label for="artist">Izvođač</label>
+          <input type="text" name="artist"/>
+        </div>
+        <div class="form-line">
+          <label for="album">Album</label>
+          <input type="text" name="album"/>
+        </div>
+        <div class="form-line">
+          <label for="duration">Trajanje zapisa (s)</label>
+          <input type="number" name="duration" min="1" max="1000"/>
+        </div>
+        <div class="form-line">
+          <label for="file_format">Format zapisa</label>
+          <!-- <input type = "text" name = "file_format"/>-->
+          <select name="file_format">
+            <option value="0">MP3</option>
+            <option value="1">WAV</option>
+            <option value="2">OGG</option>
+          </select>
+        </div>
+        <div class="form-line">
+          <label for="sample_rate">Frekvencija uzorkovanja (kHz)</label>
+          <input type="text" name="sample_rate"/>
+        </div>
+        <div class="form-line">
+          <label for="bits_per_sample">Broj bitova kvantizacije</label>
+          <input type="number" name="bits_per_sample" min="1" max="64"/>
+        </div>
+        <div class="form-line">
+          <label for="genre">Žanr zapisa</label>
+          <input type="text" name="genre"/>
+        </div>
+        <div class="form-line">
+          <label for="publisher">Izdavač</label>
+          <input type="text" name="publisher"/>
+        </div>
+        <div class="form-line">
+          <label for="carrier_type">Vrsta nosača zvuka</label>
+          <input type="text" name="carrier_type"/>
+        </div>
+        <div class="form-line">
+          <label for="year">Godina izdavanja</label>
+          <input type="number" name="year" min="0" max="2100"/>
+        </div>
+        <div class="form-line">
+          <div class="left-spacer"></div>
+          <button class="raised">Dodaj zapis</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+
+<div data-editable="false" class="center-area">
+  <header class="center-header">
+    <div class="view-path">Uredi osobne podatke</div>
+  </header>
+  <div class="center-content">
+    <header class="content-header">
+      <div class="content-header-left">
+        <div class="content-header-title">Osobni podaci</div>
+        <div class="content-header-subtitle">
+          Pregledajte i uređujte
+          vaše osobne korisničke podatke, koji nam koriste kako
+          bismo vam mogli pružiti što bolju uslugu slušanja i sudjelovanja
+          u radu postaje.
+        </div>
+      </div>
+      <div class="content-header-right"><i class="material-icons icon">person</i></div>
+    </header>
+    <nav class="content-options uneditable-ui">
+      <button>Izmijeni podatke</button>
+    </nav>
+    <div class="content-primary content-form">
+      <form>
+        <fieldset disabled="disabled">
+          <div class="form-line">
+            <label for="first_name">Ime</label>
+            <input type="text" name="first_name" value="Mirko" pattern=".{2,64}"/>
+          </div>
+          <div class="form-line">
+            <label for="last_name">Prezime</label>
+            <input type="text" name="last_name" value="Horvat" pattern=".{2,64}"/>
+          </div>
+          <div class="form-line">
+            <label for="email">E-mail adresa</label>
+            <input type="email" name="email" value="mhorvat@mail.com"/>
+          </div>
+          <div class="form-line">
+            <label for="year_of_birth">Godina rođenja</label>
+            <input type="number" name="year_of_birth" value="1983" min="1900" max="2100"/>
+          </div>
+          <div class="form-line">
+            <label for="occupation">Zanimanje</label>
+            <input type="text" name="occupation" value="vodoinstalater" pattern=".{2,64}"/>
+          </div>
+          <div class="form-line">
+            <label for="account_type">Vrsta računa</label>
+            <input type="text" name="account_type" value="Administrator" disabled="disabled" class="account-type-input"/>
+          </div>
+          <div class="form-line editable-ui">
+            <div class="left-spacer"></div>
+            <button class="raised alt right">Odustani</button>
+            <button class="raised left">Spremi promjene</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
