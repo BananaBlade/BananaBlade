@@ -2,7 +2,7 @@ import os
 import urllib.parse
 
 from datetime import date, datetime, time
-from flask import g, redirect, request, render_template, send_file, session
+from flask import g, redirect, request, render_template, send_file, send_from_directory, session
 from peewee import DoesNotExist
 from werkzeug import secure_filename
 
@@ -34,6 +34,13 @@ def add_header( response ):
     response.headers[ 'Pragma' ] = 'no-cache'
     response.headers[ 'Expires' ] = '-1'
     return response
+
+# Other static files hosting
+
+@app.route( '/cdn/<path:filepath>' )
+def serve_static_files( filepath ):
+    print( folder )
+    return send_from_directory( folder, filepath )
 
 
 # Display routes
