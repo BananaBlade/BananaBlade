@@ -12,7 +12,7 @@ import { getNavigationArray, getRouteConfig } from '../app/routingProvider';
 
 @Component({
     selector: 'App',
-    templateUrl: './dest/app/app.html',
+    templateUrl: '/cdn/dest/app/app.html',
     styles: [],
     directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar ]
 })
