@@ -13,7 +13,7 @@ var core_1 = require('angular2/core');
 var common_1 = require('angular2/common');
 var http_1 = require('angular2/http');
 require('rxjs/Rx');
-var UrlEncoder_1 = require('../App/UrlEncoder');
+var UrlEncoder_1 = require('../app/UrlEncoder');
 var HeaderBar = (function () {
     function HeaderBar(fb, http) {
         this.http = http;
@@ -39,7 +39,7 @@ var HeaderBar = (function () {
     HeaderBar = __decorate([
         core_1.Component({
             selector: 'header-bar',
-            templateUrl: './dest/App/HeaderBar.html',
+            templateUrl: './dest/app/HeaderBar.html',
             styles: [],
             directives: [common_1.FORM_DIRECTIVES, common_1.COMMON_DIRECTIVES]
         }), 

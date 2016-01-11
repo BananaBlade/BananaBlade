@@ -1,15 +1,15 @@
 var router_1 = require('angular2/router');
-var AccountData_1 = require('../settings/AccountData/AccountData');
-var AccountDelete_1 = require('../settings/AccountDelete/AccountDelete');
-var AccountPassword_1 = require('../settings/AccountPassword/AccountPassword');
-var AddTrack_1 = require('../settings/AddTrack/AddTrack');
-var EditUser_1 = require('../settings/EditUser/EditUser');
-var MakePlaylist_1 = require('../settings/MakePlaylist/MakePlaylist');
-var MakeWishlist_1 = require('../settings/MakeWishlist/MakeWishlist');
-var ManageAdmins_1 = require('../settings/ManageAdmins/ManageAdmins');
-var ManageEditors_1 = require('../settings/ManageEditors/ManageEditors');
-var ManageRadiostation_1 = require('../settings/ManageRadiostation/ManageRadiostation');
-var ManageTracks_1 = require('../settings/ManageTracks/ManageTracks');
+var accountData_1 = require('../settings/accountData/accountData');
+var accountDelete_1 = require('../settings/accountDelete/accountDelete');
+var accountPassword_1 = require('../settings/accountPassword/accountPassword');
+var addTrack_1 = require('../settings/addTrack/addTrack');
+var editUser_1 = require('../settings/editUser/editUser');
+var makePlaylist_1 = require('../settings/makePlaylist/makePlaylist');
+var makeWishlist_1 = require('../settings/makeWishlist/makeWishlist');
+var manageAdmins_1 = require('../settings/manageAdmins/manageAdmins');
+var manageEditors_1 = require('../settings/manageEditors/manageEditors');
+var manageRadiostation_1 = require('../settings/manageRadiostation/manageRadiostation');
+var manageTracks_1 = require('../settings/manageTracks/manageTracks');
 var navigationArray = [
     {
         'Croatian': 'Slusaj radio',
@@ -20,41 +20,41 @@ var navigationArray = [
         'Croatian': 'Vlasničke mogućnosti',
         'groupName': 'OwnerOptions',
         'components': [
-            { 'Croatian': 'Upravljaj administratorima', 'componentName': 'ManageAdmins', 'componentObject': ManageAdmins_1.ManageAdmins },
-            { 'Croatian': 'Pregledaj podatke o postaji', 'componentName': 'ManageRadiostation', 'componentObject': ManageRadiostation_1.ManageRadiostation }
+            { 'Croatian': 'Upravljaj administratorima', 'componentName': 'ManageAdmins', 'componentObject': manageAdmins_1.ManageAdmins },
+            { 'Croatian': 'Pregledaj podatke o postaji', 'componentName': 'ManageRadiostation', 'componentObject': manageRadiostation_1.ManageRadiostation }
         ]
     },
     {
         'Croatian': 'Administratorske modućnosti',
         'groupName': 'AdminOptions',
         'components': [
-            { 'Croatian': 'Uredi zvučne zapise', 'componentName': 'ManageTracks', 'componentObject': ManageTracks_1.ManageTracks },
-            { 'Croatian': 'Upravljaj urednicima', 'componentName': 'ManageEditors', 'componentObject': ManageEditors_1.ManageEditors },
-            { 'Croatian': 'Dodaj pjesmu', 'componentName': 'AddTrack', 'componentObject': AddTrack_1.AddTrack },
-            { 'Croatian': 'Upravljaj korisnicima', 'componentName': 'EditUser', 'componentObject': EditUser_1.EditUser },
+            { 'Croatian': 'Uredi zvučne zapise', 'componentName': 'ManageTracks', 'componentObject': manageTracks_1.ManageTracks },
+            { 'Croatian': 'Upravljaj urednicima', 'componentName': 'ManageEditors', 'componentObject': manageEditors_1.ManageEditors },
+            { 'Croatian': 'Dodaj pjesmu', 'componentName': 'AddTrack', 'componentObject': addTrack_1.AddTrack },
+            { 'Croatian': 'Upravljaj korisnicima', 'componentName': 'EditUser', 'componentObject': editUser_1.EditUser },
         ]
     },
     {
         'Croatian': 'Uredničke mogućnosti',
         'groupName': 'EditorOptions',
         'components': [
-            { 'Croatian': 'Pregledaj termine', 'componentName': 'MakePlaylist', 'componentObject': MakePlaylist_1.MakePlaylist }
+            { 'Croatian': 'Pregledaj termine', 'componentName': 'MakePlaylist', 'componentObject': makePlaylist_1.MakePlaylist }
         ]
     },
     {
         'Croatian': 'Korisničke mogućnosti',
         'groupName': 'UserOptions',
         'components': [
-            { 'Croatian': 'Pregledaj listu želja', 'componentName': 'MakeWishlist', 'componentObject': MakeWishlist_1.MakeWishlist }
+            { 'Croatian': 'Pregledaj listu želja', 'componentName': 'MakeWishlist', 'componentObject': makeWishlist_1.MakeWishlist }
         ]
     },
     {
         'Croatian': 'Postavke računa',
         'groupName': 'AccountSettings',
         'components': [
-            { 'Croatian': 'Uredi osobne podatke', 'componentName': 'AccountData', 'componentObject': AccountData_1.AccountData },
-            { 'Croatian': 'Promijeni lozinku', 'componentName': 'AccountPassword', 'componentObject': AccountPassword_1.AccountPassword },
-            { 'Croatian': 'Obriši račun', 'componentName': 'AccountDelete', 'componentObject': AccountDelete_1.AccountDelete }
+            { 'Croatian': 'Uredi osobne podatke', 'componentName': 'AccountData', 'componentObject': accountData_1.AccountData },
+            { 'Croatian': 'Promijeni lozinku', 'componentName': 'AccountPassword', 'componentObject': accountPassword_1.AccountPassword },
+            { 'Croatian': 'Obriši račun', 'componentName': 'AccountDelete', 'componentObject': accountDelete_1.AccountDelete }
         ]
     }
 ];

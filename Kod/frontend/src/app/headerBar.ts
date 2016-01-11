@@ -1,18 +1,18 @@
 import { Component } from 'angular2/core';
-import { 
+import {
     FORM_DIRECTIVES, COMMON_DIRECTIVES,
     FormBuilder, ControlGroup, Validators, Control
 } from 'angular2/common';
 import { Http } from 'angular2/http';
 import 'rxjs/Rx';
 
-import { urlEncode } from '../App/UrlEncoder';
+import { urlEncode } from '../app/urlEncoder';
 
-@Component({ 
+@Component({
     selector: 'header-bar',
-    templateUrl: './dest/App/HeaderBar.html',
+    templateUrl: './dest/app/headerBar.html',
     styles: [],
-    directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ] 
+    directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ]
 })
 export class HeaderBar {
     // @Input() modelName

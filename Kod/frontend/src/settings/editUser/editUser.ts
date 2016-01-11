@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
   selector: 'EditUser'
 })
 @View({
-    templateUrl: './dest/Settings/EditUser/EditUser.html'
+    templateUrl: './dest/settings/editUser/editUser.html'
 })
 export class EditUser {
 

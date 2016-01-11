@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
   selector: 'ManageUsers'
 })
 @View({
-    templateUrl: './dest/Settings/ManageUsers/ManageUsers.html'
+    templateUrl: './dest/settings/manageUsers/manageUsers.html'
 })
 export class ManageUsers {
 

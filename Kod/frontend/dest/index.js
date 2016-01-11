@@ -19,7 +19,7 @@ var router_1 = require('angular2/router');
 var http_1 = require('angular2/http');
 var browser_1 = require('angular2/platform/browser');
 var core_1 = require('angular2/core');
-var App_1 = require('./App/App');
+var app_1 = require('./app/app');
 var DefaultRequestOptions = (function (_super) {
     __extends(DefaultRequestOptions, _super);
     function DefaultRequestOptions() {
@@ -33,7 +33,7 @@ var DefaultRequestOptions = (function (_super) {
     return DefaultRequestOptions;
 })(http_1.BaseRequestOptions);
 exports.DefaultRequestOptions = DefaultRequestOptions;
-browser_1.bootstrap(App_1.App, [
+browser_1.bootstrap(app_1.App, [
     common_1.FORM_PROVIDERS,
     router_1.ROUTER_PROVIDERS,
     http_1.HTTP_PROVIDERS,

@@ -18,7 +18,7 @@ var EditTrack = (function () {
             selector: 'EditTrack'
         }),
         core_1.View({
-            templateUrl: './dest/Settings/EditTrack/EditTrack.html'
+            templateUrl: './dest/settings/editTrack/editTrack.html'
         }), 
         __metadata('design:paramtypes', [])
     ], EditTrack);

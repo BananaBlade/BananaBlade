@@ -18,7 +18,7 @@ var ManageRequests = (function () {
             selector: 'ManageRequests'
         }),
         core_1.View({
-            templateUrl: './dest/Settings/ManageRequests/ManageRequests.html'
+            templateUrl: './dest/settings/manageRequests/manageRequests.html'
         }), 
         __metadata('design:paramtypes', [])
     ], ManageRequests);

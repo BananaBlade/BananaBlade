@@ -366,11 +366,20 @@ body
 .user-name-box
     padding-right      :     0.25rem
 
-    .material-icons
-        font-size            :     2rem
+    a
+        display              :     block
         float                :     right
-        line-height          :     2rem
+        overflow             :     hidden
+
+        &:hover .material-icons
+            color                  :     $accent_color
+
+    .material-icons
+        float                :     right
         margin-left          :     0.5rem
+        font-size            :     2rem
+        line-height          :     2rem
+
 
 .user-form-box
     padding-right      :     0.5rem

@@ -12,12 +12,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("angular2/core");
 var common_1 = require("angular2/common");
 var router_1 = require('angular2/router');
-var HeaderBar_1 = require('../App/HeaderBar');
-var RoutingProvider_1 = require('../App/RoutingProvider');
+var headerBar_1 = require('../app/headerBar');
+var routingProvider_1 = require('../app/routingProvider');
 var App = (function () {
     function App(router) {
         this.router = router;
-        this.navigation = RoutingProvider_1.getNavigationArray();
+        this.navigation = routingProvider_1.getNavigationArray();
         for (var i = 0; i < this.navigation.length; ++i) {
             this.navigation[i].visible = true;
         }
@@ -29,11 +29,11 @@ var App = (function () {
     App = __decorate([
         core_1.Component({
             selector: 'App',
-            templateUrl: './dest/App/App.html',
+            templateUrl: './dest/app/app.html',
             styles: [],
-            directives: [router_1.ROUTER_DIRECTIVES, common_1.COMMON_DIRECTIVES, HeaderBar_1.HeaderBar]
+            directives: [router_1.ROUTER_DIRECTIVES, common_1.COMMON_DIRECTIVES, headerBar_1.HeaderBar]
         }),
-        router_1.RouteConfig(RoutingProvider_1.getRouteConfig()), 
+        router_1.RouteConfig(routingProvider_1.getRouteConfig()), 
         __metadata('design:paramtypes', [router_1.Router])
     ], App);
     return App;

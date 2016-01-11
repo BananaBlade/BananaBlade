@@ -4,11 +4,11 @@ import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 import { Http } from 'angular2/http';
 
-import { urlEncode } from '../../App/UrlEncoder';
+import { urlEncode } from '../../app/urlEncoder';
 
 @Component({
     selector: 'ManageRadiostation',
-    templateUrl: './dest/Settings/ManageRadiostation/ManageRadiostation.html',
+    templateUrl: './dest/settings/manageRadiostation/manageRadiostation.html',
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageRadiostation {

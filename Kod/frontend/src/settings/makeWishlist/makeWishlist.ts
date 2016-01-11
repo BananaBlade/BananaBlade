@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
   selector: 'MakeWishlist'
 })
 @View({
-    templateUrl: './dest/Settings/MakeWishlist/MakeWishlist.html'
+    templateUrl: './dest/settings/makeWishlist/makeWishlist.html'
 })
 export class MakeWishlist {
 

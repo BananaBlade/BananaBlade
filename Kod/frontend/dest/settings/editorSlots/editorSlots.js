@@ -18,7 +18,7 @@ var EditorSlots = (function () {
             selector: 'EditorSlots'
         }),
         core_1.View({
-            templateUrl: './dest/Settings/EditorSlots/EditorSlots.html'
+            templateUrl: './dest/settings/editorSlots/editorSlots.html'
         }), 
         __metadata('design:paramtypes', [])
     ], EditorSlots);
