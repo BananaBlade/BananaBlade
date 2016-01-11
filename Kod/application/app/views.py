@@ -41,8 +41,7 @@ def add_header( response ):
 @app.route( '/' )
 def show_index():
     """Displays the index page"""
-    return 'Index'
-
+    return app.send_static_file('index.html')
 
 # Player routes
 
@@ -1203,6 +1202,12 @@ def get_active_admins_list():
     except:
         return error_response( 'Neuspjelo dohvaćanje popisa aktivnih administratora: Nevaljan zahtjev.' )
 
+
+@app.route('/<path:path>')
+def static_file(path):
+    print('static_file')
+    print(path)
+    return app.send_static_file(path)
 
 # Error handlers
 

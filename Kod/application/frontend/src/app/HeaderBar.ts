@@ -42,7 +42,7 @@ export class HeaderBar {
     onSubmit(value: string) {
         let data = { 'email': this.emailModel, 'password': this.passwordModel };
 
-        this.http.post('http://localhost:5000/user/auth/login', urlEncode(data))
+        this.http.post('/user/auth/login', urlEncode(data))
             .map((res) => res.json()).map((text) => {
                 console.log('map');
                 console.log(text);

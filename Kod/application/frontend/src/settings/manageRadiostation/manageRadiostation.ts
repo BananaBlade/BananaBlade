@@ -32,7 +32,7 @@ export class ManageRadiostation {
     frequencyModel: string;
 
     onSubmit(value: String): void {
-        this.http.post('http://localhost:5000/owner/station/modify', urlEncode({
+        this.http.post('/owner/station/modify', urlEncode({
             'name': this.nameModel,
             'description': this.descriptionModel,
             'oib': this.oibModel,
@@ -63,7 +63,7 @@ export class ManageRadiostation {
             'frequency': this.frequency
         });
 
-        this.http.get('http://localhost:5000/station/get').map((text) => text.json()).subscribe((response) => {
+        this.http.get('/station/get').map((text) => text.json()).subscribe((response) => {
             let stationObj = response.data;
             console.log(stationObj);
             this.nameModel = stationObj.name;
