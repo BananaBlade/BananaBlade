@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
     selector: 'EditorSlots'
 })
 @View({
-        templateUrl: './dest/Settings/EditorSlots/EditorSlots.html'
+        templateUrl: './dest/settings/editorSlots/editorSlots.html'
 })
 export class EditorSlots {
 

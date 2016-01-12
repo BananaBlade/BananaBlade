@@ -4,16 +4,14 @@ import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2
 import { Http } from 'angular2/http';
 
 @Component({
-  selector: 'ManageAdmins'
+    selector: 'Index'
 })
 @View({
-    templateUrl: './dest/settings/manageAdmins/manageAdmins.html'
+    templateUrl: './dest/index/index.html'
 })
-export class ManageAdmins {
-    
+export class Index {
+
     constructor(http: Http) {
 
-        http.get('/owner/admins/list').map((res) => res.json()).subscribe((res) =>
-            console.log(res));
     }
 }

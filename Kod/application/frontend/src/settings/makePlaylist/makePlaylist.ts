@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
   selector: 'MakePlaylist'
 })
 @View({
-    templateUrl: './dest/Settings/MakePlaylist/MakePlaylist.html'
+    templateUrl: './dest/settings/makePlaylist/makePlaylist.html'
 })
 export class MakePlaylist {
 

@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
   selector: 'ManageEditors'
 })
 @View({
-    templateUrl: './dest/Settings/ManageEditors/ManageEditors.html'
+    templateUrl: './dest/settings/manageEditors/manageEditors.html'
 })
 export class ManageEditors {
 

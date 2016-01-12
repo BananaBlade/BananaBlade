@@ -1209,7 +1209,14 @@ def static_file(path):
     print(path)
     return app.send_static_file(path)
 
+
 # Error handlers
+
+@app.errorhandler(404)
+def handle_404( error ):
+    """ Redirect 404 to index.html """
+    return app.send_static_file('index.html')
+    #return redirect('/')
 
 @app.errorhandler(400)
 def handle_400( error ):
