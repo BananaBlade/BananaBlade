@@ -24,3 +24,6 @@ Razrađivanje preostalog posla, rasprava o dizajnu aplikacije - izgledu i funkci
 
 22.12.2015.
 Dodatni razgovor o preostalom poslu, raspodijela zaduženja na pojedince i dogovor oko rokova
+
+07.01.2015.
+Razrada dijagrama i razgovor o preostalim dijelovima dokumentacije
