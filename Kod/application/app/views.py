@@ -149,6 +149,9 @@ def process_registration():
     password        = request.values.get( 'password' )
     password2       = request.values.get( 'password2' )
 
+    print('email')
+    print(email)
+
     if year_of_birth is not None: year_of_birth = int( year_of_birth )
 
     try:

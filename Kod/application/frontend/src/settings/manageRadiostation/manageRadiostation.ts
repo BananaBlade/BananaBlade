@@ -32,14 +32,8 @@ export class ManageRadiostation {
     frequencyModel: string;
 
     onSubmit(value: String): void {
-        this.http.post('/owner/station/modify', urlEncode({
-            'name': this.nameModel,
-            'description': this.descriptionModel,
-            'oib': this.oibModel,
-            'address': this.addressModel,
-            'email': this.emailModel,
-            'frequency': this.frequencyModel
-        })).map((resp) => resp.text()).subscribe((resp) => console.log(resp));
+        console.log(value);
+        this.http.post('/owner/station/modify', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp));
     }
 
     constructor(fb: FormBuilder, http: Http) {

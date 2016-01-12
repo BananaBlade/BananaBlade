@@ -67,7 +67,7 @@ class EmailValidator( CharValidator ):
     """Validate an email address"""
 
     def __init__( self, message = 'Email adresa nije ispravnog oblika.' ):
-        super().__init__( min_length = 5, max_length = 64, pattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", message = message )
+        super().__init__( min_length = 5, max_length = 64, pattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}$", message = message )
 
 
 class OIBValidator( Validator ):

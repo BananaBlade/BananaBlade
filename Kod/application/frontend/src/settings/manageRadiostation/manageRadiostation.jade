@@ -35,9 +35,9 @@
           .form-line
             label(for='frequency') Frekvencija
             input(type='number', id='frequency', min='80', max='120', step='0.1', '[ngFormControl]'="myForm.controls['frequency']" '[class.error]'="!frequency.valid && frequency.touched" '[(ngModel)]'='frequencyModel')
-          .form-line.editable-ui
-            .left-spacer
           div( '*ngIf'="!myForm.valid" class="errorMessage" ) 
             | Neispravan unos
+          .form-line.editable-ui
+            .left-spacer
           button.raised.alt.right(type="reset") Odustani
           button.raised.left(type="submit" '[disabled]'="!myForm.valid") Spremi promjene
