@@ -49,7 +49,7 @@
             </li>
         </ul>
     </nav>
-    <div class = "center-area" data-editable = "false">
+    <div class = "center-area" data-editable = "true">
         <header class = "center-header">
             <div class = "view-path">Upravljaj administratorima</div>
         </header>
@@ -124,9 +124,14 @@
                 </li>
                 <li class = "content-list-item content-list-search-item editable-ui">
                     <form>
-                        <div class = "content-list-item-content">
+                        <div class = "content-list-item-content autocomplete-wrapper">
                             <label for = "add-item-search">Dodaj administratora</label>
                             <input type = "text" name = "add_track_search" class = "add-item-search"/>
+                            <ul class = "autocomplete autocomplete-users" data-visible = "true">
+                                <li tabindex = "0"><em>Mar</em>ijo <em>Mar</em>ić</li>
+                                <li tabindex = "0">Mirko <em>Mar</em>ković</li>
+                                <li tabindex = "0"><em>Mar</em>ko Mirković</li>
+                            </ul>
                         </div>
                         <div class = "content-list-item-options">
                             <button class = "raised add-item-button"><i class = "material-icons">person_add</i></button>

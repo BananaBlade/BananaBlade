@@ -366,11 +366,20 @@ body
 .user-name-box
     padding-right      :     0.25rem
 
-    .material-icons
-        font-size            :     2rem
+    a
+        display              :     block
         float                :     right
-        line-height          :     2rem
+        overflow             :     hidden
+
+        &:hover .material-icons
+            color                  :     $accent_color
+
+    .material-icons
+        float                :     right
         margin-left          :     0.5rem
+        font-size            :     2rem
+        line-height          :     2rem
+
 
 .user-form-box
     padding-right      :     0.5rem
@@ -685,6 +694,49 @@ fieldset[ disabled ]
 .account-type-input
     color              :     $text_color
     font-family        :     $header_font
+
+.autocomplete-wrapper
+    position           :     relative
+
+.autocomplete
+    background         :     $accent2_color
+    bottom             :     2.5rem
+    box-shadow         :     0 0 4px rgba( 0, 0, 0, 0.25 )
+    left               :     4.5rem
+    position           :     absolute
+    right              :     3rem
+
+    &[data-visible = "false"]
+        display              :     none
+
+    li
+        border-bottom        :     1px solid lighten( $accent2_color, 10% )
+        color                :     fade-out( $alt_text_color, 0.35 )
+        font-family          :     $header_font
+        padding              :     0.5rem 1rem
+
+        em
+            color                  :     $alt_text_color
+            font-style             :     normal
+
+        &:hover
+            background             :     rgba( 255, 255, 255, 0.1 )
+            cursor                 :     pointer
+
+        &:focus
+            background             :     $accent_color
+            border-bottom          :     1px solid lighten( $accent_color, 10% )
+            outline                :     none
+
+        &:active
+            background             :     rgba( 255, 255, 255, 0.4 )
+            border-bottom          :     1px solid lighten( $accent2_color, 10% )
+
+        &:last-child
+            border-bottom          :     none
+
+        .track-name:after
+            content                :     ", "
 
 
 // Content boxes
