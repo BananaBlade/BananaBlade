@@ -43,7 +43,7 @@ module.exports = function (grunt) {
           experimentalDecorators: true,
           failOnTypeErrors : false,
           jsx: 'react',
-          additionalFlags: ' --outDir /home/iota/Programming/Python/bananablade/Kod/frontend/dest'
+          additionalFlags: ' --outDir /home/sigma/Programming/Python/bananablade/Kod/frontend/dest'
         }
       }
     },
