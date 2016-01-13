@@ -35,14 +35,6 @@ def add_header( response ):
     response.headers[ 'Expires' ] = '-1'
     return response
 
-# Other static files hosting
-
-@app.route( '/cdn/<path:filepath>' )
-def serve_static_files( filepath ):
-    folder = app.config[ 'CDN_ROOT' ]
-    return send_from_directory( folder, filepath )
-
-
 # Display routes
 
 @app.route( '/' )
@@ -1223,9 +1215,9 @@ def static_file( path ):
 
 @app.errorhandler(404)
 def handle_404( error ):
-    """ Redirect 404 to index.html """
-    return app.send_static_file('index.html')
-    #return redirect('/')
+    """Redirect 404 to index.html"""
+    print( 'Sending' )
+    return app.send_static_file( 'index.html' )
 
 @app.errorhandler(400)
 def handle_400( error ):

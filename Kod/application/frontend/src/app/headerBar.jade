@@ -1,0 +1,23 @@
+.header-bar
+  .app-box.row
+    a(href='/Index')
+      .app-name
+        img(src="dest/static/img/logo.png" alt="FM Radio")
+  .user-box.row
+    .user-form-box
+      form.row('[ngFormModel]'="loginForm" '(ngSubmit)'="onSubmit(loginForm.value)")
+        input(type='email', id='email', placeholder='E-mail'
+          '[ngFormControl]'="loginForm.controls['email']"
+          '[class.error]'="!email.valid && email.touched"
+          '[(ngModel)]'="emailModel")
+        input(type='password', id='password', placeholder='Lozinka'
+          '[ngFormControl]'="loginForm.controls['password']"
+          '[class.error]'="!password.valid && password.touched"
+          '[(ngModel)]'="passwordModel")
+        button(type='submit') Prijavi se
+        button.dim(type='button') Registriraj se
+    .user-name-box
+      i.material-icons.user-icon account_circle
+      .user-name
+        | Mirko Horvat
+        span.user-type administrator
