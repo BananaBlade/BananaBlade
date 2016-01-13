@@ -1,0 +1,66 @@
+.center-area(data-editable='false')
+  header.center-header
+    .view-path Upravljaj urednicima
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Urednici
+        .content-header-subtitle
+          | Pregledajte i upravljajte glazbenim
+          | urednicima ove radiopostaje – dodijelite uredničke
+          | ovlasti običnim korisnicima ili ih uklonite postojećim urednicima.
+      .content-header-right
+        i.material-icons.icon edit
+    nav.content-options.uneditable-ui
+      button Uredi popis urednika
+    nav.content-options.editable-ui
+      button Završi uređivanje popisa
+    ul.content-primary.content-list
+      li.content-list-item.editor-item
+        .content-list-item-content
+          .content-list-item-name Mirko Horvat
+          .content-list-item-data
+            .content-list-item-data-item.user-mail mhorvat@mail.com
+            .content-list-item-data-item.user-age 48 godina
+            .content-list-item-data-item.user-occupation Vodoinstalater
+        .content-list-item-options
+          button.alt.editable-ui
+            i.material-icons clear
+      li.content-list-item.editor-item
+        .content-list-item-content
+          .content-list-item-name Slavko Kovač
+          .content-list-item-data
+            .content-list-item-data-item.user-mail skovac@mail.com
+            .content-list-item-data-item.user-age 36 godina
+            .content-list-item-data-item.user-occupation Autolimar
+        .content-list-item-options
+          button.alt.editable-ui
+            i.material-icons clear
+      li.content-list-item.editor-item
+        .content-list-item-content
+          .content-list-item-name Cheng Pong Ping Lee
+          .content-list-item-data
+            .content-list-item-data-item.user-mail pongping@mail.com
+            .content-list-item-data-item.user-age 27 godina
+            .content-list-item-data-item.user-occupation Sportaš
+        .content-list-item-options
+          button.alt.editable-ui
+            i.material-icons clear
+      li.content-list-item.editor-item
+        .content-list-item-content
+          .content-list-item-name Janko Strižić
+          .content-list-item-data
+            .content-list-item-data-item.user-mail jstrizic@mail.com
+            .content-list-item-data-item.user-age 25 godina
+            .content-list-item-data-item.user-occupation Pastir
+        .content-list-item-options
+          button.alt.editable-ui
+            i.material-icons clear
+      li.content-list-item.content-list-search-item.editable-ui
+        form
+          .content-list-item-content
+            label(for='add-item-search') Dodaj urednika
+            input.add-item-search(type='text', name='add_track_search')
+          .content-list-item-options
+            button.raised.add-item-button
+              i.material-icons person_add

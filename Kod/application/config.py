@@ -1,7 +1,10 @@
 import os
 
+<<<<<<< HEAD
 APPLICATION_ROOT = 'http://localhost:5000/'
 CDN_ROOT = os.path.join( os.path.dirname( os.path.realpath( __file__ ) ).rsplit( '/', maxsplit = 1 )[ 0 ], 'frontend/' )
+APPLICATION_ROOT = '/'
+>>>>>>> ditodev
 
 DEBUG = True
 TESTING = False
