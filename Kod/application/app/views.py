@@ -600,7 +600,8 @@ def list_requests():
                 'id'            : req.editor.id,
                 'first_name'    : req.editor.first_name,
                 'last_name'     : req.editor.last_name
-            }
+            },
+            'collisions'    : req.detect_collisions()
         } for req in requests ]
         return data_response( data )
     except AuthorizationError:
@@ -751,17 +752,23 @@ def delete_user( user_id ):
 @app.route( '/editor/slots/list', methods = [ 'GET' ] )
 @login_required
 def list_editor_slots():
-    """Return a list of all editor's slots
+    """Return a list of all editor's slots and requests
 
     No request params.
     """
     try:
         slots = g.user.get_slots()
-        data = [{
-            'id'    : slot.id,
-            'time'  : slot.time,
-            'count' : slot.count
-        } for slot in slots ]
+        requests = g.user.get_requests()
+        data = {
+            'slots' : [{
+                'id'    : slot.id,
+                'time'  : slot.time,
+                'count' : slot.count
+            } for slot in slots ],
+            'requests' : [{
+                ''
+            }]
+        }
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje popisa termina: Nedovoljne ovlasti.', 403 )
@@ -1059,6 +1066,24 @@ def search_users():
         return error_response( 'Neuspješno pretraživanje korisnika: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Neuspješno pretraživanje korisnika.' )
+
+
+# Slots routes
+
+@app.route( '/slots/schedule', methods = [ 'GET' ] )
+@login_required
+def get_global_schedule():
+    """Returns a list of all future slots and their editors
+
+    No request params.
+    """
+    try:
+        pass
+    except AuthorizationError:
+        return error_response( 'Nije moguće dohvatiti raspored termina: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Nije moguće dohvatiti raspored termina.' )
+
 
 
 # Stat routes

@@ -4,5 +4,4 @@ dest/
 *.css
 *.html
 
-!Gruntfile.js
 !index.html

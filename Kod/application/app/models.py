@@ -810,6 +810,10 @@ class SlotRequest( BaseModel ):
         """Denies slot request by removing it from the database"""
         self.delete_instance()
 
+    def detect_collisions( self ):
+        """Checks whether this request collides with any assigned slots"""
+        times = generate_times( self.time, self.days_bit_mask, self.start_date, self.end_date )
+        return Slot.select().where( Slot.time << times ).count() > 0
 
 class PlaylistTrack( BaseModel ):
     """Model of a track on a slot playlist"""
