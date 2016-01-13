@@ -1,5 +1,3 @@
-header
-  header-bar(is-fixed="true" is-logged-in="false")
 nav.nav-bar
   .nav-bar-top-spacer
   ul
@@ -11,6 +9,5 @@ nav.nav-bar
         li.option-group-item( '[routerLink]'="[comp.componentName]" '*ngFor'="#comp of group.components" )
           | {{ comp.Croatian }}
     li.nav-option-group
-      .nav-option-group-name Odjavi se
-
-router-outlet
+      a(href='/user/auth/signout')
+        .nav-option-group-name Odjavi se

@@ -1,5 +1,5 @@
-import { Component } from 'angular2/core';
-import { 
+import { Component, Input } from 'angular2/core';
+import {
     FORM_DIRECTIVES, COMMON_DIRECTIVES,
     FormBuilder, ControlGroup, Validators, Control
 } from 'angular2/common';
@@ -8,15 +8,15 @@ import 'rxjs/Rx';
 
 import { Form } from '../utilities';
 
-@Component({ 
+@Component({
     selector: 'header-bar',
     templateUrl: './dest/app/headerBar.html',
     styles: [],
-    directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ] 
+    directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ]
 })
 export class HeaderBar {
-    // @Input() modelName
-    // @Output() eventEmitterName
+    @Input() isFixed : boolean
+    @Input() isLoggedIn : boolean
     loginForm: Form;
 
     constructor(fb: FormBuilder, http: Http) {

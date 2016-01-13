@@ -1,7 +1,8 @@
-.header-bar
+.header-bar('[ngClass]'='{unfixed : !isFixed, "logged-in" : isLoggedIn, "not-logged-in" : !isLoggedIn}')
   .app-box.row
-    .app-name FM Radio
-    .app-descr 99.4 MHz
+    a(href='/')
+      .app-name
+       img(src="/dest/static/img/logo.png" alt="FM Radio")
   .user-box.row
     .user-form-box
       form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="loginForm.onSubmit(loginForm.group.value)")
