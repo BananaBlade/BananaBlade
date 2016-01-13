@@ -1,10 +1,6 @@
 import os
 
-<<<<<<< HEAD
-APPLICATION_ROOT = 'http://localhost:5000/'
-CDN_ROOT = os.path.join( os.path.dirname( os.path.realpath( __file__ ) ).rsplit( '/', maxsplit = 1 )[ 0 ], 'frontend/' )
 APPLICATION_ROOT = '/'
->>>>>>> ditodev
 
 DEBUG = True
 TESTING = False
@@ -14,9 +10,6 @@ SECRET_KEY = '$j#e&7+*2w2y)0if$c-gvlfs^%@)q)7$(gv@6xk%*^o9r^1u1n'
 # TODO: Hide app secret key on deployment
 
 DATABASE = 'radio.db'
-
-WTF_CSRF_ENABLED = True
-WTF_CSRF_SECRET_KEY = "somethingimpossibletoguess"
 
 UPLOAD_FOLDER = "/static/audio"
 

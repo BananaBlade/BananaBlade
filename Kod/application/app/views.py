@@ -1211,10 +1211,9 @@ def get_active_admins_list():
 
 
 @app.route('/<path:path>')
-def static_file(path):
-    print('static_file')
-    print(path)
-    return app.send_static_file(path)
+def static_file( path ):
+    print( 'static_file', path )
+    return app.send_static_file( path )
 
 # Error handlers
 
