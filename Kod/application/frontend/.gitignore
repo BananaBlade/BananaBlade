@@ -1,4 +1,4 @@
-dest/
+dest/*
 *.js.map
 *.js
 *.css
@@ -6,3 +6,4 @@ dest/
 
 !Gruntfile.js
 !index.html
+!dest/static/*
