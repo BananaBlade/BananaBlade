@@ -16,7 +16,7 @@
       button('(click)'="isFormDisabled = !isFormDisabled") Izmijeni podatke o postaji
     .content-primary.content-form
       fieldset('[disabled]'="isFormDisabled")
-        form('[ngFormModel]'="myForm" '(ngSubmit)'="onSubmit(myForm.value)")
+        form('[ngFormModel]'="myForm" '(ngSubmit)'="myForm.onSubmit(myForm.value)")
           .form-line
             label(for='name') Naziv postaje
             input(type='text', id='name', '[ngFormControl]'="myForm.controls['name']" '[(ngModel)]'='nameModel')

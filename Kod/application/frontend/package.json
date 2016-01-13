@@ -31,12 +31,6 @@
     "whatwg-fetch": "^0.10.0",
     "zone.js": "0.5.10"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "grunt",
-    "postinstall": "cp node_modules/systemjs/node_modules/es6-module-loader/dist/es6-module-loader.js node_modules/systemjs/dist && ./node_modules/.bin/tsd query angular2 node-uuid storejs node --action install",
-    "dev": "tsc --watch -m commonjs -t es5 --experimentalDecorators app/typescript/app.ts --outDir app/static/js"
-  },
   "author": "",
   "license": "MIT"
 }
