@@ -1,4 +1,4 @@
-.center-area(data-editable='false')
+.center-area('data-editable'="true")
   header.center-header
     .view-path Upravljaj administratorima
   .center-content
@@ -12,52 +12,21 @@
           b Sustav smije imati najviše 10 administratora.
       .content-header-right
         i.material-icons.icon edit
-    nav.content-options.uneditable-ui
-      button Uredi popis administratora
-    nav.content-options.editable-ui
-      button Završi uređivanje popisa
+    nav.content-options( '[ngSwitch]'="editable" )
+      button( '*ngSwitchWhen'="true" '(click)'="toggleEditable()" ) Završi uređivanje popisa
+      button( '*ngSwitchDefault'='' '(click)'="toggleEditable()" ) Uredi popis administratora
     ul.content-primary.content-list
-      li.content-list-item.admin-item
+      li.content-list-item.admin-item( '*ngFor'="#admin of admins")
         .content-list-item-content
-          .content-list-item-name Mirko Horvat
+          .content-list-item-name {{admin.first_name}} {{admin.last_name}}
           .content-list-item-data
-            .content-list-item-data-item.user-mail mhorvat@mail.com
-            .content-list-item-data-item.user-age 48 godina
-            .content-list-item-data-item.user-occupation Vodoinstalater
+            .content-list-item-data-item.user-mail {{admin.email}}
+            .content-list-item-data-item.user-age {{admin.year_of_birth}}
+            .content-list-item-data-item.user-occupation {{admin.occupation}}
         .content-list-item-options.editable-ui
           button.alt
             i.material-icons clear
-      li.content-list-item.admin-item
-        .content-list-item-content
-          .content-list-item-name Slavko Kovač
-          .content-list-item-data
-            .content-list-item-data-item.user-mail skovac@mail.com
-            .content-list-item-data-item.user-age 36 godina
-            .content-list-item-data-item.user-occupation Autolimar
-        .content-list-item-options.editable-ui
-          button.alt
-            i.material-icons clear
-      li.content-list-item.admin-item
-        .content-list-item-content
-          .content-list-item-name Cheng Pong Ping Lee
-          .content-list-item-data
-            .content-list-item-data-item.user-mail pongping@mail.com
-            .content-list-item-data-item.user-age 27 godina
-            .content-list-item-data-item.user-occupation Sportaš
-        .content-list-item-options.editable-ui
-          button.alt
-            i.material-icons clear
-      li.content-list-item.admin-item
-        .content-list-item-content
-          .content-list-item-name Janko Strižić
-          .content-list-item-data
-            .content-list-item-data-item.user-mail jstrizic@mail.com
-            .content-list-item-data-item.user-age 25 godina
-            .content-list-item-data-item.user-occupation Pastir
-        .content-list-item-options.editable-ui
-          button.alt
-            i.material-icons clear
-      li.content-list-item.content-list-search-item.editable-ui
+      li.content-list-item.content-list-search-item.editable-ui( '*ngIf'="editable" )
         form
           .content-list-item-content
             label(for='add-item-search') Dodaj administratora

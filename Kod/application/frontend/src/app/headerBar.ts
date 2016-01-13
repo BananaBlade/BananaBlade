@@ -6,7 +6,7 @@ import {
 import { Http } from 'angular2/http';
 import 'rxjs/Rx';
 
-import { urlEncode } from '../app/urlEncoder';
+import { Form } from '../utilities';
 
 @Component({ 
     selector: 'header-bar',
@@ -17,39 +17,10 @@ import { urlEncode } from '../app/urlEncoder';
 export class HeaderBar {
     // @Input() modelName
     // @Output() eventEmitterName
-    http: Http;
-
-    loginForm: ControlGroup;
-
-    email: Control;
-    password: Control;
-
-    emailModel: string;
-    passwordModel: string;
+    loginForm: Form;
 
     constructor(fb: FormBuilder, http: Http) {
-        this.http = http;
-
-        this.email = new Control('', Validators.required);
-        this.password = new Control('', Validators.required);
-
-        this.loginForm = fb.group({
-            'email': this.email,
-            'password': this.password
-        });
-    }
-
-    onSubmit(value: string) {
-        let data = { 'email': this.emailModel, 'password': this.passwordModel };
-
-        this.http.post('/user/auth/login', urlEncode(data))
-            .map((res) => res.json()).map((text) => {
-                console.log('map');
-                console.log(text);
-                return text;
-            }).subscribe((val) => {
-                console.log('subscribe');
-                console.log(val);
-            });
+        let loginEntities = ['email', 'password'];
+        this.loginForm = new Form(fb, http, loginEntities, '/user/auth/login');
     }
 }
