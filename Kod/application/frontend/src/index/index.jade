@@ -110,23 +110,23 @@
             .role-descr Pomozi nam upravljati pjesmama, urednicima, korisnicima i terminima!
     .register-form-box
       h2 Registriraj se
-      form.register-form('[ngFormModel]'="registerForm" '(ngSubmit)'="onSubmitRegistration(registerForm.value)")
+      form.register-form('[ngFormModel]'="registerForm.group" '(ngSubmit)'="registerForm.onSubmit(registerForm.group.value)")
         .form-line
-          input(type='text', name='first_name', placeholder='Ime', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['first_name']")
+          input(type='text', name='first_name', placeholder='Ime', pattern='.{2,64}' '[ngFormControl]'="registerForm.group.controls['first_name']")
         .form-line
-          input(type='text', name='last_name', placeholder='Prezime', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['last_name']")
+          input(type='text', name='last_name', placeholder='Prezime', pattern='.{2,64}' '[ngFormControl]'="registerForm.group.controls['last_name']")
         .form-line.spacer-line
         .form-line
-          input(type='email', name='email', placeholder='E-mail adresa' '[ngFormControl]'="registerForm.controls['email']")
+          input(type='email', name='email', placeholder='E-mail adresa' '[ngFormControl]'="registerForm.group.controls['email']")
         .form-line
-          input(type='password', name='password', placeholder='Lozinka', pattern='.{6,64}' '[ngFormControl]'="registerForm.controls['password']")
+          input(type='password', name='password', placeholder='Lozinka', pattern='.{6,64}' '[ngFormControl]'="registerForm.group.controls['password']")
         .form-line
-          input(type='password', name='password2', placeholder='Ponovljena lozinka', pattern='.{6,64}' '[(ngFormControl)]'="registerForm.controls['password2']")
+          input(type='password', name='password2', placeholder='Ponovljena lozinka', pattern='.{6,64}' '[(ngFormControl)]'="registerForm.group.controls['password2']")
         .form-line.spacer-line
         .form-line
-          input(type='number', name='year_of_birth', placeholder='Godina rođenja', min='1900', max='2100' '[ngFormControl]'="registerForm.controls['year_of_birth']")
+          input(type='number', name='year_of_birth', placeholder='Godina rođenja', min='1900', max='2100' '[ngFormControl]'="registerForm.group.controls['year_of_birth']")
         .form-line
-          input(type='text', name='occupation', placeholder='Zanimanje', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['occupation']")
+          input(type='text', name='occupation', placeholder='Zanimanje', pattern='.{2,64}' '[ngFormControl]'="registerForm.group.controls['occupation']")
         .form-line.spacer-line
         .form-line.tos-line
           label.tos-label(for='tos')
@@ -137,7 +137,7 @@
             |  ove aplikacije.
         .form-line.spacer-line
         .form-line
-          button.raised(type="submit" '[disabled]'="!registerForm.valid") Registriraj se!
+          button.raised(type="submit" '[disabled]'="!registerForm.group.valid") Registriraj se!
 .footer-wrapper.section-wrapper
   .footer-container.section-container
     .footer-left

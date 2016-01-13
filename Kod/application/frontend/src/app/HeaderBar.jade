@@ -4,15 +4,9 @@
     .app-descr 99.4 MHz
   .user-box.row
     .user-form-box
-      form.row('[ngFormModel]'="loginForm" '(ngSubmit)'="onSubmit(loginForm.value)")
-        input(type='email', id='email', placeholder='E-mail' 
-          '[ngFormControl]'="loginForm.controls['email']" 
-          '[class.error]'="!email.valid && email.touched" 
-          '[(ngModel)]'="emailModel")
-        input(type='password', id='password', placeholder='Lozinka' 
-          '[ngFormControl]'="loginForm.controls['password']" 
-          '[class.error]'="!password.valid && password.touched" 
-          '[(ngModel)]'="passwordModel")
+      form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="loginForm.onSubmit(loginForm.group.value)")
+        input(type='email', id='email', placeholder='E-mail' '[ngFormControl]'="loginForm.group.controls['email']" )
+        input(type='password', id='password', placeholder='Lozinka' '[ngFormControl]'="loginForm.group.controls['password']" )
         button(type='submit') Prijavi se
         button.dim(type='button') Registriraj se
     .user-name-box

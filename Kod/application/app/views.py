@@ -860,7 +860,9 @@ def list_admins():
             'id'            : admin.id,
             'first_name'    : admin.first_name,
             'last_name'     : admin.last_name,
-            'email'         : admin.email
+            'email'         : admin.email,
+            'occupation'    : admin.occupation,
+            'year_of_birth' : admin.year_of_birth
         } for admin in admins ]
         return data_response( data )
     except AuthorizationError:
