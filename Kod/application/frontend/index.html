@@ -15,8 +15,6 @@
   <!-- <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.css"> -->
   <link rel="stylesheet" type="text/css" href="/dest/index.css">
   
-  <!-- Auth0 Lock script -->
-  <script src="//cdn.auth0.com/js/lock-7.12.min.js"></script>
   <!-- Setting the right viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -28,15 +26,7 @@
   <script>
     //configure system loader
     System.config({
-      defaultJSExtensions: true,
-      packages: {
-        "/angular2-jwt": {
-          "defaultExtension": "js"
-        }
-      },
-      map: {
-        "angular2-jwt": "node_modules/angular2-jwt/angular2-jwt"
-      }
+      defaultJSExtensions: true
     });
   </script>
   <script src="/node_modules/rxjs/bundles/Rx.js"></script>

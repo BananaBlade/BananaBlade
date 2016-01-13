@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
     selector: 'EditTrack'
 })
 @View({
-        templateUrl: './dest/Settings/EditTrack/EditTrack.html'
+        templateUrl: './dest/settings/editTrack/editTrack.html'
 })
 export class EditTrack {
 

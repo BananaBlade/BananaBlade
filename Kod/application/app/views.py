@@ -156,6 +156,9 @@ def process_registration():
     password        = request.values.get( 'password' )
     password2       = request.values.get( 'password2' )
 
+    print('email')
+    print(email)
+
     if year_of_birth is not None: year_of_birth = int( year_of_birth )
 
     try:
@@ -1215,7 +1218,14 @@ def static_file( path ):
     print( 'static_file', path )
     return app.send_static_file( path )
 
+
 # Error handlers
+
+@app.errorhandler(404)
+def handle_404( error ):
+    """ Redirect 404 to index.html """
+    return app.send_static_file('index.html')
+    #return redirect('/')
 
 @app.errorhandler(400)
 def handle_400( error ):

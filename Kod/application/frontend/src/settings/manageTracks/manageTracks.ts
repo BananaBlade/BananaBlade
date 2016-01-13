@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
     selector: 'ManageTracks'
 })
 @View({
-    templateUrl: './dest/Settings/ManageTracks/ManageTracks.html'
+    templateUrl: './dest/settings/manageTracks/manageTracks.html'
 })
 export class ManageTracks {
 

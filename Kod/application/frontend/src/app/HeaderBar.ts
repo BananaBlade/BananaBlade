@@ -6,11 +6,11 @@ import {
 import { Http } from 'angular2/http';
 import 'rxjs/Rx';
 
-import { urlEncode } from '../App/UrlEncoder';
+import { urlEncode } from '../app/urlEncoder';
 
 @Component({ 
     selector: 'header-bar',
-    templateUrl: './dest/App/HeaderBar.html',
+    templateUrl: './dest/app/headerBar.html',
     styles: [],
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ] 
 })

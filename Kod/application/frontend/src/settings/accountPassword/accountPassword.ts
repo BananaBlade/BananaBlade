@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
     selector: 'AccountPassword'
 })
 @View({
-        templateUrl: './dest/Settings/AccountPassword/AccountPassword.html'
+        templateUrl: './dest/settings/accountPassword/accountPassword.html'
 })
 export class AccountPassword {
 

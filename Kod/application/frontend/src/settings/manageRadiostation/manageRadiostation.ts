@@ -4,11 +4,11 @@ import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 import { Http } from 'angular2/http';
 
-import { urlEncode } from '../../App/UrlEncoder';
+import { urlEncode } from '../../app/urlEncoder';
 
 @Component({
     selector: 'ManageRadiostation',
-    templateUrl: './dest/Settings/ManageRadiostation/ManageRadiostation.html',
+    templateUrl: './dest/settings/manageRadiostation/manageRadiostation.html',
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageRadiostation {
@@ -32,14 +32,8 @@ export class ManageRadiostation {
     frequencyModel: string;
 
     onSubmit(value: String): void {
-        this.http.post('/owner/station/modify', urlEncode({
-            'name': this.nameModel,
-            'description': this.descriptionModel,
-            'oib': this.oibModel,
-            'address': this.addressModel,
-            'email': this.emailModel,
-            'frequency': this.frequencyModel
-        })).map((resp) => resp.text()).subscribe((resp) => console.log(resp));
+        console.log(value);
+        this.http.post('/owner/station/modify', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp));
     }
 
     constructor(fb: FormBuilder, http: Http) {

@@ -56,7 +56,7 @@ module.exports = function (grunt) {
     copy:   { default: { files: [ { expand: true, cwd: 'app/typescript/', src: './**', dest: 'app/templates'} ] } },
     concurrent: {
       watch: {
-        tasks: [ 'watch:ts', 'watch:jade', 'watch:css', 'connect' ],
+        tasks: [ 'watch:ts', 'watch:jade', 'watch:css' ],
         options: { logConcurrentOutput: true }
       },
       compile: {

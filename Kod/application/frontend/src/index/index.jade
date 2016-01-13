@@ -1,190 +1,163 @@
-doctype html
-html
-  head
-    meta(charset='UTF-8')
-    title Listen to FM Radio
-    link(rel='stylesheet', href='css/default.min.css')
-    link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
-    link(rel='shortcut icon', type='image/x-icon', href='./img/draft/favicon.ico')
-  body(data-logged-in='no')
-    header.header-bar.unfixed
-      .app-box
-        a(href='')
-          .app-name
-            img(src='./img/draft/logo.png', alt='FM Radio')
-      .user-box
-        .user-form-box
-          form(method='post', action='/user/auth/login')
-            input(type='email', name='email', placeholder='E-mail')
-            input(type='password', name='password', placeholder='Lozinka')
-            button(type='submit') Prijavi se
-            a(href='#register')
-              button.dim(type='button') Registriraj se
-        .user-name-box
-          i.material-icons.user-icon account_circle
-          .user-name
-            | Mirko Horvat
-            span.user-type administrator
-    .player-wrapper.section-wrapper
-      .player-container.section-container
-        .player-box
-          header.player-header
-            h2 Trenutno na programu
-          .player-body
-            .current-editor
-              span Urednik:
-              |  Mirko Marković
-            .player-track
-              .player-track-title Violin Concerto No. 5: Tempo di minuetto
-              .player-track-info
-                .player-track-info-item.player-track-artist Wolfgang A. Mozart
-                .player-track-info-item.player-track-album The Very Best of Mozart
-                .player-track-info-item.player-track-year 2007
-                .player-track-info-item.player-track-genre Klasična glazba
-          audio#radio-player(src='media/paganini.mp3', preload='auto')
-          .player-controls
-            .control-buttons
-              button.volume-button
-                i.material-icons volume_down
-              button.play-button(onclick="document.getElementById('radio-player').play()")
-                i.material-icons play_circle_filled
-              button.volume-button
-                i.material-icons volume_up
-        .schedule-box
-          h2 Raspored emitiranja
-          ul.schedule
-            li.schedule-item
-              .item-time 10:00
-              .item-editor Mirko Marković
-            li.schedule-item
-              .item-time 11:00
-              .item-editor Andrija Abramović
-            li.schedule-item
-              .item-time 12:00
-              .item-editor Borislav Borković
-            li.schedule-item
-              .item-time 13:00
-              .item-editor Cvjeta Zuzorić
-            li.schedule-item
-              .item-time 14:00
-              .item-editor Domagoj Delić
-            li.schedule-item
-              .item-time 15:00
-              .item-editor Edi Ekler
-            li.schedule-item
-              .item-time 16:00
-              .item-editor Filip Franjić
-    .info-wrapper.section-wrapper
-      .info-container.section-container
-        .popular-info
-          h2 Najpopularnije
-          ul.popular-tracks-list
-            li(data-value='20')
-              .popular-track-name Hello
-              .popular-track-info Adele
-            li(data-value='17')
-              .popular-track-name Same Old Love
-              .popular-track-info Selena Gomez
-            li(data-value='13')
-              .popular-track-name All I Want For Christmas Is You
-              .popular-track-info Mariah Carey
-            li(data-value='9')
-              .popular-track-name In The Night
-              .popular-track-info The Weeknd
-            li(data-value='8')
-              .popular-track-name On My Mind
-              .popular-track-info Ellie Goulding
-        .radio-info
-          h2 FM Radio
-          p
-            | Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            | accusantium doloremque laudantium, totam rem aperiam, eaque
-            | ipsa quae ab illo inventore veritatis et quasi architecto beatae
-            | vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
-            | voluptas sit aspernatur aut odit aut fugit, sed quia
-          .radio-image
-            i.material-icons blur_on
-    .register-wrapper.section-wrapper
-      #register.register-container.section-container
-        .register-descr-box
-          h2 Postani dio FM Radija
-          .register-descr
-            p
-              | Registriraj se, postani korisnik 
-              b FM Radija
-              |  i sudjeluj
-              |                         u njegovom radu. Tvoje ideje, želje i prijedlozi mogu
-              |                         pomoći kako bi tvoj omiljeni radio postao još i bolji!
-            p.roles-info Kao korisnik, možeš biti:
-          ul.roles-list
-            li.role
-              .role-container
-                .role-icon
-                  i.material-icons person
-                .role-name Registrirani korisnik
-                .role-descr Reci nam što želiš slušati i pomozi nam da program učinimo još boljim!
-            li.role
-              .role-container
-                .role-icon
-                  i.material-icons edit
-                .role-name Glazbeni urednik
-                .role-descr Pomozi nam obogatiti program sastavljanjem vlastite glazbene emisije!
-            li.role
-              .role-container
-                .role-icon
-                  i.material-icons build
-                .role-name Administrator
-                .role-descr Pomozi nam upravljati pjesmama, urednicima, korisnicima i terminima!
-        .register-form-box
-          h2 Registriraj se
-          form.register-form(method='post', action='user/auth/register')
-            .form-line
-              input(type='text', name='first_name', placeholder='Ime', pattern='.{2,64}')
-            .form-line
-              input(type='text', name='last_name', placeholder='Prezime', pattern='.{2,64}')
-            .form-line.spacer-line
-            .form-line
-              input(type='email', name='email', placeholder='E-mail adresa')
-            .form-line
-              input(type='password', name='password', placeholder='Lozinka', pattern='.{6,64}')
-            .form-line
-              input(type='password', name='password2', placeholder='Ponovljena lozinka', pattern='.{6,64}')
-            .form-line.spacer-line
-            .form-line
-              input(type='number', name='year_of_birth', placeholder='Godina rođenja', min='1900', max='2100')
-            .form-line
-              input(type='text', name='occupation', placeholder='Zanimanje', pattern='.{2,64}')
-            .form-line.spacer-line
-            .form-line.tos-line
-              label.tos-label(for='tos')
-                | Klikom na 
-                b registriraj se!
-                |  prihvaćate 
-                a(href='') uvjete korištenja
-                |  ove aplikacije.
-            .form-line.spacer-line
-            .form-line
-              button.raised Registriraj se!
-    .footer-wrapper.section-wrapper
-      .footer-container.section-container
-        .footer-left
-          h2 FM Radio
-          ul.radiostation-info-list
-            li.radiostation-info-item
-              .rs-item-name Frekvencija
-              .rs-item-value 144.2 MHz
-            li.radiostation-info-item
-              .rs-item-name Adresa
-              .rs-item-value Šmičiklasova 37, 10 000 Zagreb
-            li.radiostation-info-item
-              .rs-item-name Osobni Identifikacijski Broj
-              .rs-item-value 9876 5432 109
-            li.radiostation-info-item
-              .rs-item-name E-mail adresa
-              .rs-item-value kontakt@fmradio.hr
-        .footer-right
-        .footer-copy
-          | Copyright © 2015-16 
-          b FM Radio
-          | . Sva prava pridržana. Izrada i održavanje: 
-          i Bananablade™
+.player-wrapper.section-wrapper
+  .player-container.section-container
+    .player-box
+      header.player-header
+        h2 Trenutno na programu
+      .player-body
+        .current-editor
+          span Urednik:
+          |  Mirko Marković
+        .player-track
+          .player-track-title Violin Concerto No. 5: Tempo di minuetto
+          .player-track-info
+            .player-track-info-item.player-track-artist Wolfgang A. Mozart
+            .player-track-info-item.player-track-album The Very Best of Mozart
+            .player-track-info-item.player-track-year 2007
+            .player-track-info-item.player-track-genre Klasična glazba
+      audio#radio-player(src='media/paganini.mp3', preload='auto')
+      .player-controls
+        .control-buttons
+          button.volume-button
+            i.material-icons volume_down
+          button.play-button(onclick="document.getElementById('radio-player').play()")
+            i.material-icons play_circle_filled
+          button.volume-button
+            i.material-icons volume_up
+    .schedule-box
+      h2 Raspored emitiranja
+      ul.schedule
+        li.schedule-item
+          .item-time 10:00
+          .item-editor Mirko Marković
+        li.schedule-item
+          .item-time 11:00
+          .item-editor Andrija Abramović
+        li.schedule-item
+          .item-time 12:00
+          .item-editor Borislav Borković
+        li.schedule-item
+          .item-time 13:00
+          .item-editor Cvjeta Zuzorić
+        li.schedule-item
+          .item-time 14:00
+          .item-editor Domagoj Delić
+        li.schedule-item
+          .item-time 15:00
+          .item-editor Edi Ekler
+        li.schedule-item
+          .item-time 16:00
+          .item-editor Filip Franjić
+.info-wrapper.section-wrapper
+  .info-container.section-container
+    .popular-info
+      h2 Najpopularnije
+      ul.popular-tracks-list
+        li(data-value='20')
+          .popular-track-name Hello
+          .popular-track-info Adele
+        li(data-value='17')
+          .popular-track-name Same Old Love
+          .popular-track-info Selena Gomez
+        li(data-value='13')
+          .popular-track-name All I Want For Christmas Is You
+          .popular-track-info Mariah Carey
+        li(data-value='9')
+          .popular-track-name In The Night
+          .popular-track-info The Weeknd
+        li(data-value='8')
+          .popular-track-name On My Mind
+          .popular-track-info Ellie Goulding
+    .radio-info
+      h2 FM Radio
+      p
+        | Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+        | accusantium doloremque laudantium, totam rem aperiam, eaque
+        | ipsa quae ab illo inventore veritatis et quasi architecto beatae
+        | vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
+        | voluptas sit aspernatur aut odit aut fugit, sed quia
+      .radio-image
+        i.material-icons blur_on
+.register-wrapper.section-wrapper
+  #register.register-container.section-container
+    .register-descr-box
+      h2 Postani dio FM Radija
+      .register-descr
+        p
+          | Registriraj se, postani korisnik 
+          b FM Radija
+          |  i sudjeluj
+          |                         u njegovom radu. Tvoje ideje, želje i prijedlozi mogu
+          |                         pomoći kako bi tvoj omiljeni radio postao još i bolji!
+        p.roles-info Kao korisnik, možeš biti:
+      ul.roles-list
+        li.role
+          .role-container
+            .role-icon
+              i.material-icons person
+            .role-name Registrirani korisnik
+            .role-descr Reci nam što želiš slušati i pomozi nam da program učinimo još boljim!
+        li.role
+          .role-container
+            .role-icon
+              i.material-icons edit
+            .role-name Glazbeni urednik
+            .role-descr Pomozi nam obogatiti program sastavljanjem vlastite glazbene emisije!
+        li.role
+          .role-container
+            .role-icon
+              i.material-icons build
+            .role-name Administrator
+            .role-descr Pomozi nam upravljati pjesmama, urednicima, korisnicima i terminima!
+    .register-form-box
+      h2 Registriraj se
+      form.register-form('[ngFormModel]'="registerForm" '(ngSubmit)'="onSubmitRegistration(registerForm.value)")
+        .form-line
+          input(type='text', name='first_name', placeholder='Ime', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['first_name']")
+        .form-line
+          input(type='text', name='last_name', placeholder='Prezime', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['last_name']")
+        .form-line.spacer-line
+        .form-line
+          input(type='email', name='email', placeholder='E-mail adresa' '[ngFormControl]'="registerForm.controls['email']")
+        .form-line
+          input(type='password', name='password', placeholder='Lozinka', pattern='.{6,64}' '[ngFormControl]'="registerForm.controls['password']")
+        .form-line
+          input(type='password', name='password2', placeholder='Ponovljena lozinka', pattern='.{6,64}' '[(ngFormControl)]'="registerForm.controls['password2']")
+        .form-line.spacer-line
+        .form-line
+          input(type='number', name='year_of_birth', placeholder='Godina rođenja', min='1900', max='2100' '[ngFormControl]'="registerForm.controls['year_of_birth']")
+        .form-line
+          input(type='text', name='occupation', placeholder='Zanimanje', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['occupation']")
+        .form-line.spacer-line
+        .form-line.tos-line
+          label.tos-label(for='tos')
+            | Klikom na 
+            b registriraj se!
+            |  prihvaćate 
+            a(href='') uvjete korištenja
+            |  ove aplikacije.
+        .form-line.spacer-line
+        .form-line
+          button.raised(type="submit" '[disabled]'="!registerForm.valid") Registriraj se!
+.footer-wrapper.section-wrapper
+  .footer-container.section-container
+    .footer-left
+      h2 FM Radio
+      ul.radiostation-info-list
+        li.radiostation-info-item
+          .rs-item-name Frekvencija
+          .rs-item-value 144.2 MHz
+        li.radiostation-info-item
+          .rs-item-name Adresa
+          .rs-item-value Šmičiklasova 37, 10 000 Zagreb
+        li.radiostation-info-item
+          .rs-item-name Osobni Identifikacijski Broj
+          .rs-item-value 9876 5432 109
+        li.radiostation-info-item
+          .rs-item-name E-mail adresa
+          .rs-item-value kontakt@fmradio.hr
+    .footer-right
+    .footer-copy
+      | Copyright © 2015-16 
+      b FM Radio
+      | . Sva prava pridržana. Izrada i održavanje: 
+      i Bananablade™

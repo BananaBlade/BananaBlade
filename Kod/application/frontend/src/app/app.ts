@@ -4,15 +4,15 @@ import { Http } from "angular2/http";
 
 import { RouteConfig, RouterLink, RouterOutlet, Route, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
-import { HeaderBar } from '../App/HeaderBar';
+import { HeaderBar } from '../app/headerBar';
 
 //var routes = components.map((componentName) => { return new Route(componentName, componentName, componentName) });
 
-import { getNavigationArray, getRouteConfig } from '../App/RoutingProvider';
+import { getNavigationArray, getRouteConfig } from '../app/routingProvider';
 
 @Component({
     selector: 'App',
-    templateUrl: './dest/App/App.html',
+    templateUrl: './dest/app/app.html',
     styles: [],
     directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar ]
 })

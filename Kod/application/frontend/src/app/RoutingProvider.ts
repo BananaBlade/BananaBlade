@@ -1,25 +1,28 @@
 import { Route, RouteDefinition } from 'angular2/router';
 
-import { AccountData } from '../settings/AccountData/AccountData';
-import { AccountDelete } from '../settings/AccountDelete/AccountDelete';
-import { AccountLogin } from '../settings/AccountLogin/AccountLogin';
-import { AccountPassword } from '../settings/AccountPassword/AccountPassword';
-import { AddTrack } from '../settings/AddTrack/AddTrack';
+import { Index } from '../index/index';
 
-import { EditUser } from '../settings/EditUser/EditUser';
-import { MakePlaylist } from '../settings/MakePlaylist/MakePlaylist';
-import { MakeWishlist } from '../settings/MakeWishlist/MakeWishlist';
-import { ManageAdmins } from '../settings/ManageAdmins/ManageAdmins';
-import { ManageEditors } from '../settings/ManageEditors/ManageEditors';
-import { ManageRadiostation } from '../settings/ManageRadiostation/ManageRadiostation';
-import { ManageTracks } from '../settings/ManageTracks/ManageTracks';
-import { ManageUsers } from '../settings/ManageUsers/ManageUsers';
+import { AccountData } from '../settings/accountData/accountData';
+import { AccountDelete } from '../settings/accountDelete/accountDelete';
+import { AccountPassword } from '../settings/accountPassword/accountPassword';
+import { AddTrack } from '../settings/addTrack/addTrack';
+
+import { EditUser } from '../settings/editUser/editUser';
+import { MakePlaylist } from '../settings/makePlaylist/makePlaylist';
+import { MakeWishlist } from '../settings/makeWishlist/makeWishlist';
+import { ManageAdmins } from '../settings/manageAdmins/manageAdmins';
+import { ManageEditors } from '../settings/manageEditors/manageEditors';
+import { ManageRadiostation } from '../settings/manageRadiostation/manageRadiostation';
+import { ManageTracks } from '../settings/manageTracks/manageTracks';
+import { ManageUsers } from '../settings/manageUsers/manageUsers';
 
 let navigationArray = [
     {
         'Croatian': 'Slusaj radio',
         'groupName': 'Listen',
-        'components': []
+        'components': [
+            { 'Croatian': 'Naslovnica', 'componentName': 'Index', 'componentObject': Index }
+        ]
     },
     {
         'Croatian': 'Vlasničke mogućnosti',

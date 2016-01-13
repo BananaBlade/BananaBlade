@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
     selector: 'OwnerStats'
 })
 @View({
-        templateUrl: './dest/Settings/OwnerStats/OwnerStats.html'
+        templateUrl: './dest/settings/ownerStats/ownerStats.html'
 })
 export class OwnerStats {
 

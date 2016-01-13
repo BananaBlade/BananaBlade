@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
     selector: 'ManageRequests'
 })
 @View({
-        templateUrl: './dest/Settings/ManageRequests/ManageRequests.html'
+        templateUrl: './dest/settings/manageRequests/manageRequests.html'
 })
 export class ManageRequests {
 
