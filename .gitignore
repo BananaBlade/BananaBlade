@@ -65,3 +65,7 @@ frontend/src/**/*.css.map
 frontend/src/**/*.js.map
 frontend/src/**/*.js
 frontend/src/**/*.css
+
+# Docs ignores
+*.lock
+-.~lock.*

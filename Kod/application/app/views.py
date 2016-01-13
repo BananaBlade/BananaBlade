@@ -2,7 +2,7 @@ import os
 import urllib.parse
 
 from datetime import date, datetime, time
-from flask import g, redirect, request, render_template, send_file, session
+from flask import g, redirect, request, render_template, send_file, send_from_directory, session
 from peewee import DoesNotExist
 from werkzeug import secure_filename
 
@@ -34,7 +34,6 @@ def add_header( response ):
     response.headers[ 'Pragma' ] = 'no-cache'
     response.headers[ 'Expires' ] = '-1'
     return response
-
 
 # Display routes
 
@@ -1209,19 +1208,18 @@ def get_active_admins_list():
 
 
 @app.route('/<path:path>')
-def static_file(path):
-    print('static_file')
-    print(path)
-    return app.send_static_file(path)
+def static_file( path ):
+    print( 'static_file', path )
+    return app.send_static_file( path )
 
 
 # Error handlers
 
 @app.errorhandler(404)
 def handle_404( error ):
-    """ Redirect 404 to index.html """
-    return app.send_static_file('index.html')
-    #return redirect('/')
+    """Redirect 404 to index.html"""
+    print( 'Sending' )
+    return app.send_static_file( 'index.html' )
 
 @app.errorhandler(400)
 def handle_400( error ):

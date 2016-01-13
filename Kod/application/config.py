@@ -11,9 +11,6 @@ SECRET_KEY = '$j#e&7+*2w2y)0if$c-gvlfs^%@)q)7$(gv@6xk%*^o9r^1u1n'
 
 DATABASE = 'radio.db'
 
-WTF_CSRF_ENABLED = True
-WTF_CSRF_SECRET_KEY = "somethingimpossibletoguess"
-
 UPLOAD_FOLDER = "/static/audio"
 
 MAIL_SERVER = "smtp.gmail.com"

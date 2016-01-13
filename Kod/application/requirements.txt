@@ -1,6 +1,3 @@
-flask
-peewee
-Flask-Mail
-flask-cors
-gunicorn
-virtualenv
+flask==0.10.1
+peewee==2.7.4
+Flask-Mail==0.9.1
