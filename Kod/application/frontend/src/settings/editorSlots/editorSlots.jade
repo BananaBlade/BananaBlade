@@ -13,7 +13,12 @@
     .content-primary.content-calendar(data-status='change')
       .calendar-wrapper
         .calendar.large-calendar
-          | Kalendar
+          table( style="width: 100%; height: 100%")
+            tbody
+              tr
+                th( '*ngFor'="#day of days" style="border: 1px solid #1976D2" ) {{day}}
+              tr( '*ngFor'= "#hour of hours")
+                td( '*ngFor'="#day of days" style="border: 1px solid #1976D2" )
       .calendar-actions
         button Zatraži novi termin
       .calendar-option

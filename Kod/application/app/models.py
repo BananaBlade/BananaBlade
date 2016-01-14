@@ -307,6 +307,7 @@ class User( BaseModel ):
             raise AuthorizationError( 'Korisnik nije administrator.' )
 
     def _assert_editor( self ):
+        print(self.account_type)
         """Checks whether user is an editor
 
         Raises AuthorizationError
@@ -315,6 +316,7 @@ class User( BaseModel ):
             raise AuthorizationError( 'Korisnik nije urednik.' )
 
     def _assert_owner( self ):
+        print(self.account_type)
         """Checks whether user is an owner
 
         Raises AuthorizationError
