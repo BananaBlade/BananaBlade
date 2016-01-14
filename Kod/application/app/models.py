@@ -337,7 +337,10 @@ class User( BaseModel ):
 
         Raises AuthorizationError
         """
-        self._assert_admin()
+        try:
+            self._assert_admin()
+        except AuthorizationError:
+            self._assert_owner()
         return User.select().where( User.account_type << [ AccountType.USER, AccountType.EDITOR ] )
 
     def get_user( self, user_id ):

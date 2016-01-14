@@ -16,25 +16,25 @@
       button('(click)'="isFormDisabled = !isFormDisabled") Izmijeni podatke o postaji
     .content-primary.content-form
       fieldset('[disabled]'="isFormDisabled")
-        form('[ngFormModel]'="myForm" '(ngSubmit)'="myForm.onSubmit(myForm.value)")
+        form('[ngFormModel]'="myForm" '(ngSubmit)'="onSubmit(myForm.value)")
           .form-line
             label(for='name') Naziv postaje
-            input(type='text', id='name', '[ngFormControl]'="myForm.controls['name']" '[(ngModel)]'='nameModel')
+            input(type='text', id='name', '[ngFormControl]'="myForm.controls['name']" )
           .form-line
             label(for='description') Kratki opis
-            textarea(id='description' '[ngFormControl]'="myForm.controls['description']" '[class.error]'="!description.valid && description.touched" '[(ngModel)]'='descriptionModel')
+            textarea(id='description' '[ngFormControl]'="myForm.controls['description']" )
           .form-line
             label(for='oib') OIB
-            input(type='text', id='oib', '[ngFormControl]'="myForm.controls['oib']" '[class.error]'="!oib.valid && oib.touched" '[(ngModel)]'='oibModel')
+            input(type='text', id='oib', '[ngFormControl]'="myForm.controls['oib']" )
           .form-line
             label(for='address') Adresa postaje
-            input(type='text', id='address', '[ngFormControl]'="myForm.controls['address']" '[class.error]'="!address.valid && address.touched" '[(ngModel)]'='addressModel')
+            input(type='text', id='address', '[ngFormControl]'="myForm.controls['address']" )
           .form-line
             label(for='email') E-mail adresa
-            input(type='email', id='email', '[ngFormControl]'="myForm.controls['email']" '[class.error]'="!email.valid && email.touched" '[(ngModel)]'='emailModel')
+            input(type='email', id='email', '[ngFormControl]'="myForm.controls['email']" )
           .form-line
             label(for='frequency') Frekvencija
-            input(type='number', id='frequency', min='80', max='120', step='0.1', '[ngFormControl]'="myForm.controls['frequency']" '[class.error]'="!frequency.valid && frequency.touched" '[(ngModel)]'='frequencyModel')
+            input(type='number', id='frequency', min='80', max='120', step='0.1', '[ngFormControl]'="myForm.controls['frequency']" )
           div( '*ngIf'="!myForm.valid" class="errorMessage" ) 
             | Neispravan unos
           .form-line.editable-ui

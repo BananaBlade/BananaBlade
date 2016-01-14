@@ -16,7 +16,22 @@
       button( '*ngSwitchWhen'="true" '(click)'="toggleEditable()" ) Završi uređivanje popisa
       button( '*ngSwitchDefault'='' '(click)'="toggleEditable()" ) Uredi popis administratora
     ul.content-primary.content-list
-      li.content-list-item.admin-item( '*ngFor'="#admin of admins")
+      li.content-list-item.content-list-search-item.editable-ui( '*ngIf'="editable" )
+        form
+          .content-list-item-content
+            label(for='add-item-search') Dodaj administratora
+            input.add-item-search(type='text', name='add_track_search' '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
+          .content-list-item-options
+            button.raised.add-item-button('[disabled]'="!matching" '(click)'="addAdmin()")
+              i.material-icons person_add
+      li.content-list-item.closestMatch-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
+        .content-list-item-content
+          .content-list-item-name {{closestMatch.first_name}} {{closestMatch.last_name}}
+          .content-list-item-data
+            .content-list-item-data-item.user-mail {{closestMatch.email}}
+            .content-list-item-data-item.user-age {{closestMatch.year_of_birth}}
+            .content-list-item-data-item.user-occupation {{closestMatch.occupation}}
+      li.content-list-item.admin-item.dark-primary-color( '*ngFor'="#admin of admins" )
         .content-list-item-content
           .content-list-item-name {{admin.first_name}} {{admin.last_name}}
           .content-list-item-data
@@ -24,13 +39,5 @@
             .content-list-item-data-item.user-age {{admin.year_of_birth}}
             .content-list-item-data-item.user-occupation {{admin.occupation}}
         .content-list-item-options.editable-ui
-          button.alt
+          button.alt( '(click)'="removeAdmin(admin.id)")
             i.material-icons clear
-      li.content-list-item.content-list-search-item.editable-ui( '*ngIf'="editable" )
-        form
-          .content-list-item-content
-            label(for='add-item-search') Dodaj administratora
-            input.add-item-search(type='text', name='add_track_search')
-          .content-list-item-options
-            button.raised.add-item-button
-              i.material-icons person_add

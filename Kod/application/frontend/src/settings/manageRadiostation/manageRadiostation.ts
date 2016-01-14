@@ -4,7 +4,7 @@ import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 import { Http } from 'angular2/http';
 
-import { Form } from '../../utilities';
+import { urlEncode } from '../../utilities';
 
 @Component({
     selector: 'ManageRadiostation',
@@ -12,16 +12,57 @@ import { Form } from '../../utilities';
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageRadiostation {
+    http: Http;
+    myForm: ControlGroup;
+
     isFormDisabled: boolean;
 
-    radioForm: Form;
+    name: Control;
+    description: Control;
+    oib: Control;
+    address: Control;
+    email: Control;
+    frequency: Control;
+
+    nameModel: string;
+    descriptionModel: string;
+    oibModel: string;
+    addressModel: string;
+    emailModel: string;
+    frequencyModel: string;
+
+    onSubmit(value: String): void {
+        console.log(value);
+        this.http.post('/owner/station/modify', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp));
+    }
 
     constructor(fb: FormBuilder, http: Http) {
-        let radioFormNames = ['name', 'description', 'oib', 'address', 'email', 'frequency'];
-        let submitUrl = '/owner/station/modify';
-        let getUrl = '/station/get';
-        this.radioForm = new Form(fb, http, radioFormNames, submitUrl, getUrl);
+        this.http = http;
+
+        this.name = new Control('lala', Validators.required);
+        this.description = new Control('', Validators.required);
+        this.oib = new Control('', Validators.required);
+        this.address = new Control('', Validators.required);
+        this.email = new Control('', Validators.required);
+        this.frequency = new Control('', Validators.required);
 
         this.isFormDisabled = true;
+
+        this.myForm = fb.group({
+            'name': this.name,
+            'description': this.description,
+            'oib': this.oib,
+            'address': this.address,
+            'email': this.email,
+            'frequency': this.frequency
+        });
+
+        this.http.get('/station/get').map((text) => text.json()).subscribe((response) => {
+            let stationObj = response.data;
+            console.log(stationObj);
+            for (let name in stationObj) {
+                this[name].updateValue(stationObj[name]);
+            }
+        });
     }
 }
