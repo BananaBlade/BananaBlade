@@ -24,22 +24,15 @@ export class ManageRadiostation {
     email: Control;
     frequency: Control;
 
-    nameModel: string;
-    descriptionModel: string;
-    oibModel: string;
-    addressModel: string;
-    emailModel: string;
-    frequencyModel: string;
-
     onSubmit(value: String): void {
         console.log(value);
-        this.http.post('/owner/station/modify', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp));
+        this.http.post('/owner/station/modify', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp), (err) => console.log(err));
     }
 
     constructor(fb: FormBuilder, http: Http) {
         this.http = http;
 
-        this.name = new Control('lala', Validators.required);
+        this.name = new Control('', Validators.required);
         this.description = new Control('', Validators.required);
         this.oib = new Control('', Validators.required);
         this.address = new Control('', Validators.required);
@@ -63,6 +56,6 @@ export class ManageRadiostation {
             for (let name in stationObj) {
                 this[name].updateValue(stationObj[name]);
             }
-        });
+        }, (err) => console.log(err));
     }
 }

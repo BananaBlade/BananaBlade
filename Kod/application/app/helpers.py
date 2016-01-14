@@ -63,6 +63,7 @@ def generate_times( time, bitmask, start_date, end_date ):
     return times
 
 def datetime_from_string( date_string ):
+    print(date_string)
     return datetime.strptime( date_string, "%d-%m-%Y" )
 
 # JSON response helpers

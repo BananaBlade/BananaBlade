@@ -299,6 +299,8 @@ class User( BaseModel ):
             raise AuthenticationError( 'Neispravna lozinka.' )
 
     def _assert_admin( self ):
+        print(self.email)
+        print(self.account_type)
         """Checks whether user is an administrator
 
         Raises AuthorizationError
@@ -307,6 +309,7 @@ class User( BaseModel ):
             raise AuthorizationError( 'Korisnik nije administrator.' )
 
     def _assert_editor( self ):
+        print(self.email)
         print(self.account_type)
         """Checks whether user is an editor
 
@@ -316,6 +319,7 @@ class User( BaseModel ):
             raise AuthorizationError( 'Korisnik nije urednik.' )
 
     def _assert_owner( self ):
+        print(self.email)
         print(self.account_type)
         """Checks whether user is an owner
 
@@ -325,6 +329,8 @@ class User( BaseModel ):
             raise AuthorizationError( 'Korisnik nije vlasnik.' )
 
     def _assert_user( self ):
+        print(self.email)
+        print(self.account_type)
         """Checks whether user is a basic user
 
         Raises AuthorizationError

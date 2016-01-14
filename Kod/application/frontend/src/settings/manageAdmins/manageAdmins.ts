@@ -87,11 +87,11 @@ export class ManageAdmins {
                 let admin = new Admin(res[i]);
                 this.admins.push(admin);
             }
-        });
+        }, (err) => console.log(err));
         http.get('/admin/users/list').map((res) => res.json().data).subscribe((data) => {
             this.normalUsers = data;
             console.log(data);
-        });
+        }, (err) => console.log(err));
     }
 }
 

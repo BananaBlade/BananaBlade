@@ -764,10 +764,7 @@ def list_editor_slots():
                 'id'    : slot.id,
                 'time'  : slot.time,
                 'count' : slot.count
-            } for slot in slots ],
-            'requests' : [{
-                ''
-            }]
+            } for slot in slots ]
         }
         return data_response( data )
     except AuthorizationError:
@@ -799,7 +796,8 @@ def request_slot():
         return success_response( 'Zahtjev uspješno pohranjen.', 201 )
     except AuthorizationError:
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nedovoljne ovlasti.', 403 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/editor/slots/<int:slot_id>/get_list', methods = [ 'GET' ] )

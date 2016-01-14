@@ -1,6 +1,6 @@
 import os
 
-APPLICATION_ROOT = '/localhost/'
+APPLICATION_ROOT = '/'
 
 DEBUG = True
 TESTING = False
