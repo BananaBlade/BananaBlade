@@ -17,13 +17,13 @@ import { ManageTracks } from '../settings/manageTracks/manageTracks';
 import { ManageUsers } from '../settings/manageUsers/manageUsers';
 
 let navigationArray = [
-    {
-        'Croatian': 'Slusaj radio',
-        'groupName': 'Listen',
-        'components': [
-            { 'Croatian': 'Naslovnica', 'componentName': 'Index', 'componentObject': Index }
-        ]
-    },
+    // {
+    //     'Croatian': 'Slusaj radio',
+    //     'groupName': 'Listen',
+    //     'components': [
+    //         { 'Croatian': 'Naslovnica', 'componentName': 'Index', 'componentObject': Index }
+    //     ]
+    // },
     {
         'Croatian': 'Vlasničke mogućnosti',
         'groupName': 'OwnerOptions',
@@ -63,7 +63,6 @@ let navigationArray = [
             { 'Croatian': 'Uredi osobne podatke', 'componentName': 'AccountData', 'componentObject': AccountData },
             { 'Croatian': 'Promijeni lozinku', 'componentName': 'AccountPassword', 'componentObject': AccountPassword },
             { 'Croatian': 'Obriši račun', 'componentName': 'AccountDelete', 'componentObject': AccountDelete }
-            //  { 'Croatian': 'Login', 'componentName': 'Login', 'componentObject': Logi}
         ]
     }
 ];
@@ -74,6 +73,9 @@ export function getNavigationArray() {
 
 export function getRouteConfig() {
     let routeDefinitionArray: RouteDefinition[] = [];
+
+    // let route = new Route({ 'path' : '/', 'name' : 'Index', 'component' : Index })
+    // routeDefinitionArray.push( route )
 
     for (let i in navigationArray) {
         for (let j in navigationArray[i].components) {
