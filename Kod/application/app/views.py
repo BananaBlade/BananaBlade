@@ -764,10 +764,10 @@ def list_editor_slots():
                 'id'    : slot.id,
                 'time'  : slot.time,
                 'count' : slot.count
-            } for slot in slots ],
-            'requests' : [{
-                ''
-            }]
+            } for slot in slots ]#,
+            # 'requests' : [{
+            #     ''
+            # }]
         }
         return data_response( data )
     except AuthorizationError:
@@ -814,6 +814,7 @@ def get_playlist( slot_id ):
     try:
         slot_items = g.user.get_slot_playlist( slot_id )
         data = [{
+            'id'            :   item.track.id,
             'title'         :   item.track.title,
             'artist'        :   item.track.artist,
             'album'         :   item.track.album,
@@ -988,14 +989,13 @@ def list_tracks():
     } for track in tracks ]
     return data_response( data )
 
-@app.route( '/tracks/search', methods = [ 'GET' ] )
+@app.route( '/tracks/search/<term>', methods = [ 'GET' ] )
 @login_required
-def search_tracks():
+def search_tracks( term ):
     """Returns a list of all tracks matching search term.
 
-    Request should contain `term`.
+    No request params.
     """
-    term = request.values.get( 'term' )
     tracks = g.user.search_tracks( term )
     data = [{
         'id'                : track.id,
@@ -1047,12 +1047,12 @@ def get_most_popular_tracks():
 
 # User routes
 
-@app.route( '/users/search', methods = [ 'GET' ] )
+@app.route( '/users/search/<term>', methods = [ 'GET' ] )
 @login_required
-def search_users():
+def search_users( term ):
     """Returns a list of all users matching search term
 
-    Request should contain `term`.
+    No request params.
     """
     term = request.values.get( 'term' )
 
@@ -1086,6 +1086,19 @@ def get_global_schedule():
     except:
         return error_response( 'Nije moguće dohvatiti raspored termina.' )
 
+@app.route( '/slots/reserved', methods = [ 'GET' ] )
+@login_required
+def get_reserved_slots():
+    """Returns a list of all future taken slots
+
+    No request params.
+    """
+    try:
+        pass
+    except AuthorizationError:
+        return error_response( 'Nije moguće dohvatiti raspored termina: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Nije moguće dohvatiti raspored termina.' )
 
 
 # Stat routes
