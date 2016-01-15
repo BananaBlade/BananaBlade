@@ -363,32 +363,6 @@ def confirm_wishlist():
 
 # Admin track management
 
-@app.route( '/admin/tracks/add_just_file', methods = [ 'POST'] )
-@login_required
-def add_file():
-    """ Sorry for meddling in backend. I just want to see if this works :) """
-
-    audio_file = request.files.get( 'file' )
-
-    try:
-        filename = secure_filename( audio_file.filename )
-        validate_filename(filename)
-        path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
-        return success_response( 'Zvučni zapis uspješno dodan.', 201 )
-
-        audio_file.save( path )
-        g.user.add_track( title = filename, path = "", artist = "", album = "", duration = 100,
-            file_format = ".mp3", sample_rate = 10.0, bits_per_sample = 10,
-            genre = "", publisher = "", carrier_type = "", year = 1919 )
-
-    except AuthorizationError:
-        return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
-    except ValueError as e:
-        return error_response( 'Dodavanje zapisa nije uspjelo: Nisu uneseni ispravni podaci: ' + str( e ) )
-    except:
-        return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
-
-
 @app.route( '/admin/tracks/add', methods = [ 'POST' ] )
 @login_required
 def add_track():
@@ -839,7 +813,7 @@ def request_slot():
 def get_playlist( slot_id ):
     """Get current slot playlist
 
-    Returns a list of dicts { title, artist, album, genre, index, duration }
+    Returns a list of dicts { title, artist, album, genre, index, play_duration }
     representing tracks on this slot's playlist.
     No request params.
     """
@@ -851,15 +825,14 @@ def get_playlist( slot_id ):
             'artist'        :   item.track.artist,
             'album'         :   item.track.album,
             'index'         :   item.index,
-            'duration'      :   item.duration
+            'play_duration' :   item.play_duration
         } for item in slot_items ]
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
-    except Exception as e:
-        print(e)
+    except:
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Nevaljan zahtjev.' )
 
 @app.route( '/editor/slots/<int:slot_id>/set_list', methods = [ 'POST' ] )
@@ -867,14 +840,12 @@ def get_playlist( slot_id ):
 def set_playlist( slot_id ):
     """Set playlist for slot with a given id
 
-    Request should contain a list of ( index, track_id, duration ) representing
+    Request should contain a list of ( index, track_id, play_duration ) representing
     tracks to be placed on the slot's playlist.
     """
 
-    print(request.get_json(force=True))
-
     try:
-        track_list = request.get_json(force = True)
+        track_list = request.get_json().get( 'track_list' )
         # TODO: Perform a check for list correctness
         g.user.set_slot_playlist( slot_id, track_list )
         return success_response( 'Lista za reprodukciju uspješno pohranjena', 201 )
@@ -882,8 +853,7 @@ def set_playlist( slot_id ):
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
-    except Exception as e:
-        print(e)
+    except:
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Nevaljan zahtjev.' )
 
 
@@ -1025,7 +995,11 @@ def list_tracks():
     } for track in tracks ]
     return data_response( data )
 
+<<<<<<< HEAD
+@app.route( '/tracks/search/', methods = [ 'POST' ] )
+=======
 @app.route( '/tracks/search/<term>', methods = [ 'GET' ] )
+>>>>>>> origin/zjurelinac
 @login_required
 def search_tracks( term ):
     """Returns a list of all tracks matching search term.
@@ -1039,8 +1013,7 @@ def search_tracks( term ):
         'artist'            : track.artist,
         'album'             : track.album,
         'genre'             : track.genre,
-        'year'              : track.year,
-        'duration'          : track.duration
+        'year'              : track.year
     } for track in tracks ]
     return data_response( data )
 

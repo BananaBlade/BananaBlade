@@ -1,5 +1,5 @@
 import { Route, RouteDefinition } from 'angular2/router';
-
+import { Type } from 'angular2/core';
 import { Index } from '../index/index';
 
 import { AccountData } from '../settings/accountData/accountData';
@@ -20,57 +20,62 @@ import { ManageUsers } from '../settings/manageUsers/manageUsers';
 import { EditorSlots } from '../settings/editorSlots/editorSlots';
 import { ManageRequests } from '../settings/manageRequests/manageRequests';
 
-let navigationArray = [
-    {
-        'Croatian': 'Slusaj radio',
-        'groupName': 'Listen',
-        'components': [
-            { 'Croatian': 'Naslovnica', 'componentName': 'Index', 'componentObject': Index }
-        ]
-    },
-    {
-        'Croatian': 'Vlasničke mogućnosti',
-        'groupName': 'OwnerOptions',
-        'components': [
-            { 'Croatian': 'Upravljaj administratorima', 'componentName': 'ManageAdmins', 'componentObject': ManageAdmins },
-            { 'Croatian': 'Pregledaj podatke o postaji', 'componentName': 'ManageRadiostation', 'componentObject': ManageRadiostation }
-        ]
-    },
-    {
-        'Croatian': 'Administratorske modućnosti',
-        'groupName': 'AdminOptions',
-        'components': [
-            { 'Croatian': 'Uredi zvučne zapise', 'componentName': 'ManageTracks', 'componentObject': ManageTracks },
-            { 'Croatian': 'Upravljaj urednicima', 'componentName': 'ManageEditors', 'componentObject': ManageEditors },
-            { 'Croatian': 'Dodaj pjesmu', 'componentName': 'AddTrack', 'componentObject': AddTrack },
-            { 'Croatian': 'Upravljaj korisnicima', 'componentName': 'EditUser', 'componentObject': EditUser },
-            { 'Croatian': 'Ažuriraj zahtjeve', 'componentName': 'ManageRequests', 'componentObject': ManageRequests }
-        ]
-    },
-    {
-        'Croatian': 'Uredničke mogućnosti',
-        'groupName': 'EditorOptions',
-        'components': [
-            { 'Croatian': 'Termini reprodukcije', 'componentName': 'EditorSlots', 'componentObject': EditorSlots },
-            { 'Croatian': 'Pregledaj termine', 'componentName': 'MakePlaylist', 'componentObject': MakePlaylist }
-        ]
-    },
-    {
-        'Croatian': 'Korisničke mogućnosti',
-        'groupName': 'UserOptions',
-        'components': [
-            { 'Croatian': 'Pregledaj listu želja', 'componentName': 'MakeWishlist', 'componentObject': MakeWishlist }
-        ]
-    },
-    {
-        'Croatian': 'Postavke računa',
-        'groupName': 'AccountSettings',
-        'components': [
-            { 'Croatian': 'Uredi osobne podatke', 'componentName': 'AccountData', 'componentObject': AccountData },
-            { 'Croatian': 'Promijeni lozinku', 'componentName': 'AccountPassword', 'componentObject': AccountPassword },
-            { 'Croatian': 'Obriši račun', 'componentName': 'AccountDelete', 'componentObject': AccountDelete }
-        ]
+class MyComponent {
+    Croatian: string;
+    name: string;
+    object: Type;
+    hidden: boolean;
+
+    constructor(Croatian: string, name: string, object: Type, hidden?: boolean) {
+        this.Croatian = Croatian;
+        this.name = name;
+        this.object = object;
+        this.hidden = hidden ? true : false;
     }
+
+    getRoute() {
+        return new Route({ 'path': this.name, 'name': this.name, 'component': this.object });
+    }
+}
+
+class NavGroup {
+    Croatian: string;
+    components: MyComponent[];
+    hasLink: boolean;
+    link: MyComponent;
+
+    constructor(Croatian: string, components: MyComponent[], hasLink: boolean, link?: MyComponent) {
+        this.Croatian = Croatian;
+        this.components = components;
+        this.hasLink = hasLink;
+        this.link = link ? link : null;
+    }
+}
+
+let navigationArray = [
+    new NavGroup('Slusaj radio', [], true, new MyComponent('', 'Index', Index)),
+    new NavGroup('Vlasničke mogućnosti', [
+        new MyComponent('Upravljaj administratorima', 'ManageAdmins', ManageAdmins),
+        new MyComponent('Podaci o postaji', 'ManageRadiostation', ManageRadiostation)
+    ], false),
+    new NavGroup('Administratorske mogućnosti', [
+        new MyComponent('Uredi zvučne zapise', 'ManageTracks', ManageTracks),
+        new MyComponent('Upravljaj urednicima', 'ManageEditors', ManageEditors),
+        new MyComponent('Dodaj pjesmu', 'AddTrack', AddTrack),
+        new MyComponent('Upravljaj korisnicima', 'ManageUsers', ManageUsers),
+        new MyComponent('Ažuriraj zahtjeve', 'ManageRequests', ManageRequests)
+    ], false),
+    new NavGroup('Uredničke mogućnosti', [
+        new MyComponent('Termini reprodukcije', 'EditorSlots', EditorSlots),
+        new MyComponent('Pregledaj termine', 'MakePlaylist', MakePlaylist, true)
+    ], false),
+    new NavGroup('Korisničke mogućnosti', [
+        new MyComponent('Pregledaj listu želja', 'MakeWishlist', MakeWishlist),
+    ], false),
+    new NavGroup('Postavke računa', [
+        new MyComponent('Uredi osobne podatke', 'AccountData', AccountData),
+        new MyComponent('Promijeni lozinku', 'AccountPassword', AccountPassword),
+        new MyComponent('Obriši račun', 'AccountDelete', AccountDelete)], false)
 ];
 
 export function getNavigationArray() {
@@ -86,9 +91,10 @@ export function getRouteConfig() {
     for (let i in navigationArray) {
         for (let j in navigationArray[i].components) {
             let component = navigationArray[i].components[j];
-            // path name component
-            let route = new Route({ 'path': component.componentName, 'name': component.componentName, 'component': component.componentObject });
-            routeDefinitionArray.push(route);
+            routeDefinitionArray.push(component.getRoute());
+        }
+        if (navigationArray[i].hasLink) {
+            routeDefinitionArray.push(navigationArray[i].link.getRoute());
         }
     }
 

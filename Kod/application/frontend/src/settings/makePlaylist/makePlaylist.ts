@@ -14,6 +14,7 @@ export class MakePlaylist {
     editable: boolean = true;
     playlist: Track[] = new Array();
     trackSearch: string;
+    searchResults: Track[] = new Array();
 
     matching: boolean = false;
 
@@ -21,22 +22,31 @@ export class MakePlaylist {
         this.editable = !this.editable;
     }
 
+    resetPlaylist() {
+        this.toggleEditable();
+    }
+
     removeTrack(track) {
         for (let i in this.playlist) {
             if (this.playlist[i] == track) {
-                console.log(track);
                 this.playlist.splice(i, 1);
             }
         }
     }
 
+    addTrackToPlaylist(track) {
+        this.playlist.push(track);
+        this.trackSearch = "";
+        this.searchResults = new Array();
+    }
+
     onKeyPressed(event) {
         let query = this.trackSearch + String.fromCharCode(event.charCode);
         console.log(query);
-        this.http.post('/tracks/search', urlEncode({ 'term': query })).map((res) => res.json()).subscribe((res) => {
-            this.playlist = new Array();
+        this.http.get('/tracks/search/' + query).map((res) => res.json()).subscribe((res) => {
+            this.searchResults = new Array();
             for (let i in res.data) {
-                this.playlist.push(new Track(res.data[i]));
+                this.searchResults.push(new Track(res.data[i]));
             }
             console.log(res);
         }, (err) => console.log(err));
@@ -47,10 +57,11 @@ export class MakePlaylist {
 
         let track_list = new Array();
         for (let track in this.playlist) {
-            track_list.push({ 'index': track, 'track_id': this.playlist[track].track_id, 'play_duration': this.playlist[track].play_duration})
+            track_list.push([track, this.playlist[track].id, this.playlist[track].duration]);
         }
+        let track_list2 = JSON.stringify(track_list);
 
-        this.http.post('/editor/slots/' + this.slotId + '/set_list', urlEncode(track_list)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
+        this.http.post('/editor/slots/' + this.slotId + '/set_list', track_list2).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
     }
 
     constructor(http: Http, routeParams: RouteParams) {
@@ -74,8 +85,8 @@ class Track {
     artist: string;
     album: string;
     index: number;
-    play_duration: number;
-    track_id: number;
+    duration: number;
+    id: number;
 
     constructor(values) {
         console.log(values);
@@ -83,6 +94,7 @@ class Track {
         this.artist = values.artist;
         this.album = values.album;
         this.index = values.index;
-        this.play_duration = values.play_duration;
+        this.id = values.id;
+        this.duration = values.duration;
     }
 }
