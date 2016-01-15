@@ -1,7 +1,5 @@
 import { Component, Input } from 'angular2/core';
-import {
-    COMMON_DIRECTIVES
-} from 'angular2/common';
+import { FORM_DIRECTIVES, COMMON_DIRECTIVES } from 'angular2/common';
 import 'rxjs/Rx';
 
 @Component({

@@ -31,6 +31,7 @@ export class Form {
         if (getter) {
             if (typeof getter === "string") {
                 this.http.get(getter).map((resp) => resp.json().data).subscribe((data) => {
+                    console.log(data);
                     for (let name in data) {
                         this.group.controls[name].value = data[name];
                         this.group.controls[name].updateValueAndValidity();
@@ -41,6 +42,7 @@ export class Form {
                 for (let name in getter) {
                     this.group.controls[name].value = getter[name];
                     this.group.controls[name].updateValueAndValidity();
+                    this.group.updateValueAndValidity();
                 }
             }
         }

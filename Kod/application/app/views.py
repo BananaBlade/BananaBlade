@@ -556,7 +556,7 @@ def add_editor( user_id ):
     except:
         return error_response( 'Neuspješno postavljanje urednika: Nevaljan zahtjev.' )
 
-@app.route( '/admin/editors/<int:editor_id>/remove', methods = [ 'POST' ] )
+@app.route( '/admin/editors/remove/<int:editor_id>', methods = [ 'POST' ] )
 @login_required
 def remove_editor( editor_id ):
     """Revokes editorial privileges from user with `user_id`
@@ -799,7 +799,8 @@ def request_slot():
         return success_response( 'Zahtjev uspješno pohranjen.', 201 )
     except AuthorizationError:
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nedovoljne ovlasti.', 403 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/editor/slots/<int:slot_id>/get_list', methods = [ 'GET' ] )
@@ -897,7 +898,7 @@ def add_admin( user_id ):
         return error_response( 'Neuspješno postavljanje administatora: Nevaljan zahtjev.' )
 
 @login_required
-@app.route( '/owner/admins/<int:admin_id>/remove', methods = [ 'POST' ] )
+@app.route( '/owner/admins/remove/<int:admin_id>', methods = [ 'POST' ] )
 def remove_admin( admin_id ):
     """Revoke administrative privileges from user with `admin_id`
 

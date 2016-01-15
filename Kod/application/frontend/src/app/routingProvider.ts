@@ -16,6 +16,9 @@ import { ManageRadiostation } from '../settings/manageRadiostation/manageRadiost
 import { ManageTracks } from '../settings/manageTracks/manageTracks';
 import { ManageUsers } from '../settings/manageUsers/manageUsers';
 
+// Newly added
+import { EditorSlots } from '../settings/editorSlots/editorSlots';
+
 let navigationArray = [
     // {
     //     'Croatian': 'Slusaj radio',
@@ -46,6 +49,7 @@ let navigationArray = [
         'Croatian': 'Uredničke mogućnosti',
         'groupName': 'EditorOptions',
         'components': [
+            { 'Croatian': 'Termini reprodukcije', 'componentName': 'EditorSlots', 'componentObject': EditorSlots },
             { 'Croatian': 'Pregledaj termine', 'componentName': 'MakePlaylist', 'componentObject': MakePlaylist }
         ]
     },
