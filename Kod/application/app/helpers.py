@@ -36,11 +36,13 @@ def generate_activation_code( user_id, activation_time ):
 # Query ranking helpers
 
 def calc_track_score( track, term ):
+    """ """
     return ( ( 4 if term in track.title else 0 )
            + ( 3 if term in track.artist else 0 )
            + ( 2 if term in track.album else 0 ) )
 
 def calc_user_score( user, term ):
+    """ """
     return ( ( 3 if term in user.last_name else 0 )
            + ( 2 if term in user.first_name else 0 ) )
 
@@ -48,10 +50,12 @@ def calc_user_score( user, term ):
 # Date helpers
 
 def deconstruct_bitmask( bitmask ):
+    """Return a list of all bit positions in bitmask"""
     days = [ d if bitmask & ( 1<<d ) else -1 for d in range( 7 ) ]
     return filter( lambda x : x >= 0, days )
 
 def generate_times( time, bitmask, start_date, end_date ):
+    """Generate a list of times from a given request"""
     days = list( deconstruct_bitmask( bitmask ) )
     current = datetime.combine( start_date, time )
     end = datetime.combine( end_date, time )
@@ -63,25 +67,30 @@ def generate_times( time, bitmask, start_date, end_date ):
     return times
 
 def datetime_from_string( date_string ):
-    print(date_string)
-    return datetime.strptime( date_string, "%d-%m-%Y" )
+    """Parse datetime object from a given string formatted as 'yyyy-mm-dd'"""
+    return datetime.strptime( date_string, "%Y-%m-%d" )
+
+def is_same_week( date1, date2 ):
+    """Checks whether two dates are within the same week"""
+    return date1.year == date2.year and date1.strftime( '%W' ) == date2.strftime( '%W' )
+
 
 # JSON response helpers
 
 def data_response( data, code = 200 ):
-    """ """
+    """Returns a JSON response containing `data`, with a given response code"""
     return jsonify( { 'data' : data } ), code
 
 def error_response( message, code = 400 ):
-    """ """
+    """Returns a JSON response containing `error_message` with a given error code"""
     return jsonify( { 'error_message' : message } ), code
 
 def success_response( message, code = 200 ):
-    """ """
+    """Returns a JSON response containing `success_message` with a given success code"""
     return jsonify( { 'success_message' : message } ), code
 
 def not_implemented_response():
-    """ """
+    """Return an error_response indicating functionality is not yet implemented"""
     return error_response( 'Funkcija još nije implementirana', 501 )
 
 

@@ -1,3 +1,4 @@
+import itertools
 import os
 import urllib.parse
 
@@ -147,9 +148,6 @@ def process_registration():
     email           = request.values.get( 'email' )
     password        = request.values.get( 'password' )
     password2       = request.values.get( 'password2' )
-
-    print('email')
-    print(email)
 
     if year_of_birth is not None: year_of_birth = int( year_of_birth )
 
@@ -749,9 +747,10 @@ def delete_user( user_id ):
 
 # Editor slot management
 
-@app.route( '/editor/slots/list', methods = [ 'GET' ] )
+@app.route( '/editor/slots/list', methods = [ 'GET' ], defaults = { 'date' : None } )
+@app.route( '/editor/slots/list/<date>', methods = [ 'GET' ] )
 @login_required
-def list_editor_slots():
+def list_editor_slots( date ):
     """Return a list of all editor's slots and requests
 
     No request params.
@@ -759,15 +758,21 @@ def list_editor_slots():
     try:
         slots = g.user.get_slots()
         requests = g.user.get_requests()
+        if date is not None:
+            date = datetime_from_string( date ).date()
+            slots = filter( lambda slot : is_same_week( date, slot.time ), slots )
+            requests = filter( lambda req : req.start_date <= date and req.end_date >= date, requests )
         data = {
             'slots' : [{
                 'id'    : slot.id,
-                'time'  : slot.time,
+                'time'  : slot.time.isoformat(),
                 'count' : slot.count
-            } for slot in slots ]#,
-            # 'requests' : [{
-            #     ''
-            # }]
+            } for slot in slots ],
+
+            'requests' : [{
+                'time' : rt.isoformat()
+            } for rt in itertools.chain( *[ generate_times( x.time, x.days_bit_mask, x.start_date, x.end_date ) for x in requests ] ) ]
+
         }
         return data_response( data )
     except AuthorizationError:
@@ -782,7 +787,7 @@ def request_slot():
 
     Request should contain `time`, `days_bit_mask`, `start_date` and `end_date`.
     `time` should be an integer between 0 and 23 (hour), and dates should be in
-    DD-MM-YYYY format.
+    YYY-MM-DD format.
     """
     request_time    = request.values.get( 'time' )
     days_bit_mask   = request.values.get( 'days_bit_mask' )
@@ -790,7 +795,7 @@ def request_slot():
     end_date        = request.values.get( 'end_date' )
 
     if request_time is not None: request_time = time( hour = int( request_time ) )
-    if days_bit_mask is not None: days_bit_mask = int( days_bit_mask )
+    if days_bit_mask is not None: days_bit_mask = int( days_bit_mask[ ::-1 ], 2 )
     if start_date is not None: start_date = datetime_from_string( start_date ).date()
     if end_date is not None: end_date = datetime_from_string( end_date ).date()
 
@@ -800,7 +805,6 @@ def request_slot():
     except AuthorizationError:
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except Exception as e:
-        print(e)
         return error_response( 'Neuspješno pohranjivanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/editor/slots/<int:slot_id>/get_list', methods = [ 'GET' ] )
@@ -1248,7 +1252,6 @@ def get_active_admins_list():
 
 @app.route('/<path:path>')
 def static_file( path ):
-    print( 'static_file', path )
     return app.send_static_file( path )
 
 
@@ -1257,7 +1260,6 @@ def static_file( path ):
 @app.errorhandler(404)
 def handle_404( error ):
     """Redirect 404 to index.html"""
-    print( 'Sending' )
     return app.send_static_file( 'index.html' )
 
 @app.errorhandler(400)

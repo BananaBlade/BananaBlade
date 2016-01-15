@@ -2,7 +2,7 @@
 import {View, Component} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/router';
 import { Http } from 'angular2/http';
-import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIRECTIVES, 
+import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIRECTIVES,
     FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 // NgSelectOption CheckboxControlValueAccessor
 
@@ -47,9 +47,9 @@ export class EditorSlots {
         let days_bit_mask = '' + (values.day0 ? 1 : 0) + (values.day1 ? 1 : 0) + (values.day2 ? 1 : 0) + (values.day3 ? 1 : 0) + (values.day4 ? 1 : 0) + (values.day5 ? 1 : 0) + (values.day6 ? 1 : 0);
         console.log(days_bit_mask);
         let start_date = new Date(values.start_date);
-        let start_date2 = start_date.getDate() + '-' + (start_date.getMonth() + 1) + '-' + start_date.getFullYear();
+        let start_date2 = start_date.getFullYear() + '-' + (start_date.getMonth() + 1) + '-' + start_date.getDate();
         let end_date = new Date(values.end_date);
-        let end_date2 = end_date.getDate() + '-' + (end_date.getMonth() + 1) + '-' + end_date.getFullYear();
+        let end_date2 = end_date.getFullYear() + '-' + (end_date.getMonth() + 1) + '-' + end_date.getDate();
         let requestObj = {
             'time': values.time,
             'days_bit_mask': days_bit_mask,
