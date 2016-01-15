@@ -1,4 +1,4 @@
-.center-area(data-editable='false')
+.center-area
   header.center-header
     .view-path Termini reprodukcije > Uredi listu za reprodukciju
   .center-content
@@ -14,9 +14,9 @@
           |                         postaje.
       .content-header-right
         i.material-icons.icon queue_music
-    nav.content-options.uneditable-ui
+    nav.content-options( '*ngIf'="!editable" )
       button Izmijeni listu za reprodukciju
-    nav.content-options.editable-ui
+    nav.content-options( '*ngIf'="editable" )
       button Spremi listu za reprodukciju
       button Odustani od promjena
     ul.content-primary.content-list
@@ -26,54 +26,24 @@
           .progress-bar
             .progress-value 56:12 / 60:00
             .progress-indicator(data-value='94')
-      li.content-list-item.track-item
-        .content-list-item-content
-          .content-list-item-name Violin Concerto No. 5: Tempo di minuetto
-          .content-list-item-data
-            .content-list-item-data-item.track-duration 8:04
-            .content-list-item-data-item.track-artist-dim Wolfgang A. Mozart
-            .content-list-item-data-item.track-album The Very Best of Mozart
-        .content-list-item-options.editable-ui
-          button.alt
-            i.material-icons clear
-      li.content-list-item.track-item
-        .content-list-item-content
-          .content-list-item-name The Four Seasons, Op. 8, "Spring": Allegro
-          .content-list-item-data
-            .content-list-item-data-item.track-duration 4:52
-            .content-list-item-data-item.track-artist-dim Antonio Vivaldi
-            .content-list-item-data-item.track-album The 50 Greatest Pieces of Classical Music
-        .content-list-item-options.editable-ui
-          button.alt
-            i.material-icons clear
-      li.content-list-item.track-item
-        .content-list-item-content
-          .content-list-item-name St. Matthew Passion, BWV 244: O Haupt voll Blut und Wunden
-          .content-list-item-data
-            .content-list-item-data-item.track-duration 12:11
-            .content-list-item-data-item.track-artist-dim Johann Sebastian Bach
-            .content-list-item-data-item.track-album The Very Best Of Bach
-        .content-list-item-options.editable-ui
-          button.alt
-            i.material-icons clear
-      li.content-list-item.track-item
-        .content-list-item-content
-          .content-list-item-name Concerto No. 2
-          .content-list-item-data
-            .content-list-item-data-item.track-duration 2:31
-            .content-list-item-data-item.track-artist-dim Niccolo Paganini
-            .content-list-item-data-item.track-album Nepoznati album
-        .content-list-item-options.editable-ui
-          button.alt
-            i.material-icons clear
       li.content-list-item.content-list-search-item.editable-ui
         form
           .content-list-item-content
             label(for='add_track_search') Dodaj na listu
-            input.add-item-search(type='text', name='add_track_search')
+            input.add-item-search(type='text', name='add_track_search' '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="trackSearch" )
           .content-list-item-options
-            button.raised.add-item-button
+            button.raised.add-item-button( '[disabled]'="!matching" '(click)'="addTrack()" )
               i.material-icons playlist_add
+      li.content-list-item.track-item( '*ngFor'="#track of tracks" )
+        .content-list-item-content
+          .content-list-item-name {{track.title}}
+          .content-list-item-data
+            .content-list-item-data-item.track-duration {{track.play_duration}}
+            .content-list-item-data-item.track-artist-dim {{track.artist}}
+            .content-list-item-data-item.track-album {{track.album}}
+        .content-list-item-options.editable-ui
+          button.alt( '(click)'="removeTrack(track)" )
+            i.material-icons clear
   .center-side
     .center-side-header
       .center-side-title Korisničke želje

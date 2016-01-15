@@ -17,8 +17,8 @@
             tbody
               tr
                 th( '*ngFor'="#day of days" style="border: 1px solid #1976D2" ) {{day}}
-              tr( '*ngFor'= "#hour of hours")
-                td( '*ngFor'="#day of daysNum" style="border: 1px solid #1976D2" '(click)'="slotClicked(day, hour)") {{day}} {{hour}}
+              tr( '*ngFor'= "#hour of hours" )
+                td( '*ngFor'="#day of daysNum" style="border: 1px solid #1976D2" '(click)'="slotClicked(day, hour)" '[ngClass]'="{mySlot: calendarFields[day][hour]}" ) {{day}} {{hour}} {{calendarFields[day][hour]}}
       .calendar-actions
         button Zatraži novi termin
       .calendar-option

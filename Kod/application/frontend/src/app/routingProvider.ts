@@ -18,15 +18,16 @@ import { ManageUsers } from '../settings/manageUsers/manageUsers';
 
 // Newly added
 import { EditorSlots } from '../settings/editorSlots/editorSlots';
+import { ManageRequests } from '../settings/manageRequests/manageRequests';
 
 let navigationArray = [
-    // {
-    //     'Croatian': 'Slusaj radio',
-    //     'groupName': 'Listen',
-    //     'components': [
-    //         { 'Croatian': 'Naslovnica', 'componentName': 'Index', 'componentObject': Index }
-    //     ]
-    // },
+    {
+        'Croatian': 'Slusaj radio',
+        'groupName': 'Listen',
+        'components': [
+            { 'Croatian': 'Naslovnica', 'componentName': 'Index', 'componentObject': Index }
+        ]
+    },
     {
         'Croatian': 'Vlasničke mogućnosti',
         'groupName': 'OwnerOptions',
@@ -43,6 +44,7 @@ let navigationArray = [
             { 'Croatian': 'Upravljaj urednicima', 'componentName': 'ManageEditors', 'componentObject': ManageEditors },
             { 'Croatian': 'Dodaj pjesmu', 'componentName': 'AddTrack', 'componentObject': AddTrack },
             { 'Croatian': 'Upravljaj korisnicima', 'componentName': 'EditUser', 'componentObject': EditUser },
+            { 'Croatian': 'Ažuriraj zahtjeve', 'componentName': 'ManageRequests', 'componentObject': ManageRequests }
         ]
     },
     {

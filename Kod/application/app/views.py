@@ -623,7 +623,8 @@ def allow_request( request_id ):
         return error_response( 'Neuspješno odobravanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim id-om.', 404 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno odobravanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
@@ -986,7 +987,7 @@ def list_tracks():
     } for track in tracks ]
     return data_response( data )
 
-@app.route( '/tracks/search', methods = [ 'GET' ] )
+@app.route( '/tracks/search/', methods = [ 'POST' ] )
 @login_required
 def search_tracks():
     """Returns a list of all tracks matching search term.

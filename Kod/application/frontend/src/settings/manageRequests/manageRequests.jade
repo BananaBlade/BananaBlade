@@ -11,54 +11,18 @@
       .content-header-right
         i.material-icons.icon event
     ul.content-primary.content-list
-      li.content-list-item.request-item
+      li.content-list-item.request-item( '*ngFor'="#request of requests")
         .content-list-item-content
-          .content-list-item-name Pon, uto, sri, čet, sub — 17:00
+          .content-list-item-name {{request.days_bit_mask}} — {{request.time}}
           .content-list-item-data
-            .content-list-item-data-item.request-editor Mirko Horvat
-            .content-list-item-data-item.request-date-interval 03.01.16 – 03.02.16
-            .content-list-item-data-item.request-collisions-negative Nema preklapanja
+            .content-list-item-data-item.request-editor {{request.editor.first_name}} {{request.editor.last_name}}
+            .content-list-item-data-item.request-date-interval {{request.start_date}} – {{request.end_date}}
+            .content-list-item-data-item.request-collisions-negative {{request.collisions}}
         .content-list-item-options.editable-ui
-          button
-            i.material-icons check
+          button( '[disabled]'="request.collisions" )
+            i.material-icons( '(click)'="approveSlot(request.id)" ) check
           button.alt
-            i.material-icons clear
-      li.content-list-item.request-item
-        .content-list-item-content
-          .content-list-item-name Petak — 11:00
-          .content-list-item-data
-            .content-list-item-data-item.request-editor Slavko Kovač
-            .content-list-item-data-item.request-date-interval 14.02.16
-            .content-list-item-data-item.request-collisions-negative Nema preklapanja
-        .content-list-item-options.editable-ui
-          button
-            i.material-icons check
-          button.alt
-            i.material-icons clear
-      li.content-list-item.request-item
-        .content-list-item-content
-          .content-list-item-name Pon, čet — 17:00
-          .content-list-item-data
-            .content-list-item-data-item.request-editor Cheng Pong Ping Lee
-            .content-list-item-data-item.request-date-interval 10.01.16
-            .content-list-item-data-item.request-collisions-positive Postoji preklapanje
-        .content-list-item-options.editable-ui
-          button(disabled='')
-            i.material-icons check
-          button.alt
-            i.material-icons clear
-      li.content-list-item.request-item
-        .content-list-item-content
-          .content-list-item-name Uto, čet — 05:00
-          .content-list-item-data
-            .content-list-item-data-item.request-editor Janko Strižić
-            .content-list-item-data-item.request-date-interval 01.01.16 – 01.01.17
-            .content-list-item-data-item.request-collisions-negative Nema preklapanja
-        .content-list-item-options.editable-ui
-          button
-            i.material-icons check
-          button.alt
-            i.material-icons clear
+            i.material-icons( '(click)'="rejectSlot(request.id)" ) clear
   .center-side
     .center-side-header
       .center-side-title Raspored emitiranja
