@@ -570,6 +570,16 @@ class User( BaseModel ):
             .where( ( Slot.editor == self ) & ( Slot.time > datetime.now() ) )
             .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
 
+    def get_reserved_slots( self ):
+        """Returns a list of reserved future slots
+
+        Operation restricted to editors.
+
+        Raises AuthorizationError
+        """
+        self._assert_editor()
+        return Slot.select().where( Slot.time > datetime.now() )
+
     def get_all_slots( self ):
         """Returns a list of all future slots allocated to anyone
 
@@ -759,7 +769,7 @@ class Slot( BaseModel ):
         """Returns a list of all future assigned slots"""
         return ( cls.select( Slot, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
             .where( Slot.time > datetime.now() )
-            .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
+            .join( PlaylistTrack, JOIN.LEFT_OUTER ).switch( Slot ).join( User ).group_by( Slot ) )
 
     @classmethod
     def get_next_on_schedule( cls ):

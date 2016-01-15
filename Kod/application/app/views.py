@@ -1001,16 +1001,21 @@ def search_tracks( term ):
 
     No request params.
     """
-    tracks = g.user.search_tracks( term )
-    data = [{
-        'id'                : track.id,
-        'title'             : track.title,
-        'artist'            : track.artist,
-        'album'             : track.album,
-        'genre'             : track.genre,
-        'year'              : track.year
-    } for track in tracks ]
-    return data_response( data )
+    try:
+        tracks = g.user.search_tracks( term )
+        data = [{
+            'id'                : track.id,
+            'title'             : track.title,
+            'artist'            : track.artist,
+            'album'             : track.album,
+            'genre'             : track.genre,
+            'year'              : track.year
+        } for track in tracks ]
+        return data_response( data )
+    except ValueError:
+        return error_response( 'Neuspješno pretraživanje zvučnih zapisa: Prekratak traženi pojam.', 400 )
+    except:
+        return error_response( 'Neuspješno pretraživanje zvučnih zapisa.' )
 
 @app.route( '/tracks/wishlist', methods = [ 'GET' ] )
 @login_required
@@ -1071,39 +1076,60 @@ def search_users( term ):
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Neuspješno pretraživanje korisnika: Nedovoljne ovlasti.', 403 )
+    except ValueError:
+        return error_response( 'Neuspješno pretraživanje korisnika: Prekratak traženi pojam.', 400 )
     except:
         return error_response( 'Neuspješno pretraživanje korisnika.' )
 
 
 # Slots routes
 
-@app.route( '/slots/schedule', methods = [ 'GET' ] )
+@app.route( '/slots/schedule', methods = [ 'GET' ], defaults = { 'date' : None } )
+@app.route( '/slots/schedule/<date>', methods = [ 'GET' ] )
 @login_required
-def get_global_schedule():
+def get_global_schedule( date ):
     """Returns a list of all future slots and their editors
 
     No request params.
     """
     try:
-        pass
+        slots = g.user.get_all_slots()
+        if date is not None:
+            date = datetime_from_string( date ).date()
+            slots = filter( lambda slot : is_same_week( date, slot.time ), slots )
+        data = [{
+            'id'    : slot.id,
+            'editor': slot.editor.first_name + ' ' + slot.editor.last_name,
+            'count' : slot.count,
+            'time'  : slot.time.isoformat(),
+        } for slot in slots ]
+        return data_response( data )
     except AuthorizationError:
         return error_response( 'Nije moguće dohvatiti raspored termina: Nedovoljne ovlasti.', 403 )
     except:
         return error_response( 'Nije moguće dohvatiti raspored termina.' )
 
-@app.route( '/slots/reserved', methods = [ 'GET' ] )
+@app.route( '/slots/reserved', methods = [ 'GET' ], defaults = { 'date' : None } )
+@app.route( '/slots/reserved/<date>', methods = [ 'GET' ] )
 @login_required
-def get_reserved_slots():
+def get_reserved_slots( date ):
     """Returns a list of all future taken slots
 
     No request params.
     """
     try:
-        pass
+        slots = g.user.get_reserved_slots()
+        if date is not None:
+            date = datetime_from_string( date ).date()
+            slots = filter( lambda slot : is_same_week( date, slot.time ), slots )
+        data = [{
+            'time'  :   slot.time.isoformat()
+        } for slot in slots ]
+        return data_response( data )
     except AuthorizationError:
-        return error_response( 'Nije moguće dohvatiti raspored termina: Nedovoljne ovlasti.', 403 )
+        return error_response( 'Nije moguće dohvatiti raspored zauzetih termina: Nedovoljne ovlasti.', 403 )
     except:
-        return error_response( 'Nije moguće dohvatiti raspored termina.' )
+        return error_response( 'Nije moguće dohvatiti raspored zauzetih termina.' )
 
 
 # Stat routes
@@ -1176,7 +1202,7 @@ def get_most_wished_track():
 def get_most_wished_track_stat( start_date, end_date ):
     """Returns number of times most wanted track was played between `start_date` and `end_date`
 
-    `start_date` and `end_date` should be in DD-MM-YYYY format and passed via URL,
+    `start_date` and `end_date` should be in YYYY-MM-DD format and passed via URL,
     as declared in `@app.route` above.
     """
     try:
