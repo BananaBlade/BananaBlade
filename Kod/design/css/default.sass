@@ -31,11 +31,9 @@ $success_icon          :     "\E876"
 $error_icon            :     "\E5CD"
 $menu_icon             :     "\E5D2"
 
-// TODO: Style calendar
 // TODO: Create message box style
-// TODO: Class hiding and alteration
 
-div, header, footer, section, article, aside, input, button, textarea, label, li, ul
+div, header, footer, section, article, aside, input, button, textarea, label, li, ul, tr, td, th, table
     box-sizing         :     border-box
 
 
@@ -942,20 +940,110 @@ fieldset[ disabled ]
 // Editor slots styles
 
 .calendar-wrapper
-    padding           :     1.5rem
+    padding           :     1rem 1.5rem
 
 .large-calendar
-    background        :     $base_background_color
-    border            :     1px solid $border_color
-    height            :     20rem
-    padding           :     1rem
+
+    table
+        font-size     :     0.9rem
+        margin-top    :     0.5rem
+        width         :     100%
+
+    th, td
+        width         :     12.5%
+
+    th.rh
+        background    :     darken( $accent2_color, 10% )
+        border-color  :     $accent2_color
+
+    td.rh
+        background    :     $accent2_color
+        border-color  :     $accent2_color
+        border-right-color  :     $border_color
+        color         :     $alt_text_color
+        font-family   :     $header_font
+        text-align    :     center
+
+    th
+        border        :     1px solid $accent2_color
+        border-bottom :     1px solid $border_color
+        font-family   :     $header_font
+        line-height   :     2rem
+        text-align    :     center
+
+    td
+        border        :     1px solid $border_color
+        padding       :     0 0.5rem
+
+    tr
+        &:nth-child(even)
+            background           :     #fff
+
+    tr.head-row
+        background          :    $accent2_color
+        color               :    $alt_text_color
+
+    caption
+        +container
+        caption-side        :     bottom
+        margin              :     1rem 0
+        text-align          :     left
+
+    .caption-item
+        float               :     left
+        font-size           :     0.8rem
+        margin-right        :     1rem
+        padding-left        :     2rem
+        position            :     relative
+
+    .caption-color
+        height              :     1.5rem
+        left                :     0
+        position            :     absolute
+        top                 :     0
+        width               :     1.5rem
+
+        &.c4, &.c5
+            border                :     1px solid darken( $border_color, 10% )
+
+    .c1
+        background          :     $primary_color
+    .c2
+        background          :     $accent2_color
+    .c3
+        background          :     $accent_color
+    .c4
+        background          :     #fff
+
+        &:hover
+            background      :     $accent_color url( "../img/icons/add.png" ) no-repeat center center
+            cursor          :     pointer
+
+    .c5
+        background          :     $base_background_color
+
+.calendar-nav
+    color             :     $tertiary_text_color
+    float             :     right
+
+    a
+        font-size           :     2.5rem
+        line-height         :     0
+        position            :     relative
+        top                 :     0.25rem
+
+        &:hover
+            color                 :     $accent_color
+            cursor                :     pointer
 
 .state-view .calendar-option, .state-change .calendar-actions
     display           :     none
 
 .calendar-actions
+    border-top        :     1px solid $border_color
+    margin            :     0 1.5rem
     overflow          :     hidden
-    padding           :     0 1.5rem 1.5rem 1.5rem
+    padding           :     0.5rem 0 1.5rem 0
 
     button
         color               :     $secondary_text_color
