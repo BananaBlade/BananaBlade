@@ -896,6 +896,8 @@ def add_admin( user_id ):
         return error_response( 'Neuspješno postavljanje administatora: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno postavljanje administatora: Ne postoji korisnik s danim id-om.', 404 )
+    except ValueError:
+        return error_response( 'Neuspješno postavljanje administatora: Prekoračen najveći dopušteni broj od 10 administatora.', 409 )
     except TypeError as e:
         return error_response( 'Neuspješno postavljanje administatora: ' + str( e ) )
     except:

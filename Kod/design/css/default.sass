@@ -1,3 +1,4 @@
+//
 @import "reset"
 @import "utility"
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Open+Sans+Condensed:700&subset=latin-ext)
@@ -19,6 +20,20 @@ $secondary_text_color  :     #777
 $tertiary_text_color   :     #AAA
 $border_color          :     #EAEAEA
 
+$user_icon             :     "\E7FD"
+$editor_icon           :     "\E3C9"
+$admin_icon            :     "\E869"
+$owner_icon            :     "\E0DA"
+$track_icon            :     "\E3A1"
+$request_icon          :     "\E614"
+$info_icon             :     "\E0C9"
+$success_icon          :     "\E876"
+$error_icon            :     "\E5CD"
+$menu_icon             :     "\E5D2"
+
+// TODO: Style calendar
+// TODO: Create message box style
+// TODO: Class hiding and alteration
 
 div, header, footer, section, article, aside, input, button, textarea, label, li, ul
     box-sizing         :     border-box
@@ -384,7 +399,7 @@ body
 .user-form-box
     padding-right      :     0.5rem
 
-*[data-logged-in = "no"] .user-name-box, *[data-logged-in = "yes"] .user-form-box, *[data-logged-in = "yes"] .register-wrapper
+.not-logged-in .user-name-box, .logged-in .user-form-box, .logged-in .register-wrapper
     display            :     none
 
 .user-type
@@ -412,8 +427,8 @@ body
     .nav-option-group
         display              :     none
 
-    *[data-account-type = "1"] & .user-nav-group, *[data-account-type = "2"] & .editor-nav-group,
-    *[data-account-type = "3"] & .admin-nav-group, *[data-account-type = "4"] & .owner-nav-group
+    .dat-1 & .user-nav-group, .dat-2 & .editor-nav-group,
+    .dat-3 & .admin-nav-group, .dat-4 & .owner-nav-group
         display              :     block
 
 
@@ -483,11 +498,11 @@ body
 
 // Content options styles
 
-*[data-editable = "true"]
+.state-editable
     .uneditable-ui
         display              :     none
 
-*[data-editable = "false"]
+.state-uneditable
     .editable-ui
         display              :     none
 
@@ -542,23 +557,23 @@ body
         text-align           :     center
         width                :     4rem
 
-    .editor-item &:before, .user-item[data-type="2"] &:before
-        content              :     "edit"
+    .editor-item &:before, .user-item.dt-2 &:before
+        content              :     $editor_icon
 
-    .user-item[data-type="1"] &:before
-        content              :     "person"
+    .user-item.dt-1 &:before
+        content              :     $user_icon
 
-    .admin-item &:before, .user-item[data-type="3"] &:before
-        content              :     "build"
+    .admin-item &:before, .user-item.dt-3 &:before
+        content              :     $admin_icon
 
-    .user-item[data-type="4"] &:before
-        content              :     "vpn_key"
+    .user-item.dt-4 &:before
+        content              :     $owner_icon
 
     .track-item &:before
-        content              :     "audiotrack"
+        content              :     $track_icon
 
     .request-item &:before
-        content              :     "event_available"
+        content              :     $request_icon
 
 .content-list-item-options
     position                 :     absolute
@@ -706,7 +721,7 @@ fieldset[ disabled ]
     position           :     absolute
     right              :     3rem
 
-    &[data-visible = "false"]
+    .state-invisible
         display              :     none
 
     li
@@ -806,8 +821,8 @@ fieldset[ disabled ]
 .account-type-select
     display             :     none
 
-*[data-account-type = "1"] .user-select, *[data-account-type = "2"] .editor-select,
-*[data-account-type = "3"] .admin-select, *[data-account-type = "4"] .owner-select
+.dat-1 .user-select, .dat-2 .editor-select,
+.dat-3 .admin-select, .dat-4 .owner-select
     display             :     block
 
 
@@ -935,7 +950,7 @@ fieldset[ disabled ]
     height            :     20rem
     padding           :     1rem
 
-*[data-status = "view"] .calendar-option, *[data-status = "change"] .calendar-actions
+.state-view .calendar-option, .state-change .calendar-actions
     display           :     none
 
 .calendar-actions
@@ -1025,7 +1040,7 @@ fieldset[ disabled ]
     margin-left       :     -1rem
     padding-top       :     1rem
 
-*[data-state = "view"] .stat-item-option, *[data-state = "change"] .stat-display
+.state-view .stat-item-option, .state-change .stat-display
     display           :     none
 
 .stat-item-display
@@ -1160,7 +1175,7 @@ fieldset[ disabled ]
     top                   :     0.5rem
 
 .active-admins-stat-list li:before
-    content               :     "build"
+    content               :     $admin_icon
 
 
 // Index styles
@@ -1172,7 +1187,6 @@ fieldset[ disabled ]
 .section-container
     +container
     margin            :     0 auto
-    width             :     70rem
 
 .player-wrapper
     background        :     darken( $accent2_color, 10% )
@@ -1219,7 +1233,6 @@ fieldset[ disabled ]
 
 .player-track-title
     line-height       :     3rem
-    float             :     left
     font              :
         size                :     2.5rem
         weight              :     300
@@ -1293,7 +1306,7 @@ fieldset[ disabled ]
 
 .schedule-box
     +column( 1, 3 )
-    padding           :     0 2rem
+    padding           :     0 0 0 2rem
 
     h2
         margin-bottom       :     1rem
@@ -1531,26 +1544,26 @@ p.register-bait
     height            :     100%
     width             :     100%
 
-    &[data-type = "success"]
+    .dt-success
         background          :     $dark_primary_color
         color               :     $alt_text_color
 
         h1:after
-            content               :     "done"
+            content               :     $success_icon
 
-    &[data-type = "error"]
+    .dt-error
         background          :     $accent_color
         color               :     $alt_text_color
 
         h1:after
-            content               :     "close"
+            content               :     $error_icon
 
-    &[data-type = "info"]
+    .dt-info
         background          :     $accent2_color
         color               :     $alt_text_color
 
         h1:after
-            content               :     "message"
+            content               :     $info_icon
 
 .message-container
     width             :     60rem
@@ -1584,6 +1597,20 @@ p.register-bait
     html
         font-size           :     11px !important
 
+    .form-line
+        label
+            text-align            :     left !important
+            width                 :     100% !important
+        input, select
+            width                 :     100% !important
+
+    .nav-bar-top-spacer:after
+        width                :     33px !important
+
+    .section-container
+        width             :     55rem
+
+
 @media screen and (max-width : 959px)
     html
         font-size           :     13px
@@ -1609,7 +1636,7 @@ p.register-bait
             text-align            :     center
 
             &:after
-                content                 :     "menu"
+                content                 :     $menu_icon
                 color                   :     #fff
                 display                 :     block
                 font-family             :     "Material Icons"
@@ -1629,6 +1656,9 @@ p.register-bait
         padding             :     0 2rem
         width               :     100%
 
+    .section-container
+        width             :     60rem !important
+
 @media screen and (min-width : 960px) and (max-width : 1279px)
     html
         font-size           :     14px
@@ -1647,6 +1677,9 @@ p.register-bait
         padding-right       :     1rem
         width               :     30%
 
+    .section-container
+        width             :     70rem
+
 @media screen and (min-width : 1280px) and (max-width : 1499px)
     html
         font-size           :     16px
@@ -1664,8 +1697,11 @@ p.register-bait
         padding-right       :     2rem
         width               :     30%
 
+    .section-container
+        width             :     75rem
 
-@media screen and (min-width : 1500px)
+
+@media screen and (min-width : 1500px) and (max-width : 1799px)
     html
         font-size           :     16px
 
@@ -1682,3 +1718,30 @@ p.register-bait
     .center-side
         padding-right       :     5%
         width               :     30%
+
+    .section-container
+        width             :     80rem
+
+@media screen and (min-width : 1800px)
+    html
+        font-size           :     20px
+
+    .header-bar
+        padding             :     0 10rem
+
+    .nav-bar
+        width               :     16rem
+
+    .center-area
+        margin-left         :     16rem
+
+    .center-content
+        padding             :     0 5%
+        width               :     70%
+
+    .center-side
+        padding-right       :     5%
+        width               :     30%
+
+    .section-container
+        width             :     80rem

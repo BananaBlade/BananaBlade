@@ -494,9 +494,11 @@ class User( BaseModel ):
         User to be made admin has to be a basic user.
         Operation restricted to owners.
 
-        Raises AuthorizationError, TypeError, DoesNotExist
+        Raises AuthorizationError, TypeError, DoesNotExist, ValueError
         """
         self._assert_owner()
+        if User.select().where( User.account_type == AccountType.ADMINISTRATOR ).count().scalar() > 9:
+            raise ValueError
         user = User.get( User.id == user_id )
         if user.account_type != AccountType.USER:
             raise TypeError( 'Korisnika nije moguće postaviti za administratora, već ima neku ulogu.' )
