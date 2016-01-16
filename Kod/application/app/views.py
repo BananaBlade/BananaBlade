@@ -471,7 +471,7 @@ def get_track( track_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje podataka o zapisu: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno dohvaćanje podataka o zapisu: Ne postoji zapis s danim id-om.', 404 )
+        return error_response( 'Neuspješno dohvaćanje podataka o zapisu: Ne postoji zapis s danim ID-om.', 404 )
     except:
         return error_response( 'Neuspješno dohvaćanje podataka o zapisu.' )
 
@@ -511,7 +511,7 @@ def edit_track( track_id ):
     except AuthorizationError:
         return error_response( 'Promjena podataka nije uspjela: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Promjena podataka nije uspjela: Ne postoji zvučni zapis s danim id-om.', 404 )
+        return error_response( 'Promjena podataka nije uspjela: Ne postoji zvučni zapis s danim ID-om.', 404 )
     except ValueError as e:
         return error_response( 'Promjena podataka nije uspjela: Nisu uneseni ispravni podaci: ' + str( e ) )
     except:
@@ -532,7 +532,7 @@ def delete_track( track_id ):
     except AuthorizationError:
         return error_response( 'Brisanje nije uspjelo: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Brisanje nije uspjelo: Ne postoji zvučni zapis s danim id-om.', 404 )
+        return error_response( 'Brisanje nije uspjelo: Ne postoji zvučni zapis s danim ID-om.', 404 )
     except OSError:
         return error_response( 'Brisanje nije uspjelo: Greška u sustavu.' )
     except:
@@ -579,7 +579,7 @@ def add_editor( user_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno postavljanje urednika: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno postavljanje urednika: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspješno postavljanje urednika: Ne postoji korisnik s danim ID-om.', 404 )
     except TypeError as e:
         return error_response( 'Neuspješno postavljanje urednika: ' + str( e ) )
     except:
@@ -598,7 +598,7 @@ def remove_editor( editor_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno uklanjanje urednika: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno uklanjanje urednika: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspješno uklanjanje urednika: Ne postoji korisnik s danim ID-om.', 404 )
     except TypeError as e:
         return error_response( 'Neuspješno uklanjanje urednika: ' + str( e ) )
     except:
@@ -651,7 +651,7 @@ def allow_request( request_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno odobravanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim id-om.', 404 )
+        return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim ID-om.', 404 )
     except Exception as e:
         print(e)
         return error_response( 'Neuspješno odobravanje zahtjeva: Nevaljan zahtjev.' )
@@ -669,7 +669,7 @@ def deny_request( request_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno odbijanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno odbijanje zahtjeva: Ne postoji zahtjev s danim id-om.', 404 )
+        return error_response( 'Neuspješno odbijanje zahtjeva: Ne postoji zahtjev s danim ID-om.', 404 )
     except:
         return error_response( 'Neuspješno odbijanje zahtjeva: Nevaljan zahtjev.' )
 
@@ -724,7 +724,7 @@ def get_user_data( user_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje korisničkih podataka: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno dohvaćanje korisničkih podataka: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspješno dohvaćanje korisničkih podataka: Ne postoji korisnik s danim ID-om.', 404 )
     except:
         return error_response( 'Neuspješno dohvaćanje korisničkih podataka: Nevaljan zahtjev.' )
 
@@ -751,7 +751,7 @@ def modify_user_data( user_id ):
     except AuthorizationError:
         return error_response( 'Neuspješna promjena korisničkih podataka: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješna promjena korisničkih podataka: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspješna promjena korisničkih podataka: Ne postoji korisnik s danim ID-om.', 404 )
     except ValueError as e:
         return error_response( 'Neuspješna promjena korisničkih podataka: Uneseni su neispravni podaci: ' + str( e ) )
     except peewee.IntegrityError:
@@ -772,7 +772,7 @@ def delete_user( user_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno brisanje korisnika: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno brisanje korisnika: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspješno brisanje korisnika: Ne postoji korisnik s danim ID-om.', 404 )
     except:
         return error_response( 'Neuspješno brisanje korisnika: Nevaljan zahtjev.' )
 
@@ -802,8 +802,9 @@ def list_editor_slots( date ):
             } for slot in slots ],
 
             'requests' : [{
-                'time' : rt.isoformat()
-            } for rt in itertools.chain( *[ generate_times( x.time, x.days_bit_mask, x.start_date, x.end_date ) for x in requests ] ) ]
+                'id'    : req.id,
+                'times' : map( datetime.isoformat, generate_times( req.time, req.days_bit_mask, req.start_date, req.end_date ) )
+            } for req in requests ]
 
         }
         return data_response( data )
@@ -862,7 +863,7 @@ def get_playlist( slot_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
+        return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Ne postoji termin s danim ID-om.', 404 )
     except Exception as e:
         print(e)
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Nevaljan zahtjev.' )
@@ -886,7 +887,7 @@ def set_playlist( slot_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
+        return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Ne postoji termin s danim ID-om.', 404 )
     except Exception as e:
         print(e)
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Nevaljan zahtjev.' )
@@ -931,7 +932,7 @@ def add_admin( user_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno postavljanje administatora: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno postavljanje administatora: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspješno postavljanje administatora: Ne postoji korisnik s danim ID-om.', 404 )
     except ValueError:
         return error_response( 'Neuspješno postavljanje administatora: Prekoračen najveći dopušteni broj od 10 administatora.', 409 )
     except TypeError as e:
@@ -952,7 +953,7 @@ def remove_admin( admin_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno uklanjanje administratora: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno uklanjanje administratora: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspješno uklanjanje administratora: Ne postoji korisnik s danim ID-om.', 404 )
     except TypeError as e:
         return error_response( 'Neuspješno uklanjanje administratora: ' + str( e ) )
     except:
@@ -1186,7 +1187,7 @@ def get_track_play_stat( track_id ):
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje broja reproduciranja zapisa: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspješno dohvaćanje broja reproduciranja zapisa: Ne postoji zapis s danim id-om.', 404 )
+        return error_response( 'Neuspješno dohvaćanje broja reproduciranja zapisa: Ne postoji zapis s danim ID-om.', 404 )
     except:
         return error_response( 'Neuspješno dohvaćanje broja reproduciranja zapisa.' )
 
@@ -1273,7 +1274,7 @@ def get_editor_preferred_tracks( editor_id ):
     except AuthorizationError:
         return error_response( 'Neuspjelo dohvaćanje preferenci urednika: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
-        return error_response( 'Neuspjelo dohvaćanje preferenci urednika: Ne postoji korisnik s danim id-om.', 404 )
+        return error_response( 'Neuspjelo dohvaćanje preferenci urednika: Ne postoji korisnik s danim ID-om.', 404 )
     except:
         return error_response( 'Neuspjelo dohvaćanje preferenci urednika: Nevaljan zahtjev.' )
 
