@@ -4,7 +4,7 @@ import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2
 import { Http } from 'angular2/http';
 import { NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
-import { Form } from '../../utilities';
+import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'ManageEditors',

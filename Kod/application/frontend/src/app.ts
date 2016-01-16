@@ -3,11 +3,9 @@ import { COMMON_DIRECTIVES } from "angular2/common";
 import { Http } from "angular2/http";
 import { RouteConfig, RouterLink, RouterOutlet, Route, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
-import { HeaderBar } from './services/headerBar';
-import { NavBar } from "../app/navBar";
-import { getRouteConfig } from '../app/routingProvider';
-
-import { getNavigationArray, getRouteConfig } from './services/routingProvider';
+import { HeaderBar } from './components/headerBar/headerBar';
+import { NavBar } from "./components/navbar/navbar";
+import { getRouteConfig } from './services/routingProvider';
 @Component({
     selector: 'App',
     templateUrl: './dest/app/app.html',

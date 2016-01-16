@@ -6,7 +6,7 @@ import {
 import { Http } from 'angular2/http';
 import 'rxjs/Rx';
 
-import { Form } from './utilities';
+import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'header-bar',
