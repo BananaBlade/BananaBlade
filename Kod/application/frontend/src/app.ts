@@ -1,38 +1,26 @@
 import { Component, View } from "angular2/core";
 import { COMMON_DIRECTIVES } from "angular2/common";
 import { Http } from "angular2/http";
-
 import { RouteConfig, RouterLink, RouterOutlet, Route, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import { HeaderBar } from './services/headerBar';
-
-//var routes = components.map((componentName) => { return new Route(componentName, componentName, componentName) });
+import { NavBar } from "../app/navBar";
+import { getRouteConfig } from '../app/routingProvider';
 
 import { getNavigationArray, getRouteConfig } from './services/routingProvider';
-
 @Component({
     selector: 'App',
     templateUrl: './dest/app/app.html',
     styles: [],
-    directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar ]
+    directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar, NavBar ]
 })
 @RouteConfig(getRouteConfig())
 export class App {
     router: Router;
     location: Location;
-    navigation: any[];
-
-    hideGroup(group): void {
-        group.visible = !group.visible;
-    }
 
     constructor(router: Router) {
         this.router = router;
-
-        this.navigation = getNavigationArray();
-
-        for (var i = 0; i < this.navigation.length; ++i) {
-            this.navigation[i].visible = true;
-        }
+        router.navigate( [ 'Index' ] );
     };
 }

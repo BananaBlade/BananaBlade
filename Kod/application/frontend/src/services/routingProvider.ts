@@ -55,7 +55,7 @@ class NavGroup {
 }
 
 let navigationArray = [
-    new NavGroup('Slusaj radio', [], true, new MyComponent('', 'Index', Index)),
+    new NavGroup('Slušaj radio', [], true, new MyComponent('', 'Index', Index)),
     new NavGroup('Vlasničke mogućnosti', [
         new MyComponent('Upravljaj administratorima', 'ManageAdmins', ManageAdmins),
         new MyComponent('Podaci o postaji', 'ManageRadiostation', ManageRadiostation)

@@ -41,7 +41,7 @@ def add_header( response ):
 @app.route( '/' )
 def show_index():
     """Displays the index page"""
-    return app.send_static_file('index.html')
+    return app.send_static_file( 'index.html' )
 
 # Player routes
 
@@ -88,15 +88,17 @@ def get_currently_playing_track_info():
         }
         return data_response( data )
     except DoesNotExist:
-        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Trenutno se ne emitira ništa.', 404 )
+        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Trenutno se ne emitira ništa.', 404 )
+    except IndexError:
+        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Greška na listi za reprodukciju.', 404 )
     except:
-        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis.', 404 )
+        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu.', 404 )
 
 @app.route( '/player/schedule' )
 def get_next_on_schedule():
     """Returns a list of current and 6 next assigned slots
 
-    No request parameters required.
+    No request params.
     """
     try:
         data = [{
@@ -652,8 +654,9 @@ def allow_request( request_id ):
         return error_response( 'Neuspješno odobravanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim ID-om.', 404 )
+    except peewee.IntegrityError:
+        return error_response( 'Neuspješno odobravanje zahtjeva: Preklapanje s već postojećim terminom.', 409 )
     except Exception as e:
-        print(e)
         return error_response( 'Neuspješno odobravanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
