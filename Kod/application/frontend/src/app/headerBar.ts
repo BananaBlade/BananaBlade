@@ -22,6 +22,5 @@ export class HeaderBar {
     constructor(fb: FormBuilder, http: Http) {
         let loginEntities = ['email', 'password'];
         this.loginForm = new Form(fb, http, loginEntities, '/user/auth/login');
-        console.log( this.isLoggedIn );
     }
 }
