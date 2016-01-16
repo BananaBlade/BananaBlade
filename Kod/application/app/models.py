@@ -39,7 +39,7 @@ class Track( BaseModel ):
     def add_track( cls, **track_data ):
         """Adds a new track; named attributes are passed to `track_data` dict"""
         track = cls.create( **track_data )
-        track.save
+        track.save()
         return track
 
     @classmethod

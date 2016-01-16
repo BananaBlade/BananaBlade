@@ -19,6 +19,7 @@ import { ManageUsers } from '../settings/manageUsers/manageUsers';
 // Newly added
 import { EditorSlots } from '../settings/editorSlots/editorSlots';
 import { ManageRequests } from '../settings/manageRequests/manageRequests';
+import { EditTrack } from '../settings/editTrack/editTrack';
 
 class MyComponent {
     Croatian: string;
@@ -63,7 +64,8 @@ let navigationArray = [
         new MyComponent('Upravljaj urednicima', 'ManageEditors', ManageEditors),
         new MyComponent('Dodaj pjesmu', 'AddTrack', AddTrack),
         new MyComponent('Upravljaj korisnicima', 'ManageUsers', ManageUsers),
-        new MyComponent('Ažuriraj zahtjeve', 'ManageRequests', ManageRequests)
+        new MyComponent('Ažuriraj zahtjeve', 'ManageRequests', ManageRequests),
+        new MyComponent('Ažuriraj pjesmu', 'EditTrack', EditTrack)
     ], false),
     new NavGroup('Uredničke mogućnosti', [
         new MyComponent('Termini reprodukcije', 'EditorSlots', EditorSlots),

@@ -372,20 +372,25 @@ def add_file():
 
     try:
         filename = secure_filename( audio_file.filename )
+        print(filename)
         validate_filename(filename)
-        path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
-        return success_response( 'Zvučni zapis uspješno dodan.', 201 )
+        path = os.path.join(os.getcwd(), app.config[ 'UPLOAD_FOLDER' ], filename )
+        print(path)
+        path = os.path.abspath(path)
+        print(path)
 
         audio_file.save( path )
         g.user.add_track( title = filename, path = "", artist = "", album = "", duration = 100,
             file_format = ".mp3", sample_rate = 10.0, bits_per_sample = 10,
             genre = "", publisher = "", carrier_type = "", year = 1919 )
+        return success_response( 'Zvučni zapis uspješno dodan.', 201 )
 
     except AuthorizationError:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
     except ValueError as e:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nisu uneseni ispravni podaci: ' + str( e ) )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
 
 

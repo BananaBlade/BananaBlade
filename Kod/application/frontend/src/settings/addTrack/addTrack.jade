@@ -14,7 +14,7 @@
       form
         .form-line.emph-line
           label(for='file') Datoteka zapisa
-          input( type='file', accept='audio/*' 'ng2-file-select'="" '[uploader]'="uploader" )
+          input( type='file', accept='audio/*' 'ng2-file-select'="" '[uploader]'="uploader" 'multiple'="" )
         .form-line( '*ngFor'="#item of uploader.queue" )
             i.material-icons.result( '*ngIf'="item.isSuccess" ) check
             i.material-icons.result( '*ngIf'="item.isError || item.isCancel" ) clear
