@@ -5,7 +5,7 @@ import { HTTP_PROVIDERS, RequestOptions, BaseRequestOptions } from 'angular2/htt
 import { bootstrap } from 'angular2/platform/browser';
 import { provide, Injectable } from 'angular2/core';
 
-import { App } from './app/app';
+import { App } from './app';
 
 @Injectable()
 export class DefaultRequestOptions extends BaseRequestOptions {
