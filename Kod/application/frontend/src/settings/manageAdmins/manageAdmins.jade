@@ -19,8 +19,8 @@
       li.content-list-item.content-list-search-item.editable-ui( '*ngIf'="editable" )
         form
           .content-list-item-content
-            label(for='add-item-search') Dodaj administratora
-            input.add-item-search(type='text', name='add_track_search' '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
+            label(for='add_item_search') Dodaj administratora
+            input.add-item-search(type='text', name='add_item_search' '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
           .content-list-item-options
             button.raised.add-item-button('[disabled]'="!matching" '(click)'="addAdmin()")
               i.material-icons person_add

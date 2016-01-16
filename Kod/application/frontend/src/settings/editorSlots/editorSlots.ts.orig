@@ -139,6 +139,7 @@ class Slot {
     id: number;
     time: Date;
     count: number;
+<<<<<<< HEAD
 
     constructor(value) {
         this.id = value.id;
@@ -146,3 +147,6 @@ class Slot {
         this.count = value.count;
     }
 }
+=======
+}
+>>>>>>> origin/zjurelinac

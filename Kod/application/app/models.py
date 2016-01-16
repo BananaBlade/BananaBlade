@@ -39,7 +39,7 @@ class Track( BaseModel ):
     def add_track( cls, **track_data ):
         """Adds a new track; named attributes are passed to `track_data` dict"""
         track = cls.create( **track_data )
-        track.save
+        track.save()
         return track
 
     @classmethod
@@ -73,11 +73,11 @@ class Track( BaseModel ):
         ptrack = next( playlist )
         try:
             while True:
-                if start_time > current_time - timedelta( seconds = ptrack.play_duration ):
+                if start_time > current_time - timedelta( seconds = ptrack.duration ):
                     print( current_time, start_time )
                     return ptrack, ( current_time - start_time ).total_seconds(), slot.editor
                 ptrack = next( playlist )
-                start_time += timedelta( seconds = ptrack.play_duration )
+                start_time += timedelta( seconds = ptrack.duration )
         except StopIteration:
             raise IndexError
 
@@ -620,7 +620,7 @@ class User( BaseModel ):
     def set_slot_playlist( self, slot_id, track_list ):
         """Sets playlist for a given slot
 
-        Track list consists of triplets (index, track_id, play_duration).
+        Track list consists of triplets (index, track_id, duration).
         Operation restricted to editors.
 
         Raises AuthorizationError, DoesNotExist
@@ -788,10 +788,10 @@ class Slot( BaseModel ):
     def set_playlist( self, track_list ):
         """Makes a playlist for a given slot
 
-        Track list consists of triplets (index, track_id, play_duration).
+        Track list consists of triplets (index, track_id, duration).
         """
         PlaylistTrack.delete().where( PlaylistTrack.slot == self ).execute()
-        data = [ { 'slot' : self, 'track' : Track.get( Track.id == t_id ), 'index' : i, 'play_duration' : d }
+        data = [ { 'slot' : self, 'track' : Track.get( Track.id == t_id ), 'index' : i, 'duration' : d }
             for i, t_id, d in track_list ]
         PlaylistTrack.insert_many( data ).execute()
 
@@ -835,7 +835,7 @@ class PlaylistTrack( BaseModel ):
     slot            = ForeignKeyField( Slot, related_name = "tracks" )
     track           = ForeignKeyField( Track )
     index           = IntegerField()
-    play_duration   = IntegerField()
+    duration        = IntegerField()
 
     @classmethod
     def get_editor_preferred_tracks( cls, editor_id ):

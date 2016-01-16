@@ -5,10 +5,12 @@ nav.nav-bar
   ul
     li.nav-option-group( '*ngFor'="#group of navigation" )
       .nav-option-group
-      .nav-option-group-name( '(click)'="hideGroup(group)" )
+      .nav-option-group-name( '*ngIf'="group.hasLink" '[routerLink]'="[group.link.name]" )
           | {{ group.Croatian }}
-      ul( '[ngClass]'="{displayNone: !group.visible}" )
-        li.option-group-item( '[routerLink]'="[comp.componentName]" '*ngFor'="#comp of group.components" )
+      .nav-option-group-name( '*ngIf'="!group.hasLink" )
+          | {{ group.Croatian }}
+      ul
+        li.option-group-item( '[routerLink]'="[comp.name]" '*ngFor'="#comp of group.components" '[ngClass]'="{displayNone: comp.hidden}" )
           | {{ comp.Croatian }}
     li.nav-option-group
       .nav-option-group-name Odjavi se

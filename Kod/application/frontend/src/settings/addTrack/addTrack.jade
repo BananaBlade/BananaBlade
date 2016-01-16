@@ -14,7 +14,14 @@
       form
         .form-line.emph-line
           label(for='file') Datoteka zapisa
-          input(type='file', accept='audio/*')
+          input( type='file', accept='audio/*' 'ng2-file-select'="" '[uploader]'="uploader" 'multiple'="" )
+        .form-line( '*ngFor'="#item of uploader.queue" )
+            i.material-icons.result( '*ngIf'="item.isSuccess" ) check
+            i.material-icons.result( '*ngIf'="item.isError || item.isCancel" ) clear
+            .progress( '[ngStyle]'= "{ 'width': item.progress + 'px' }" )
+            button( type="button" '(click)'="item.upload()" '[disabled]'="item.isReady || item.isUploading || item.isSuccess" ) Upload
+            button( type="button" '(click)'="item.cancel()" '[disabled]'="item.isUploading" ) Cancel
+            button( type="button" '(click)'="item.remove()" ) Remove
         .form-line
           label(for='title') Naslov zapisa
           input(type='text', name='title')

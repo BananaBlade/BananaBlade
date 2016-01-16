@@ -363,6 +363,37 @@ def confirm_wishlist():
 
 # Admin track management
 
+@app.route( '/admin/tracks/add_just_file', methods = [ 'POST'] )
+@login_required
+def add_file():
+    """ Sorry for meddling in backend. I just want to see if this works :) """
+
+    audio_file = request.files.get( 'file' )
+
+    try:
+        filename = secure_filename( audio_file.filename )
+        print(filename)
+        validate_filename(filename)
+        path = os.path.join(os.getcwd(), app.config[ 'UPLOAD_FOLDER' ], filename )
+        print(path)
+        path = os.path.abspath(path)
+        print(path)
+
+        audio_file.save( path )
+        g.user.add_track( title = filename, path = "", artist = "", album = "", duration = 100,
+            file_format = ".mp3", sample_rate = 10.0, bits_per_sample = 10,
+            genre = "", publisher = "", carrier_type = "", year = 1919 )
+        return success_response( 'Zvučni zapis uspješno dodan.', 201 )
+
+    except AuthorizationError:
+        return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
+    except ValueError as e:
+        return error_response( 'Dodavanje zapisa nije uspjelo: Nisu uneseni ispravni podaci: ' + str( e ) )
+    except Exception as e:
+        print(e)
+        return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
+
+
 @app.route( '/admin/tracks/add', methods = [ 'POST' ] )
 @login_required
 def add_track():
@@ -621,7 +652,8 @@ def allow_request( request_id ):
         return error_response( 'Neuspješno odobravanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim id-om.', 404 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno odobravanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
@@ -812,7 +844,7 @@ def request_slot():
 def get_playlist( slot_id ):
     """Get current slot playlist
 
-    Returns a list of dicts { title, artist, album, genre, index, play_duration }
+    Returns a list of dicts { title, artist, album, genre, index, duration }
     representing tracks on this slot's playlist.
     No request params.
     """
@@ -824,14 +856,15 @@ def get_playlist( slot_id ):
             'artist'        :   item.track.artist,
             'album'         :   item.track.album,
             'index'         :   item.index,
-            'play_duration' :   item.play_duration
+            'duration'      :   item.duration
         } for item in slot_items ]
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno dohvaćanje liste za reprodukciju: Nevaljan zahtjev.' )
 
 @app.route( '/editor/slots/<int:slot_id>/set_list', methods = [ 'POST' ] )
@@ -839,9 +872,11 @@ def get_playlist( slot_id ):
 def set_playlist( slot_id ):
     """Set playlist for slot with a given id
 
-    Request should contain a list of ( index, track_id, play_duration ) representing
+    Request should contain a list of ( index, track_id, duration ) representing
     tracks to be placed on the slot's playlist.
     """
+
+    print(request.get_json(force=True))
 
     try:
         track_list = request.get_json( force = True ).get( 'track_list' )
@@ -852,7 +887,8 @@ def set_playlist( slot_id ):
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Ne postoji termin s danim id-om.', 404 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno pohranjivanje liste za reprodukciju: Nevaljan zahtjev.' )
 
 

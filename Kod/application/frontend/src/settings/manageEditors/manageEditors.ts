@@ -92,7 +92,7 @@ export class ManageEditors {
                 else if (user.account_type === 1) this.normalUsers.push(user);
                 else console.log(user);
             }
-        });
+        }, (err) => console.log(err));
     }
 }
 
