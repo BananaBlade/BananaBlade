@@ -26,9 +26,9 @@ class Track( BaseModel ):
     path            = CharField()
     artist          = CharField()
     album           = CharField( null = True )
-    duration        = IntegerField()                 # in seconds
+    duration        = IntegerField()
     file_format     = CharField( null = True )
-    sample_rate     = FloatField( null = True )      # in kHz
+    sample_rate     = FloatField( null = True )
     bits_per_sample = IntegerField( null = True )
     genre           = CharField( null = True )
     publisher       = CharField( null = True )
@@ -64,7 +64,6 @@ class Track( BaseModel ):
         """Returns the currently playing track and the editor who selected it
 
         Raises DoesNotExist, IndexError
-        TODO: Possible error upon first track on the list
         """
         current_time = datetime.now()
         start_time = current_time.replace( minute = 0, second = 0, microsecond = 0 )
@@ -74,7 +73,6 @@ class Track( BaseModel ):
         try:
             while True:
                 if start_time > current_time - timedelta( seconds = ptrack.duration ):
-                    print( current_time, start_time )
                     return ptrack, ( current_time - start_time ).total_seconds(), slot.editor
                 ptrack = next( playlist )
                 start_time += timedelta( seconds = ptrack.duration )
@@ -816,6 +814,7 @@ class SlotRequest( BaseModel ):
 
         Raises peewee.IntegrityError
         """
+        if self.detect_collisions(): raise peewee.IntegrityError
         times = generate_times( self.time, self.days_bit_mask, self.start_date, self.end_date )
         data = [ { 'time' : t, 'editor' : self.editor } for t in times ]
         Slot.insert_many( data ).execute()
