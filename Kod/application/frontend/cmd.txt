@@ -1,1 +1,0 @@
-tsc -m commonjs -t es5 --emitDecoratorMetadata --experimentalDecorators --jsx react --outDir /home/iota/Programming/Python/bananablade/Kod/application/app/templates src/index.ts

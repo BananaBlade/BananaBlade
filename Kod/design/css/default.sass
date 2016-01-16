@@ -31,7 +31,6 @@ $success_icon          :     "\E876"
 $error_icon            :     "\E5CD"
 $menu_icon             :     "\E5D2"
 
-// TODO: Create message box style
 
 div, header, footer, section, article, aside, input, button, textarea, label, li, ul, tr, td, th, table
     box-sizing         :     border-box
@@ -278,6 +277,7 @@ body
     bottom             :     0
     position           :     fixed
     top                :     3rem
+    z-index            :     100
 
 .center-area
     margin-top         :     3rem
@@ -1008,8 +1008,16 @@ fieldset[ disabled ]
 
     .c1
         background          :     $primary_color
+
+        &:hover
+            background      :     $primary_color url( "../img/icons/edit.png" ) no-repeat center center
+            cursor          :     pointer
     .c2
         background          :     $accent2_color
+
+        &:hover
+            background      :     $accent2_color url( "../img/icons/edit.png" ) no-repeat center center
+            cursor          :     pointer
     .c3
         background          :     $accent_color
     .c4
@@ -1018,7 +1026,6 @@ fieldset[ disabled ]
         &:hover
             background      :     $accent_color url( "../img/icons/add.png" ) no-repeat center center
             cursor          :     pointer
-
     .c5
         background          :     $base_background_color
 
@@ -1079,9 +1086,9 @@ fieldset[ disabled ]
     +column( 3, 4 )
 
     input
-        box-sizing            :     border-box
-        margin                :     0
-        width                 :     2rem
+        box-sizing          :     border-box
+        margin              :     0
+        width               :     2rem
 
 .check-labels
     +container
@@ -1093,6 +1100,75 @@ fieldset[ disabled ]
         padding-right       :     2px
         text-align          :     center
         width               :     2rem
+
+
+.calendar-daily
+    border-bottom      :     1px solid darken( $border_color, 5% )
+
+    .caption
+        background          :     $accent2_color
+        color               :     $alt_text_color
+        font-family         :     $header_font
+        padding             :     0.5rem 1rem
+        text-align          :     center
+
+        a
+            cursor                :     pointer
+            font-size             :     1.5rem
+
+            &:hover
+                color                   :     $accent_color
+
+    .rows
+        max-height          :     15*1.5rem
+        overflow-y          :     auto
+
+    .row
+        font-family         :     $header_font
+        font-size           :     0.9rem
+        overflow            :     hidden
+        position            :     relative
+
+        .time
+            background            :     lighten( $accent2_color, 10% )
+            color                 :     $alt_text_color
+            float                 :     left
+            font-family           :     $header_font
+            margin-right          :     1rem
+            text-align            :     center
+            width                 :     25%
+            z-index               :     5
+
+        .slot
+            background            :     #fff
+            border-right          :     1px solid darken( $border_color, 5% )
+            border-top            :     1px solid $border_color
+            cursor                :     default
+            display               :     block
+            font-size             :     0.8rem
+            height                :     1.5rem
+            padding               :     0 1rem
+
+            &.c1
+                background            :     $base_background_color
+
+            &.c3
+                background            :     $accent_color
+                border-right          :     1px solid lighten( $accent_color, 10% )
+                border-top            :     1px solid lighten( $accent_color, 10% )
+                color                 :     $alt_text_color
+                cursor                :     pointer
+
+                &:hover
+                    background              :     lighten( $accent_color, 5% )
+
+                    &:after
+                        content                   :     $request_icon
+                        font-family               :     "Material Icons"
+                        font-size                 :     1.25rem
+                        position                  :     absolute
+                        right                     :     0.25rem
+                        top                       :     0
 
 
 
@@ -1265,6 +1341,44 @@ fieldset[ disabled ]
 .active-admins-stat-list li:before
     content               :     $admin_icon
 
+
+// Info console display styles
+.console-wrapper
+    position          :     fixed
+    right             :     0.25rem
+    top               :     6.25rem
+    width             :     25%
+    z-index           :     100
+
+    &.index-console
+        top                 :     3.25rem
+
+.console-item
+    background        :     #444
+    box-shadow        :     0 0 4px rgba( 0, 0, 0, 0.35 )
+    color             :     $alt_text_color
+    font-size         :     0.8rem
+    line-height       :     1.25rem
+    margin-bottom     :     0.25rem
+    min-height        :     4.75rem
+    padding           :     1rem 1.5rem 1rem 5rem
+    position          :     relative
+
+    &:before
+        content             :     $info_icon
+        display             :     block
+        font-family         :     "Material Icons"
+        font-size           :     3rem
+        left                :     1rem
+        line-height         :     3rem
+        position            :     absolute
+        top                 :     0.8125rem
+
+    &.success-item:before
+        content             :     $success_icon
+
+    &.error-item:before
+        content             :     $error_icon
 
 // Index styles
 
@@ -1706,7 +1820,7 @@ p.register-bait
     .nav-bar
         background          :     none
         width               :     3rem
-        z-index             :     10
+        z-index             :     100
 
         *:not(.nav-bar-top-spacer)
             display               :     none
