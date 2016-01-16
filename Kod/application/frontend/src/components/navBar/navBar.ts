@@ -3,7 +3,7 @@ import { COMMON_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 import 'rxjs/Rx';
 
-import { getNavigationArray } from "../app/routingProvider";
+import { getNavigationArray } from "../../services/routingProvider";
 
 
 @Component({

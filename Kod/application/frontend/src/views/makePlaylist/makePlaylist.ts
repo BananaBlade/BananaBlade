@@ -2,7 +2,7 @@
 import {View, Component} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router, CanActivate, RouteParams} from 'angular2/router';
 import { Http } from 'angular2/http';
-import { urlEncode } from '../../utilities';
+import { urlEncode } from '../../services/utilities';
 
 @Component({
   selector: 'MakePlaylist',

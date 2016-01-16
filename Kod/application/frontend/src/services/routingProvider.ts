@@ -1,26 +1,26 @@
 import { Route, RouteDefinition } from 'angular2/router';
 import { Type } from 'angular2/core';
 
-import { Index } from '../components/index/index';
+import { Index } from '../views/index/index';
 
-import { AccountData } from '../components/accountData/accountData';
-import { AccountDelete } from '../components/accountDelete/accountDelete';
-import { AccountPassword } from '../components/accountPassword/accountPassword';
-import { AddTrack } from '../components/addTrack/addTrack';
+import { AccountData } from '../views/accountData/accountData';
+import { AccountDelete } from '../views/accountDelete/accountDelete';
+import { AccountPassword } from '../views/accountPassword/accountPassword';
+import { AddTrack } from '../views/addTrack/addTrack';
 
-import { EditUser } from '../components/editUser/editUser';
-import { MakePlaylist } from '../components/makePlaylist/makePlaylist';
-import { MakeWishlist } from '../components/makeWishlist/makeWishlist';
-import { ManageAdmins } from '../components/manageAdmins/manageAdmins';
-import { ManageEditors } from '../components/manageEditors/manageEditors';
-import { ManageRadiostation } from '../components/manageRadiostation/manageRadiostation';
-import { ManageTracks } from '../components/manageTracks/manageTracks';
-import { ManageUsers } from '../components/manageUsers/manageUsers';
+import { EditUser } from '../views/editUser/editUser';
+import { MakePlaylist } from '../views/makePlaylist/makePlaylist';
+import { MakeWishlist } from '../views/makeWishlist/makeWishlist';
+import { ManageAdmins } from '../views/manageAdmins/manageAdmins';
+import { ManageEditors } from '../views/manageEditors/manageEditors';
+import { ManageRadiostation } from '../views/manageRadiostation/manageRadiostation';
+import { ManageTracks } from '../views/manageTracks/manageTracks';
+import { ManageUsers } from '../views/manageUsers/manageUsers';
 
 // Newly added
-import { EditorSlots } from '../components/editorSlots/editorSlots';
-import { ManageRequests } from '../components/manageRequests/manageRequests';
-import { EditTrack } from '../components/editTrack/editTrack';
+import { EditorSlots } from '../views/editorSlots/editorSlots';
+import { ManageRequests } from '../views/manageRequests/manageRequests';
+import { EditTrack } from '../views/editTrack/editTrack';
 
 class MyComponent {
     Croatian: string;
