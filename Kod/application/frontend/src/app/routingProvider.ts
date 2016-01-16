@@ -1,5 +1,6 @@
 import { Route, RouteDefinition } from 'angular2/router';
 import { Type } from 'angular2/core';
+
 import { Index } from '../index/index';
 
 import { AccountData } from '../settings/accountData/accountData';

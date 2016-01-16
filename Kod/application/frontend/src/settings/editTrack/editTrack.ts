@@ -6,7 +6,7 @@ import { Http } from 'angular2/http';
 
 @Component({
     selector: 'AddTrack',
-    templateUrl: './dest/settings/manageTrack/manageTrack.html',
+    templateUrl: './dest/settings/editTrack/editTrack.html',
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class EditTrack {
@@ -27,6 +27,7 @@ export class EditTrack {
     bits_per_sample: Control = new Control('', Validators.required);
     publisher: Control = new Control('', Validators.required);
     carrier_type: Control = new Control('', Validators.required);
+    path: Control = new Control('', Validators.required);
 
     constructor(http: Http, routeParams: RouteParams, fb: FormBuilder) {
         this.http = http;
@@ -45,10 +46,12 @@ export class EditTrack {
             sample_rate: this.sample_rate,
             bits_per_sample: this.bits_per_sample,
             publisher: this.publisher,
-            carrier_type: this.carrier_type
+            carrier_type: this.carrier_type,
+            path: this.path
         });
 
         http.get('/admin/tracks/' + id + '/get').map((res) => res.json()).subscribe((res) => {
+            console.log(res);
             this.track = new Track(res.data);
             for (let name in res.data) {
                 this[name].updateValue(res.data[name]);
@@ -71,6 +74,7 @@ class Track {
     bits_per_sample: number;
     publisher: string;
     carrier_type: string;
+    path: string;
 
     constructor(values) {
         this.id = values.id;
@@ -85,5 +89,6 @@ class Track {
         this.bits_per_sample = values.bits_per_sample;
         this.publisher = values.publisher;
         this.carrier_type = values.carrier_type;
+        this.path = values.path;
     }
 }
