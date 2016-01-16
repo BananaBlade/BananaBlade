@@ -15,12 +15,13 @@ import { Form } from '../utilities';
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ]
 })
 export class HeaderBar {
-    @Input() isFixed : boolean
-    @Input() isLoggedIn : boolean
+    @Input() isFixed : boolean;
+    @Input() isLoggedIn : boolean;
     loginForm: Form;
 
     constructor(fb: FormBuilder, http: Http) {
         let loginEntities = ['email', 'password'];
         this.loginForm = new Form(fb, http, loginEntities, '/user/auth/login');
+        console.log( this.isLoggedIn );
     }
 }

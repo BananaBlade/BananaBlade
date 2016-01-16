@@ -1,9 +1,9 @@
-.header-bar('[ngClass]'='{unfixed : !isFixed, "logged-in" : isLoggedIn, "not-logged-in" : !isLoggedIn}')
-  .app-box.row
-    a(href='/')
-    .app-descr 99.4 MHz
-       img(src="/dest/static/img/logo.png" alt="FM Radio")
-  .user-box.row
+header.header-bar('[ngClass]'='{unfixed : !isFixed, "logged-in" : isLoggedIn, "not-logged-in" : !isLoggedIn}')
+  .app-box
+    .app-name
+      a( href = '/' )
+        img( src = "/src/static/img/logo.png" alt="FM Radio" )
+  .user-box
     .user-form-box
       form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="loginForm.onSubmit(loginForm.group.value)")
         input(type='email', id='email', placeholder='E-mail' '[ngFormControl]'="loginForm.group.controls['email']" )

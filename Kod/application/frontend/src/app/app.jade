@@ -1,18 +1,4 @@
-header
-  header-bar(is-fixed="true" is-logged-in="false")
-nav.nav-bar
-  .nav-bar-top-spacer
-  ul
-    li.nav-option-group( '*ngFor'="#group of navigation" )
-      .nav-option-group
-      .nav-option-group-name( '*ngIf'="group.hasLink" '[routerLink]'="[group.link.name]" )
-          | {{ group.Croatian }}
-      .nav-option-group-name( '*ngIf'="!group.hasLink" )
-          | {{ group.Croatian }}
-      ul
-        li.option-group-item( '[routerLink]'="[comp.name]" '*ngFor'="#comp of group.components" '[ngClass]'="{displayNone: comp.hidden}" )
-          | {{ comp.Croatian }}
-    li.nav-option-group
-      .nav-option-group-name Odjavi se
+header-bar( "[is-fixed]" = "true", "[is-logged-in]" = "false" )
+nav-bar( account-type = "1" )
 
 router-outlet
