@@ -21,7 +21,7 @@ export class Popular{
                 max_popularity = Math.max( max_popularity, res.data[ i ].popularity );
 
             for ( let i in res.data )
-                this.tracks.push( { 'title' : res.data[ i ].title, 'artist' : res.data[ i ].artist, 'popularity' : res.data[ i ].popularity / max_popularity * 100 } );
+                this.tracks.push( { 'title' : res.data[ i ].title, 'artist' : res.data[ i ].artist, 'popularity' : Math.round( res.data[ i ].popularity / max_popularity * 20 ) } );
             console.log( this.tracks );
 
         }, ( err ) => console.log( err ) );

@@ -19,8 +19,9 @@
                     p.content-box-descr Slušajte program radiopostaje
                 ul.content-box-options
                     li
-                        a( '[routerLink]' = '["Index"]' )
+                        a( '[routerLink]' = '["/Index"]' )
                             .option-name Slušaj radio
+                            .option-descr Uživo slušajte trenutno emitirani program najdraže vam radiopostaje
             .content-box
                 .account-type-select.user-select
                     .content-box-icon
@@ -30,7 +31,7 @@
                         p.content-box-descr Sudjelujte u radu postaje
                     ul.content-box-options
                         li
-                            a( '[routerLink]' = '["MakeWishlist"]' )
+                            a( '[routerLink]' = '["/Settings", "MakeWishlist"]' )
                                 .option-name Lista želja
                                 .option-descr Sastavite svoju listu želja kako bi savjetom pomogli urednicima u sastavljanju programa radiopostaje
                 
@@ -42,7 +43,7 @@
                         p.content-box-descr Uređujte program radiopostaje
                     ul.content-box-options
                         li
-                            a( '[routerLink]' = '["ManageSlots"]' )
+                            a( '[routerLink]' = '["/Settings", "EditorSlots"]' )
                                 .option-name Termini reprodukcije
                                 .option-descr Sastavite program i upravljajte dodjeljenim vam terminima za reprodukciju
                     
@@ -54,24 +55,24 @@
                         p.content-box-descr Administrirajte rad radiopostaje
                     ul.content-box-options
                         li
-                            a( '[routerLink]' = '["ManageTracks"]' )
+                            a( '[routerLink]' = '["/Settings", "ManageTracks"]' )
                                 .option-name Zvučni zapisi
                                 .option-descr Uređujte zvučne zapise dostupne u sustavu
                         li
-                            a( '[routerLink]' = '["ManageEditors"]' )
+                            a( '[routerLink]' = '["/Settings", "ManageEditors"]' )
                                 .option-name Urednici
                                 .option-descr Pregledajte i upravljajte glazbenim urednicima
                                 
                         li
-                            a( '[routerLink]' = '["ManageRequests"]' )
+                            a( '[routerLink]' = '["/Settings", "ManageRequests"]' )
                                 .option-name Zahtjevi za terminima
                                 .option-descr dlučujte o uredničkim zahtjevima za terminima
                         li
-                            a( '[routerLink]' = '["ManageUsers"]' )
+                            a( '[routerLink]' = '["/Settings", "ManageUsers"]' )
                                 .option-name Korisnici
                                 .option-descr Pregledajte i upravljajte korisnicima radiopostaje
                         li
-                            a( '[routerLink]' = '["ShowStats"]' )
+                            a( '[routerLink]' = '["/Settings", "ShowStats"]' )
                                 .option-name Statistike
                                 .option-descr Pregledajte razne statistike o radu radiopostaje
                 
@@ -83,15 +84,15 @@
                         p.content-box-descr Upravljajte svojom radiopostajom
                     ul.content-box-options        
                         li
-                            a( '[routerLink]' = '["ManageAdmins"]' )
+                            a( '[routerLink]' = '["/Settings", "ManageAdmins"]' )
                                 .option-name Administratori
                                 .option-descr Pregledajte, dodajte ili uklonite administratore postaje   
                         li
-                            a( '[routerLink]' = '["ShowStats"]' )
+                            a( '[routerLink]' = '["/Settings", "ManageRadiostation"]' )
                                 .option-name Podaci o postaji
                                 .option-descr Pregledajte i izmijenite podatke o radiopostaji
                         li
-                            a( '[routerLink]' = '["ShowStats"]' )
+                            a( '[routerLink]' = '["/Settings", "ShowStats"]' )
                                 .option-name Statistike
                                 .option-descr Pregledajte razne statistike o radu radiopostaje    
                         
@@ -104,14 +105,14 @@
                             
                 ul.content-box-options
                     li
-                        a( '[routerLink]' = '["AccountData"]' )
+                        a( '[routerLink]' = '["/Settings", "AccountData"]' )
                             .option-name Osobni podaci
                             .option-descr Pregledajte i uredite svoje osobne podatke 
                     li
-                        a( '[routerLink]' = '["AccountPassword"]' )
+                        a( '[routerLink]' = '["/Settings", "AccountPassword"]' )
                             .option-name Promjena lozinke
                             .option-descr Promijenite lozinku pomoću koje pristupate sustavu          
                     li
-                        a( '[routerLink]' = '["AccountDelete"]' )
+                        a( '[routerLink]' = '["/Settings", "AccountDelete"]' )
                             .option-name Brisanje računa
                             .option-descr Zauvijek izbrišite vlastiti korisnički račun

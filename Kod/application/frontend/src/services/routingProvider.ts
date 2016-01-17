@@ -57,7 +57,7 @@ export class NavigationProvider {
         new NavGroup( 'Pregled mogućnosti', [], 2+4+8+16, true, new MyAsyncComponent( '', 'Overview', 'overview', './' ) ),
         new NavGroup( 'Vlasničke mogućnosti', [
             new MyAsyncComponent( 'Administratori', 'ManageAdmins', 'manageAdmins', './admins' ),
-            new MyAsyncComponent( 'Podaci o postaji', 'ManageRadiostation', 'manageRadiostation', './station' )
+            new MyAsyncComponent( 'Podaci o postaji', 'ManageRadiostation', 'manageRadiostation', './station' ),
         ], 16, false ),
         new NavGroup( 'Administratorske mogućnosti', [
             new MyAsyncComponent( 'Zvučni zapisi', 'ManageTracks', 'manageTracks', './tracks' ),
@@ -65,7 +65,8 @@ export class NavigationProvider {
             new MyAsyncComponent( 'Zahtjevi za terminima', 'ManageRequests', 'manageRequests', './requests' ),
             new MyAsyncComponent( 'Korisnici', 'ManageUsers', 'manageUsers', './users' ),
             new MyAsyncComponent( 'Dodaj zvučni zapis', 'AddTrack', 'addTrack', './tracks/add', true ),
-            new MyAsyncComponent( 'Uredi zvučni zapis', 'EditTrack', 'editTrack', './tracks/edit', true )
+            new MyAsyncComponent( 'Uredi zvučni zapis', 'EditTrack', 'editTrack', './tracks/edit', true ),
+            new MyAsyncComponent( 'Statistike', 'ShowStats', 'showStats', './stats' )
         ], 8, false ),
         new NavGroup( 'Uredničke mogućnosti', [
             new MyAsyncComponent( 'Termini reprodukcije', 'EditorSlots', 'editorSlots', './slots' ),
