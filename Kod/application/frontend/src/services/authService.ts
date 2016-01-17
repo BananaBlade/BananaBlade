@@ -20,7 +20,7 @@ export class AuthService {
         return sessionStorage.getItem(ACCOUNT_TYPE) !== null;
     }
 
-    private getAuthLevel() {
+    getAuthLevel() {
         if (!this.isInitialized()) this.storeUserAuthentication();
         return sessionStorage.getItem(ACCOUNT_TYPE);
     }

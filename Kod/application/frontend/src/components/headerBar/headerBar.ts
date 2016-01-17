@@ -13,7 +13,7 @@ import { AuthService } from '../../services/authService';
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, RouterLink ]
 })
 export class HeaderBar {
-    @Input() isLoggedIn : boolean;
+    isLoggedIn : boolean;
     loginForm: Form;
     http: Http;
     authService: AuthService;
@@ -21,16 +21,23 @@ export class HeaderBar {
     constructor(fb: FormBuilder, http: Http, authService: AuthService) {
         this.http = http;
         this.authService = authService;
+        
+        this.updateLoginStatus();
 
         let loginEntities = ['email', 'password'];
         this.loginForm = new Form(fb, http, loginEntities, '/user/auth/login');
+    }
+
+    updateLoginStatus() {
+        this.isLoggedIn = this.authService.isLoggedIn();
+        this.authService.storeUserAuthentication(() => this.isLoggedIn = this.authService.isLoggedIn());
     }
 
     onSubmit(value: String): void {
         console.log(value);
         this.http.post('/user/auth/login', urlEncode(value)).map((res) => res.json()).subscribe((res) => {
             console.log(res);
-            this.authService.storeUserAuthentication();
+            this.updateLoginStatus();
         }, (err) => console.log(err));
     }
 }

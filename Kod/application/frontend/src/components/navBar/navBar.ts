@@ -4,6 +4,7 @@ import { ROUTER_DIRECTIVES } from 'angular2/router';
 import 'rxjs/Rx';
 
 import { NavigationProvider } from "../../services/routingProvider";
+import { AuthService } from '../../services/authService';
 
 
 @Component({
@@ -12,10 +13,13 @@ import { NavigationProvider } from "../../services/routingProvider";
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, ROUTER_DIRECTIVES ]
 })
 export class NavBar {
-    @Input() accountType : number;
+    authService: AuthService;
+    accountType : number;
     navigation: any[];
 
-    constructor(){
+    constructor(authService: AuthService){
+        this.authService = authService;
+        this.accountType = authService.getAuthLevel();
         this.navigation = NavigationProvider.getNavigationArray();
     }
 
