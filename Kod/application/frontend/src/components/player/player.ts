@@ -35,11 +35,13 @@ export class Player{
 
     constructor( http: Http ){
         this.http = http;
+        this.getTrack();
     }
 
     getTrack(){
         this.http.get( '/player/info' ).map( ( res ) => res.json() ).subscribe( ( res ) => {
-            this.track =
+            console.log( res.data )
+            //this.track = new Track( res.data )
         }, ( err ) => console.log( err ));
     }
 }
