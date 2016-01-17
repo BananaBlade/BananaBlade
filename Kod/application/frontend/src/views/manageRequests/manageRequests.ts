@@ -7,7 +7,7 @@ import { NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES} 
 
 @Component({
     selector: 'ManageRequests',
-    templateUrl: './dest/settings/manageRequests/manageRequests.html',
+    templateUrl: './dest/views/manageRequests/manageRequests.html',
     directives: [ NgFor ]
 })
 export class ManageRequests {

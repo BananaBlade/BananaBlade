@@ -6,7 +6,7 @@ import { urlEncode } from '../../services/utilities';
 
 @Component({
   selector: 'MakePlaylist',
-  templateUrl: './dest/settings/makePlaylist/makePlaylist.html'
+  templateUrl: './dest/views/makePlaylist/makePlaylist.html'
 })
 export class MakePlaylist {
     http: Http;

@@ -6,7 +6,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
     selector: 'AccountDelete'
 })
 @View({
-        templateUrl: './dest/settings/accountDelete/accountDelete.html'
+        templateUrl: './dest/views/accountDelete/accountDelete.html'
 })
 export class AccountDelete {
 

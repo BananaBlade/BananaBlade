@@ -1,6 +1,6 @@
 nav.nav-bar
   .nav-bar-top-spacer
-  ul {{navigation[0].Croatian}}
+  ul
     li.nav-option-group( '*ngFor'="#group of navigation" )
       a( '*ngIf'="group.hasLink" '[routerLink]'="[group.link.name]" )
         .nav-option-group-name

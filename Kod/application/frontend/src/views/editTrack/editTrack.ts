@@ -6,7 +6,7 @@ import { Http } from 'angular2/http';
 
 @Component({
     selector: 'AddTrack',
-    templateUrl: './dest/settings/editTrack/editTrack.html',
+    templateUrl: './dest/views/editTrack/editTrack.html',
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class EditTrack {

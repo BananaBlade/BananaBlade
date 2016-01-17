@@ -10,10 +10,10 @@ import { urlEncode } from '../../services/utilities';
 import { AuthService } from '../../services/authService';
 
 
-@CanActivate((next, prev) => Injector.resolveAndCreate([AuthService]).get(AuthService).isEditor())
+@CanActivate(AuthService.isEditorInjector())
 @Component({
     selector: 'EditorSlots',
-    templateUrl: './dest/settings/editorSlots/editorSlots.html',
+    templateUrl: './dest/views/editorSlots/editorSlots.html',
     directives: [ ]
 })
 export class EditorSlots {

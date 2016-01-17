@@ -8,7 +8,7 @@ import { NavigationProvider } from "../../services/routingProvider";
 
 @Component({
     selector: 'nav-bar',
-    templateUrl: './dest/app/navBar.html',
+    templateUrl: './dest/components/navBar/navBar.html',
     styles: [],
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, ROUTER_DIRECTIVES ]
 })

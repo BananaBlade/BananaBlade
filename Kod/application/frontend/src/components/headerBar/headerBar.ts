@@ -10,7 +10,7 @@ import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'header-bar',
-    templateUrl: './dest/app/headerBar.html',
+    templateUrl: './dest/components/headerBar/headerBar.html',
     styles: [],
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ]
 })

@@ -940,6 +940,7 @@ def add_admin( user_id ):
 
     No request params.
     """
+    print(user_id)
     try:
         g.user.add_admin( user_id )
         return success_response( 'Korisnik uspješno postavljen za administratora.' )

@@ -7,10 +7,8 @@ import { Http } from 'angular2/http';
 import { urlEncode } from '../../services/utilities';
 
 @Component({
-    selector: 'Index'
-})
-@View({
-    templateUrl: './dest/index/index.html'
+    selector: 'Index',
+    templateUrl: './dest/views/index/index.html'
 })
 export class Index {
     http: Http;

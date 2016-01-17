@@ -495,7 +495,7 @@ class User( BaseModel ):
         Raises AuthorizationError, TypeError, DoesNotExist, ValueError
         """
         self._assert_owner()
-        if User.select().where( User.account_type == AccountType.ADMINISTRATOR ).count().scalar() > 9:
+        if User.select().where( User.account_type == AccountType.ADMINISTRATOR ).count() > 9:
             raise ValueError
         user = User.get( User.id == user_id )
         if user.account_type != AccountType.USER:

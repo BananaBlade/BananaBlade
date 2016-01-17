@@ -8,7 +8,8 @@ import { NavBar } from "./components/navbar/navbar";
 import { NavigationProvider } from './services/routingProvider';
 @Component({
     selector: 'App',
-    templateUrl: './dest/app/app.html',
+    templateUrl: './dest/app.html',
+    styles: [],
     directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar, NavBar ]
 })
 @RouteConfig(NavigationProvider.getRouteConfig())

@@ -1,7 +1,8 @@
-import { Injectable } from 'angular2/core';
-import { Http } from 'angular2/http';
+import { Injectable, Injector } from 'angular2/core';
+import { Http, HTTP_PROVIDERS } from 'angular2/http';
 
 let ACCOUNT_TYPE: string = "accountType";
+
 
 @Injectable()
 export class AuthService {
@@ -42,6 +43,19 @@ export class AuthService {
 
     isOwner() {
         this.getAuthLevel() == '4';
+    }
+
+    static isUserInjector() {
+        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isUser();
+    }
+    static isEditorInjector() {
+        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isEditor();
+    }
+    static isAdminInjector() {
+        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isAdmin();
+    }
+    static isOwnerInjector() {
+        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isOwner();
     }
 
 

@@ -7,7 +7,7 @@ import { NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES} 
 
 @Component({
     selector: 'ManageTracks',
-    templateUrl: './dest/settings/manageTracks/manageTracks.html',
+    templateUrl: './dest/views/manageTracks/manageTracks.html',
     directives: [ NgFor ]
 })
 export class ManageTracks {
