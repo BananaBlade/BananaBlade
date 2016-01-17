@@ -12,7 +12,7 @@ import { NavBar } from "./components/navBar/navBar";
     template: `<nav-bar></nav-bar><router-outlet></router-outlet>`,
     directives: [ ROUTER_DIRECTIVES, NavBar ]
 })
-@RouteConfig(NavigationProvider.getRouteConfig())
+@RouteConfig( NavigationProvider.getRouteConfig() )
 export class Settings {
     router: Router;
 

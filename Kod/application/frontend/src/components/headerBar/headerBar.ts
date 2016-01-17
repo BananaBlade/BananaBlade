@@ -10,7 +10,6 @@ import { AuthService } from '../../services/authService';
 @Component({
     selector: 'header-bar',
     templateUrl: './dest/components/headerBar/headerBar.html',
-    styles: [],
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, RouterLink ]
 })
 export class HeaderBar {

@@ -315,6 +315,7 @@ body
 
 .header-bar
     background         :     #fff
+    box-shadow         :     0 0 4px rgba( 0, 0, 0, 0.15 )
     height             :     3rem
     padding            :     0 1rem
     position           :     fixed
@@ -350,7 +351,7 @@ body
     position           :     fixed
     top                :     3rem
     width              :     100%
-    z-index            :     5
+    z-index            :     20
 
 .center-content
     float              :     left
@@ -1430,6 +1431,7 @@ fieldset[ disabled ]
     &.error-item:before
         content             :     $error_icon
 
+
 // Index styles
 
 .section-wrapper
@@ -1443,6 +1445,7 @@ fieldset[ disabled ]
 .player-wrapper
     background        :     darken( $accent2_color, 10% )
     color             :     $alt_text_color
+    padding-top       :     9rem
 
 .info-wrapper
     background        :     $dark_primary_color
@@ -1765,7 +1768,7 @@ p.register-bait
 
 .footer-right
     +column( 1, 2 )
-    background        :     url( "/src/static/img/draft/logo_icon.png" ) no-repeat right 12px
+    background        :     url( "/src/static/img/logo_icon.png" ) no-repeat right 12px
     height            :     250px
     opacity           :     0.5
 
