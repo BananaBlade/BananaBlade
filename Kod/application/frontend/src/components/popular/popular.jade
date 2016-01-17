@@ -1,0 +1,6 @@
+.popular-info
+    h2 Najpopularnije
+    ul.popular-tracks-list( "*ngFor" = "#track in tracks" )
+        li( "[data-value]" = "track.popularity" )
+            .popular-track-name {{ track.name }}
+            .popular-track-info {{ track.artist }}

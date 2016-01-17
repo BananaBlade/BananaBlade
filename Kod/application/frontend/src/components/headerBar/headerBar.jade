@@ -11,7 +11,8 @@ header.header-bar('[ngClass]'='{unfixed : !isFixed, "logged-in" : isLoggedIn, "n
         button(type='submit') Prijavi se
         button.dim(type='button') Registriraj se
     .user-name-box
-      i.material-icons.user-icon account_circle
+      a( '[routerLink]' = '[Index]' )
+        i.material-icons.user-icon settings
       .user-name
         | Mirko Horvat
         span.user-type administrator

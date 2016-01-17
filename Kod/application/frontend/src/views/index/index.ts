@@ -6,10 +6,11 @@ import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
 import { Player } from '../../components/player/player';
+import { Schedule } from '../../components/schedule/schedule';
 
 @Component({
     selector: 'Index',
-    directives: [ Player ],
+    directives: [ Player, Schedule ],
     templateUrl: './dest/views/index/index.html'
 })
 export class Index {

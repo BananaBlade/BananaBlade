@@ -198,25 +198,13 @@ def process_signout():
 
 # User account management
 
-"""Dito edit"""
-@app.route( '/user/account/type2', methods = [ 'GET' ] )
-def get_account_type2():
-    """Return user account type
-
-    No request params.
-    """
-
-    data = { 'account_type' : (g.user.account_type if not g.user is None else 0) }
-    return data_response( data )
-
 @app.route( '/user/account/type', methods = [ 'GET' ] )
-@login_required
 def get_account_type():
     """Return user account type
 
     No request params.
     """
-    data = { 'account_type' : g.user.account_type }
+    data = { 'account_type' : g.user.account_type if g.user is not None else 0 }
     return data_response( data )
 
 @app.route( '/user/account/get', methods = [ 'GET' ] )

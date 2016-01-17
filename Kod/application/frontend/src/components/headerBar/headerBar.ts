@@ -1,6 +1,7 @@
 import { Component, Input } from 'angular2/core';
 import { FORM_DIRECTIVES, COMMON_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 import { Http } from 'angular2/http';
+import { RouterLink } from 'angular2/router';
 import 'rxjs/Rx';
 
 import { Form, urlEncode } from '../../services/utilities';
@@ -9,7 +10,7 @@ import { Form, urlEncode } from '../../services/utilities';
     selector: 'header-bar',
     templateUrl: './dest/components/headerBar/headerBar.html',
     styles: [],
-    directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES ]
+    directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, RouterLink ]
 })
 export class HeaderBar {
     @Input() isFixed : boolean;
