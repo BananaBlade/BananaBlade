@@ -17,7 +17,7 @@
       form
         .form-line
           label(for='old_password') Lozinka (za potvrdu)
-          input(type='password', name='password', value='')
+          input(type='password' name='password' '[(ngModel)]'="password")
         .form-line
           .left-spacer
-          button.raised.alt Obriši račun
+          button.raised.alt( '(click)'="submitDelete()" ) Obriši račun

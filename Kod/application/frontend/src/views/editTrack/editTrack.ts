@@ -4,6 +4,8 @@ import { Location, RouteConfig, RouterLink, Router, RouteParams } from 'angular2
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 import { Http } from 'angular2/http';
 
+import { urlEncode } from '../../services/utilities';
+
 @Component({
     selector: 'AddTrack',
     templateUrl: './dest/views/editTrack/editTrack.html',
@@ -13,6 +15,7 @@ export class EditTrack {
     http: Http;
 
     track: Track;
+    trackId: string;
 
     trackForm: ControlGroup;
     id: Control = new Control('', Validators.required);
@@ -32,7 +35,7 @@ export class EditTrack {
     constructor(http: Http, routeParams: RouteParams, fb: FormBuilder) {
         this.http = http;
 
-        let id = routeParams.get('trackId');
+        this.trackId = routeParams.get('trackId');
 
         this.trackForm = fb.group({
             id: this.id,
@@ -50,13 +53,17 @@ export class EditTrack {
             path: this.path
         });
 
-        http.get('/admin/tracks/' + id + '/get').map((res) => res.json()).subscribe((res) => {
+        http.get('/admin/tracks/' + this.trackId + '/get').map((res) => res.json()).subscribe((res) => {
             console.log(res);
             this.track = new Track(res.data);
             for (let name in res.data) {
                 this[name].updateValue(res.data[name]);
             }
         }, (err) => console.log(err));
+    }
+
+    onSubmit(values) {
+        this.http.post('/admin/tracks/' + this.trackId + '/edit', urlEncode(values)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
     }
 }
 
