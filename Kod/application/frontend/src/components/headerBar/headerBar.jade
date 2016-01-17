@@ -5,7 +5,7 @@ header.header-bar('[ngClass]'='{unfixed : !isFixed, "logged-in" : isLoggedIn, "n
         img( src = "/src/static/img/logo.png" alt="FM Radio" )
   .user-box
     .user-form-box
-      form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="loginForm.onSubmit(loginForm.group.value)")
+      form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="onSubmit(loginForm.group.value)")
         input(type='email', id='email', placeholder='E-mail' '[ngFormControl]'="loginForm.group.controls['email']" )
         input(type='password', id='password', placeholder='Lozinka' '[ngFormControl]'="loginForm.group.controls['password']" )
         button(type='submit') Prijavi se
