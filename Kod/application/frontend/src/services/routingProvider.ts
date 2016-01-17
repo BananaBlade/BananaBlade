@@ -54,52 +54,55 @@ class NavGroup {
     }
 }
 
-let navigationArray = [
-    new NavGroup('Slušaj radio', [], true, new MyComponent('', 'Index', Index)),
-    new NavGroup('Vlasničke mogućnosti', [
-        new MyComponent('Upravljaj administratorima', 'ManageAdmins', ManageAdmins),
-        new MyComponent('Podaci o postaji', 'ManageRadiostation', ManageRadiostation)
-    ], false),
-    new NavGroup('Administratorske mogućnosti', [
-        new MyComponent('Uredi zvučne zapise', 'ManageTracks', ManageTracks),
-        new MyComponent('Upravljaj urednicima', 'ManageEditors', ManageEditors),
-        new MyComponent('Dodaj pjesmu', 'AddTrack', AddTrack),
-        new MyComponent('Upravljaj korisnicima', 'ManageUsers', ManageUsers),
-        new MyComponent('Ažuriraj zahtjeve', 'ManageRequests', ManageRequests),
-        new MyComponent('Ažuriraj pjesmu', 'EditTrack', EditTrack)
-    ], false),
-    new NavGroup('Uredničke mogućnosti', [
-        new MyComponent('Termini reprodukcije', 'EditorSlots', EditorSlots),
-        new MyComponent('Pregledaj termine', 'MakePlaylist', MakePlaylist, true)
-    ], false),
-    new NavGroup('Korisničke mogućnosti', [
-        new MyComponent('Pregledaj listu želja', 'MakeWishlist', MakeWishlist),
-    ], false),
-    new NavGroup('Postavke računa', [
-        new MyComponent('Uredi osobne podatke', 'AccountData', AccountData),
-        new MyComponent('Promijeni lozinku', 'AccountPassword', AccountPassword),
-        new MyComponent('Obriši račun', 'AccountDelete', AccountDelete)], false)
-];
+export class NavigationProvider {
+    static navigationArray: NavGroup[] = [
+        new NavGroup('Slušaj radio', [], true, new MyComponent('', 'Index', Index)),
+        new NavGroup('Vlasničke mogućnosti', [
+            new MyComponent('Upravljaj administratorima', 'ManageAdmins', ManageAdmins),
+            new MyComponent('Podaci o postaji', 'ManageRadiostation', ManageRadiostation)
+        ], false),
+        new NavGroup('Administratorske mogućnosti', [
+            new MyComponent('Uredi zvučne zapise', 'ManageTracks', ManageTracks),
+            new MyComponent('Upravljaj urednicima', 'ManageEditors', ManageEditors),
+            new MyComponent('Dodaj pjesmu', 'AddTrack', AddTrack),
+            new MyComponent('Upravljaj korisnicima', 'ManageUsers', ManageUsers),
+            new MyComponent('Ažuriraj zahtjeve', 'ManageRequests', ManageRequests),
+            new MyComponent('Ažuriraj pjesmu', 'EditTrack', EditTrack)
+        ], false),
+        new NavGroup('Uredničke mogućnosti', [
+            new MyComponent('Termini reprodukcije', 'EditorSlots', EditorSlots),
+            new MyComponent('Pregledaj termine', 'MakePlaylist', MakePlaylist, true)
+        ], false),
+        new NavGroup('Korisničke mogućnosti', [
+            new MyComponent('Pregledaj listu želja', 'MakeWishlist', MakeWishlist),
+        ], false),
+        new NavGroup('Postavke računa', [
+            new MyComponent('Uredi osobne podatke', 'AccountData', AccountData),
+            new MyComponent('Promijeni lozinku', 'AccountPassword', AccountPassword),
+            new MyComponent('Obriši račun', 'AccountDelete', AccountDelete)], false)
+    ];
 
-export function getNavigationArray() {
-    return navigationArray;
-}
-
-export function getRouteConfig() {
-    let routeDefinitionArray: RouteDefinition[] = [];
-
-    // let route = new Route({ 'path' : '/', 'name' : 'Index', 'component' : Index })
-    // routeDefinitionArray.push( route )
-
-    for (let i in navigationArray) {
-        for (let j in navigationArray[i].components) {
-            let component = navigationArray[i].components[j];
-            routeDefinitionArray.push(component.getRoute());
-        }
-        if (navigationArray[i].hasLink) {
-            routeDefinitionArray.push(navigationArray[i].link.getRoute());
-        }
+    static getNavigationArray() {
+        console.log(this.navigationArray);
+        return this.navigationArray;
     }
 
-    return routeDefinitionArray;
+    static getRouteConfig() {
+        let routeDefinitionArray: RouteDefinition[] = [];
+
+        // let route = new Route({ 'path' : '/', 'name' : 'Index', 'component' : Index })
+        // routeDefinitionArray.push( route )
+
+        for (let i in this.navigationArray) {
+            for (let j in this.navigationArray[i].components) {
+                let component = this.navigationArray[i].components[j];
+                routeDefinitionArray.push(component.getRoute());
+            }
+            if (this.navigationArray[i].hasLink) {
+                routeDefinitionArray.push(this.navigationArray[i].link.getRoute());
+            }
+        }
+
+        return routeDefinitionArray;
+    }
 }

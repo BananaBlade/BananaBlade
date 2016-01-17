@@ -5,14 +5,13 @@ import { RouteConfig, RouterLink, RouterOutlet, Route, ROUTER_DIRECTIVES, Router
 
 import { HeaderBar } from './components/headerBar/headerBar';
 import { NavBar } from "./components/navbar/navbar";
-import { getRouteConfig } from './services/routingProvider';
+import { NavigationProvider } from './services/routingProvider';
 @Component({
     selector: 'App',
     templateUrl: './dest/app/app.html',
-    styles: [],
     directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar, NavBar ]
 })
-@RouteConfig(getRouteConfig())
+@RouteConfig(NavigationProvider.getRouteConfig())
 export class App {
     router: Router;
     location: Location;

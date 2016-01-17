@@ -15,6 +15,7 @@ class PermissionError( Exception ):
 
 class AccountType:
     """User account type constants"""
+    UNREGISTERED = 0
     USER = 1
     EDITOR = 2
     ADMINISTRATOR = 3

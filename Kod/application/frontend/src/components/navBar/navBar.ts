@@ -3,7 +3,7 @@ import { COMMON_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 import 'rxjs/Rx';
 
-import { getNavigationArray } from "../../services/routingProvider";
+import { NavigationProvider } from "../../services/routingProvider";
 
 
 @Component({
@@ -16,7 +16,8 @@ export class NavBar {
     @Input() accountType : number;
     navigation: any[];
 
-    constructor(){
-        this.navigation = getNavigationArray();
+    constructor() {
+        console.log(this.navigation);
+        this.navigation = NavigationProvider.getNavigationArray();
     }
 }
