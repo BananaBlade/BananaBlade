@@ -53,6 +53,7 @@ class NavGroup {
 
 export class NavigationProvider {
     static navigationArray: NavGroup[] = [
+        new NavGroup( 'Slušaj radio', [], 2 + 4 + 8 + 16, true, new MyAsyncComponent('', 'Index', 'index', '/')),
         new NavGroup( 'Vlasničke mogućnosti', [
             new MyAsyncComponent( 'Administratori', 'ManageAdmins', 'manageAdmins', './admins' ),
             new MyAsyncComponent( 'Podaci o postaji', 'ManageRadiostation', 'manageRadiostation', './station' )
@@ -92,7 +93,8 @@ export class NavigationProvider {
                 routeDefinitionArray.push( component.getRoute() );
             }
             if ( this.navigationArray[ i ].hasLink ) {
-                routeDefinitionArray.push( this.navigationArray[ i ].link.getRoute() );
+                if (this.navigationArray[i].link.componentName == "Index") continue;
+                else routeDefinitionArray.push( this.navigationArray[ i ].link.getRoute() );
             }
         }
 
