@@ -1,4 +1,3 @@
-
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
@@ -6,11 +5,12 @@ import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
 import { Player } from '../../components/player/player';
+import { Popular } from '../../components/popular/popular';
 import { Schedule } from '../../components/schedule/schedule';
 
 @Component({
     selector: 'Index',
-    directives: [ Player, Schedule ],
+    directives: [ Player, Popular, Schedule ],
     templateUrl: './dest/views/index/index.html'
 })
 export class Index {
