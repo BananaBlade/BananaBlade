@@ -8,7 +8,7 @@ import { urlEncode } from '../../services/utilities';
 
 @Component({
     selector: 'ManageRadiostation',
-    templateUrl: './dest/settings/manageRadiostation/manageRadiostation.html',
+    templateUrl: './dest/views/manageRadiostation/manageRadiostation.html',
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageRadiostation {

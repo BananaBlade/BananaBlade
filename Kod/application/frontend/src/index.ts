@@ -7,6 +7,8 @@ import { provide, Injectable } from 'angular2/core';
 
 import { App } from './app';
 
+import { AuthService } from './services/authService';
+
 @Injectable()
 export class DefaultRequestOptions extends BaseRequestOptions {
     constructor() {
@@ -22,6 +24,7 @@ bootstrap(
         ROUTER_PROVIDERS,
         HTTP_PROVIDERS,
         provide(LocationStrategy, { useClass: PathLocationStrategy }),
-        provide(RequestOptions, { useClass: DefaultRequestOptions })
+        provide(RequestOptions, { useClass: DefaultRequestOptions }),
+        provide(AuthService, { useClass: AuthService })
     ]
 );

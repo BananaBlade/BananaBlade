@@ -6,7 +6,7 @@ import { FILE_UPLOAD_DIRECTIVES, FileUploader } from '../../services/ng2-file-up
 
 @Component({
     selector: 'AddTrack',
-    templateUrl: './dest/settings/addTrack/addTrack.html',
+    templateUrl: './dest/views/addTrack/addTrack.html',
     directives: [ FILE_UPLOAD_DIRECTIVES ]
 })
 export class AddTrack {

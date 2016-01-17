@@ -201,6 +201,17 @@ def process_signout():
 
 # User account management
 
+"""Dito edit"""
+@app.route( '/user/account/type2', methods = [ 'GET' ] )
+def get_account_type2():
+    """Return user account type
+
+    No request params.
+    """
+
+    data = { 'account_type' : (g.user.account_type if not g.user is None else 0) }
+    return data_response( data )
+
 @app.route( '/user/account/type', methods = [ 'GET' ] )
 @login_required
 def get_account_type():
@@ -929,6 +940,7 @@ def add_admin( user_id ):
 
     No request params.
     """
+    print(user_id)
     try:
         g.user.add_admin( user_id )
         return success_response( 'Korisnik uspješno postavljen za administratora.' )

@@ -8,7 +8,7 @@ import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'ManageEditors',
-    templateUrl: './dest/settings/manageEditors/manageEditors.html',
+    templateUrl: './dest/views/manageEditors/manageEditors.html',
     directives: [NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES]
 })
 export class ManageEditors {

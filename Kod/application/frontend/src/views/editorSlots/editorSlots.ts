@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { View, Component, Injector } from 'angular2/core';
 import { Router, RouteConfig, RouterLink, CanActivate } from 'angular2/router';
 import { Http } from 'angular2/http';
 import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIRECTIVES,
@@ -7,10 +7,13 @@ import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIR
 // NgSelectOption CheckboxControlValueAccessor
 
 import { urlEncode } from '../../services/utilities';
+import { AuthService } from '../../services/authService';
 
+
+@CanActivate(AuthService.isEditorInjector())
 @Component({
     selector: 'EditorSlots',
-    templateUrl: './dest/settings/editorSlots/editorSlots.html',
+    templateUrl: './dest/views/editorSlots/editorSlots.html',
     directives: [ ]
 })
 export class EditorSlots {
