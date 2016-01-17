@@ -5,14 +5,12 @@ import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators
 import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
-import { Player } from '../../component/player';
+import { Player } from '../../components/player/player';
 
 @Component({
     selector: 'Index',
-    directives: [Player]
-})
-@View({
-    templateUrl: './dest/index/index.html'
+    directives: [ Player ],
+    templateUrl: './dest/views/index/index.html'
 })
 export class Index {
     http: Http;

@@ -1843,6 +1843,76 @@ p.register-bait
         line-height         :     1.75rem
         width               :     50rem
 
+
+// Loading screen
+
+.loading-wrapper
+    background        :     $base_background_color
+
+.loading-screen
+    left              :     25%
+    position          :     fixed
+    text-align        :     center
+    top               :     20%
+    width             :     50%
+
+.logo-large
+    font-family       :     $header_font
+    font-size         :     4rem
+    line-height       :     5rem
+    margin            :     0 auto
+
+
+.loader
+    height            :     10rem
+    margin            :     2.5rem auto
+    position          :     relative
+    width             :     10rem
+
+.circular
+    animation         :     rotate 2s linear infinite
+    bottom            :     0
+    height            :     100%
+    left              :     0
+    margin            :     auto
+    position          :     absolute
+    right             :     0
+    transform-origin  :     center center
+    top               :     0
+    width             :     100%
+
+.path
+    animation         :     dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite
+    stroke-dasharray  :     1,200
+    stroke-dashoffset :     0
+    stroke-linecap    :     round
+
+@keyframes rotate
+    100%
+        transform             :     rotate(360deg)
+
+@keyframes dash
+    0%
+        stroke-dasharray: 1,200
+        stroke-dashoffset: 0
+    50%
+        stroke-dasharray: 89,200
+        stroke-dashoffset: -35px
+    100%
+        stroke-dasharray: 89,200
+        stroke-dashoffset: -124px
+
+@keyframes color
+    100%, 0%
+        stroke         :     $primary_color
+    25%
+        stroke         :     $accent2_color
+    45%
+        stroke         :     $accent_color
+    75%
+        stroke         :     $dark_primary_color
+
+
 // Media queries
 
 @media screen and (max-width : 559px)

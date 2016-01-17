@@ -1,16 +1,17 @@
 nav.nav-bar
   .nav-bar-top-spacer
   ul
-    li.nav-option-group( '*ngFor'="#group of navigation" )
-      a( '*ngIf'="group.hasLink" '[routerLink]'="[group.link.name]" )
-        .nav-option-group-name
-          | {{ group.Croatian }}
-      .nav-option-group-name( '*ngIf'="!group.hasLink" )
-        | {{ group.Croatian }}
-      ul
-        a( '[routerLink]'="[comp.name]" '*ngFor'="#comp of group.components" '[ngClass]'="{displayNone: comp.hidden}" )
-          li.option-group-item
-            | {{ comp.Croatian }}
+    div( '*ngFor'="#group of navigation" )
+      li.nav-option-group( '*ngIf'="isVisible( group.accountType )" )
+        a( '*ngIf'="group.hasLink" '[routerLink]'="[group.link.componentName]" )
+          .nav-option-group-name
+            | {{ group.displayName }}
+        .nav-option-group-name( '*ngIf'="!group.hasLink" )
+          | {{ group.displayName }}
+        ul
+          a( '[routerLink]'="[comp.componentName]" '*ngFor'="#comp of group.components" )
+            li.option-group-item
+              | {{ comp.displayName }}
     li.nav-option-group
-      a(href='/user/auth/signout')
+      a( href = '/user/auth/signout' )
         .nav-option-group-name Odjavi se

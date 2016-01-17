@@ -72,10 +72,10 @@ class Track( BaseModel ):
         ptrack = next( playlist )
         try:
             while True:
-                if start_time > current_time - timedelta( seconds = ptrack.duration ):
+                if start_time > current_time - timedelta( seconds = ptrack.play_duration ):
                     return ptrack, ( current_time - start_time ).total_seconds(), slot.editor
                 ptrack = next( playlist )
-                start_time += timedelta( seconds = ptrack.duration )
+                start_time += timedelta( seconds = ptrack.play_duration )
         except StopIteration:
             raise IndexError
 
@@ -834,7 +834,7 @@ class PlaylistTrack( BaseModel ):
     slot            = ForeignKeyField( Slot, related_name = "tracks" )
     track           = ForeignKeyField( Track )
     index           = IntegerField()
-    duration        = IntegerField()
+    play_duration        = IntegerField()
 
     @classmethod
     def get_editor_preferred_tracks( cls, editor_id ):

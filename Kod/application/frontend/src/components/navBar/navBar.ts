@@ -9,15 +9,17 @@ import { NavigationProvider } from "../../services/routingProvider";
 @Component({
     selector: 'nav-bar',
     templateUrl: './dest/components/navBar/navBar.html',
-    styles: [],
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, ROUTER_DIRECTIVES ]
 })
 export class NavBar {
     @Input() accountType : number;
     navigation: any[];
 
-    constructor() {
-        console.log(this.navigation);
+    constructor(){
         this.navigation = NavigationProvider.getNavigationArray();
+    }
+
+    isVisible( at : number ){
+        return ( ( 1 << this.accountType ) & at ) != 0;
     }
 }

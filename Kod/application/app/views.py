@@ -57,7 +57,7 @@ def get_currently_playing_track():
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Trenutno se ne emitira ništa.', 404 )
     except IndexError:
-        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Greška na listi za reprodukciju.', 404 )
+        return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Lista za reprodukciju je završila prije vremena.', 404 )
     except:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis.', 404 )
 
@@ -78,19 +78,16 @@ def get_currently_playing_track_info():
             'artist'            : track.artist,
             'album'             : track.album,
             'duration'          : track.duration,
-            'file_format'       : track.file_format,
-            'sample_rate'       : track.sample_rate,
-            'bits_per_sample'   : track.bits_per_sample,
+            'play_duration'     : pt.play_duration,
             'genre'             : track.genre,
             'publisher'         : track.publisher,
-            'carrier_type'      : track.carrier_type,
             'year'              : track.year
         }
         return data_response( data )
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Trenutno se ne emitira ništa.', 404 )
     except IndexError:
-        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Greška na listi za reprodukciju.', 404 )
+        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Lista za reprodukciju je završila prije vremena.', 404 )
     except:
         return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu.', 404 )
 

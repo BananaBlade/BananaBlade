@@ -9,11 +9,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel = "shortcut icon" type = "image/x-icon" href = "src/static/img/favicon.ico"/>
+  <link rel = "shortcut icon" type = "image/x-icon" href = "/src/static/img/favicon.ico"/>
 
   <base href="/">
   <!-- styles -->
-  <!-- <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.css"> -->
   <link rel="stylesheet" type="text/css" href="/dest/index.css">
 
   <!-- Setting the right viewport -->
@@ -39,7 +38,18 @@
 <body>
 
   <app>
-    Loading...
+    <div class = "loading-wrapper">
+        <div class = "loading-screen">
+            <div class = "logo-large">
+                FM Radio
+            </div>
+            <div class = "loader">
+                <svg class = "circular" viewBox = "25 25 50 50">
+                    <circle class = "path" cx = "50" cy = "50" r = "20" fill = "none" stroke-width = "2" stroke-miterlimit = "10"/>/>
+                </svg>
+          </div>
+        </div>
+    </div>
   </app>
 
   <script>
