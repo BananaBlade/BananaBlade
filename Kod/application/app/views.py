@@ -220,7 +220,8 @@ def get_account_data():
         'last_name'     :   g.user.last_name,
         'email'         :   g.user.email,
         'year_of_birth' :   g.user.year_of_birth,
-        'occupation'    :   g.user.occupation
+        'occupation'    :   g.user.occupation,
+        'account_type'  :   g.user.account_type
     }
     return data_response( data )
 

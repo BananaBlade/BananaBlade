@@ -12,6 +12,11 @@ export class ManageUsers {
     router: Router;
     users: any[];
 
+    isEditable: boolean = false;
+
+    toggleEditable() {
+        this.isEditable = !this.isEditable;
+    }
 
     constructor(http: Http, router: Router) {
         this.http = http;
@@ -19,6 +24,7 @@ export class ManageUsers {
 
         http.get('/admin/users/list').map((res) => res.json()).subscribe((res) => {
             console.log(res);
+            this.users = new Array();
             for (let i in res.data) {
                 this.users.push(res.data[i]);
             }
@@ -26,7 +32,7 @@ export class ManageUsers {
     }
 
     editUser(userId) {
-        this.router.navigate(['EditUser', { userId: userId }]);
+        this.router.navigate(['/Settings', 'EditUser', { userId: userId }]);
     }
 
     deleteUser(userId) {

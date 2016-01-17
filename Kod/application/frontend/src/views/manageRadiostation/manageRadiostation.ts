@@ -5,6 +5,7 @@ import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators
 import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
+import { AuthService } from '../../services/authService';
 
 @Component({
     selector: 'ManageRadiostation',
@@ -24,13 +25,21 @@ export class ManageRadiostation {
     email: Control;
     frequency: Control;
 
+    isOwner: boolean;
+
     onSubmit(value: String): void {
         console.log(value);
         this.http.post('/owner/station/modify', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp), (err) => console.log(err));
     }
 
-    constructor(fb: FormBuilder, http: Http) {
+    toggleEditing() {
+        if (this.isOwner) this.isFormDisabled = !this.isFormDisabled;
+    }
+
+    constructor(fb: FormBuilder, http: Http, authService: AuthService) {
         this.http = http;
+
+        this.isOwner = authService.isOwner();
 
         this.name = new Control('', Validators.required);
         this.description = new Control('', Validators.required);

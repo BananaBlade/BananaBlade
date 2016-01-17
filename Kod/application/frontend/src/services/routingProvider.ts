@@ -64,6 +64,7 @@ export class NavigationProvider {
             new MyAsyncComponent( 'Urednici', 'ManageEditors', 'manageEditors', './editors' ),
             new MyAsyncComponent( 'Zahtjevi za terminima', 'ManageRequests', 'manageRequests', './requests' ),
             new MyAsyncComponent( 'Korisnici', 'ManageUsers', 'manageUsers', './users' ),
+            new MyAsyncComponent( 'Uredi korisnika', 'EditUser', 'editUser', './users/edit'),
             new MyAsyncComponent( 'Dodaj zvučni zapis', 'AddTrack', 'addTrack', './tracks/add', true ),
             new MyAsyncComponent( 'Uredi zvučni zapis', 'EditTrack', 'editTrack', './tracks/edit', true ),
             new MyAsyncComponent( 'Statistike', 'ShowStats', 'showStats', './stats' )

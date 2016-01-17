@@ -18,6 +18,9 @@ export class HeaderBar {
     http: Http;
     authService: AuthService;
 
+    userName: string;
+    userRole: string;
+
     constructor(fb: FormBuilder, http: Http, authService: AuthService) {
         this.http = http;
         this.authService = authService;
@@ -30,7 +33,19 @@ export class HeaderBar {
 
     updateLoginStatus() {
         this.isLoggedIn = this.authService.isLoggedIn();
-        this.authService.storeUserAuthentication(() => this.isLoggedIn = this.authService.isLoggedIn());
+        this.authService.storeUserAuthentication(() => {
+            this.isLoggedIn = this.authService.isLoggedIn();
+
+            this.http.get('/user/account/get').map((res) => res.json()).subscribe((res) => {
+                console.log(res);
+                this.userName = res.data.first_name + ' ' + res.data.last_name;
+                let role = res.data.account_type;
+                if (role == 1) this.userRole = "kosinik";
+                if (role == 2) this.userRole = "urednik";
+                if (role == 3) this.userRole = "administrator";
+                if (role == 4) this.userRole = "vlasnik";
+            }, (err) => console.log(err));
+        });
     }
 
     onSubmit(value: String): void {

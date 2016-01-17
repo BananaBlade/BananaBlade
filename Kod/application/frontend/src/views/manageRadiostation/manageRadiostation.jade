@@ -13,7 +13,7 @@
       .content-header-right
         i.material-icons.icon radio
     nav.content-options.uneditable-ui
-      button('(click)'="isFormDisabled = !isFormDisabled") Izmijeni podatke o postaji
+      button( '*ngIf'="isOwner()" '(click)'="toggleEditing()" ) Izmijeni podatke o postaji
     .content-primary.content-form
       fieldset('[disabled]'="isFormDisabled")
         form('[ngFormModel]'="myForm" '(ngSubmit)'="onSubmit(myForm.value)")

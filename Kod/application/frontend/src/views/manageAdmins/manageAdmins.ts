@@ -69,6 +69,22 @@ export class ManageAdmins {
         }
     }
 
+    addAdmin2(adminId) {
+        console.log(adminId);
+        for (let i in this.normalUsers) {
+            if (this.normalUsers[i].id === adminId) {
+                this.admins.push(this.normalUsers[i]);
+                this.normalUsers.splice(i, 1);
+                
+                this.userSearch = "";
+                this.matching = false;
+                this.closestMatches = new Array();
+
+                this.http.post('/owner/admins/add/' + adminId.toString(), '').map((res) => res.json()).subscribe((data) => console.log(data), (err) => console.log(err));
+            }
+        }
+    }
+
     removeAdmin(removedAdminId) {
         for (let i in this.admins) {
             if (this.admins[i].id === removedAdminId) {

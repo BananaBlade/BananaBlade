@@ -11,15 +11,14 @@
           | sustava, osim drugih administratora i vlasnika.
       .content-header-right
         i.material-icons.icon group
-    nav.content-options.uneditable-ui
+    nav.content-options.uneditable-ui( '*ngIf'="!editable"  '(click)'="toggleEditable()" )
       button Uredi popis korisnika
-    nav.content-options.editable-ui
+    nav.content-options.editable-ui( '*ngIf'="editable" '(click)'="toggleEditable()" )
       button Završi uređivanje popisa
     ul.content-primary.content-list( '*ngFor'="#user of users" )
       li.content-list-item.user-item
         .content-list-item-content
-          .content-list-item-name {{user.name}}
-            .displayNone {{user.id}}
+          .content-list-item-name {{user.first_name}} {{user.last_name}}
           .content-list-item-data
             .content-list-item-data-item.user-mail {{user.email}}
             .content-list-item-data-item.user-age {{user.age}} godina

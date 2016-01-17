@@ -22,6 +22,8 @@ export class EditUser {
     year_of_birth: Control = new Control('', Validators.required);
     occupation: Control = new Control('', Validators.required);
 
+    account_type: string;
+
     constructor(http: Http, routeParams: RouteParams, fb: FormBuilder) {
         this.http = http;
 
@@ -38,12 +40,20 @@ export class EditUser {
         http.get('admin/users/' + this.userId + '/get').map((res) => res.json()).subscribe((res) => {
             console.log(res);
             for (let name in res.data) {
-                this[name].updateValue(res.data[name]);
+                console.log(name);
+                if (name == 'account_type') {
+                    if (res.data.account_type == 1) this.account_type = "korisnik";
+                    else if (res.data.account_type == 2) this.account_type = "urednik";
+                    else if (res.data.account_type == 3) this.account_type = "administrator";
+                    else if (res.data.account_type == 4) this.account_type = "vlasnik";
+                }
+                else if (name == 'id') continue;
+                else this[name].updateValue(res.data[name]);
             }
         }, (err) => console.log(err));
     }
 
     onSubmit(values) {
-        this.http.post('/admin/users/' + this.userId + '/edit', urlEncode(values)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
+        this.http.post('/admin/users/' + this.userId + '/modify', urlEncode(values)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
     }
 }

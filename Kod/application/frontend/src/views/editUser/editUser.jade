@@ -19,7 +19,7 @@
       form( '[ngFormModel]'="userForm" '(ngSubmit)'="onSubmit(userForm.value)" )
         .form-line
           label(for='first_name') Ime
-          input(type='text', name='first_name', value='Slavko', pattern='.{2,64}' '[ngFormControl]'="userForm.controls['title']")
+          input(type='text', name='first_name', value='Slavko', pattern='.{2,64}' '[ngFormControl]'="userForm.controls['first_name']")
         .form-line
           label(for='last_name') Prezime
           input(type='text', name='last_name', value='Kovač', pattern='.{2,64}' '[ngFormControl]'="userForm.controls['last_name']")
@@ -34,7 +34,7 @@
           input(type='text', name='occupation', value='keramičar', pattern='.{2,64}' '[ngFormControl]'="userForm.controls['occupation']")
         .form-line
           label(for='account_type') Vrsta računa
-          input.account-type-input(type='text', name='account_type', value='Administrator', disabled='disabled' '[ngFormControl]'="userForm.controls['account_type']")
+          input.account-type-input(type='text', name='account_type', value='Administrator', disabled='disabled' '[(ngModel)]'="account_type")
         .form-line.editable-ui
           .left-spacer
           button.raised.alt.right Odustani

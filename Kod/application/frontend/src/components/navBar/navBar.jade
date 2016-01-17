@@ -10,8 +10,9 @@ nav.nav-bar
           | {{ group.displayName }}
         ul
           a( '[routerLink]'="[comp.componentName]" '*ngFor'="#comp of group.components" )
-            li.option-group-item
-              | {{ comp.displayName }}
+            div( '*ngIf'="!comp.hidden" )
+              li.option-group-item
+                | {{ comp.displayName }}
     li.nav-option-group
       a( href = '/user/auth/signout' )
         .nav-option-group-name Odjavi se
