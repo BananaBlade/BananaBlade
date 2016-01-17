@@ -53,30 +53,29 @@ class NavGroup {
 
 export class NavigationProvider {
     static navigationArray: NavGroup[] = [
-        new NavGroup( 'Slušaj radio', [], 2+4+8+16, true, new MyAsyncComponent( '', 'Index', 'index', '/' ) ),
         new NavGroup( 'Vlasničke mogućnosti', [
-            new MyAsyncComponent( 'Administratori', 'ManageAdmins', 'manageAdmins', 'settings/admins' ),
-            new MyAsyncComponent( 'Podaci o postaji', 'ManageRadiostation', 'manageRadiostation', 'settings/station' )
+            new MyAsyncComponent( 'Administratori', 'ManageAdmins', 'manageAdmins', './admins' ),
+            new MyAsyncComponent( 'Podaci o postaji', 'ManageRadiostation', 'manageRadiostation', './station' )
         ], 16, false ),
         new NavGroup( 'Administratorske mogućnosti', [
-            new MyAsyncComponent( 'Zvučni zapisi', 'ManageTracks', 'manageTracks', 'settings/tracks' ),
-            new MyAsyncComponent( 'Urednici', 'ManageEditors', 'manageEditors', 'settings/editors' ),
-            new MyAsyncComponent( 'Zahtjevi za terminima', 'ManageRequests', 'manageRequests', 'settings/requests' ),
-            new MyAsyncComponent( 'Korisnici', 'ManageUsers', 'manageUsers', 'settings/users' ),
-            new MyAsyncComponent( 'Dodaj zvučni zapis', 'AddTrack', 'addTrack', 'settings/tracks/add', true ),
-            new MyAsyncComponent( 'Uredi zvučni zapis', 'EditTrack', 'editTrack', 'settings/tracks/edit', true )
+            new MyAsyncComponent( 'Zvučni zapisi', 'ManageTracks', 'manageTracks', './tracks' ),
+            new MyAsyncComponent( 'Urednici', 'ManageEditors', 'manageEditors', './editors' ),
+            new MyAsyncComponent( 'Zahtjevi za terminima', 'ManageRequests', 'manageRequests', './requests' ),
+            new MyAsyncComponent( 'Korisnici', 'ManageUsers', 'manageUsers', './users' ),
+            new MyAsyncComponent( 'Dodaj zvučni zapis', 'AddTrack', 'addTrack', './tracks/add', true ),
+            new MyAsyncComponent( 'Uredi zvučni zapis', 'EditTrack', 'editTrack', './tracks/edit', true )
         ], 8, false ),
         new NavGroup( 'Uredničke mogućnosti', [
-            new MyAsyncComponent( 'Termini reprodukcije', 'EditorSlots', 'editorSlots', 'settings/slots' ),
-            new MyAsyncComponent( 'Sastavi listu za reprodukciju', 'MakePlaylist', 'makePlaylist', 'settings/slots/playlist', true )
+            new MyAsyncComponent( 'Termini reprodukcije', 'EditorSlots', 'editorSlots', './slots' ),
+            new MyAsyncComponent( 'Sastavi listu za reprodukciju', 'MakePlaylist', 'makePlaylist', './slots/playlist', true )
         ], 4, false ),
         new NavGroup( 'Korisničke mogućnosti', [
-            new MyAsyncComponent( 'Lista želja', 'MakeWishlist', 'makeWishlist', 'settings/wishlist' ),
+            new MyAsyncComponent( 'Lista želja', 'MakeWishlist', 'makeWishlist', './wishlist' ),
         ], 2, false ),
         new NavGroup( 'Postavke računa', [
-            new MyAsyncComponent( 'Uredi osobne podatke', 'AccountData', 'accountData', 'settings/account' ),
-            new MyAsyncComponent( 'Promijeni lozinku', 'AccountPassword', 'accountPassword', 'settings/account/password' ),
-            new MyAsyncComponent( 'Obriši račun', 'AccountDelete', 'accountDelete', 'settings/account/delete' )
+            new MyAsyncComponent( 'Uredi osobne podatke', 'AccountData', 'accountData', './account' ),
+            new MyAsyncComponent( 'Promijeni lozinku', 'AccountPassword', 'accountPassword', './account/password' ),
+            new MyAsyncComponent( 'Obriši račun', 'AccountDelete', 'accountDelete', './account/delete' )
         ], 2+4+8+16, false )
     ];
 

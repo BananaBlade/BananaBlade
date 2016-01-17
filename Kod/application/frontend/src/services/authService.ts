@@ -9,7 +9,7 @@ export class AuthService {
     private http: Http;
 
     storeUserAuthentication(callback?: Function) {
-        this.http.get('/user/account/type2').map((res) => res.json()).subscribe((res) => {
+        this.http.get('/user/account/type').map((res) => res.json()).subscribe((res) => {
             console.log(res);
             sessionStorage.setItem(ACCOUNT_TYPE, res.data.account_type);
             if (callback) callback();

@@ -5,6 +5,7 @@ import { RouterLink } from 'angular2/router';
 import 'rxjs/Rx';
 
 import { Form, urlEncode } from '../../services/utilities';
+import { AuthService } from '../../services/authService';
 
 @Component({
     selector: 'header-bar',
@@ -17,9 +18,11 @@ export class HeaderBar {
     @Input() isLoggedIn : boolean;
     loginForm: Form;
     http: Http;
+    authService: AuthService;
 
-    constructor(fb: FormBuilder, http: Http) {
+    constructor(fb: FormBuilder, http: Http, authService: AuthService) {
         this.http = http;
+        this.authService = authService;
 
         let loginEntities = ['email', 'password'];
         this.loginForm = new Form(fb, http, loginEntities, '/user/auth/login');
@@ -29,7 +32,7 @@ export class HeaderBar {
         console.log(value);
         this.http.post('/user/auth/login', urlEncode(value)).map((res) => res.json()).subscribe((res) => {
             console.log(res);
-            document.location.reload(true);
+            this.authService.storeUserAuthentication();
         }, (err) => console.log(err));
     }
 }
