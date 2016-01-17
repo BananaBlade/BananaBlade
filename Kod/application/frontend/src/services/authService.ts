@@ -30,19 +30,19 @@ export class AuthService {
     }
 
     isUser() {
-        this.getAuthLevel() == '1';
+        return this.getAuthLevel() == '1';
     }
 
     isEditor() {
-        this.getAuthLevel() == '2';
+        return this.getAuthLevel() == '2';
     }
 
     isAdmin() {
-        this.getAuthLevel() == '3';
+        return this.getAuthLevel() == '3';
     }
 
     isOwner() {
-        this.getAuthLevel() == '4';
+        return this.getAuthLevel() == '4';
     }
 
     static isUserInjector() {
