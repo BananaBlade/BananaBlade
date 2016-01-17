@@ -1,6 +1,6 @@
 .schedule-box
-    h1 Raspored emitiranja
+    h2 Raspored emitiranja
     ul.schedule
         li.schedule-item( '*ngFor' = '#item of items' )
-            .item-time {{ item.timeString() }}
+            .item-time {{ item.time }}
             .item-editor {{ item.editor }}

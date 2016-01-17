@@ -9,11 +9,9 @@ import { Form, urlEncode } from '../../services/utilities';
 @Component({
     selector: 'header-bar',
     templateUrl: './dest/components/headerBar/headerBar.html',
-    styles: [],
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, RouterLink ]
 })
 export class HeaderBar {
-    @Input() isFixed : boolean;
     @Input() isLoggedIn : boolean;
     loginForm: Form;
     http: Http;

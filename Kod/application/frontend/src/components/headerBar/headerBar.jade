@@ -1,4 +1,4 @@
-header.header-bar('[ngClass]'='{unfixed : !isFixed, "logged-in" : isLoggedIn, "not-logged-in" : !isLoggedIn}')
+header.header-bar('[ngClass]'='{"logged-in" : isLoggedIn, "not-logged-in" : !isLoggedIn}')
   .app-box
     .app-name
       a( href = '/' )
@@ -11,7 +11,7 @@ header.header-bar('[ngClass]'='{unfixed : !isFixed, "logged-in" : isLoggedIn, "n
         button(type='submit') Prijavi se
         button.dim(type='button') Registriraj se
     .user-name-box
-      a( '[routerLink]' = '[Index]' )
+      a( '[routerLink]' = '["Overview"]' )
         i.material-icons.user-icon settings
       .user-name
         | Mirko Horvat

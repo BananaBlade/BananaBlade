@@ -99,7 +99,7 @@ def get_next_on_schedule():
     """
     try:
         data = [{
-            'time'      :   slot.time,
+            'time'      :   slot.time.strftime( '%H:%M' ),
             'editor'    :   slot.editor.first_name + ' ' + slot.editor.last_name
         } for slot in Slot.get_next_on_schedule() ]
         return data_response( data )

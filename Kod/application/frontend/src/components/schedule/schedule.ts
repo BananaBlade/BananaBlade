@@ -14,31 +14,30 @@ export class Schedule{
     constructor( http : Http ){
         this.http = http;
         this.getItems();
-        //setInterval( this.getItems, 1000 );
     }
 
-    getItems(){
+    getItems( self? : any ){
+        if ( !self ) self = this;
         console.log( 'Getting' );
-        this.http.get( '/player/schedule' ).map( ( res ) => res.json() ).subscribe( ( res ) => {
-            this.items = []
+        self.http.get( '/player/schedule' ).map( ( res ) => res.json() ).subscribe( ( res ) => {
+            self.items = []
             for ( let i in res.data ){
-                this.items.push( new ScheduleItem( res.data[ i ].editor, res.data[ i ].time ) )
+                self.items.push( new ScheduleItem( res.data[ i ].editor, res.data[ i ].time ) )
             }
-            console.log( this.items );
         }, ( err ) => console.log( err ) );
+        var dt : number;
+        dt = 60 - ( new Date() ).getMinutes();
+        if ( dt == 0 ) dt = 60;
+        setTimeout( () => this.getItems( this ), dt * 60 * 1000 );
     }
 }
 
 class ScheduleItem{
     editor : string;
-    time : Date;
+    time : string;
 
     constructor( editor : string, time : string ){
         this.editor = editor;
-        this.time = new Date( time );
-    }
-
-    timeString(){
-        return "" + this.time.getHours() + ":" + ( this.time.getMinutes() < 10 ? '0' : '' ) + this.time.getMinutes();
+        this.time = time;
     }
 }

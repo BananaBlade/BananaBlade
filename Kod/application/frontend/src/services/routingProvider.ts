@@ -54,6 +54,7 @@ class NavGroup {
 export class NavigationProvider {
     static navigationArray: NavGroup[] = [
         new NavGroup( 'Slušaj radio', [], 2+4+8+16, true, new MyAsyncComponent( '', 'Index', 'index', '/' ) ),
+        new NavGroup( 'Pregled mogućnosti', [], 2+4+8+16, true, new MyAsyncComponent( '', 'Overview', 'overview', '/settings' ) ),
         new NavGroup( 'Vlasničke mogućnosti', [
             new MyAsyncComponent( 'Administratori', 'ManageAdmins', 'manageAdmins', 'settings/admins' ),
             new MyAsyncComponent( 'Podaci o postaji', 'ManageRadiostation', 'manageRadiostation', 'settings/station' )
