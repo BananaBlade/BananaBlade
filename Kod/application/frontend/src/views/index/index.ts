@@ -5,9 +5,11 @@ import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators
 import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
+import { Player } from '../../component/player';
 
 @Component({
-    selector: 'Index'
+    selector: 'Index',
+    directives: [Player]
 })
 @View({
     templateUrl: './dest/index/index.html'

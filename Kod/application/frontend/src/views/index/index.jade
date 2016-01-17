@@ -1,28 +1,6 @@
 .player-wrapper.section-wrapper
   .player-container.section-container
-    .player-box
-      header.player-header
-        h2 Trenutno na programu
-      .player-body
-        .current-editor
-          span Urednik:
-          |  Mirko Marković
-        .player-track
-          .player-track-title Violin Concerto No. 5: Tempo di minuetto
-          .player-track-info
-            .player-track-info-item.player-track-artist Wolfgang A. Mozart
-            .player-track-info-item.player-track-album The Very Best of Mozart
-            .player-track-info-item.player-track-year 2007
-            .player-track-info-item.player-track-genre Klasična glazba
-      audio#radio-player(src='/dest/static/audio/11.mp3', preload='auto')
-      .player-controls
-        .control-buttons
-          button.volume-button
-            i.material-icons volume_down
-          button.play-button(onclick="document.getElementById('radio-player').play()")
-            i.material-icons play_circle_filled
-          button.volume-button
-            i.material-icons volume_up
+    player
     .schedule-box
       h2 Raspored emitiranja
       ul.schedule
