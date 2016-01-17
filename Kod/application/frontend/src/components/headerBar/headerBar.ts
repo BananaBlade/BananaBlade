@@ -14,8 +14,7 @@ import { AuthService } from '../../services/authService';
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, RouterLink ]
 })
 export class HeaderBar {
-    @Input() isFixed : boolean;
-    @Input() isLoggedIn : boolean;
+    isLoggedIn : boolean;
     loginForm: Form;
     http: Http;
     authService: AuthService;
@@ -23,6 +22,8 @@ export class HeaderBar {
     constructor(fb: FormBuilder, http: Http, authService: AuthService) {
         this.http = http;
         this.authService = authService;
+        authService.storeUserAuthentication(() => this.isLoggedIn = authService.isLoggedIn());
+
 
         let loginEntities = ['email', 'password'];
         this.loginForm = new Form(fb, http, loginEntities, '/user/auth/login');
