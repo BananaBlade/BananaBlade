@@ -18,14 +18,14 @@ export class ManageRadiostation {
 
     isFormDisabled: boolean;
 
-    name: Control;
-    description: Control;
-    oib: Control;
-    address: Control;
-    email: Control;
-    frequency: Control;
+    name: Control = new Control('', Validators.required);
+    description: Control = new Control('', Validators.required);
+    oib: Control = new Control('', Validators.required);
+    address: Control = new Control('', Validators.required);
+    email: Control = new Control('', Validators.required);
+    frequency: Control = new Control('', Validators.required);
 
-    isOwner: boolean;
+    isOwner: boolean = false;
 
     onSubmit(value: String): void {
         console.log(value);
@@ -40,13 +40,6 @@ export class ManageRadiostation {
         this.http = http;
 
         this.isOwner = authService.isOwner();
-
-        this.name = new Control('', Validators.required);
-        this.description = new Control('', Validators.required);
-        this.oib = new Control('', Validators.required);
-        this.address = new Control('', Validators.required);
-        this.email = new Control('', Validators.required);
-        this.frequency = new Control('', Validators.required);
 
         this.isFormDisabled = true;
 

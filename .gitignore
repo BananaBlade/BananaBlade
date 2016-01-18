@@ -69,3 +69,6 @@ frontend/src/**/*.css
 # Docs ignores
 *.lock
 *.~lock.*
+*.tmp.txt
+Kod/application/radio.db
+radio.db
