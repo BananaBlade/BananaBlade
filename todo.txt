@@ -1,7 +1,7 @@
 TODO:
     - Player
     - Message console
-    - Registration fix
+    - Registration fix - clear data
     - AccountData
     - Autocomplete
     - File upload
@@ -16,4 +16,5 @@ SMALL FIXES:
     + header bar typo   [OK]
     - Hiding uneditable/editable elements
     - Time format for manageRequests
-    - manageUsers broken design
+    - manageUsers broken design [OK]
+    - login fail notify

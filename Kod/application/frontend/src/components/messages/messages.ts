@@ -9,32 +9,28 @@ import { COMMON_DIRECTIVES } from 'angular2/common';
 export class Messages{
     @Input( 'type' ) messageType : number;
     @Input( 'text' ) messageText : string;
-    shown : boolean;
+    shown : boolean = false;
 
-    constructor(){}
+    constructor(){
+        this.shown = false;
+    }
 
     ngOnInit(){
-        if ( this.messageText != undefined )
-            this.show();
+        if ( this.messageText.length > 0 && this.messageType > 0 ) this.show();
+        else this.shown = false;
     }
 
     show(){
         this.shown = true;
-        setTimeout( this.hideFactory, 100 );
-    }
-
-    hideFactory(){
-        return () => this.hide( this );
+        setTimeout( () => this.hide( this ), 5000 );
     }
 
     hide( self? : any ){
         if ( !self ) self = this;
-        console.log( 'Hide' );
         self.shown = false;
     }
 
-    ngOnChange( x : any ){
-        console.log( x );
+    ngOnChanges( x : any ){
         this.show();
     }
 }

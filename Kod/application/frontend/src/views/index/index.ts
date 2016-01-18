@@ -27,9 +27,19 @@ export class Index {
     year_of_birth: Control;
     occupation: Control;
 
+    messageText: string = '';
+    messageType: number = 0;
+
 
     onSubmitRegistration(value: String): void {
-        this.http.post('/user/auth/register', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp), (err) => console.log(err));
+        this.http.post('/user/auth/register', urlEncode( value ) ).subscribe(
+            ( res ) => {
+                this.messageType = 2; this.messageText = res.text();
+                this.resetControls();
+            },
+            ( err ) => {
+                this.messageType = 3; this.messageText = err.json().error_message;
+            });
     }
 
     constructor(fb: FormBuilder, http: Http) {
@@ -52,5 +62,10 @@ export class Index {
             'year_of_birth': this.year_of_birth,
             'occupation': this.occupation
         });
+    }
+
+    resetControls(){
+        for ( let i in this.registerForm.controls )
+            this.registerForm.controls[ i ].updateValue( '' );
     }
 }

@@ -15,8 +15,8 @@
       button Uredi popis korisnika
     nav.content-options.editable-ui( '*ngIf'="editable" '(click)'="toggleEditable()" )
       button Završi uređivanje popisa
-    ul.content-primary.content-list( '*ngFor'="#user of users" )
-      li.content-list-item.user-item
+    ul.content-primary.content-list
+      li.content-list-item.user-item( '*ngFor'="#user of users" )
         .content-list-item-content
           .content-list-item-name {{user.first_name}} {{user.last_name}}
           .content-list-item-data
