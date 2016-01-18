@@ -41,7 +41,6 @@ export class Player{
 
     getTrack(){
         this.http.get( '/player/info' ).map( ( res ) => res.json() ).subscribe( ( res ) => {
-            console.log( res.data )
             this.track = new Track( res.data.id, res.data.title, res.data.artist, res.data.album, res.data.genre, res.data.year, res.data.duration, res.data.editor );
         }, ( err ) => console.log( err ));
     }

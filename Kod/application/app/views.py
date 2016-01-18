@@ -362,27 +362,29 @@ def confirm_wishlist():
 
 # Admin track management
 
-@app.route( '/admin/tracks/add_just_file', methods = [ 'POST'] )
+@app.route( '/admin/tracks/upload', methods = [ 'POST' ] )
 @login_required
-def add_file():
-    """ Sorry for meddling in backend. I just want to see if this works :) """
+def upload_track():
+    """Uploads a track file onto the server and returns uploaded file path
+
+    Request should contain a `file` for upload.
+    """
 
     audio_file = request.files.get( 'file' )
 
     try:
-        filename = secure_filename( audio_file.filename )
-        print(filename)
-        validate_filename(filename)
-        path = os.path.join(os.getcwd(), app.config[ 'UPLOAD_FOLDER' ], filename )
-        print(path)
-        path = os.path.abspath(path)
-        print(path)
+        g.user._assert_admin()
+        filename = secure_filename( generate_random_string( 25 ) + '_' + audio_file.filename )
+        print( filename )
+        validate_filename( filename )
+        path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
+        print( path )
+        path = os.path.abspath( path )
+        print( path )
 
         audio_file.save( path )
-        g.user.add_track( title = filename, path = "", artist = "", album = "", duration = 100,
-            file_format = ".mp3", sample_rate = 10.0, bits_per_sample = 10,
-            genre = "", publisher = "", carrier_type = "", year = 1919 )
-        return success_response( 'Zvučni zapis uspješno dodan.', 201 )
+
+        return data_response( { 'path' : path }, 201 )
 
     except AuthorizationError:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
@@ -400,7 +402,7 @@ def add_track():
 
     Request should contain track metadata: `title`, `artist`, `album`, `duration`,
     `file_format`, `sample_rate`, `bits_per_sample`, `genre`, `publisher`,
-    `carrier_type`, `year`, and audio file for upload.
+    `carrier_type`, `year`, and `path` of a file previously stored on the server.
 
     TODO: Extensive testing!!
     """
@@ -415,7 +417,7 @@ def add_track():
     publisher       = request.values.get( 'publisher' )
     carrier_type    = request.values.get( 'carrier_type' )
     year            = request.values.get( 'year' )
-    audio_file      = request.files.get( 'audio_file' )
+    path            = request.values.get( 'path' )
 
     if duration is not None: duration = int( duration )
     if sample_rate is not None: sample_rate = float( sample_rate )
@@ -425,13 +427,7 @@ def add_track():
     try:
         validate_track_data( title, artist, album, duration, file_format, sample_rate,
             bits_per_sample, genre, publisher, carrier_type, year )
-        if audio_file is None: raise ValueError( 'Nije priložena zvučna datoteka.' )
 
-        validate_filename( audio_file.filename )
-        filename = secure_filename( audio_file.filename )
-        path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
-
-        audio_file.save( path )
         g.user.add_track( title = title, path = path, artist = artist, album = album, duration = duration,
             file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,
             genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )

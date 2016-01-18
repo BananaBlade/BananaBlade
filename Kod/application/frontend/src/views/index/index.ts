@@ -4,13 +4,15 @@ import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators
 import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
+import { Messages } from '../../components/messages/messages';
 import { Player } from '../../components/player/player';
 import { Popular } from '../../components/popular/popular';
 import { Schedule } from '../../components/schedule/schedule';
+import { Station } from '../../components/station/station';
 
 @Component({
     selector: 'Index',
-    directives: [ Player, Popular, Schedule ],
+    directives: [ Messages, Player, Popular, Schedule, Station ],
     templateUrl: './dest/views/index/index.html'
 })
 export class Index {
