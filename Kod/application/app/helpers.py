@@ -35,14 +35,11 @@ def generate_activation_code( user_id, activation_time ):
     return urllib.parse.quote( urllib.parse.quote( uid_hash + act_hash + rnd_hash, safe = '' ) )[ :256 ]
 
 def generate_filename( filename ):
-    """ """
+    """Generate a (probably) unique and definitely secure filename"""
     filename = secure_filename( generate_random_string( 12 ) + '_' + filename )
-    print( filename )
     validate_filename( filename )
     path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
-    print( path )
     path = os.path.abspath( path )
-    print( path )
     return path
 
 # Query ranking helpers

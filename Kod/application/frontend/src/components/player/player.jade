@@ -13,13 +13,15 @@
                 .player-track-info-item.player-track-year {{ track.year }}
                 .player-track-info-item.player-track-genre {{ track.genre }}
 
-    audio#audio-player( preload = "auto" )
+    audio#audio-player( preload = "none" )
     
     .player-controls
         .control-buttons
-            button.volume-button
+            button.volume-button( '(click)' = 'volumeDown()')
                 i.material-icons volume_down
-            button.play-button
+            button.play-button( '*ngIf' = '!playing' '(click)' = 'play()' )
                 i.material-icons play_circle_filled
-            button.volume-button
+            button.play-button( '*ngIf' = 'playing' '(click)' = 'pause()' )
+                i.material-icons pause_circle_filled
+            button.volume-button( '(click)' = 'volumeUp()')
                 i.material-icons volume_up

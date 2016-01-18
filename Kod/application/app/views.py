@@ -42,6 +42,7 @@ def show_index():
     """Displays the index page"""
     return app.send_static_file( 'index.html' )
 
+
 # Player routes
 
 @app.route( '/player/get', methods = [ 'GET' ] )
@@ -52,7 +53,7 @@ def get_currently_playing_track():
     """
     try:
         pt, _, _ = Track.get_currently_playing()
-        return send_file( pt.track.path )
+        return send_file( os.path.join( '..', pt.track.path ) )
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Trenutno se ne emitira ništa.', 404 )
     except IndexError:
@@ -70,17 +71,16 @@ def get_currently_playing_track_info():
         pt, time, editor = Track.get_currently_playing()
         track = pt.track
         data = {
-            'editor'            : editor.first_name + ' ' + editor.last_name,
-            'time'              : time,
             'id'                : track.id,
+            'play_location'     : time,
+            'play_duration'     : pt.play_duration,
             'title'             : track.title,
             'artist'            : track.artist,
             'album'             : track.album,
-            'duration'          : track.duration,
-            'play_duration'     : pt.play_duration,
             'genre'             : track.genre,
             'publisher'         : track.publisher,
-            'year'              : track.year
+            'year'              : track.year,
+            'editor'            : editor.first_name + ' ' + editor.last_name
         }
         return data_response( data )
     except DoesNotExist:
@@ -90,7 +90,20 @@ def get_currently_playing_track_info():
     except:
         return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu.', 404 )
 
-@app.route( '/player/schedule' )
+@app.route( '/player/location', methods = [ 'GET' ] )
+def get_currently_playing_track_location():
+    """ """
+    try:
+        _, time, _ = Track.get_currently_playing()
+        return data_response( { 'play_location' : time } )
+    except DoesNotExist:
+        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Trenutno se ne emitira ništa.', 404 )
+    except IndexError:
+        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Lista za reprodukciju je završila prije vremena.', 404 )
+    except:
+        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu.', 404 )
+
+@app.route( '/player/schedule', methods = [ 'GET' ] )
 def get_next_on_schedule():
     """Returns a list of current and 6 next assigned slots
 

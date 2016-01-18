@@ -63,19 +63,25 @@ class Track( BaseModel ):
     def get_currently_playing( cls ):
         """Returns the currently playing track and the editor who selected it
 
+        TODO: Bug fix!!!
+
         Raises DoesNotExist, IndexError
         """
         current_time = datetime.now()
         start_time = current_time.replace( minute = 0, second = 0, microsecond = 0 )
+        print( current_time, start_time )
+
         slot = Slot.get( Slot.time == start_time )
         playlist = iter( slot.get_playlist().order_by( PlaylistTrack.index ) )
         ptrack = next( playlist )
         try:
             while True:
-                if start_time > current_time - timedelta( seconds = ptrack.play_duration ):
+                print( start_time, ptrack.track.title )
+                if start_time + timedelta( seconds = ptrack.play_duration ) > current_time:
+                    print( ( current_time - start_time ).total_seconds() )
                     return ptrack, ( current_time - start_time ).total_seconds(), slot.editor
-                ptrack = next( playlist )
                 start_time += timedelta( seconds = ptrack.play_duration )
+                ptrack = next( playlist )
         except StopIteration:
             raise IndexError
 
