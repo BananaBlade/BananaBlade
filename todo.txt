@@ -1,5 +1,20 @@
-dokumentacija
--napraviti podijelu ostalih zahtjeva [ok]
--staviti broj revizije na svaku stranicu dokumenta [ok]
--stavit dob [ok]
--kod baze podataka naznačiti tipove atributa [ok]
+TODO:
+    - Player
+    - Message console
+    - Registration fix - clear data
+    - AccountData
+    - Autocomplete
+    - File upload
+    - Overview show according to user type [OK]
+    - Calendar editor slots
+    - manageEditors no AC
+    - Admin manage slots
+    - manageTracks not working
+    - move Registration to new component?
+
+SMALL FIXES:
+    + header bar typo   [OK]
+    - Hiding uneditable/editable elements
+    - Time format for manageRequests
+    - manageUsers broken design [OK]
+    - login fail notify

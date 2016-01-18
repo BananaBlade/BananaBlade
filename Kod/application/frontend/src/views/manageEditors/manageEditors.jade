@@ -1,4 +1,4 @@
-.center-area
+.center-area( '[ngClass]' = '{"state-uneditable" : !editable, "state-editable" : editable }' )
   header.center-header
     .view-path Upravljaj urednicima
   .center-content
@@ -11,19 +11,20 @@
           | ovlasti običnim korisnicima ili ih uklonite postojećim urednicima.
       .content-header-right
         i.material-icons.icon edit
-    nav.content-options( '[ngSwitch]'="editable" )
-      button( '*ngSwitchWhen'="true" '(click)'="toggleEditable()" ) Završi uređivanje popisa
-      button( '*ngSwitchDefault'='' '(click)'="toggleEditable()" ) Uredi popis urednika
+    nav.content-options.uneditable-ui
+      button( '(click)'="toggleEditable()" ) Uredi popis urednika
+     nav.content-options.editable-ui
+      button( '(click)'="toggleEditable()" ) Završi uređivanje popisa
     ul.content-primary.content-list
-      li.content-list-item.content-list-search-item.editable-ui( '*ngIf'="editable" )
+      li.content-list-item.content-list-search-item.editable-ui
         form
           .content-list-item-content
             label(for='add-item-search') Dodaj urednika
-            input.add-item-search(type='text', name='add_track_search' '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
+            input.add-item-search(type='text', name='add_track_search' autocomplete = "off" '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
           .content-list-item-options
             button.raised.add-item-button('[disabled]'="!matching" '(click)'="addEditor()")
               i.material-icons person_add
-      li.content-list-item.closestMatch-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
+      li.content-list-item.closest-match-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
         .content-list-item-content
           .content-list-item-name {{closestMatch.first_name}} {{closestMatch.last_name}}
           .content-list-item-data

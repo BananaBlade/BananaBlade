@@ -24,7 +24,7 @@ export class HeaderBar {
     constructor(fb: FormBuilder, http: Http, authService: AuthService) {
         this.http = http;
         this.authService = authService;
-        
+
         this.updateLoginStatus();
 
         let loginEntities = ['email', 'password'];
@@ -40,7 +40,7 @@ export class HeaderBar {
                 console.log(res);
                 this.userName = res.data.first_name + ' ' + res.data.last_name;
                 let role = res.data.account_type;
-                if (role == 1) this.userRole = "kosinik";
+                if (role == 1) this.userRole = "korisnik";
                 if (role == 2) this.userRole = "urednik";
                 if (role == 3) this.userRole = "administrator";
                 if (role == 4) this.userRole = "vlasnik";

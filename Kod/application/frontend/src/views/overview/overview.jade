@@ -1,4 +1,4 @@
-.center-area.dat-1
+.center-area( '[ngClass]' = '{ "dat-1" : authService.isUser(), "dat-2" : authService.isEditor(), "dat-3" : authService.isAdmin(), "dat-4" : authService.isOwner() }')
     header.center-header
         .view-path Pregledaj mogućnosti
     .center-content
@@ -76,7 +76,7 @@
                                 .option-name Statistike
                                 .option-descr Pregledajte razne statistike o radu radiopostaje
                 
-                .account-type-select.admin-select
+                .account-type-select.owner-select
                     .content-box-icon
                         i.material-icons vpn_key
                     .content-box-info

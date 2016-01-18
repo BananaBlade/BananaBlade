@@ -13,11 +13,12 @@
     ul.content-primary.content-list
       li.content-list-item.request-item( '*ngFor'="#request of requests")
         .content-list-item-content
-          .content-list-item-name {{request.days_bit_mask}} — {{request.time}}
+          .content-list-item-name {{ deconstructBitmask( request.days_bit_mask ) }} — {{request.time}}
           .content-list-item-data
             .content-list-item-data-item.request-editor {{request.editor.first_name}} {{request.editor.last_name}}
-            .content-list-item-data-item.request-date-interval {{request.start_date}} – {{request.end_date}}
-            .content-list-item-data-item.request-collisions-negative {{request.collisions}}
+            .content-list-item-data-item.request-date-interval {{ request.start_date }} – {{ request.end_date }}
+            .content-list-item-data-item.request-collisions-negative( '*ngIf' = '!request.collisions' ) Nema preklapanja
+            .content-list-item-data-item.request-collisions-positive( '*ngIf' = 'request.collisions' ) Postoi preklapanje
         .content-list-item-options.editable-ui
           button( '[disabled]'="request.collisions" )
             i.material-icons( '(click)'="approveSlot(request.id)" ) check

@@ -584,6 +584,14 @@ body
     &:last-child
         border-bottom        :     none
 
+    &.closest-match-item
+        background           :     $accent2_color
+        border               :     none
+        color                :     $alt_text_color
+
+        .content-list-item-data-item
+            color                  :     rgba( 255, 255, 255, 0.65 ) !important
+
 .content-list-item-content
     counter-increment  :     track_count
     padding-left       :     4.5rem
@@ -659,6 +667,7 @@ body
 
 .content-list-search-item
     background         :     $primary_color
+    border-bottom      :     none
     color              :     $alt_text_color
     padding-right      :     3rem
 
@@ -1800,21 +1809,21 @@ p.register-bait
     height            :     100%
     width             :     100%
 
-    .dt-success
+    &.dt-success
         background          :     $dark_primary_color
         color               :     $alt_text_color
 
         h1:after
             content               :     $success_icon
 
-    .dt-error
+    &.dt-error
         background          :     $accent_color
         color               :     $alt_text_color
 
         h1:after
             content               :     $error_icon
 
-    .dt-info
+    &.dt-info
         background          :     $accent2_color
         color               :     $alt_text_color
 

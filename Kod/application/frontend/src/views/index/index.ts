@@ -4,18 +4,23 @@ import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators
 import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
+import { AuthService } from '../../services/authService';
+
+import { Messages } from '../../components/messages/messages';
 import { Player } from '../../components/player/player';
 import { Popular } from '../../components/popular/popular';
 import { Schedule } from '../../components/schedule/schedule';
+import { Station } from '../../components/station/station';
 
 @Component({
     selector: 'Index',
-    directives: [ Player, Popular, Schedule ],
+    directives: [ Messages, Player, Popular, Schedule, Station ],
     templateUrl: './dest/views/index/index.html'
 })
 export class Index {
     http: Http;
     registerForm: ControlGroup;
+    authService: AuthService;
 
     first_name: Control;
     last_name: Control;
@@ -25,13 +30,23 @@ export class Index {
     year_of_birth: Control;
     occupation: Control;
 
+    messageText: string = '';
+    messageType: number = 0;
 
     onSubmitRegistration(value: String): void {
-        this.http.post('/user/auth/register', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp), (err) => console.log(err));
+        this.http.post('/user/auth/register', urlEncode( value ) ).subscribe(
+            ( res ) => {
+                this.messageType = 2; this.messageText = res.json().success_message;
+                this.resetControls();
+            },
+            ( err ) => {
+                this.messageType = 3; this.messageText = err.json().error_message;
+            });
     }
 
-    constructor(fb: FormBuilder, http: Http) {
+    constructor(fb: FormBuilder, http: Http, authService : AuthService) {
         this.http = http;
+        this.authService = authService;
 
         this.first_name = new Control('', Validators.required);
         this.last_name = new Control('', Validators.required);
@@ -50,5 +65,10 @@ export class Index {
             'year_of_birth': this.year_of_birth,
             'occupation': this.occupation
         });
+    }
+
+    resetControls(){
+        for ( let i in this.registerForm.controls )
+            this.registerForm.controls[ i ].updateValue( '' );
     }
 }

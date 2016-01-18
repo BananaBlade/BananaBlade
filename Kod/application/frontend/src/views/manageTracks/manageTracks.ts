@@ -2,19 +2,23 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
-
+import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
 @Component({
     selector: 'ManageTracks',
     templateUrl: './dest/views/manageTracks/manageTracks.html',
-    directives: [ NgFor ]
+    directives: [ NgFor, RouterLink ]
 })
 export class ManageTracks {
     http: Http;
     router: Router;
 
     tracks: Track[];
+    editable: boolean = false;
+
+    toggleEditable(){
+        this.editable = !this.editable;
+    }
 
     editTrack(track) {
         this.router.navigate(['EditTrack', { trackId: track.id }]);

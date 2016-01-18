@@ -18,7 +18,6 @@ export class Schedule{
 
     getItems( self? : any ){
         if ( !self ) self = this;
-        console.log( 'Getting' );
         self.http.get( '/player/schedule' ).map( ( res ) => res.json() ).subscribe( ( res ) => {
             self.items = []
             for ( let i in res.data ){

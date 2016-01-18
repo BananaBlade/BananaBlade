@@ -10,6 +10,6 @@ import { FILE_UPLOAD_DIRECTIVES, FileUploader } from '../../services/ng2-file-up
     directives: [ FILE_UPLOAD_DIRECTIVES ]
 })
 export class AddTrack {
-    private url: string = "/admin/tracks/add_just_file";
-    private uploader: FileUploader = new FileUploader({ url: this.url });
+    private uploadUrl: string = "/admin/tracks/upload";
+    private uploader: FileUploader = new FileUploader({ url: this.uploadUrl });
 }

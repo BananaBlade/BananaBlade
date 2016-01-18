@@ -2,13 +2,13 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
+import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
 
 @Component({
     selector: 'ManageRequests',
     templateUrl: './dest/views/manageRequests/manageRequests.html',
-    directives: [ NgFor ]
+    directives: [ NgFor, NgIf ]
 })
 export class ManageRequests {
     http: Http;
@@ -47,14 +47,23 @@ export class ManageRequests {
            }
        }, (err) => console.log(err));
    }
+
+   deconstructBitmask( bm ){
+       var days : string[] = [ 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned' ];
+       var present : string[] = [];
+       for ( var i = 0; i < 7; ++i )
+            if ( bm & ( 1 << i ) )
+                present.push( days[ i ] );
+       return present.join( ', ' );
+   }
 }
 
 class Request {
     id: number;
     time: string;
     days_bit_mask: number;
-    start_date: Date;
-    end_date: Date;
+    start_date: string;
+    end_date: string;
     editor: Editor;
     collisions: boolean;
 
@@ -62,8 +71,8 @@ class Request {
         this.id = values.id;
         this.time = values.time;
         this.days_bit_mask = values.days_bit_mask;
-        this.start_date = new Date(values.start_date);
-        this.end_date = new Date(values.end_date);
+        this.start_date = values.start_date;
+        this.end_date = values.end_date;
         this.editor = new Editor(values.editor);
         this.collisions = values.collisions;
     }
