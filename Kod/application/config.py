@@ -10,7 +10,7 @@ SECRET_KEY = '$j#e&7+*2w2y)0if$c-gvlfs^%@)q)7$(gv@6xk%*^o9r^1u1n'
 
 DATABASE = 'radio.db'
 
-UPLOAD_FOLDER = "frontend/dest/static/audio"
+UPLOAD_FOLDER = "/static/audio"
 
 MAIL_SERVER = "smtp.gmail.com"
 MAIL_PORT = 465

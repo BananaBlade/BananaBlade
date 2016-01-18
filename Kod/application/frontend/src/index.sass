@@ -738,12 +738,14 @@ body
 fieldset[ disabled ]
     input, textarea, select
         border-bottom        :     none
-        border               :     1px solid $border_color
         color                :     $text_color
 
     input[type = "file"]
         border               :     none
         color                :     rgba( 255, 255, 255, 0.6 )
+
+    label
+        border-right         :     2px solid $border_color
 
     .account-type-input
         color                :     $text_color
@@ -939,13 +941,6 @@ fieldset[ disabled ]
         position             :     absolute
         top                  :     0
         z-index              :     2
-
-        @for $i from 0 through 9
-            &[ data-value^='#{$i}' ]
-                width              :     (10*$i+1) * 1%
-
-        &[data-value='100']
-            width            :     100%
 
 
 // Center side styles

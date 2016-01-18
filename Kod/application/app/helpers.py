@@ -1,3 +1,4 @@
+import os
 import random
 import string
 import urllib.parse
@@ -5,12 +6,13 @@ import urllib.parse
 from binascii import b2a_base64
 from datetime import date, datetime, time, timedelta
 from hashlib import pbkdf2_hmac, sha256
+from werkzeug import secure_filename
 
 from flask import jsonify
 from flask.ext.mail import Message
 
 from app.validators import *
-from app import mail
+from app import app, mail
 
 
 
@@ -32,6 +34,16 @@ def generate_activation_code( user_id, activation_time ):
     rnd_hash = b2a_base64( sha256( str( generate_random_string( 32 ) ).encode( 'ascii' ) ).digest() ).decode( 'ascii' )
     return urllib.parse.quote( urllib.parse.quote( uid_hash + act_hash + rnd_hash, safe = '' ) )[ :256 ]
 
+def generate_filename( filename ):
+    """ """
+    filename = secure_filename( generate_random_string( 12 ) + '_' + filename )
+    print( filename )
+    validate_filename( filename )
+    path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
+    print( path )
+    path = os.path.abspath( path )
+    print( path )
+    return path
 
 # Query ranking helpers
 

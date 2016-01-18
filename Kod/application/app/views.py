@@ -5,7 +5,6 @@ import urllib.parse
 from datetime import date, datetime, time
 from flask import g, redirect, request, render_template, send_file, send_from_directory, session
 from peewee import DoesNotExist
-from werkzeug import secure_filename
 
 from app import app
 from app.decorators import *
@@ -374,14 +373,7 @@ def upload_track():
 
     try:
         g.user._assert_admin()
-        filename = secure_filename( generate_random_string( 25 ) + '_' + audio_file.filename )
-        print( filename )
-        validate_filename( filename )
-        path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
-        print( path )
-        path = os.path.abspath( path )
-        print( path )
-
+        path = generate_filename( audio_file.filename )
         audio_file.save( path )
 
         return data_response( { 'path' : path }, 201 )
@@ -520,7 +512,9 @@ def delete_track( track_id ):
     No request params.
     """
     try:
-        path = 'app/' + Track.get( Track.id == track_id ).path
+        path = Track.get( Track.id == track_id ).path
+        print( path )
+        print( app.config[ '' ] )
         os.remove( path )
         g.user.remove_track( track_id )
         return success_response( 'Zvučni zapis uspješno izbrisan.' )
@@ -530,8 +524,8 @@ def delete_track( track_id ):
         return error_response( 'Brisanje nije uspjelo: Ne postoji zvučni zapis s danim ID-om.', 404 )
     except OSError:
         return error_response( 'Brisanje nije uspjelo: Greška u sustavu.' )
-    except:
-        return error_response( 'Brisanje nije uspjelo: Nevaljan zahtjev.' )
+    #except:
+    #    return error_response( 'Brisanje nije uspjelo: Nevaljan zahtjev.' )
 
 
 # Admin editors management

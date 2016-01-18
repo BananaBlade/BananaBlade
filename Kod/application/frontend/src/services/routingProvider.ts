@@ -77,7 +77,7 @@ export class NavigationProvider {
             new MyAsyncComponent( 'Lista želja', 'MakeWishlist', 'makeWishlist', './wishlist' ),
         ], 2, false ),
         new NavGroup( 'Postavke računa', [
-            new MyAsyncComponent( 'Osobni podatci', 'AccountData', 'accountData', './account' ),
+            new MyAsyncComponent( 'Osobni podaci', 'AccountData', 'accountData', './account' ),
             new MyAsyncComponent( 'Promjena lozinke', 'AccountPassword', 'accountPassword', './account/password' ),
             new MyAsyncComponent( 'Brisanje računa', 'AccountDelete', 'accountDelete', './account/delete' )
         ], 2+4+8+16, false )
