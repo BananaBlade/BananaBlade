@@ -2,14 +2,14 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
+import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
 import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'ManageAdmins',
     templateUrl: './dest/views/manageAdmins/manageAdmins.html',
-    directives: [NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES]
+    directives: [NgIf, NgFor, FORM_DIRECTIVES]
 })
 export class ManageAdmins {
     http: Http;
@@ -75,7 +75,7 @@ export class ManageAdmins {
             if (this.normalUsers[i].id === adminId) {
                 this.admins.push(this.normalUsers[i]);
                 this.normalUsers.splice(i, 1);
-                
+
                 this.userSearch = "";
                 this.matching = false;
                 this.closestMatches = new Array();

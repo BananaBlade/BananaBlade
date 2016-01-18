@@ -1,4 +1,4 @@
-.center-area('data-editable'="true")
+.center-area( '[ngClass]' = '{"state-uneditable" : !editable, "state-editable" : editable }' )
   header.center-header
     .view-path Upravljaj administratorima
   .center-content
@@ -12,19 +12,20 @@
           b Sustav smije imati najviše 10 administratora.
       .content-header-right
         i.material-icons.icon edit
-    nav.content-options( '[ngSwitch]'="editable" )
-      button( '*ngSwitchWhen'="true" '(click)'="toggleEditable()" ) Završi uređivanje popisa
-      button( '*ngSwitchDefault'='' '(click)'="toggleEditable()" ) Uredi popis administratora
+    nav.content-options.uneditable-ui
+      button( '(click)'="toggleEditable()" ) Uredi popis administratora
+    nav.content-options.editable-ui
+      button( '(click)'="toggleEditable()" ) Završi uređivanje popisa
     ul.content-primary.content-list
-      li.content-list-item.content-list-search-item.editable-ui( '*ngIf'="editable" )
+      li.content-list-item.content-list-search-item.editable-ui
         form
           .content-list-item-content
             label(for='add_item_search') Dodaj administratora
-            input.add-item-search(type='text', name='add_item_search' '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
+            input.add-item-search(type='text', name='add_item_search' autocomplete = "off" '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
           .content-list-item-options
             button.raised.add-item-button('[disabled]'="!matching" '(click)'="addAdmin()")
               i.material-icons person_add
-      li.content-list-item.closestMatch-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
+      li.content-list-item.closest-match-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
         .content-list-item-content
           .content-list-item-name {{closestMatch.first_name}} {{closestMatch.last_name}}
           .content-list-item-data

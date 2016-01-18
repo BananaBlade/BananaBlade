@@ -584,6 +584,14 @@ body
     &:last-child
         border-bottom        :     none
 
+    &.closest-match-item
+        background           :     $accent2_color
+        border               :     none
+        color                :     $alt_text_color
+
+        .content-list-item-data-item
+            color                  :     rgba( 255, 255, 255, 0.65 ) !important
+
 .content-list-item-content
     counter-increment  :     track_count
     padding-left       :     4.5rem
@@ -659,6 +667,7 @@ body
 
 .content-list-search-item
     background         :     $primary_color
+    border-bottom      :     none
     color              :     $alt_text_color
     padding-right      :     3rem
 

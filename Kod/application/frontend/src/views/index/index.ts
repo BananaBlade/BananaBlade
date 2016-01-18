@@ -4,6 +4,8 @@ import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators
 import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
+import { AuthService } from '../../services/authService';
+
 import { Messages } from '../../components/messages/messages';
 import { Player } from '../../components/player/player';
 import { Popular } from '../../components/popular/popular';
@@ -18,6 +20,7 @@ import { Station } from '../../components/station/station';
 export class Index {
     http: Http;
     registerForm: ControlGroup;
+    authService: AuthService;
 
     first_name: Control;
     last_name: Control;
@@ -30,11 +33,10 @@ export class Index {
     messageText: string = '';
     messageType: number = 0;
 
-
     onSubmitRegistration(value: String): void {
         this.http.post('/user/auth/register', urlEncode( value ) ).subscribe(
             ( res ) => {
-                this.messageType = 2; this.messageText = res.text();
+                this.messageType = 2; this.messageText = res.json().success_message;
                 this.resetControls();
             },
             ( err ) => {
@@ -42,8 +44,9 @@ export class Index {
             });
     }
 
-    constructor(fb: FormBuilder, http: Http) {
+    constructor(fb: FormBuilder, http: Http, authService : AuthService) {
         this.http = http;
+        this.authService = authService;
 
         this.first_name = new Control('', Validators.required);
         this.last_name = new Control('', Validators.required);

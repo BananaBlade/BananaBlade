@@ -1,4 +1,4 @@
-.center-area
+.center-area( '[ngClass]' = '{"state-uneditable" : !editable, "state-editable" : editable }' )
   header.center-header
     .view-path Uredi zvučne zapise
   .center-content
@@ -11,15 +11,15 @@
           | čime omogućujete urednicima da ih reproduciraju u programu postaje.
       .content-header-right
         i.material-icons.icon library_music
-    nav.content-options.uneditable-ui.displayNone
-      button Uredi zvučne zapise
-    nav.content-options.editable-ui.displayNone
-      button Dodaj zvučni zapis
-      button Završi uređivanje zapisa
+    nav.content-options.uneditable-ui
+      button( '(click)' = 'toggleEditable()' ) Uredi zvučne zapise
+    nav.content-options.editable-ui
+      button( '[routerLink]' = '["/Settings", "AddTrack"]' ) Dodaj zvučni zapis
+      button( '(click)' = 'toggleEditable()' ) Završi uređivanje zapisa
     ul.content-primary.content-list
       li.content-list-item.track-item( '*ngFor'="#track of tracks" )
         .content-list-item-content
-          .content-list-item-name {{track.id}} {{track.title}}
+          .content-list-item-name {{track.title}}
           .content-list-item-data
             .content-list-item-data-item.track-artist {{track.artist}}
             .content-list-item-data-item.track-album {{track.album}}

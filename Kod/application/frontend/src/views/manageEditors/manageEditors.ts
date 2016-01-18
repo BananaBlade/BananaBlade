@@ -2,14 +2,14 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
+import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
 import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'ManageEditors',
     templateUrl: './dest/views/manageEditors/manageEditors.html',
-    directives: [NgSwitchWhen, NgSwitch, NgSwitchDefault, NgIf, NgFor, FORM_DIRECTIVES]
+    directives: [NgIf, NgFor, FORM_DIRECTIVES]
 })
 export class ManageEditors {
     http: Http;

@@ -4,7 +4,7 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
 
 @Component({
     selector: 'ShowStats',
-    templateUrl: './dest/views/ownerStats/ownerStats.html'
+    templateUrl: './dest/views/showStats/showStats.html'
 })
 export class ShowStats {
 

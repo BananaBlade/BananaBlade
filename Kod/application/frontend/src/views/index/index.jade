@@ -17,8 +17,8 @@ messages( '[type]' = 'messageType' '[text]' = 'messageText' )
         | voluptas sit aspernatur aut odit aut fugit, sed quia
       .radio-image
         i.material-icons blur_on
-.register-wrapper.section-wrapper
-  #register.register-container.section-container
+.register-wrapper.section-wrapper#register( '[ngClass]' = '{hidden : authService.isLoggedIn() }')
+  .register-container.section-container
     .register-descr-box
       h2 Postani dio FM Radija
       .register-descr

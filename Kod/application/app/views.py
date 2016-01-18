@@ -159,7 +159,7 @@ def process_registration():
         body = render_template( 'mail/activate.html', activation_code = user.activation_code )
         send_mail( '{} - Aktivacija korisničkog računa'.format( rs.name ), body, rs.email, recipient = user.email )
 
-        return success_response( 'Registracija uspješna.', 201 )
+        return success_response( 'Registracija uspješna; Na email adresu je poslan aktivacijski link.', 201 )
     except ValueError as e:
         return error_response( 'Registracija neuspješna: Uneseni su neispravni podaci: ' + str( e ) )
     except peewee.IntegrityError:
@@ -616,10 +616,10 @@ def list_requests():
         requests = g.user.get_all_requests()
         data = [{
             'id'            : req.id,
-            'time'          : req.time.isoformat(),
+            'time'          : req.time.strftime( '%H:%M'),
             'days_bit_mask' : req.days_bit_mask,
-            'start_date'    : req.start_date.isoformat(),
-            'end_date'      : req.end_date.isoformat(),
+            'start_date'    : req.start_date.strftime( '%d.%m.%Y' ),
+            'end_date'      : req.end_date.strftime( '%d.%m.%Y' ),
             'editor'        : {
                 'id'            : req.editor.id,
                 'first_name'    : req.editor.first_name,
