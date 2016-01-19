@@ -15,7 +15,7 @@ export class ManageUsers {
     isEditable: boolean = false;
 
     toggleEditable() {
-        this.isEditable = !this.isEditable;
+        this.editable = !this.editable;
     }
 
     constructor(http: Http, router: Router) {
