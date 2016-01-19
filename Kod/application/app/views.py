@@ -5,6 +5,7 @@ import urllib.parse
 from datetime import date, datetime, time
 from flask import g, redirect, request, render_template, send_file, send_from_directory, session
 from peewee import DoesNotExist
+from werkzeug import secure_filename
 
 from app import app
 from app.decorators import *
@@ -42,7 +43,6 @@ def show_index():
     """Displays the index page"""
     return app.send_static_file( 'index.html' )
 
-
 # Player routes
 
 @app.route( '/player/get', methods = [ 'GET' ] )
@@ -53,8 +53,7 @@ def get_currently_playing_track():
     """
     try:
         pt, _, _ = Track.get_currently_playing()
-        path = pt.track.path
-        return send_file( os.path.join( '..', path ) )
+        return send_file( pt.track.path )
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Trenutno se ne emitira ništa.', 404 )
     except IndexError:
@@ -72,16 +71,17 @@ def get_currently_playing_track_info():
         pt, time, editor = Track.get_currently_playing()
         track = pt.track
         data = {
+            'editor'            : editor.first_name + ' ' + editor.last_name,
+            'time'              : time,
             'id'                : track.id,
-            'play_location'     : time,
-            'play_duration'     : pt.play_duration,
             'title'             : track.title,
             'artist'            : track.artist,
             'album'             : track.album,
+            'duration'          : track.duration,
+            'play_duration'     : pt.play_duration,
             'genre'             : track.genre,
             'publisher'         : track.publisher,
-            'year'              : track.year,
-            'editor'            : editor.first_name + ' ' + editor.last_name
+            'year'              : track.year
         }
         return data_response( data )
     except DoesNotExist:
@@ -91,20 +91,7 @@ def get_currently_playing_track_info():
     except:
         return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu.', 404 )
 
-@app.route( '/player/location', methods = [ 'GET' ] )
-def get_currently_playing_track_location():
-    """ """
-    try:
-        _, time, _ = Track.get_currently_playing()
-        return data_response( { 'play_location' : time } )
-    except DoesNotExist:
-        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Trenutno se ne emitira ništa.', 404 )
-    except IndexError:
-        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu: Lista za reprodukciju je završila prije vremena.', 404 )
-    except:
-        return error_response( 'Nije moguće dohvatiti podatke o trenutno sviranom zapisu.', 404 )
-
-@app.route( '/player/schedule', methods = [ 'GET' ] )
+@app.route( '/player/schedule' )
 def get_next_on_schedule():
     """Returns a list of current and 6 next assigned slots
 
@@ -172,7 +159,7 @@ def process_registration():
         body = render_template( 'mail/activate.html', activation_code = user.activation_code )
         send_mail( '{} - Aktivacija korisničkog računa'.format( rs.name ), body, rs.email, recipient = user.email )
 
-        return success_response( 'Registracija uspješna; Na email adresu je poslan aktivacijski link.', 201 )
+        return success_response( 'Registracija uspješna.', 201 )
     except ValueError as e:
         return error_response( 'Registracija neuspješna: Uneseni su neispravni podaci: ' + str( e ) )
     except peewee.IntegrityError:
@@ -375,22 +362,27 @@ def confirm_wishlist():
 
 # Admin track management
 
-@app.route( '/admin/tracks/upload', methods = [ 'POST' ] )
+@app.route( '/admin/tracks/add_just_file', methods = [ 'POST'] )
 @login_required
-def upload_track():
-    """Uploads a track file onto the server and returns uploaded file path
-
-    Request should contain a `file` for upload.
-    """
+def add_file():
+    """ Sorry for meddling in backend. I just want to see if this works :) """
 
     audio_file = request.files.get( 'file' )
 
     try:
-        g.user._assert_admin()
-        path = generate_filename( audio_file.filename )
-        audio_file.save( path )
+        filename = secure_filename( audio_file.filename )
+        print(filename)
+        validate_filename(filename)
+        path = os.path.join(os.getcwd(), app.config[ 'UPLOAD_FOLDER' ], filename )
+        print(path)
+        path = os.path.abspath(path)
+        print(path)
 
-        return data_response( { 'path' : path }, 201 )
+        audio_file.save( path )
+        g.user.add_track( title = filename, path = "", artist = "", album = "", duration = 100,
+            file_format = ".mp3", sample_rate = 10.0, bits_per_sample = 10,
+            genre = "", publisher = "", carrier_type = "", year = 1919 )
+        return success_response( 'Zvučni zapis uspješno dodan.', 201 )
 
     except AuthorizationError:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
@@ -408,7 +400,7 @@ def add_track():
 
     Request should contain track metadata: `title`, `artist`, `album`, `duration`,
     `file_format`, `sample_rate`, `bits_per_sample`, `genre`, `publisher`,
-    `carrier_type`, `year`, and `path` of a file previously stored on the server.
+    `carrier_type`, `year`, and audio file for upload.
 
     TODO: Extensive testing!!
     """
@@ -423,7 +415,7 @@ def add_track():
     publisher       = request.values.get( 'publisher' )
     carrier_type    = request.values.get( 'carrier_type' )
     year            = request.values.get( 'year' )
-    path            = request.values.get( 'path' )
+    audio_file      = request.files.get( 'audio_file' )
 
     if duration is not None: duration = int( duration )
     if sample_rate is not None: sample_rate = float( sample_rate )
@@ -433,7 +425,13 @@ def add_track():
     try:
         validate_track_data( title, artist, album, duration, file_format, sample_rate,
             bits_per_sample, genre, publisher, carrier_type, year )
+        if audio_file is None: raise ValueError( 'Nije priložena zvučna datoteka.' )
 
+        validate_filename( audio_file.filename )
+        filename = secure_filename( audio_file.filename )
+        path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
+
+        audio_file.save( path )
         g.user.add_track( title = title, path = path, artist = artist, album = album, duration = duration,
             file_format = file_format, sample_rate = sample_rate, bits_per_sample = bits_per_sample,
             genre = genre, publisher = publisher, carrier_type = carrier_type, year = year )
@@ -526,9 +524,7 @@ def delete_track( track_id ):
     No request params.
     """
     try:
-        path = Track.get( Track.id == track_id ).path
-        print( path )
-        print( app.config[ '' ] )
+        path = 'app/' + Track.get( Track.id == track_id ).path
         os.remove( path )
         g.user.remove_track( track_id )
         return success_response( 'Zvučni zapis uspješno izbrisan.' )
@@ -538,8 +534,8 @@ def delete_track( track_id ):
         return error_response( 'Brisanje nije uspjelo: Ne postoji zvučni zapis s danim ID-om.', 404 )
     except OSError:
         return error_response( 'Brisanje nije uspjelo: Greška u sustavu.' )
-    #except:
-    #    return error_response( 'Brisanje nije uspjelo: Nevaljan zahtjev.' )
+    except:
+        return error_response( 'Brisanje nije uspjelo: Nevaljan zahtjev.' )
 
 
 # Admin editors management
@@ -624,10 +620,10 @@ def list_requests():
         requests = g.user.get_all_requests()
         data = [{
             'id'            : req.id,
-            'time'          : req.time.strftime( '%H:%M'),
+            'time'          : req.time.isoformat(),
             'days_bit_mask' : req.days_bit_mask,
-            'start_date'    : req.start_date.strftime( '%d.%m.%Y' ),
-            'end_date'      : req.end_date.strftime( '%d.%m.%Y' ),
+            'start_date'    : req.start_date.isoformat(),
+            'end_date'      : req.end_date.isoformat(),
             'editor'        : {
                 'id'            : req.editor.id,
                 'first_name'    : req.editor.first_name,
