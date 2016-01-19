@@ -52,8 +52,11 @@ def get_currently_playing_track():
     No request params.
     """
     try:
+        print( request.headers )
         pt, _, _ = Track.get_currently_playing()
-        return send_file( os.path.join( '..', pt.track.path ) )
+        path = pt.track.path
+        print( send_file( os.path.join( '..', path ) ).headers )
+        return send_file( os.path.join( '..', path ) )
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Trenutno se ne emitira ništa.', 404 )
     except IndexError:

@@ -56,8 +56,10 @@ export class Player{
         self.getTrackData();
         self.audio.src = self.sourceUrl;
         //self.audio.load();
-        console.log( ( self.track.play_duration - self.track.play_location ) );
-        self.timeout = setTimeout( () => self.getTrack( self ), ( self.track.play_duration - self.track.play_location ) * 1000 );
+        var delta = ( self.track.play_duration - self.track.play_location );
+        console.log( delta );
+        if ( delta == 0 ) delta = 100;
+        self.timeout = setTimeout( () => self.getTrack( self ), delta * 1000 );
         if ( self.playing ) self.audio.play();
     }
 
@@ -67,7 +69,12 @@ export class Player{
         this.http.get( '/player/location' ).map( ( res ) => ( res ).json() ).subscribe(
             ( res ) => this.track.play_location = res.data.play_location, ( err ) => console.log( err ) );
         // Test for Apache
-        this.audio.onloadedmetadata = () => ( this.audio.currentTime = this.track.play_location );
+        this.audio.onloadedmetadata = () => {
+            console.log( 'MD loaded' );
+            //this.audio.duration = 105;
+            this.audio.currentTime = 100;
+            console.log( this.audio.currentTime );
+        }
         this.audio.play();
     }
 
