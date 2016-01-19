@@ -7,5 +7,5 @@ import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/r
   templateUrl: './dest/views/makeWishlist/makeWishlist.html'
 })
 export class MakeWishlist {
-    this.editable : boolean = false;
+    editable : boolean = false;
 }
