@@ -2,95 +2,75 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
+import { COMMON_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 
 import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'ManageEditors',
     templateUrl: './dest/views/manageEditors/manageEditors.html',
-    directives: [NgIf, NgFor, FORM_DIRECTIVES]
+    directives: [ COMMON_DIRECTIVES, FORM_DIRECTIVES ]
 })
 export class ManageEditors {
     http: Http;
     editors: User[] = new Array();
-    normalUsers: any[] = new Array();
     closestMatches: any[] = new Array();
     editable: boolean = false;
     userSearch: string = "";
-
-    matching: boolean = false;
-    matchingId: number = -1;
-    matchingIndex: number = -1;
 
     toggleEditable() {
         this.editable = !this.editable;
     }
 
-    checkIfMatching(searchString) {
-        for (let i in this.normalUsers) {
-            let fullName = this.normalUsers[i].first_name + ' ' + this.normalUsers[i].last_name;
-            if (fullName === searchString) {
-                this.matching = true;
-                this.matchingId = this.normalUsers[i].id;
-                this.matchingIndex = i;
-                return;
+    onKeyPressed(event?) {
+        let count = 0;
+        let enteredLetter = event ? String.fromCharCode(event.keyCode) : '';
+
+        if (this.userSearch.length < 2) return;
+
+        this.http.get('/users/search/' + this.userSearch + enteredLetter).subscribe((res) => {
+            this.closestMatches = new Array();
+            console.log(res);
+            let data = res.json().data;
+            for (let i = 0; i < 3 && data[i]; i += 1) {
+                this.closestMatches.push(data[i]);
             }
-        }
-        this.matching = false;
-        return;
+        }, (err) => console.log(err));
     }
 
-    onKeyPressed(event) {
-        let count = 0;
-        let enteredLetter = String.fromCharCode(event.keyCode);
-        this.closestMatches = new Array();
-        for (let i in this.normalUsers) {
-            if (count === 3) return;
-            let fullName = this.normalUsers[i].first_name + ' ' + this.normalUsers[i].last_name;
-            if (fullName.indexOf(this.userSearch + enteredLetter) === 0) {
-                count += 1;
-                this.closestMatches.push(this.normalUsers[i]);
-            }
+    enterCheck(event) {
+        if (event.keyCode == 13) {
+            this.addEditor();
         }
-        this.checkIfMatching(this.userSearch + enteredLetter);
     }
 
     addEditor() {
-        if (this.matching) {
-            this.userSearch = "";
-            this.matching = false;
-            this.closestMatches = new Array();
+        this.http.post('/admin/editors/add/' + this.closestMatches[0].id, '').map((res) => res.text()).subscribe((data) => console.log(data), (err) => console.log(err));
+        this.editors.push(this.closestMatches[0]);
 
-            this.editors.push(this.normalUsers[this.matchingIndex]);
-            this.normalUsers.splice(this.matchingIndex, 1);
-
-            this.http.post('/admin/editors/add/' + this.matchingId.toString(), '').map((res) => res.json()).subscribe((data) => console.log(data), (err) => console.log(err));
-        }
+        this.userSearch = "";
+        this.closestMatches = new Array();
     }
 
     removeEditor(removedEditorId) {
         for (let i in this.editors) {
             if (this.editors[i].id === removedEditorId) {
-                this.normalUsers.push(this.editors[i]);
                 this.editors.splice(i, 1);
                 break;
             }
         }
-        this.http.post('/admin/editors/remove/' + removedEditorId.toString(), '').map((res) => res.json()).subscribe((data) => console.log(data), (err) => console.log(err));
+        this.http.post('/admin/editors/remove/' + removedEditorId.toString(), '').subscribe((data) => console.log(data), (err) => console.log(err));
     }
 
     constructor(http: Http) {
         this.http = http;
 
-        http.get('/admin/users/list').map((res) => res.json().data).subscribe((res) => {
-            this.normalUsers = new Array();
+        http.get('/admin/editors/list').subscribe((res) => {
             this.editors = new Array();
-            for (let i in res) {
-                let user = new User(res[i]);
-                if (user.account_type === 2) this.editors.push(user);
-                else if (user.account_type === 1) this.normalUsers.push(user);
-                else console.log(user);
+            let data = res.json().data;
+            console.log(data);
+            for (let i in data) {
+                this.editors.push(new User(data[i]));
             }
         }, (err) => console.log(err));
     }

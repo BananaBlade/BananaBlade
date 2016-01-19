@@ -1,3 +1,3 @@
 .console-wrapper( '[ngClass]' = '{ hidden : !shown }' )
     .console-item( '[ngClass]' = '{ "success-item" : (messageType == 2), "error-item" : (messageType == 3), "info-item" : (messageType == 1 )}')
-        {{ messageText }}
+        | {{ messageText }}
