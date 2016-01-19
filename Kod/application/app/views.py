@@ -325,6 +325,22 @@ def get_wishlist():
     except:
         return error_response( 'Listu želja nije moguće dohvatiti: Nevaljan zahtjev.' )
 
+@app.route( '/user/wishlist/confirmation_time', methods = [ 'GET' ] )
+@login_required
+def get_wishlist_confirmation_time():
+    """Return time of last confirmation of user's wishlist
+
+    No request params.
+    """
+    try:
+        confirmation_time = g.user.get_wishlist_confirmation_time()
+        return data_response( { 'confirmation_time' : confirmation_time } )
+    except AuthorizationError:
+        return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja: Nedovoljne ovlasti.', 403 )
+    except:
+        return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja' )
+
+
 @app.route( '/user/wishlist/set', methods = [ 'POST' ] )
 @login_required
 def set_wishlist():
