@@ -334,7 +334,7 @@ def get_wishlist():
         } for wish in wishlist ]
         return data_response( data )
     except AuthorizationError:
-        return error_response( 'Listu želja nije moguće dohvatiti: Nedozvoljena mogućnost', 403 )
+        return error_response( 'Listu želja nije moguće dohvatiti: Nedozvoljena mogućnost.', 403 )
     except:
         return error_response( 'Listu želja nije moguće dohvatiti: Nevaljan zahtjev.' )
 
@@ -349,7 +349,7 @@ def get_wishlist_confirmation_time():
         confirmation_time = g.user.get_wishlist_confirmation_time()
         return data_response( { 'confirmation_time' : confirmation_time } )
     except AuthorizationError:
-        return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja: Nedovoljne ovlasti.', 403 )
+        return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja: Nedozvoljena mogućnost.', 403 )
     except:
         return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja.' )
 

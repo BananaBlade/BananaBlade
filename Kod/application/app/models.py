@@ -654,7 +654,13 @@ class User( BaseModel ):
         return Wish.get_user_wishlist( self )
 
     def get_wishlist_confirmation_time( self ):
-        """ """
+        """Return last time user confirmed his wishlist
+
+        Restricted to basic users.
+
+        Raises AuthorizationError
+        """
+        self._assert_user()
         last_confirmed_wish = ( Wish.select().where( ( Wish.user == self ) &
             ( Wish.is_temporary == False ) ).order_by( Wish.date_time.desc() ).first() )
         return last_confirmed_wish.date_time if last_confirmed_wish is not None else None
