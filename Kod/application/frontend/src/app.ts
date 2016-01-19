@@ -24,6 +24,5 @@ export class App {
 
     constructor(router: Router) {
         this.router = router;
-        router.navigate( [ 'Index' ] );
     };
 }

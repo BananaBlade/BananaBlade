@@ -25,15 +25,16 @@
           .content-list-item-options
             button.raised.add-item-button('[disabled]'="!matching" '(click)'="addAdmin()")
               i.material-icons person_add
-      li.content-list-item.closest-match-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
-        .content-list-item-content
-          .content-list-item-name {{closestMatch.first_name}} {{closestMatch.last_name}}
-          .content-list-item-data
-            .content-list-item-data-item.user-mail {{closestMatch.email}}
-            .content-list-item-data-item.user-age {{closestMatch.year_of_birth}}
-            .content-list-item-data-item.user-occupation {{closestMatch.occupation}}
-        .content-list-item-options.editable-ui
-          button.alt( '(click)'="addAdmin2(closestMatch.id)")
+      div
+          li.content-list-item.closest-match-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
+            .content-list-item-content
+              .content-list-item-name {{closestMatch.first_name}} {{closestMatch.last_name}}
+              .content-list-item-data
+                .content-list-item-data-item.user-mail {{closestMatch.email}}
+                .content-list-item-data-item.user-age {{closestMatch.year_of_birth}}
+                .content-list-item-data-item.user-occupation {{closestMatch.occupation}}
+            .content-list-item-options.editable-ui
+              button.alt( '(click)'="addAdmin2(closestMatch.id)")
             i.material-icons check
       li.content-list-item.admin-item.dark-primary-color( '*ngFor'="#admin of admins" )
         .content-list-item-content

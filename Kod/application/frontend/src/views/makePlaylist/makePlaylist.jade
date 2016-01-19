@@ -1,4 +1,4 @@
-.center-area
+.center-area('[ngClass]' = '{"state-editable" : editable, "state-uneditable" : !editable}')
   header.center-header
     .view-path Termini reprodukcije > Uredi listu za reprodukciju
   .center-content
@@ -34,16 +34,17 @@
           .content-list-item-options
             button.raised.add-item-button( '[disabled]'="!matching" '(click)'="addTrack()" )
               i.material-icons playlist_add
-      li.content-list-item.track-item( '*ngFor'="#track of searchResults" )
-        .content-list-item-content
-          .content-list-item-name {{track.title}}
-          .content-list-item-data
-            .content-list-item-data-item.track-duration {{track.play_duration}}
-            .content-list-item-data-item.track-artist-dim {{track.artist}}
-            .content-list-item-data-item.track-album {{track.album}}
-        .content-list-item-options.editable-ui
-          button.alt( '(click)'="addTrackToPlaylist(track)" )
-            i.material-icons check
+      div
+          li.content-list-item.closest-match-item.track-item( '*ngFor'="#track of searchResults" )
+            .content-list-item-content
+              .content-list-item-name {{track.title}}
+              .content-list-item-data
+                .content-list-item-data-item.track-duration {{track.play_duration}}
+                .content-list-item-data-item.track-artist-dim {{track.artist}}
+                .content-list-item-data-item.track-album {{track.album}}
+            .content-list-item-options.editable-ui
+              button.alt( '(click)'="addTrackToPlaylist(track)" )
+                i.material-icons check
       li.content-list-item.track-item( '*ngFor'="#track of playlist" )
         .content-list-item-content
           .content-list-item-name {{track.title}}

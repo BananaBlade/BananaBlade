@@ -586,8 +586,11 @@ body
 
     &.closest-match-item
         background           :     $accent2_color
-        border               :     none
+        border-bottom-color  :     lighten( $accent2_color, 10% )
         color                :     $alt_text_color
+
+        &:first-child
+            background             :     lighten( $accent2_color, 10% )
 
         .content-list-item-data-item
             color                  :     rgba( 255, 255, 255, 0.65 ) !important

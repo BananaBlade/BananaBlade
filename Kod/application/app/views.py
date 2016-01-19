@@ -362,7 +362,8 @@ def set_wishlist():
     on the user's wishlist. Parameters are JSON-encoded.
     """
     try:
-        track_list = request.get_json( force = True ).get( 'track_list' )
+        track_list = request.get_json( force = True )
+        print( track_list )
         g.user.set_wishlist( track_list )
         return success_response( 'Lista želja uspješno pohranjena.', 201 )
     except AuthorizationError:

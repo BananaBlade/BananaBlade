@@ -1,12 +1,14 @@
 
-import {View, Component} from 'angular2/core';
+import { Component } from 'angular2/core';
+import { COMMON_DIRECTIVES } from 'angular2/common';
 import {Location, RouteConfig, RouterLink, Router, CanActivate, RouteParams} from 'angular2/router';
 import { Http } from 'angular2/http';
 import { urlEncode } from '../../services/utilities';
 
 @Component({
   selector: 'MakePlaylist',
-  templateUrl: './dest/views/makePlaylist/makePlaylist.html'
+  templateUrl: './dest/views/makePlaylist/makePlaylist.html',
+  directives: [ COMMON_DIRECTIVES ]
 })
 export class MakePlaylist {
     http: Http;

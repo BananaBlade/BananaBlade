@@ -57,6 +57,10 @@ export class ManageAdmins {
     }
 
     addAdmin() {
+        if ( this.admins.length > 9 ){
+            console.log( 'Too many admins.' );
+            return;
+        }
         if (this.matching) {
             this.userSearch = "";
             this.matching = false;

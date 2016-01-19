@@ -13,8 +13,10 @@
                 .player-track-info-item.player-track-year {{ track.year }}
                 .player-track-info-item.player-track-genre {{ track.genre }}
 
-    audio#audio-player( preload = "metadata" )
-    
+    audio#audio-player( preload = "false" )
+    .player-progress-bar
+        //.player-progress( '[style.width]' = 'this.audio.currentTime / this.audio.duration')
+        
     .player-controls
         .control-buttons
             button.volume-button( '(click)' = 'volumeDown()')

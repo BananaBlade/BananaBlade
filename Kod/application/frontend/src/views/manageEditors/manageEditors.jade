@@ -24,13 +24,15 @@
           .content-list-item-options
             button.raised.add-item-button('[disabled]'="!matching" '(click)'="addEditor()")
               i.material-icons person_add
-      li.content-list-item.closest-match-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
-        .content-list-item-content
-          .content-list-item-name {{closestMatch.first_name}} {{closestMatch.last_name}}
-          .content-list-item-data
-            .content-list-item-data-item.user-mail {{closestMatch.email}}
-            .content-list-item-data-item.user-age {{closestMatch.year_of_birth}}
-            .content-list-item-data-item.user-occupation {{closestMatch.occupation}}
+      div
+          li.content-list-item.closest-match-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
+            .content-list-item-content
+              .content-list-item-name {{closestMatch.first_name}} {{closestMatch.last_name}}
+              .content-list-item-data
+                .content-list-item-data-item.user-mail {{closestMatch.email}}
+                .content-list-item-data-item.user-age {{closestMatch.year_of_birth}}
+                .content-list-item-data-item.user-occupation {{closestMatch.occupation}}
+         
       li.content-list-item.editor-item.dark-primary-color( '*ngFor'="#editor of editors" )
         .content-list-item-content
           .content-list-item-name {{editor.first_name}} {{editor.last_name}}

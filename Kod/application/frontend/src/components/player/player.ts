@@ -43,9 +43,9 @@ export class Player{
         this.http = http;
         this.track = new Track( -1, 'Nepostojeći zapis', 'n/a', 'n/a', 'n/a', 0, 0, 0, 'n/a' );
         this.audio = document.getElementById( 'audio-player' );
-        this.audio.src = this.sourceUrl;
+        //this.audio.src = this.sourceUrl;
         this.playing = false;
-        this.getTrack();
+        //this.getTrack();
     }
 
     getTrack( self? : any ){
