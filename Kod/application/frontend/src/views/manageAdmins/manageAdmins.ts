@@ -30,7 +30,7 @@ export class ManageAdmins {
     checkIfMatching(searchString) {
         for (let i in this.normalUsers) {
             let fullName = this.normalUsers[i].first_name + ' ' + this.normalUsers[i].last_name;
-            if (fullName === searchString) {
+            if (fullName.toLowerCase() === searchString.toLowerCase()) {
                 this.matching = true;
                 this.matchingId = this.normalUsers[i].id;
                 this.matchingIndex = i;
