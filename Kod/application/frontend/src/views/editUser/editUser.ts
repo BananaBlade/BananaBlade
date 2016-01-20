@@ -1,14 +1,15 @@
 
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, RouteParams } from 'angular2/router';
-import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
+import { COMMON_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 import { Http } from 'angular2/http';
 
 import { urlEncode } from '../../services/utilities';
 
 @Component({
   selector: 'EditUser',
-  templateUrl: './dest/views/editUser/editUser.html'
+  templateUrl: './dest/views/editUser/editUser.html',
+  directives: COMMON_DIRECTIVES
 })
 export class EditUser {
     http: Http;
@@ -23,6 +24,7 @@ export class EditUser {
     occupation: Control = new Control('', Validators.required);
 
     account_type: string;
+    editable: boolean = false;
 
     constructor(http: Http, routeParams: RouteParams, fb: FormBuilder) {
         this.http = http;
@@ -52,6 +54,8 @@ export class EditUser {
             }
         }, (err) => console.log(err));
     }
+
+    toggleEditable(){ this.editable = !this.editable; }
 
     onSubmit(values) {
         this.http.post('/admin/users/' + this.userId + '/modify', urlEncode(values)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));

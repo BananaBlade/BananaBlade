@@ -1,4 +1,4 @@
-.center-area(data-editable='false')
+.center-area('[ngClass]' = '{"state-editable" : editable, "state-uneditable" : !editable}')
   header.center-header
     .view-path Korisnici > Uredi korisničke podatke
   .center-content
@@ -14,7 +14,7 @@
       .content-header-right
         i.material-icons.icon account_box
     nav.content-options.uneditable-ui
-      button Izmijeni podatke o korisniku
+      button( '(click)' = 'toggleEditable()' ) Izmijeni podatke o korisniku
     .content-primary.content-form
       form( '[ngFormModel]'="userForm" '(ngSubmit)'="onSubmit(userForm.value)" )
         .form-line
@@ -37,5 +37,5 @@
           input.account-type-input(type='text', name='account_type', value='Administrator', disabled='disabled' '[(ngModel)]'="account_type")
         .form-line.editable-ui
           .left-spacer
-          button.raised.alt.right Odustani
+          button.raised.alt.right( '(click)' = 'toggleEditable()' ) Odustani
           button.raised.left Spremi promjene

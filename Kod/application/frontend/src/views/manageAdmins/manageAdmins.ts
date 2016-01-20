@@ -25,19 +25,8 @@ export class ManageAdmins {
     onKeyPressed(event?) {
         let count = 0;
         let enteredLetter = event ? String.fromCharCode(event.keyCode) : '';
-
-<<<<<<< HEAD
-    addAdmin() {
-        if ( this.admins.length > 9 ){
-            console.log( 'Too many admins.' );
-            return;
-        }
-        if (this.matching) {
-            this.userSearch = "";
-            this.matching = false;
-            this.closestMatches = new Array();
+        
         if (this.userSearch.length < 2) return;
->>>>>>> ditodev
 
         this.http.get('/users/search/' + this.userSearch + enteredLetter).subscribe((res) => {
             this.closestMatches = new Array();
@@ -56,6 +45,10 @@ export class ManageAdmins {
     }
 
     addAdmin() {
+        if ( this.admins.length > 9 ){
+            console.log( 'Too many admins.' );
+            return;
+        }
         this.http.post('/owner/admins/add/' + this.closestMatches[0].id, '').map((res) => res.text()).subscribe((data) => console.log(data), (err) => console.log(err));
         this.admins.push(this.closestMatches[0]);
 
