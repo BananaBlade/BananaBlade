@@ -32,6 +32,8 @@ export class EditTrack {
     carrier_type: Control = new Control('', Validators.required);
     path: Control = new Control('', Validators.required);
 
+    editable : boolean = false;
+
     constructor(http: Http, routeParams: RouteParams, fb: FormBuilder) {
         this.http = http;
 
@@ -63,8 +65,10 @@ export class EditTrack {
     }
 
     onSubmit(values) {
-        this.http.post('/admin/tracks/' + this.trackId + '/edit', urlEncode(values)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
+        this.http.post('/admin/tracks/' + this.trackId + '/edit', urlEncode(values)).map((res) => res.json()).subscribe((res) => {console.log(res); this.editable = false; }, (err) => console.log(err));
     }
+
+    toggleEditable(){ this.editable = !this.editable; }
 }
 
 

@@ -58,6 +58,6 @@ export class EditUser {
     toggleEditable(){ this.editable = !this.editable; }
 
     onSubmit(values) {
-        this.http.post('/admin/users/' + this.userId + '/modify', urlEncode(values)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
+        this.http.post('/admin/users/' + this.userId + '/modify', urlEncode(values)).map((res) => res.json()).subscribe((res) => {console.log(res); this.editable = false; }, (err) => console.log(err));
     }
 }

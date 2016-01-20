@@ -11,14 +11,18 @@ import { urlEncode } from '../../services/utilities';
 export class AccountDelete {
     password: string = "";
     http: Http;
+    router: Router;
 
-    constructor(http: Http) {
+    constructor(http: Http, router: Router) {
         this.http = http;
+        this.router = router;
     }
 
     submitDelete() {
         if (this.password) {
-            this.http.post('/user/account/delete', urlEncode({ password: this.password })).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
+            this.http.post('/user/account/delete', urlEncode({ password: this.password }))
+                .map((res) => res.json()).subscribe((res) => { console.log(res); this.router.navigate( ['Index'] ); },
+                (err) => console.log(err));
         }
     }
 }

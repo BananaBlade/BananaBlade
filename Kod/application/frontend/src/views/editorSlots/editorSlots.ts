@@ -25,6 +25,8 @@ export class EditorSlots {
     hours: number[] = new Array();
     daysNum: number[] = [0, 1, 2, 3, 4, 5, 6];
 
+    changing : boolean = false;
+
     today: Date = new Date();
     mondayDay: Date;
 
@@ -114,12 +116,12 @@ export class EditorSlots {
         });
 
         // Initialising the array that contains numbers representing allowed hours for slots.
-        for (let i = 9; i <= 20; ++i) {
+        for (let i = 0; i <= 23; ++i) {
             this.hours.push(i);
         }
 
 
-        // Calculating number of seonds since 00:00:00 of this week's Monday
+        // Calculating number of seconds since 00:00:00 of this week's Monday
         let secSinceMonday = this.today.getMilliseconds() + 1000 * (this.today.getSeconds() + 60 * (this.today.getMinutes() + 60 * (this.today.getHours() + 24 * ((this.today.getDay() + 6) % 7))));
         // Getting the Date object of this week's Monday at 00:00:00
         this.mondayDay = new Date(this.today.getTime() - secSinceMonday);
@@ -135,6 +137,16 @@ export class EditorSlots {
             this.updateCalendar();
             console.log(res);
         }, (err) => console.log(err));
+    }
+
+    toggleState(){ this.changing = !this.changing }
+
+    getCount( day, hour ){
+        var id = this.calendarFields[ day ][ hour ];
+        for ( let i in this.slots )
+            if ( id == this.slots[ i ].id )
+                return this.slots[ i ].count;
+        return -1;
     }
 }
 

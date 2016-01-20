@@ -10,17 +10,41 @@
           | sastavite liste za reprodukciju odabrane termine, te pošaljite zahtjeve za dodjelom drugih termina.
       .content-header-right
         i.material-icons.icon schedule
-    .content-primary.content-calendar(data-status='change')
+    .content-primary.content-calendar( '[ngClass]' = '{"state-change" : changing, "state-view" : !changing }')
       .calendar-wrapper
+        h2 Kalendar 
+          .calendar-nav
+            a &lt; 
+            | 11.01. &ndash; 17.01. 
+            a &gt;
         .calendar.large-calendar
-          table( style="width: 100%; height: 100%")
+          table
+            caption
+              .caption-item
+                .caption-color.c1
+                .caption-descr Dodijeljeno vama (prazno)            
+              .caption-item
+                .caption-color.c2
+                .caption-descr Dodijeljeno vama (ispunjeno)
+              .caption-item
+                .caption-color.c3
+                .caption-descr Zatraženo
+              .caption-item
+                .caption-color.c4
+                .caption-descr Slobodno
+              .caption-item
+                .caption-color.c5
+                .caption-descr Zauzeto
             tbody
-              tr
-                th( '*ngFor'="#day of days" style="border: 1px solid #1976D2" ) {{day}}
+              tr.head-row
+                th.rh
+                th( '*ngFor'="#day of days" ) {{ day }}
               tr( '*ngFor'= "#hour of hours" )
-                td( '*ngFor'="#day of daysNum" style="border: 1px solid #1976D2" '(click)'="slotClicked(day, hour)" '[ngClass]'="{mySlot: calendarFields[day][hour]}" ) {{day}} {{hour}} {{calendarFields[day][hour]}}
+                td.rh {{ hour }}:00
+                td( '*ngFor'="#day of daysNum" '(click)'="slotClicked(day, hour)" 
+                '[ngClass]'="{c1 : getCount( day, hour ) == 0, c2 : getCount( day, hour ) > 0 }" ) {{calendarFields[day][hour]}}
       .calendar-actions
-        button Zatraži novi termin
+        button( '(click)' = 'toggleState()') Zatraži novi termin
       .calendar-option
         form('[ngFormModel]'="requestForm" '(ngSubmit)'="requestSlot(requestForm.value)")
           h3 Zatraži termin
@@ -47,4 +71,5 @@
             label(for='end_date') Završni datum
             input(type='date', name='end_date' '[ngFormControl]'="requestForm.controls['end_date']")
           .form-line
+            button(type = "button" '(click)' = 'toggleState()' )
             button(type="submit").raised Zatraži termin

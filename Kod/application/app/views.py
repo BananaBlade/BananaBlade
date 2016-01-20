@@ -255,7 +255,7 @@ def modify_account_data():
     if year_of_birth is not None: year_of_birth = int( year_of_birth )
 
     try:
-        validate_user_data( first_name, last_name, occupation, year_of_birth, email )
+        validate_user_data( first_name, last_name, occupation, year_of_birth, email, no_password = True )
         g.user.modify_account( first_name, last_name, occupation, year_of_birth, email )
         return success_response( 'Korisnički podaci uspješno promjenjeni.' )
     except ValueError as e:

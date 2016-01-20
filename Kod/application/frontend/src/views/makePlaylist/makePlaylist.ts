@@ -39,6 +39,7 @@ export class MakePlaylist {
                 this.playlist.splice(i, 1);
             }
         }
+        this.updateBar();
     }
 
     updateBar() {

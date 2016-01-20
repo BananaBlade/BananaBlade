@@ -65,7 +65,8 @@ export class MakeWishlist {
         for ( let i in this.tracks )
             ids.push( this.tracks[ i ].id );
         let json_ids = JSON.stringify( ids );
-        this.http.post( '/user/wishlist/set', json_ids ).subscribe( ( res ) => console.log( res ), ( err ) => console.log( err ) );
+        this.http.post( '/user/wishlist/set', json_ids ).subscribe( ( res ) => { console.log( res ); this.editable = false; }, 
+        ( err ) => console.log( err ) );
     }
 
 }
