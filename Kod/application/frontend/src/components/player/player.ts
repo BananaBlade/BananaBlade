@@ -43,9 +43,16 @@ export class Player{
         this.http = http;
         this.track = new Track( -1, 'Nepostojeći zapis', 'n/a', 'n/a', 'n/a', 0, 0, 0, 'n/a' );
         this.audio = document.getElementById( 'audio-player' );
+<<<<<<< HEAD
         //this.audio.src = this.sourceUrl;
         this.playing = false;
         //this.getTrack();
+        if (this.audio) {
+            this.audio.src = this.sourceUrl;
+            this.playing = false;
+            this.getTrack();
+        }
+>>>>>>> ditodev
     }
 
     getTrack( self? : any ){

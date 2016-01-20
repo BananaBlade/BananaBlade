@@ -18,6 +18,10 @@ export class MakePlaylist {
     trackSearch: string;
     searchResults: Track[] = new Array();
 
+    barPercentage: number = 0;
+    minutesSpent: number = 0;
+    secondsSpent: number = 0;
+
     matching: boolean = false;
 
     toggleEditable() {
@@ -26,6 +30,7 @@ export class MakePlaylist {
 
     resetPlaylist() {
         this.toggleEditable();
+        this.updateBar();
     }
 
     removeTrack(track) {
@@ -36,10 +41,23 @@ export class MakePlaylist {
         }
     }
 
+    updateBar() {
+        console.log(this.playlist);
+        let durationSum = 0;
+        for (let i in this.playlist) {
+            durationSum += this.playlist[i].duration;
+        }
+        this.barPercentage = durationSum / 60 / 60 * 100;
+        this.minutesSpent = ~~ (durationSum / 60);
+        this.secondsSpent = durationSum % 60;
+    }
+
     addTrackToPlaylist(track) {
         this.playlist.push(track);
         this.trackSearch = "";
         this.searchResults = new Array();
+
+        this.updateBar();
     }
 
     onKeyPressed(event) {

@@ -1069,7 +1069,8 @@ def search_tracks( term ):
             'artist'            : track.artist,
             'album'             : track.album,
             'genre'             : track.genre,
-            'year'              : track.year
+            'year'              : track.year,
+            'duration'          : track.duration
         } for track in tracks ]
         return data_response( data )
     except ValueError:
@@ -1124,7 +1125,6 @@ def search_users( term ):
 
     No request params.
     """
-    term = request.values.get( 'term' )
 
     try:
         users = g.user.search_users( term )
@@ -1138,7 +1138,8 @@ def search_users( term ):
         return error_response( 'Neuspješno pretraživanje korisnika: Nedovoljne ovlasti.', 403 )
     except ValueError:
         return error_response( 'Neuspješno pretraživanje korisnika: Prekratak traženi pojam.', 400 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno pretraživanje korisnika.' )
 
 

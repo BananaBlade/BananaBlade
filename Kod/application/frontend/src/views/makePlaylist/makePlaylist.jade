@@ -24,8 +24,8 @@
         .content-list-item-content
           label(for='') Trajanje liste
           .progress-bar
-            .progress-value 56:12 / 60:00
-            .progress-indicator(data-value='94')
+            .progress-value {{minutesSpent}}:{{secondsSpent}} / 60:00
+            .progress-indicator( '[ngStyle]'="{ 'width':barPercentage + '%' }")
       li.content-list-item.content-list-search-item.editable-ui
         form
           .content-list-item-content

@@ -2,60 +2,31 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
+import { COMMON_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 
 import { Form } from '../../services/utilities';
 
 @Component({
     selector: 'ManageAdmins',
     templateUrl: './dest/views/manageAdmins/manageAdmins.html',
-    directives: [NgIf, NgFor, FORM_DIRECTIVES]
+    directives: [COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageAdmins {
     http: Http;
-    admins: Admin[] = new Array();
-    normalUsers: any[] = new Array();
+    admins: User[] = new Array();
     closestMatches: any[] = new Array();
     editable: boolean = false;
     userSearch: string = "";
-
-    matching: boolean = false;
-    matchingId: number = -1;
-    matchingIndex: number = -1;
 
     toggleEditable() {
         this.editable = !this.editable;
     }
 
-    checkIfMatching(searchString) {
-        for (let i in this.normalUsers) {
-            let fullName = this.normalUsers[i].first_name + ' ' + this.normalUsers[i].last_name;
-            if (fullName.toLowerCase() === searchString.toLowerCase()) {
-                this.matching = true;
-                this.matchingId = this.normalUsers[i].id;
-                this.matchingIndex = i;
-                return;
-            }
-        }
-        this.matching = false;
-        return;
-    }
-
-    onKeyPressed(event) {
+    onKeyPressed(event?) {
         let count = 0;
-        let enteredLetter = String.fromCharCode(event.keyCode);
-        this.closestMatches = new Array();
-        for (let i in this.normalUsers) {
-            if (count === 3) return;
-            let fullName = this.normalUsers[i].first_name + ' ' + this.normalUsers[i].last_name;
-            if (fullName.indexOf(this.userSearch + enteredLetter) === 0) {
-                count += 1;
-                this.closestMatches.push(this.normalUsers[i]);
-            }
-        }
-        this.checkIfMatching(this.userSearch + enteredLetter);
-    }
+        let enteredLetter = event ? String.fromCharCode(event.keyCode) : '';
 
+<<<<<<< HEAD
     addAdmin() {
         if ( this.admins.length > 9 ){
             console.log( 'Too many admins.' );
@@ -65,63 +36,64 @@ export class ManageAdmins {
             this.userSearch = "";
             this.matching = false;
             this.closestMatches = new Array();
+        if (this.userSearch.length < 2) return;
+>>>>>>> ditodev
 
-            this.admins.push(this.normalUsers[this.matchingIndex]);
-            this.normalUsers.splice(this.matchingIndex, 1);
+        this.http.get('/users/search/' + this.userSearch + enteredLetter).subscribe((res) => {
+            this.closestMatches = new Array();
+            console.log(res);
+            let data = res.json().data;
+            for (let i = 0; i < 3 && data[i]; i += 1) {
+                this.closestMatches.push(data[i]);
+            }
+        }, (err) => console.log(err));
+    }
 
-            this.http.post('/owner/admins/add/' + this.matchingId.toString(), '').map((res) => res.json()).subscribe((data) => console.log(data), (err) => console.log(err));
+    enterCheck(event) {
+        if (event.keyCode == 13) {
+            this.addAdmin();
         }
     }
 
-    addAdmin2(adminId) {
-        console.log(adminId);
-        for (let i in this.normalUsers) {
-            if (this.normalUsers[i].id === adminId) {
-                this.admins.push(this.normalUsers[i]);
-                this.normalUsers.splice(i, 1);
+    addAdmin() {
+        this.http.post('/owner/admins/add/' + this.closestMatches[0].id, '').map((res) => res.text()).subscribe((data) => console.log(data), (err) => console.log(err));
+        this.admins.push(this.closestMatches[0]);
 
-                this.userSearch = "";
-                this.matching = false;
-                this.closestMatches = new Array();
-
-                this.http.post('/owner/admins/add/' + adminId.toString(), '').map((res) => res.json()).subscribe((data) => console.log(data), (err) => console.log(err));
-            }
-        }
+        this.userSearch = "";
+        this.closestMatches = new Array();
     }
 
     removeAdmin(removedAdminId) {
         for (let i in this.admins) {
             if (this.admins[i].id === removedAdminId) {
-                this.normalUsers.push(this.admins[i]);
                 this.admins.splice(i, 1);
                 break;
             }
         }
-        this.http.post('/owner/admins/remove/' + removedAdminId.toString(), '').map((res) => res.json()).subscribe((data) => console.log(data), (err) => console.log(err));
+        this.http.post('/owner/admins/remove/' + removedAdminId.toString(), '').subscribe((data) => console.log(data), (err) => console.log(err));
     }
 
     constructor(http: Http) {
         this.http = http;
-        http.get('/owner/admins/list').map((res) => res.json().data).subscribe((res) => {
-            for (let i in res) {
-                let admin = new Admin(res[i]);
-                this.admins.push(admin);
+
+        http.get('/admin/editors/list').subscribe((res) => {
+            this.admins = new Array();
+            let data = res.json().data;
+            for (let i in data) {
+                this.admins.push(new User(data[i]));
             }
-        }, (err) => console.log(err));
-        http.get('/admin/users/list').map((res) => res.json().data).subscribe((data) => {
-            this.normalUsers = data;
-            console.log(data);
         }, (err) => console.log(err));
     }
 }
 
-class Admin {
+class User {
     id: number;
     first_name: string;
     last_name: string;
     email: string;
     year_of_birth: string;
     occupation: string;
+    account_type: number;
 
     constructor(obj: Object) {
         this.id = obj['id'];
@@ -130,5 +102,6 @@ class Admin {
         this.email = obj['email'];
         this.year_of_birth = obj['year_of_birth'];
         this.occupation = obj['occupation'];
+        this.account_type = obj['account_type'];
     }
 }
