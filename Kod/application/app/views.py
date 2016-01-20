@@ -877,7 +877,7 @@ def get_playlist( slot_id ):
             'artist'        :   item.track.artist,
             'album'         :   item.track.album,
             'index'         :   item.index,
-            'duration'      :   item.duration
+            'duration'      :   item.play_duration
         } for item in slot_items ]
         return data_response( data )
     except AuthorizationError:
