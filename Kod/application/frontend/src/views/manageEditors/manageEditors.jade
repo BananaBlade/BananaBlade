@@ -20,9 +20,9 @@
         form
           .content-list-item-content
             label(for='add-item-search') Dodaj urednika
-            input.add-item-search(type='text', name='add_track_search' autocomplete = "off" '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="userSearch" )
+            input.add-item-search(type='text', name='add_track_search' autocomplete = "off" '(input)'="onKeyPressed($event)" '(keydown)'="enterCheck($event)" '[(ngModel)]'="userSearch" )
           .content-list-item-options
-            button.raised.add-item-button('[disabled]'="!matching" '(click)'="addEditor()")
+            button.raised.add-item-button('[disabled]'="!closestMatches" '(click)'="addEditor()")
               i.material-icons person_add
       li.content-list-item.closest-match-item.primary-color( '*ngFor'="#closestMatch of closestMatches" )
         .content-list-item-content

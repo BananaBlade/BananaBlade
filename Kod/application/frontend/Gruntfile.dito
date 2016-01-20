@@ -4,7 +4,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     sass: {
       options: { sourceMap: true },
-      dist: { files: { 'frontend/dest/index.css': 'frontend/src/index.sass' } }
+      dist: { files: { 'dest/index.css': 'src/index.sass' } }
     },
     postcss: {
       options: {
@@ -43,7 +43,7 @@ module.exports = function (grunt) {
           experimentalDecorators: true,
           failOnTypeErrors : false,
           jsx: 'react',
-          additionalFlags: ' --outDir C:/Users/Dito/Desktop/git/bananablade/Kod/application/frontend/dest'
+          additionalFlags: ' --outDir ./dest'
         }
       }
     },

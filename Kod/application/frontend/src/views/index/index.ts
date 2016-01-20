@@ -68,7 +68,10 @@ export class Index {
     }
 
     resetControls(){
-        for ( let i in this.registerForm.controls )
-            this.registerForm.controls[ i ].updateValue( '' );
+        for (let i in this.registerForm.controls) {
+            this.registerForm.controls[i].value = '';
+            this.registerForm.controls[i].updateValueAndValidity();
+            this.registerForm.updateValueAndValidity();
+        }
     }
 }
