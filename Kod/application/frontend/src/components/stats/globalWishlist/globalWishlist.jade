@@ -1,0 +1,12 @@
+.content-box
+  .content-box-icon
+    i.material-icons assignment
+  .content-box-content
+    h2.content-box-name Ukupna lista želja korisnika
+    p.content-box-descr Pogledajte ukupnu listu želja korisnika radiopostaje.
+    .stat
+      ul.stat-list.track-stat-list
+        li( '*ngFor' = '#wish of wishes' )
+          span.track-stat-list-track-name {{ wish.title }}
+          span.track-stat-list-track-artist {{ wish.artist }}
+          .track-stat-list-wish-count {{ wish.count }}

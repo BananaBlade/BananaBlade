@@ -1,4 +1,4 @@
-.center-area
+.center-area( '[ngClass]' = '{ "dat-3" : authService.isAdmin(), "dat-4" : authService.isOwner() }')
   header.center-header
     .view-path Pregled statistika
   .center-content
@@ -12,7 +12,7 @@
         i.material-icons.icon donut_small
     .content-boxes
       .account-type-select.admin-select
-        .content-box
+        //.content-box
           .content-box-icon
             i.material-icons graphic_eq
           .content-box-content
@@ -39,7 +39,7 @@
                 .single-stat-descr Broj puštanja u programu radiopostaje
               .stat-buttons.stat-display
                 button.right.dim Pogledaj drugi zapis
-        .content-box
+        //.content-box
           .content-box-icon
             i.material-icons star
           .content-box-content
@@ -83,69 +83,7 @@
                   .track-stat-list-wish-count 71
               .stat-buttons.stat-display
                 button.right.dim Pogledaj drugog urednika
-        .content-box
-          .content-box-icon
-            i.material-icons assignment
-          .content-box-content
-            h2.content-box-name Ukupna lista želja korisnika
-            p.content-box-descr Pogledajte ukupnu listu želja korisnika radiopostaje.
-            .stat
-              ul.stat-list.track-stat-list
-                li
-                  span.track-stat-list-track-name Hello
-                  span.track-stat-list-track-artist Adele
-                  .track-stat-list-wish-count 174
-                li
-                  span.track-stat-list-track-name Same Old Love
-                  span.track-stat-list-track-artist Selena Gomez
-                  .track-stat-list-wish-count 152
-                li
-                  span.track-stat-list-track-name All I Want For Christmas Is You
-                  span.track-stat-list-track-artist Mariah Carey
-                  .track-stat-list-wish-count 127
-                li
-                  span.track-stat-list-track-name In The Night
-                  span.track-stat-list-track-artist The Weeknd
-                  .track-stat-list-wish-count 96
-                li
-                  span.track-stat-list-track-name On My Mind
-                  span.track-stat-list-track-artist Ellie Goulding
-                  .track-stat-list-wish-count 71
-        .content-box
-          .content-box-icon
-            i.material-icons trending_up
-          .content-box-content
-            h2.content-box-name Popularnost najtraženijeg zapisa
-            p.content-box-descr
-              | Pogledajte kako se popularnost trenutno najtraženijeg zapisa mijenjala kroz vrijeme.
-            .stat.track-stat(data-state='view')
-              .stat-track-wrapper
-                .stat-item-display.stat-display.stat-track-display
-                  .stat-track-name Violin Concerto No. 5: Tempo di minuetto
-                  .stat-track-info
-                    .stat-track-info-item.stat-track-artist Wolfgang A. Mozart
-                    .stat-track-info-item.stat-track-album The Very Best of Mozart
-                    .stat-track-info-item.stat-track-year 2007
-                    .stat-track-info-item.stat-track-genre Klasična glazba
-      .content-box
-        .content-box-icon
-          i.material-icons directions_run
-        .content-box-content
-          h2.content-box-name Aktivnost korisnika
-          p.content-box-descr Pogledajte koliko je korisnika trenutno aktivno u sustavu.
-          .stat.user-activity-stat
-            .single-stat
-              .single-stat-number 17
-              .single-stat-descr Broj trenutno aktivnih korisnika
-      .content-box
-        .content-box-icon
-          i.material-icons directions_bike
-        .content-box-content
-          h2.content-box-name Aktivnost administratora
-          p.content-box-descr Pogledajte koji su sve administratori trenutno aktivni.
-          .stat.active-admins-stat
-            ul.stat-list.active-admins-stat-list
-              li Ivan Ivković
-              li Josip Jokić
-              li Krešimir Krkić
-              li Ladislav Lađić
+        global-wishlist
+        popular-track
+      users-count
+      admins-list

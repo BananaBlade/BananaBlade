@@ -1326,11 +1326,7 @@ def get_active_admins_list():
     """
     try:
         admins = g.user.get_active_admins_list_stat()
-        data = [{
-            'first_name'    : admin.first_name,
-            'last_name'     : admin.last_name,
-            'email'         : admin.email
-        } for admin in admins ]
+        data = [ admin.first_name + ' ' + admin.last_name for admin in admins ]
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Neuspjelo dohvaćanje popisa aktivnih administratora: Nedovoljne ovlasti.', 403 )

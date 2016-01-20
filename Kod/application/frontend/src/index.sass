@@ -253,6 +253,18 @@ button
         &:focus
             outline              :     1px dotted $accent_color
 
+    &.alt2
+        color                :     $accent2_color
+
+        &:hover
+            background           :     transparentize( $accent2_color, 0.9 )
+
+        &:active
+            background           :     transparentize( $accent2_color, 0.8 )
+
+        &:focus
+            outline              :     1px dotted $accent2_color
+
     &.raised
         background           :     $primary_color
         color                :     $alt_text_color
@@ -262,6 +274,12 @@ button
 
             &:hover
                 background               :     darken( $accent_color, 10% )
+
+        &.alt2
+            background             :     $accent2_color
+
+            &:hover
+                background               :     darken( $accent2_color, 10% )
 
         &:hover
             background             :     $dark_primary_color
@@ -1377,34 +1395,37 @@ fieldset[ disabled ]
             background            :     $base_background_color
 
 .track-stat-list
-    counter-reset         :     wish_count
+    counter-reset     :     wish_count
 
     li
-        counter-increment       :     wish_count
-        padding-right           :     3.5rem
+        counter-increment   :     wish_count
+        padding-right       :     3.5rem
 
         &:before
-            content             :     '#' counter( wish_count )
-            font-family         :     $base_font
-            font-size           :     1.5rem
-            font-weight         :     300
+            content               :     '#' counter( wish_count )
+            font-family           :     $base_font
+            font-size             :     1.5rem
+            font-weight           :     300
 
 .track-stat-list-track-name:after
-    content               :     ', '
+    content           :     ', '
 
 .track-stat-list-track-artist
-    font-family           :     $base_font
-    font-size             :     1rem
-    line-height           :     0
+    font-family       :     $base_font
+    font-size         :     1rem
+    line-height       :     0
 
 .track-stat-list-wish-count
-    position              :     absolute
-    right                 :     1.25rem
-    top                   :     0.5rem
+    position          :     absolute
+    right             :     1.25rem
+    top               :     0.5rem
 
 .active-admins-stat-list li:before
-    content               :     $admin_icon
+    content           :     $admin_icon
 
+.stat-form
+    border-top        :     1px solid $border_color
+    padding-top       :     1rem
 
 // Info console display styles
 .console-wrapper

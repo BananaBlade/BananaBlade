@@ -53,7 +53,7 @@ export class MakePlaylist {
         console.log(this.playlist);
         let durationSum = this.getTotalTime();
         this.barPercentage = durationSum / 60 / 60 * 100;
-        var tminutesSpent = '' + ( ~~ (durationSum / 60) );
+        var tminutesSpent = ~~ (durationSum / 60);
         var tsecondsSpent = durationSum % 60;
         this.minutesSpent = ( tminutesSpent < 10 ? '0' : '' ) + tminutesSpent;
         this.secondsSpent = ( tsecondsSpent < 10 ? '0' : '' ) + tsecondsSpent;
