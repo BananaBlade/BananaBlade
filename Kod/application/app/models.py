@@ -807,7 +807,7 @@ class Slot( BaseModel ):
         Track list consists of triplets (index, track_id, duration).
         """
         PlaylistTrack.delete().where( PlaylistTrack.slot == self ).execute()
-        data = [ { 'slot' : self, 'track' : Track.get( Track.id == t_id ), 'index' : i, 'duration' : d }
+        data = [ { 'slot' : self, 'track' : Track.get( Track.id == t_id ), 'index' : i, 'play_duration' : d }
             for i, t_id, d in track_list ]
         PlaylistTrack.insert_many( data ).execute()
 

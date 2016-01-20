@@ -13,14 +13,15 @@ import { urlEncode } from '../../services/utilities';
 export class MakePlaylist {
     http: Http;
     slotId: string;
-    editable: boolean = true;
+    editable: boolean = false;
     playlist: Track[] = new Array();
+    wishes: Track[] = [];
     trackSearch: string;
     searchResults: Track[] = new Array();
 
     barPercentage: number = 0;
-    minutesSpent: number = 0;
-    secondsSpent: number = 0;
+    minutesSpent: string = '00';
+    secondsSpent: string = '00';
 
     matching: boolean = false;
 
@@ -42,18 +43,38 @@ export class MakePlaylist {
         this.updateBar();
     }
 
+    getTotalTime(){
+        var totalTime = 0;
+        for (let i in this.playlist)
+            totalTime += this.playlist[i].duration;
+        return totalTime;
+    }
     updateBar() {
         console.log(this.playlist);
-        let durationSum = 0;
-        for (let i in this.playlist) {
-            durationSum += this.playlist[i].duration;
-        }
+        let durationSum = this.getTotalTime();
         this.barPercentage = durationSum / 60 / 60 * 100;
-        this.minutesSpent = ~~ (durationSum / 60);
-        this.secondsSpent = durationSum % 60;
+        var tminutesSpent = '' + ( ~~ (durationSum / 60) );
+        var tsecondsSpent = durationSum % 60;
+        this.minutesSpent = ( tminutesSpent < 10 ? '0' : '' ) + tminutesSpent;
+        this.secondsSpent = ( tsecondsSpent < 10 ? '0' : '' ) + tsecondsSpent;
     }
 
     addTrackToPlaylist(track) {
+        var totalTime = this.getTotalTime()
+        if ( totalTime > 60*60 ){
+            console.log( 'Over the limit already, wont add.' );
+            return;
+        }
+        var delta = 60*60 - totalTime - track.duration;
+        if ( delta > 0 && delta < 15 ){
+            console.log( 'Next track will be played too shortly - cannot add this.' );
+            return;
+        }
+
+        if ( delta < 0 )
+            track.duration = 60*60 - totalTime;
+        track.calculateMS();
+
         this.playlist.push(track);
         this.trackSearch = "";
         this.searchResults = new Array();
@@ -76,6 +97,11 @@ export class MakePlaylist {
     submitPlaylist() {
         this.editable = false;
 
+        if ( this.getTotalTime() < 60*60 ){
+            console.log( 'Playlist too short.' );
+            return;
+        }
+
         let track_list = new Array();
         for (let track in this.playlist) {
             track_list.push([track, this.playlist[track].id, this.playlist[track].duration]);
@@ -96,10 +122,17 @@ export class MakePlaylist {
             for (let i in res.data) {
                 this.playlist.push(new Track(res.data[i]));
             }
+            this.updateBar();
         }, (err) => console.log(err));
+
+        this.http.get( '/tracks/wishlist' ).subscribe( ( res ) => {
+            var array = res.json().data;
+            var end = Math.min( array.length, 10 );
+            for ( var i = 0; i < end; ++i )
+                this.wishes.push( new Track( array[ i ] ) );
+        }, ( err ) => console.log( err ) );
     }
 }
-
 
 class Track {
     title: string;
@@ -108,14 +141,28 @@ class Track {
     index: number;
     duration: number;
     id: number;
+    minutes : string;
+    seconds : string;
 
     constructor(values) {
-        console.log(values);
         this.title = values.title;
         this.artist = values.artist;
         this.album = values.album;
         this.index = values.index;
         this.id = values.id;
         this.duration = values.duration;
+        this.calculateMS();
+    }
+
+    calculateMS(){
+        var tminutes = ~~(this.duration/60);
+        var tseconds = this.duration % 60;
+
+        this.minutes = ( tminutes < 10 ? '0' : '' ) + tminutes;
+        this.seconds = ( tseconds < 10 ? '0' : '' ) + tseconds;
+    }
+
+    copy(){
+        return new Track( this );
     }
 }

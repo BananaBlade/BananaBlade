@@ -14,9 +14,9 @@
           |                         postaje.
       .content-header-right
         i.material-icons.icon queue_music
-    nav.content-options( '*ngIf'="!editable" )
+    nav.content-options.uneditable-ui
       button( '(click)'="toggleEditable()" ) Izmijeni listu za reprodukciju
-    nav.content-options( '*ngIf'="editable" )
+    nav.content-options.editable-ui
       button( '(click)'="submitPlaylist()" ) Spremi listu za reprodukciju
       button( '(click)'="resetPlaylist()" ) Odustani od promjena
     ul.content-primary.content-list
@@ -24,7 +24,7 @@
         .content-list-item-content
           label(for='') Trajanje liste
           .progress-bar
-            .progress-value {{minutesSpent}}:{{secondsSpent}} / 60:00
+            .progress-value {{ minutesSpent }}:{{ secondsSpent }} / 60:00
             .progress-indicator( '[ngStyle]'="{ 'width':barPercentage + '%' }")
       li.content-list-item.content-list-search-item.editable-ui
         form
@@ -39,7 +39,7 @@
             .content-list-item-content
               .content-list-item-name {{track.title}}
               .content-list-item-data
-                .content-list-item-data-item.track-duration {{track.play_duration}}
+                .content-list-item-data-item.track-duration {{ track.minutes }}:{{ track.seconds }}
                 .content-list-item-data-item.track-artist-dim {{track.artist}}
                 .content-list-item-data-item.track-album {{track.album}}
             .content-list-item-options.editable-ui
@@ -49,7 +49,7 @@
         .content-list-item-content
           .content-list-item-name {{track.title}}
           .content-list-item-data
-            .content-list-item-data-item.track-duration {{track.play_duration}}
+            .content-list-item-data-item.track-duration {{ track.minutes }}:{{ track.seconds }}
             .content-list-item-data-item.track-artist-dim {{track.artist}}
             .content-list-item-data-item.track-album {{track.album}}
         .content-list-item-options.editable-ui
@@ -61,38 +61,10 @@
       .center-side-subtitle Pogledajte što korisnici žele slušati u programu radio postaje.
     .center-side-content
       ul.global-wishlist
-        li.global-wishlist-item
+        li.global-wishlist-item( '*ngFor' = '#track of wishes' )
           .gw-track
-            .gw-track-name Hello
-            .gw-track-artist Adele
+            .gw-track-name {{ track.title }}
+            .gw-track-artist {{ track.artist }}
           .gw-option.editable-ui
-            button
-              i.material-icons playlist_add
-        li.global-wishlist-item
-          .gw-track
-            .gw-track-name Same Old Love
-            .gw-track-artist Selena Gomez
-          .gw-option.editable-ui
-            button
-              i.material-icons playlist_add
-        li.global-wishlist-item
-          .gw-track
-            .gw-track-name All I Want For Christmas Is You
-            .gw-track-artist Mariah Carey
-          .gw-option.editable-ui
-            button
-              i.material-icons playlist_add
-        li.global-wishlist-item
-          .gw-track
-            .gw-track-name In The Night
-            .gw-track-artist The Weeknd
-          .gw-option.editable-ui
-            button
-              i.material-icons playlist_add
-        li.global-wishlist-item
-          .gw-track
-            .gw-track-name On My Mind
-            .gw-track-artist Ellie Goulding
-          .gw-option.editable-ui
-            button
+            button( '(click)' = 'addTrackToPlaylist( track.copy() )' )
               i.material-icons playlist_add

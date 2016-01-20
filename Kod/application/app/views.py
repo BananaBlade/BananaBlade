@@ -805,6 +805,7 @@ def delete_user( user_id ):
 def list_editor_slots( date ):
     """Return a list of all editor's slots and requests
 
+    Date should be in YYYY-MM-DD format.
     No request params.
     """
     try:
@@ -840,7 +841,7 @@ def request_slot():
 
     Request should contain `time`, `days_bit_mask`, `start_date` and `end_date`.
     `time` should be an integer between 0 and 23 (hour), and dates should be in
-    YYY-MM-DD format.
+    YYYY-MM-DD format.
     """
     request_time    = request.values.get( 'time' )
     days_bit_mask   = request.values.get( 'days_bit_mask' )
@@ -897,10 +898,8 @@ def set_playlist( slot_id ):
     tracks to be placed on the slot's playlist.
     """
 
-    print(request.get_json(force=True))
-
     try:
-        track_list = request.get_json( force = True ).get( 'track_list' )
+        track_list = request.get_json( force = True )
         # TODO: Perform a check for list correctness
         g.user.set_slot_playlist( slot_id, track_list )
         return success_response( 'Lista za reprodukciju uspješno pohranjena', 201 )
@@ -1093,6 +1092,8 @@ def get_global_wishlist():
             'artist'            : wish.track.artist,
             'album'             : wish.track.album,
             'genre'             : wish.track.genre,
+            'year'              : wish.track.year,
+            'duration'          : wish.track.duration,
             'count'             : wish.count
         } for wish in wishlist ]
         return data_response( data )
