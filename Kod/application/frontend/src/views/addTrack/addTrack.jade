@@ -11,54 +11,46 @@
       .content-header-right
         i.material-icons.icon audiotrack
     .content-primary.content-form.wide-labels
-      form
+      form( '(ngSubmit)' = 'onSubmit()' )
         .form-line.emph-line
           label(for='file') Datoteka zapisa
-          input( type='file', accept='audio/*' 'ng2-file-select'="" '[uploader]'="uploader" 'multiple'="" )
-        .form-line( '*ngFor'="#item of uploader.queue" )
-            i.material-icons.result( '*ngIf'="item.isSuccess" ) check
-            i.material-icons.result( '*ngIf'="item.isError || item.isCancel" ) clear
-            .progress( '[ngStyle]'= "{ 'width': item.progress + 'px' }" )
-            button( type="button" '(click)'="item.upload()" '[disabled]'="item.isReady || item.isUploading || item.isSuccess" ) Upload
-            button( type="button" '(click)'="item.cancel()" '[disabled]'="item.isUploading" ) Cancel
-            button( type="button" '(click)'="item.remove()" ) Remove
+          input( type='file', accept='audio/*' 'ng2-file-select'="" '[uploader]'="uploader" 'multiple'="false" )
         .form-line
           label(for='title') Naslov zapisa
-          input(type='text', name='title')
+          input(type='text', name='title' pattern='.{1,128}' '[(ngModel)]' = 'title')
         .form-line
           label(for='artist') Izvođač
-          input(type='text', name='artist')
+          input(type='text', name='artist' pattern='.{1,128}' '[(ngModel)]' = 'artist')
         .form-line
           label(for='album') Album
-          input(type='text', name='album')
+          input(type='text', name='album' pattern='.{0,64}' '[(ngModel)]' = 'album')
         .form-line
           label(for='duration') Trajanje zapisa (s)
-          input(type='number', name='duration', min='1', max='1000')
+          input(type='number', name='duration', min='1' '[(ngModel)]' = 'duration')
         .form-line
           label(for='file_format') Format zapisa
-          // <input type = "text" name = "file_format"/>
-          select(name='file_format')
+          select(name='file_format' '[(ngModel)]' = 'file_format')
             option(value='0') MP3
             option(value='1') WAV
             option(value='2') OGG
         .form-line
           label(for='sample_rate') Frekvencija uzorkovanja (kHz)
-          input(type='text', name='sample_rate')
+          input(type='text', name='sample_rate' min = '8' max = '512' '[(ngModel)]' = 'sample_rate')
         .form-line
           label(for='bits_per_sample') Broj bitova kvantizacije
-          input(type='number', name='bits_per_sample', min='1', max='64')
+          input(type='number', name='bits_per_sample', min='4', max='512' '[(ngModel)]' = 'bits_per_sample')
         .form-line
           label(for='genre') Žanr zapisa
-          input(type='text', name='genre')
+          input(type='text', name='genre' pattern = '(.{2,128}|)' '[(ngModel)]' = 'genre')
         .form-line
           label(for='publisher') Izdavač
-          input(type='text', name='publisher')
+          input(type='text', name='publisher' pattern = '(.{2,64}|)' '[(ngModel)]' = 'publisher')
         .form-line
           label(for='carrier_type') Vrsta nosača zvuka
-          input(type='text', name='carrier_type')
+          input(type='text', name='carrier_type' pattern = '(.{2,64}|)' '[(ngModel)]' = 'carrier_type')
         .form-line
           label(for='year') Godina izdavanja
-          input(type='number', name='year', min='0', max='2100')
+          input(type='number', name='year', min='-5000', max='2100' '[(ngModel)]' = 'year')
         .form-line
           .left-spacer
-          button.raised Dodaj zapis
+          button.raised( type = "submit" ) Dodaj zapis

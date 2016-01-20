@@ -404,7 +404,8 @@ def upload_track():
     try:
         g.user._assert_admin()
         path = generate_filename( audio_file.filename )
-        audio_file.save( path )
+        print( path )
+        # audio_file.save( path )
 
         return data_response( { 'path' : path }, 201 )
 
@@ -412,9 +413,10 @@ def upload_track():
         return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
     except ValueError as e:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nisu uneseni ispravni podaci: ' + str( e ) )
-    except Exception as e:
-        print(e)
-        return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
+    # except Exception as e:
+    #     print( e )
+    #     return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
+
 
 
 @app.route( '/admin/tracks/add', methods = [ 'POST' ] )
