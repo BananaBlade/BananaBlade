@@ -1,0 +1,90 @@
+messages( '[type]' = 'messageType' '[text]' = 'messageText' )
+.index-top-spacer
+.player-wrapper.section-wrapper
+  .player-container.section-container
+    player
+    schedule
+.info-wrapper.section-wrapper
+  .info-container.section-container
+    popular
+    .radio-info
+      h2 FM Radio
+      p
+        | Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+        | accusantium doloremque laudantium, totam rem aperiam, eaque
+        | ipsa quae ab illo inventore veritatis et quasi architecto beatae
+        | vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
+        | voluptas sit aspernatur aut odit aut fugit, sed quia
+      .radio-image
+        i.material-icons blur_on
+.register-wrapper.section-wrapper#register( '[ngClass]' = '{hidden : authService.isLoggedIn() }')
+  .register-container.section-container
+    .register-descr-box
+      h2 Postani dio FM Radija
+      .register-descr
+        p
+          | Registriraj se, postani korisnik 
+          b FM Radija
+          |  i sudjeluj
+          |                         u njegovom radu. Tvoje ideje, želje i prijedlozi mogu
+          |                         pomoći kako bi tvoj omiljeni radio postao još i bolji!
+        p.roles-info Kao korisnik, možeš biti:
+      ul.roles-list
+        li.role
+          .role-container
+            .role-icon
+              i.material-icons person
+            .role-name Registrirani korisnik
+            .role-descr Reci nam što želiš slušati i pomozi nam da program učinimo još boljim!
+        li.role
+          .role-container
+            .role-icon
+              i.material-icons edit
+            .role-name Glazbeni urednik
+            .role-descr Pomozi nam obogatiti program sastavljanjem vlastite glazbene emisije!
+        li.role
+          .role-container
+            .role-icon
+              i.material-icons build
+            .role-name Administrator
+            .role-descr Pomozi nam upravljati pjesmama, urednicima, korisnicima i terminima!
+    .register-form-box
+      h2 Registriraj se
+      form.register-form('[ngFormModel]'="registerForm" '(ngSubmit)'="onSubmitRegistration(registerForm.value)")
+        .form-line
+          input(type='text', name='first_name', placeholder='Ime', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['first_name']")
+        .form-line
+          input(type='text', name='last_name', placeholder='Prezime', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['last_name']")
+        .form-line.spacer-line
+        .form-line
+          input(type='email', name='email', placeholder='E-mail adresa' '[ngFormControl]'="registerForm.controls['email']")
+        .form-line
+          input(type='password', name='password', placeholder='Lozinka', pattern='.{6,64}' '[ngFormControl]'="registerForm.controls['password']")
+        .form-line
+          input(type='password', name='password2', placeholder='Ponovljena lozinka', pattern='.{6,64}' '[(ngFormControl)]'="registerForm.controls['password2']")
+        .form-line.spacer-line
+        .form-line
+          input(type='number', name='year_of_birth', placeholder='Godina rođenja', min='1900', max='2100' '[ngFormControl]'="registerForm.controls['year_of_birth']")
+        .form-line
+          input(type='text', name='occupation', placeholder='Zanimanje', pattern='.{2,64}' '[ngFormControl]'="registerForm.controls['occupation']")
+        .form-line.spacer-line
+        .form-line.tos-line
+          label.tos-label(for='tos')
+            | Klikom na 
+            b registriraj se!
+            |  prihvaćate 
+            a(href='') uvjete korištenja
+            |  ove aplikacije.
+        .form-line.spacer-line
+        .form-line
+          button.raised(type="submit" '[disabled]'="!registerForm.valid") Registriraj se!
+.footer-wrapper.section-wrapper
+  .footer-container.section-container
+    .footer-left
+      station
+    .footer-right
+    .footer-copy
+      | Copyright © 2015-16 
+      b FM Radio
+      | . Sva prava pridržana. Izrada i održavanje: 
+      i Bananablade™

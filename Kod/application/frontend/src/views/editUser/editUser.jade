@@ -1,0 +1,42 @@
+.center-area('[ngClass]' = '{"state-editable" : editable, "state-uneditable" : !editable}')
+  header.center-header
+    .view-path Korisnici > Uredi korisničke podatke
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Podaci o korisniku
+        .content-header-subtitle
+          | Pregledajte i uredite
+          | podatke korisnika ove radiopostaje. 
+          b
+            | Oprez! Promjene mogu
+            | utjecati na korisnikovu mogućnost korištenja sustava.
+      .content-header-right
+        i.material-icons.icon account_box
+    nav.content-options.uneditable-ui
+      button( '(click)' = 'toggleEditable()' ) Izmijeni podatke o korisniku
+    .content-primary.content-form
+      form( '[ngFormModel]'="userForm" '(ngSubmit)'="onSubmit(userForm.value)" )
+        fieldset( '[disabled]' = '!editable' )
+            .form-line
+              label(for='first_name') Ime
+              input(type='text', name='first_name', value='Slavko', pattern='.{2,64}' '[ngFormControl]'="userForm.controls['first_name']")
+            .form-line
+              label(for='last_name') Prezime
+              input(type='text', name='last_name', value='Kovač', pattern='.{2,64}' '[ngFormControl]'="userForm.controls['last_name']")
+            .form-line
+              label(for='email') E-mail adresa
+              input(type='email', name='email', value='skovac@mail.com' '[ngFormControl]'="userForm.controls['email']")
+            .form-line
+              label(for='year_of_birth') Godina rođenja
+              input(type='number', name='year_of_birth', value='1986', min='1900', max='2100' '[ngFormControl]'="userForm.controls['year_of_birth']")
+            .form-line
+              label(for='occupation') Zanimanje
+              input(type='text', name='occupation', value='keramičar', pattern='.{2,64}' '[ngFormControl]'="userForm.controls['occupation']")
+            .form-line
+              label(for='account_type') Vrsta računa
+              input.account-type-input(type='text', name='account_type', value='Administrator', disabled='disabled' '[(ngModel)]'="account_type")
+            .form-line.editable-ui
+              .left-spacer
+              button.raised.alt.right( type = "button" '(click)' = 'toggleEditable()' ) Odustani
+              button.raised.left( type = 'submit' ) Spremi promjene

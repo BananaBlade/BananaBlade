@@ -1,0 +1,26 @@
+.center-area
+  header.center-header
+    .view-path Odlučuj o zahtjevima
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Zahtjevi za terminima
+        .content-header-subtitle
+          | Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          | Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      .content-header-right
+        i.material-icons.icon event
+    ul.content-primary.content-list
+      li.content-list-item.request-item( '*ngFor'="#request of requests")
+        .content-list-item-content
+          .content-list-item-name {{ deconstructBitmask( request.days_bit_mask ) }} — {{request.time}}
+          .content-list-item-data
+            .content-list-item-data-item.request-editor {{request.editor.first_name}} {{request.editor.last_name}}
+            .content-list-item-data-item.request-date-interval {{ request.start_date }} – {{ request.end_date }}
+            .content-list-item-data-item.request-collisions-negative( '*ngIf' = '!request.collisions' ) Nema preklapanja
+            .content-list-item-data-item.request-collisions-positive( '*ngIf' = 'request.collisions' ) Postoi preklapanje
+        .content-list-item-options.editable-ui
+          button( '[disabled]'="request.collisions" )
+            i.material-icons( '(click)'="approveSlot(request.id)" ) check
+          button.alt
+            i.material-icons( '(click)'="rejectSlot(request.id)" ) clear

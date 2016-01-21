@@ -1,0 +1,18 @@
+nav.nav-bar
+  .nav-bar-top-spacer
+  ul
+    div( '*ngFor'="#group of navigation" )
+      li.nav-option-group( '*ngIf'="isVisible( group.accountType )" )
+        a( '*ngIf'="group.hasLink" '[routerLink]'="[group.link.componentName]" )
+          .nav-option-group-name
+            | {{ group.displayName }}
+        .nav-option-group-name( '*ngIf'="!group.hasLink" )
+          | {{ group.displayName }}
+        ul
+          a( '[routerLink]'="[comp.componentName]" '*ngFor'="#comp of group.components" )
+            div( '*ngIf'="!comp.hidden" )
+              li.option-group-item
+                | {{ comp.displayName }}
+    li.nav-option-group
+      a( href = '/user/auth/signout' )
+        .nav-option-group-name Odjavi se

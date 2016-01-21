@@ -1,0 +1,9 @@
+.content-box
+  .content-box-icon
+    i.material-icons directions_bike
+  .content-box-content
+    h2.content-box-name Aktivnost administratora
+    p.content-box-descr Pogledajte koji su sve administratori trenutno aktivni.
+    .stat.active-admins-stat
+      ul.stat-list.active-admins-stat-list
+        li( '*ngFor' = '#admin of admins' ) {{ admin }}

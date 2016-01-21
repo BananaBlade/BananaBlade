@@ -1,0 +1,12 @@
+
+// COMMON_DIRECTIVES 
+// NgClass, NgIf, NgFor, NgSwitch, NgSwitchWhen, NgSwitchDefault, NgModel, NgForm
+
+// CORE DIRECTIVES
+// NgClass, NgIf, NgFor, NgSwitch, NgSwitchWhen, NgSwitchDefault
+
+// FORM DIRECTIVES
+// NgControlName, NgControlGroup, NgFormControl, NgModel, NgFormModel, NgForm,
+// NgSelectOption, DefaultValueAccessor, NumberValueAccessor, CheckboxControlValueAccessor,
+// SelectControlValueAccessor, NgControlStatus, RequiredValidator, MinLengthValidator,
+// MaxLengthValidator

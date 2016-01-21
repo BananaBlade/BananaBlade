@@ -3,17 +3,17 @@
 <head>
     <meta charset = "UTF-8">
     <title>FM Radio</title>
-    <link rel = "stylesheet" href = "{{ url_for( 'static', filename = 'css/default.min.css' ) }}">
+    <link rel = "stylesheet" href = "/dest/index.css">
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
-    <link rel = "shortcut icon" type = "image/x-icon" href = "{{ url_for( 'static', filename = 'img/draft/favicon.ico')}}"/>
+    <link rel = "shortcut icon" type = "image/x-icon" href = "/src/static/img/favicon.ico"/>
 </head>
 <body>
     <header class = "header-bar">
         <div class = "app-box">
-            <a href = ""><div class = "app-name"><img src = "{{ url_for( 'static', filename = './img/draft/logo.png' ) }}" alt = "FM Radio"/></div></a>
+            <a href = ""><div class = "app-name"><img src = "/src/static/img/logo.png" alt = "FM Radio"/></div></a>
         </div>
     </header>
-    <div class = "section-wrapper message-wrapper" data-type = "{{ message.type }}">
+    <div class = "section-wrapper message-wrapper dt-{{ message.type }}">
         <div class = "section-container message-container">
             <header class = "message-header">
                 <h1>{{ message.title }}</h1>

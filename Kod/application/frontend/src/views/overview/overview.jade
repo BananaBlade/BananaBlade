@@ -1,0 +1,118 @@
+.center-area( '[ngClass]' = '{ "dat-1" : authService.isUser(), "dat-2" : authService.isEditor(), "dat-3" : authService.isAdmin(), "dat-4" : authService.isOwner() }')
+    header.center-header
+        .view-path Pregledaj mogućnosti
+    .center-content
+        header.content-header
+            .content-header-left
+                .content-header-title Mogućnosti
+                .content-header-subtitle
+                    | Popis svih vama dostupnih mogućnosti kao korisnika radiopostaje.
+                    | Uključuju slušanje radijskog programa, sudjelovanje u radu postaje te upravljanje vlastitim računom.
+            .content-header-right
+                i.material-icons.icon dashboard
+        .content-boxes
+            .content-box
+                .content-box-icon
+                    i.material-icons graphic_eq
+                .content-box-info
+                    h2.content-box-name Slušanje radija
+                    p.content-box-descr Slušajte program radiopostaje
+                ul.content-box-options
+                    li
+                        a( '[routerLink]' = '["/Index"]' )
+                            .option-name Slušaj radio
+                            .option-descr Uživo slušajte trenutno emitirani program najdraže vam radiopostaje
+            .content-box
+                .account-type-select.user-select
+                    .content-box-icon
+                        i.material-icons person
+                    .content-box-info
+                        h2.content-box-name Korisničke mogućnosti
+                        p.content-box-descr Sudjelujte u radu postaje
+                    ul.content-box-options
+                        li
+                            a( '[routerLink]' = '["/Settings", "MakeWishlist"]' )
+                                .option-name Lista želja
+                                .option-descr Sastavite svoju listu želja kako bi savjetom pomogli urednicima u sastavljanju programa radiopostaje
+                
+                .account-type-select.editor-select
+                    .content-box-icon
+                        i.material-icons edit
+                    .content-box-info
+                        h2.content-box-name Uredničke mogućnosti
+                        p.content-box-descr Uređujte program radiopostaje
+                    ul.content-box-options
+                        li
+                            a( '[routerLink]' = '["/Settings", "EditorSlots"]' )
+                                .option-name Termini reprodukcije
+                                .option-descr Sastavite program i upravljajte dodjeljenim vam terminima za reprodukciju
+                    
+                .account-type-select.admin-select
+                    .content-box-icon
+                        i.material-icons build
+                    .content-box-info
+                        h2.content-box-name Administratorske mogućnosti
+                        p.content-box-descr Administrirajte rad radiopostaje
+                    ul.content-box-options
+                        li
+                            a( '[routerLink]' = '["/Settings", "ManageTracks"]' )
+                                .option-name Zvučni zapisi
+                                .option-descr Uređujte zvučne zapise dostupne u sustavu
+                        li
+                            a( '[routerLink]' = '["/Settings", "ManageEditors"]' )
+                                .option-name Urednici
+                                .option-descr Pregledajte i upravljajte glazbenim urednicima
+                                
+                        li
+                            a( '[routerLink]' = '["/Settings", "ManageRequests"]' )
+                                .option-name Zahtjevi za terminima
+                                .option-descr dlučujte o uredničkim zahtjevima za terminima
+                        li
+                            a( '[routerLink]' = '["/Settings", "ManageUsers"]' )
+                                .option-name Korisnici
+                                .option-descr Pregledajte i upravljajte korisnicima radiopostaje
+                        li
+                            a( '[routerLink]' = '["/Settings", "ShowStats"]' )
+                                .option-name Statistike
+                                .option-descr Pregledajte razne statistike o radu radiopostaje
+                
+                .account-type-select.owner-select
+                    .content-box-icon
+                        i.material-icons vpn_key
+                    .content-box-info
+                        h2.content-box-name Vlasničke mogućnosti
+                        p.content-box-descr Upravljajte svojom radiopostajom
+                    ul.content-box-options        
+                        li
+                            a( '[routerLink]' = '["/Settings", "ManageAdmins"]' )
+                                .option-name Administratori
+                                .option-descr Pregledajte, dodajte ili uklonite administratore postaje   
+                        li
+                            a( '[routerLink]' = '["/Settings", "ManageRadiostation"]' )
+                                .option-name Podaci o postaji
+                                .option-descr Pregledajte i izmijenite podatke o radiopostaji
+                        li
+                            a( '[routerLink]' = '["/Settings", "ShowStats"]' )
+                                .option-name Statistike
+                                .option-descr Pregledajte razne statistike o radu radiopostaje    
+                        
+            .content-box
+                .content-box-icon
+                    i.material-icons account_box
+                .content-box-info
+                    h2.content-box-name Postavke računa
+                    p.content-box-descr Upravljajte postavkama vlastitog korisničkog računa
+                            
+                ul.content-box-options
+                    li
+                        a( '[routerLink]' = '["/Settings", "AccountData"]' )
+                            .option-name Osobni podaci
+                            .option-descr Pregledajte i uredite svoje osobne podatke 
+                    li
+                        a( '[routerLink]' = '["/Settings", "AccountPassword"]' )
+                            .option-name Promjena lozinke
+                            .option-descr Promijenite lozinku pomoću koje pristupate sustavu          
+                    li
+                        a( '[routerLink]' = '["/Settings", "AccountDelete"]' )
+                            .option-name Brisanje računa
+                            .option-descr Zauvijek izbrišite vlastiti korisnički račun

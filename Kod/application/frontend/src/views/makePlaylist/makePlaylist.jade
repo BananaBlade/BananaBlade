@@ -1,0 +1,70 @@
+.center-area('[ngClass]' = '{"state-editable" : editable, "state-uneditable" : !editable}')
+  header.center-header
+    .view-path Termini reprodukcije > Uredi listu za reprodukciju
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Lista za reprodukciju
+        .content-header-subtitle
+          | Odaberite zvučne zapise
+          | za reprodukciju u danom terminu emitiranja. Trajanje liste je 
+          b 1 sat
+          | ,
+          |                         a u obzir pri njenom sastavljanju možete uzeti želje koje su izrazili korisnici
+          |                         postaje.
+      .content-header-right
+        i.material-icons.icon queue_music
+    nav.content-options.uneditable-ui
+      button( '(click)'="toggleEditable()" ) Izmijeni listu za reprodukciju
+    nav.content-options.editable-ui
+      button( '(click)'="submitPlaylist()" ) Spremi listu za reprodukciju
+      button( '(click)'="resetPlaylist()" ) Odustani od promjena
+    ul.content-primary.content-list
+      li.content-list-item.progress-item
+        .content-list-item-content
+          label(for='') Trajanje liste
+          .progress-bar
+            .progress-value {{ minutesSpent }}:{{ secondsSpent }} / 60:00
+            .progress-indicator( '[ngStyle]'="{ 'width':barPercentage + '%' }")
+      li.content-list-item.content-list-search-item.editable-ui
+        form
+          .content-list-item-content
+            label(for='add_track_search') Dodaj na listu
+            input.add-item-search(type='text', name='add_track_search' '(keypress)'="onKeyPressed($event)" '[(ngModel)]'="trackSearch" )
+          .content-list-item-options
+            button.raised.add-item-button( '[disabled]'="!matching" '(click)'="addTrack()" )
+              i.material-icons playlist_add
+      div
+          li.content-list-item.closest-match-item.track-item( '*ngFor'="#track of searchResults" )
+            .content-list-item-content
+              .content-list-item-name {{track.title}}
+              .content-list-item-data
+                .content-list-item-data-item.track-duration {{ track.minutes }}:{{ track.seconds }}
+                .content-list-item-data-item.track-artist-dim {{track.artist}}
+                .content-list-item-data-item.track-album {{track.album}}
+            .content-list-item-options.editable-ui
+              button.alt( '(click)'="addTrackToPlaylist(track)" )
+                i.material-icons check
+      li.content-list-item.track-item( '*ngFor'="#track of playlist" )
+        .content-list-item-content
+          .content-list-item-name {{track.title}}
+          .content-list-item-data
+            .content-list-item-data-item.track-duration {{ track.minutes }}:{{ track.seconds }}
+            .content-list-item-data-item.track-artist-dim {{track.artist}}
+            .content-list-item-data-item.track-album {{track.album}}
+        .content-list-item-options.editable-ui
+          button.alt( '(click)'="removeTrack(track)" )
+            i.material-icons clear
+  .center-side
+    .center-side-header
+      .center-side-title Korisničke želje
+      .center-side-subtitle Pogledajte što korisnici žele slušati u programu radio postaje.
+    .center-side-content
+      ul.global-wishlist
+        li.global-wishlist-item( '*ngFor' = '#track of wishes' )
+          .gw-track
+            .gw-track-name {{ track.title }}
+            .gw-track-artist {{ track.artist }}
+          .gw-option.editable-ui
+            button( '(click)' = 'addTrackToPlaylist( track.copy() )' )
+              i.material-icons playlist_add

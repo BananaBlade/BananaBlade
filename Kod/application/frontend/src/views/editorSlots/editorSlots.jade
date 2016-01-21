@@ -1,0 +1,75 @@
+.center-area(data-editable='false')
+  header.center-header
+    .view-path Termini reprodukcije
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Termini reprodukcije
+        .content-header-subtitle
+          | Pregledajte svoje termine i
+          | sastavite liste za reprodukciju odabrane termine, te pošaljite zahtjeve za dodjelom drugih termina.
+      .content-header-right
+        i.material-icons.icon schedule
+    .content-primary.content-calendar( '[ngClass]' = '{"state-change" : changing, "state-view" : !changing }')
+      .calendar-wrapper
+        h2 Kalendar 
+          .calendar-nav
+            a &lt; 
+            | 11.01. &ndash; 17.01. 
+            a &gt;
+        .calendar.large-calendar
+          table
+            caption
+              .caption-item
+                .caption-color.c1
+                .caption-descr Dodijeljeno vama (prazno)            
+              .caption-item
+                .caption-color.c2
+                .caption-descr Dodijeljeno vama (ispunjeno)
+              .caption-item
+                .caption-color.c3
+                .caption-descr Zatraženo
+              .caption-item
+                .caption-color.c4
+                .caption-descr Slobodno
+              .caption-item
+                .caption-color.c5
+                .caption-descr Zauzeto
+            tbody
+              tr.head-row
+                th.rh
+                th( '*ngFor'="#day of days" ) {{ day }}
+              tr( '*ngFor'= "#hour of hours" )
+                td.rh {{ hour }}:00
+                td( '*ngFor'="#day of daysNum" '(click)'="slotClicked(day, hour)" 
+                '[ngClass]'="{c1 : getCount( day, hour ) == 0, c2 : getCount( day, hour ) > 0 }" )
+      .calendar-actions
+        button( '(click)' = 'toggleState()') Zatraži novi termin
+      .calendar-option
+        form('[ngFormModel]'="requestForm" '(ngSubmit)'="requestSlot(requestForm.value)")
+          h3 Zatraži termin
+          .form-line
+            label(for='time') Vrijeme
+            select(name='for' '[ngFormControl]'="requestForm.controls['time']")
+              option( '*ngFor'="#hour of hours" '[value]'="hour") {{hour}}:00
+          .form-line
+            label Dani ponavljanja
+            fieldset.day-checks
+              input(type='checkbox', '*ngFor'="#day of daysNum" '[ngFormControl]'="requestForm.controls['day'+day]")
+              ul.check-labels
+                li P
+                li U
+                li S
+                li Č
+                li P
+                li S
+                li N
+          .form-line
+            label(for='start_date') Početni datum
+            input(type='date', name='start_date' '[ngFormControl]'="requestForm.controls['start_date']")
+          .form-line
+            label(for='end_date') Završni datum
+            input(type='date', name='end_date' '[ngFormControl]'="requestForm.controls['end_date']")
+          .form-line
+            button(type = "button" '(click)' = 'toggleState()' )
+            button(type="submit").raised Zatraži termin

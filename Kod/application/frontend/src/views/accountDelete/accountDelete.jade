@@ -1,0 +1,23 @@
+.center-area
+  header.center-header
+    .view-path Obriši račun
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Brisanje računa
+        .content-header-subtitle
+          | Zauvijek obrišite svoj
+          | korisnički račun i sve uz njega vezane podatke. 
+          b
+            | Oprez! Jednom
+            | kada to odlučite učiniti, više nema povratka.
+      .content-header-right
+        i.material-icons.icon block
+    .content-primary.content-form
+      form
+        .form-line
+          label(for='old_password') Lozinka (za potvrdu)
+          input(type='password' name='password' '[(ngModel)]'="password")
+        .form-line
+          .left-spacer
+          button.raised.alt( '(click)'="submitDelete()" ) Obriši račun

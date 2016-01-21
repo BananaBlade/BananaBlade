@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <title>FM Radio</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <base href="/">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel = "shortcut icon" type = "image/x-icon" href = "/src/static/img/favicon.ico"/>
+
+  <!-- styles -->
+  <link rel="stylesheet" type="text/css" href="/dest/index.css">
+
+  <!-- Setting the right viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- Angular 2 -->
+  <!-- ES6-related imports -->
+  <script src="/node_modules/angular2/bundles/angular2-polyfills.js"></script>
+  <script src="/node_modules/es6-shim/es6-shim.js"></script>
+  <script src="/node_modules/systemjs/dist/system.js"></script>
+  <script>
+    //configure system loader
+    System.config({
+      defaultJSExtensions: true
+    });
+  </script>
+  <script src="/node_modules/rxjs/bundles/Rx.js"></script>
+  <script src="/node_modules/angular2/bundles/angular2.dev.js"></script>
+
+  <script src="/node_modules/angular2/bundles/http.dev.js"></script>
+  <script src="/node_modules/angular2/bundles/router.dev.js"></script>
+</head>
+<body>
+
+  <app>
+    <div class = "loading-wrapper">
+        <div class = "loading-screen">
+            <div class = "logo-large">
+                FM Radio
+            </div>
+            <div class = "loader">
+                <svg class = "circular" viewBox = "25 25 50 50">
+                    <circle class = "path" cx = "50" cy = "50" r = "20" fill = "none" stroke-width = "2" stroke-miterlimit = "10"/>/>
+                </svg>
+          </div>
+        </div>
+    </div>
+  </app>
+
+  <script>
+      //bootstrap the Angular2 application
+      System.import('dest/index').catch(console.log.bind(console));
+  </script>
+</html>

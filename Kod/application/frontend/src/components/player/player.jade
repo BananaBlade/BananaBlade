@@ -1,0 +1,29 @@
+.player-box
+    header.player-header
+        h2 Trenutno na programu
+    .player-body
+        .current-editor
+            span Urednik:
+            | {{ track.editor }}
+        .player-track
+            .player-track-title {{ track.title }}
+            .player-track-info
+                .player-track-info-item.player-track-artist {{ track.artist }}
+                .player-track-info-item.player-track-album {{ track.album }}
+                .player-track-info-item.player-track-year {{ track.year }}
+                .player-track-info-item.player-track-genre {{ track.genre }}
+
+    audio#audio-player( preload = "false" )
+    .player-progress-bar
+        //.player-progress( '[style.width]' = 'this.audio.currentTime / this.audio.duration')
+        
+    .player-controls
+        .control-buttons
+            button.volume-button( '(click)' = 'volumeDown()')
+                i.material-icons volume_down
+            button.play-button( '*ngIf' = '!playing' '(click)' = 'play()' )
+                i.material-icons play_circle_filled
+            button.play-button( '*ngIf' = 'playing' '(click)' = 'pause()' )
+                i.material-icons pause_circle_filled
+            button.volume-button( '(click)' = 'volumeUp()')
+                i.material-icons volume_up

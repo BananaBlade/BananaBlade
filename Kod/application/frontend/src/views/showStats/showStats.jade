@@ -1,0 +1,89 @@
+.center-area( '[ngClass]' = '{ "dat-3" : authService.isAdmin(), "dat-4" : authService.isOwner() }')
+  header.center-header
+    .view-path Pregled statistika
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Statistike
+        .content-header-subtitle
+          | Pregledajte razne zanimljive
+          | statistike o različitim aspektima rada radiopostaje i njenim korisnicima.
+      .content-header-right
+        i.material-icons.icon donut_small
+    .content-boxes
+      .account-type-select.admin-select
+        //.content-box
+          .content-box-icon
+            i.material-icons graphic_eq
+          .content-box-content
+            h2.content-box-name Učestalost puštanja pojedinih zapisa
+            p.content-box-descr Pogledajte koliko je puta koji zapis puštan u programu radiopostaje.
+            .stat.track-stat(data-state='view')
+              .stat-track-wrapper
+                .stat-item-display.stat-display.stat-track-display
+                  .stat-track-name Violin Concerto No. 5: Tempo di minuetto
+                  .stat-track-info
+                    .stat-track-info-item.stat-track-artist Wolfgang A. Mozart
+                    .stat-track-info-item.stat-track-album The Very Best of Mozart
+                    .stat-track-info-item.stat-track-year 2007
+                    .stat-track-info-item.stat-track-genre Klasična glazba
+                .stat-item-option
+                  form
+                    label(for='choose_track_search') Odaberi zvučni zapis
+                    input.choose-search(type='text', name='choose_track_search')
+                    .stat-option-button
+                      button.raised(type='button')
+                        i.material-icons search
+              .single-stat.stat-display
+                .single-stat-number 14
+                .single-stat-descr Broj puštanja u programu radiopostaje
+              .stat-buttons.stat-display
+                button.right.dim Pogledaj drugi zapis
+        //.content-box
+          .content-box-icon
+            i.material-icons star
+          .content-box-content
+            h2.content-box-name Preference urednika
+            p.content-box-descr Pogledajte koje su zapise pojedini urednici najčešće puštali.
+            .stat.track-stat(data-state='view')
+              .stat-track-wrapper
+                .stat-item-display.stat-display.stat-editor-display
+                  .stat-editor-name Mirko Horvat
+                  .stat-editor-info
+                    .stat-track-info-item.stat-editor-mail mhorvat@mail.com
+                    .stat-track-info-item.stat-editor-age 48 godina
+                    .stat-track-info-item.stat-editor-occupation Vodoinstalater
+                .stat-item-option
+                  form
+                    label(for='choose_track_search') Odaberi urednika
+                    input.choose-search(type='text', name='choose_track_search')
+                    .stat-option-button
+                      button.raised(type='button')
+                        i.material-icons search
+              ul.stat-list.track-stat-list.stat-display.no-border
+                li
+                  span.track-stat-list-track-name Hello
+                  span.track-stat-list-track-artist Adele
+                  .track-stat-list-wish-count 174
+                li
+                  span.track-stat-list-track-name Same Old Love
+                  span.track-stat-list-track-artist Selena Gomez
+                  .track-stat-list-wish-count 152
+                li
+                  span.track-stat-list-track-name All I Want For Christmas Is You
+                  span.track-stat-list-track-artist Mariah Carey
+                  .track-stat-list-wish-count 127
+                li
+                  span.track-stat-list-track-name In The Night
+                  span.track-stat-list-track-artist The Weeknd
+                  .track-stat-list-wish-count 96
+                li
+                  span.track-stat-list-track-name On My Mind
+                  span.track-stat-list-track-artist Ellie Goulding
+                  .track-stat-list-wish-count 71
+              .stat-buttons.stat-display
+                button.right.dim Pogledaj drugog urednika
+        global-wishlist
+        popular-track
+      users-count
+      admins-list

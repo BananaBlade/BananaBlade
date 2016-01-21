@@ -1,0 +1,8 @@
+dest/*
+*.js.map
+*.js
+*.css
+*.html
+
+!index.html
+!dest/static/*

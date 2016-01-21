@@ -1,0 +1,30 @@
+.content-box
+  .content-box-icon
+    i.material-icons trending_up
+  .content-box-content
+    h2.content-box-name Popularnost najtraženijeg zapisa
+    p.content-box-descr
+      | Pogledajte kako se popularnost trenutno najtraženijeg zapisa mijenjala kroz vrijeme.
+    .stat.track-stat( '[ngClass]' = '{"state-view" : !changing, "state-change" : changing }' )
+      .stat-track-wrapper
+        .stat-item-display.stat-display.stat-track-display
+          .stat-track-name {{ track.title }}
+          .stat-track-info
+            .stat-track-info-item.stat-track-artist {{ track.artist }}
+            .stat-track-info-item.stat-track-album {{ track.album }}
+            .stat-track-info-item.stat-track-year {{ track.year }}
+            .stat-track-info-item.stat-track-genre {{ track.genre }}
+      .single-stat( '[hidden]' = 'count < 0' )
+        .single-stat-number {{ count }}
+        .single-stat-descr Broj traženja zvučnog zapisa
+      .stat-form
+        h3 Odabir intervala
+        form( '(ngSubmit)' = "onSubmit()" )
+          .form-line
+            label( for = 'start_date' ) Od datuma:
+            input( type = 'date' name = 'start_date' '[(ngModel)]' = 'start_date' )
+          .form-line
+            label( for = 'end_date' ) Do datuma:
+            input( type = 'date' name = 'end_date' '[(ngModel)]' = 'end_date' )
+          .form-line
+            button.raised.alt2( type = "submit" ) Pretraži

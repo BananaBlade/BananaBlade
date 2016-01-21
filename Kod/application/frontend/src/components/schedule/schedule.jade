@@ -1,0 +1,6 @@
+.schedule-box
+    h2 Raspored emitiranja
+    ul.schedule
+        li.schedule-item( '*ngFor' = '#item of items' )
+            .item-time {{ item.time }}
+            .item-editor {{ item.editor }}

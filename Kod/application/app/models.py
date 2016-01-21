@@ -26,9 +26,9 @@ class Track( BaseModel ):
     path            = CharField()
     artist          = CharField()
     album           = CharField( null = True )
-    duration        = IntegerField()                 # in seconds
+    duration        = IntegerField()
     file_format     = CharField( null = True )
-    sample_rate     = FloatField( null = True )      # in kHz
+    sample_rate     = FloatField( null = True )
     bits_per_sample = IntegerField( null = True )
     genre           = CharField( null = True )
     publisher       = CharField( null = True )
@@ -39,7 +39,7 @@ class Track( BaseModel ):
     def add_track( cls, **track_data ):
         """Adds a new track; named attributes are passed to `track_data` dict"""
         track = cls.create( **track_data )
-        track.save
+        track.save()
         return track
 
     @classmethod
@@ -63,21 +63,25 @@ class Track( BaseModel ):
     def get_currently_playing( cls ):
         """Returns the currently playing track and the editor who selected it
 
+        TODO: Bug fix!!!
+
         Raises DoesNotExist, IndexError
-        TODO: Possible error upon first track on the list
         """
         current_time = datetime.now()
         start_time = current_time.replace( minute = 0, second = 0, microsecond = 0 )
+        print( current_time, start_time )
+
         slot = Slot.get( Slot.time == start_time )
         playlist = iter( slot.get_playlist().order_by( PlaylistTrack.index ) )
         ptrack = next( playlist )
         try:
             while True:
-                if start_time > current_time - timedelta( seconds = ptrack.play_duration ):
-                    print( current_time, start_time )
+                print( start_time, ptrack.track.title )
+                if start_time + timedelta( seconds = ptrack.play_duration ) > current_time:
+                    print( ( current_time - start_time ).total_seconds() )
                     return ptrack, ( current_time - start_time ).total_seconds(), slot.editor
-                ptrack = next( playlist )
                 start_time += timedelta( seconds = ptrack.play_duration )
+                ptrack = next( playlist )
         except StopIteration:
             raise IndexError
 
@@ -337,7 +341,10 @@ class User( BaseModel ):
 
         Raises AuthorizationError
         """
-        self._assert_admin()
+        try:
+            self._assert_admin()
+        except AuthorizationError:
+            self._assert_owner()
         return User.select().where( User.account_type << [ AccountType.USER, AccountType.EDITOR ] )
 
     def get_user( self, user_id ):
@@ -491,9 +498,11 @@ class User( BaseModel ):
         User to be made admin has to be a basic user.
         Operation restricted to owners.
 
-        Raises AuthorizationError, TypeError, DoesNotExist
+        Raises AuthorizationError, TypeError, DoesNotExist, ValueError
         """
         self._assert_owner()
+        if User.select().where( User.account_type == AccountType.ADMINISTRATOR ).count() > 9:
+            raise ValueError
         user = User.get( User.id == user_id )
         if user.account_type != AccountType.USER:
             raise TypeError( 'Korisnika nije moguće postaviti za administratora, već ima neku ulogu.' )
@@ -556,7 +565,7 @@ class User( BaseModel ):
         Track.delete_track( track_id )
 
     def get_slots( self ):
-        """Returns a list of all future slots allocated to the editor
+        """Returns a list of future slots allocated to the editor
 
         Operation restricted to editors.
 
@@ -566,6 +575,16 @@ class User( BaseModel ):
         return ( Slot.select( Slot, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
             .where( ( Slot.editor == self ) & ( Slot.time > datetime.now() ) )
             .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
+
+    def get_reserved_slots( self ):
+        """Returns a list of reserved future slots
+
+        Operation restricted to editors.
+
+        Raises AuthorizationError
+        """
+        self._assert_editor()
+        return Slot.select().where( Slot.time > datetime.now() )
 
     def get_all_slots( self ):
         """Returns a list of all future slots allocated to anyone
@@ -605,7 +624,7 @@ class User( BaseModel ):
     def set_slot_playlist( self, slot_id, track_list ):
         """Sets playlist for a given slot
 
-        Track list consists of triplets (index, track_id, play_duration).
+        Track list consists of triplets (index, track_id, duration).
         Operation restricted to editors.
 
         Raises AuthorizationError, DoesNotExist
@@ -633,6 +652,18 @@ class User( BaseModel ):
         """
         self._assert_user()
         return Wish.get_user_wishlist( self )
+
+    def get_wishlist_confirmation_time( self ):
+        """Return last time user confirmed his wishlist
+
+        Restricted to basic users.
+
+        Raises AuthorizationError
+        """
+        self._assert_user()
+        last_confirmed_wish = ( Wish.select().where( ( Wish.user == self ) &
+            ( Wish.is_temporary == False ) ).order_by( Wish.date_time.desc() ).first() )
+        return last_confirmed_wish.date_time if last_confirmed_wish is not None else None
 
     def set_wishlist( self, track_list ):
         """Sets user's wishlist
@@ -756,7 +787,7 @@ class Slot( BaseModel ):
         """Returns a list of all future assigned slots"""
         return ( cls.select( Slot, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
             .where( Slot.time > datetime.now() )
-            .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
+            .join( PlaylistTrack, JOIN.LEFT_OUTER ).switch( Slot ).join( User ).group_by( Slot ) )
 
     @classmethod
     def get_next_on_schedule( cls ):
@@ -773,7 +804,7 @@ class Slot( BaseModel ):
     def set_playlist( self, track_list ):
         """Makes a playlist for a given slot
 
-        Track list consists of triplets (index, track_id, play_duration).
+        Track list consists of triplets (index, track_id, duration).
         """
         PlaylistTrack.delete().where( PlaylistTrack.slot == self ).execute()
         data = [ { 'slot' : self, 'track' : Track.get( Track.id == t_id ), 'index' : i, 'play_duration' : d }
@@ -801,6 +832,7 @@ class SlotRequest( BaseModel ):
 
         Raises peewee.IntegrityError
         """
+        if self.detect_collisions(): raise peewee.IntegrityError
         times = generate_times( self.time, self.days_bit_mask, self.start_date, self.end_date )
         data = [ { 'time' : t, 'editor' : self.editor } for t in times ]
         Slot.insert_many( data ).execute()
@@ -810,13 +842,17 @@ class SlotRequest( BaseModel ):
         """Denies slot request by removing it from the database"""
         self.delete_instance()
 
+    def detect_collisions( self ):
+        """Checks whether this request collides with any assigned slots"""
+        times = generate_times( self.time, self.days_bit_mask, self.start_date, self.end_date )
+        return Slot.select().where( Slot.time << times ).count() > 0
 
 class PlaylistTrack( BaseModel ):
     """Model of a track on a slot playlist"""
     slot            = ForeignKeyField( Slot, related_name = "tracks" )
     track           = ForeignKeyField( Track )
     index           = IntegerField()
-    play_duration   = IntegerField()
+    play_duration        = IntegerField()
 
     @classmethod
     def get_editor_preferred_tracks( cls, editor_id ):

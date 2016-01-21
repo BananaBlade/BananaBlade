@@ -1,0 +1,30 @@
+.center-area( '[ngClass]' = '{"state-editable" : editable, "state-uneditable" : !editable }')
+  header.center-header
+    .view-path Upravljaj korisnicima
+  .center-content
+    header.content-header
+      .content-header-left
+        .content-header-title Korisnici
+        .content-header-subtitle
+          | Pregledajte i uredite
+          | podatke korisnika ove radiopostaje. Na popisu se nalaze svi korisnici
+          | sustava, osim drugih administratora i vlasnika.
+      .content-header-right
+        i.material-icons.icon group
+    nav.content-options.uneditable-ui( '*ngIf'="!editable"  '(click)'="toggleEditable()" )
+      button Uredi popis korisnika
+    nav.content-options.editable-ui( '*ngIf'="editable" '(click)'="toggleEditable()" )
+      button Završi uređivanje popisa
+    ul.content-primary.content-list
+      li.content-list-item.user-item( '*ngFor'="#user of users" '[ngClass]' = '{ "dt-1" : user.account_type == 1, "dt-2" : user.account_type == 2 }' )
+        .content-list-item-content
+          .content-list-item-name {{user.first_name}} {{user.last_name}}
+          .content-list-item-data
+            .content-list-item-data-item.user-mail {{user.email}}
+            .content-list-item-data-item.user-age {{user.age}} godina
+            .content-list-item-data-item.user-occupation {{user.occupation}}
+        .content-list-item-options.editable-ui
+          button.dim
+            i.material-icons( '(click)'="editUser(user.id)" ) edit
+          button.alt
+            i.material-icons( '(click)'="deleteUser(user.id)" ) clear
