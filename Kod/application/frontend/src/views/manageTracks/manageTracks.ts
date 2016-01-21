@@ -1,8 +1,9 @@
 
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
-import { Http } from 'angular2/http';
 import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
+
+import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'ManageTracks',
@@ -10,7 +11,7 @@ import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
     directives: [ NgFor, RouterLink ]
 })
 export class ManageTracks {
-    http: Http;
+    http: HttpAdvanced;
     router: Router;
 
     tracks: Track[];
@@ -31,20 +32,20 @@ export class ManageTracks {
                 break;
             }
         }
-        this.http.post('admin/tracks/' + track.id + '/delete', '').subscribe((res) => console.log(res), (err) => console.log(err));
+        this.http.post('admin/tracks/' + track.id + '/delete', '');
     }
 
-    constructor(router: Router, http: Http) {
+    constructor(router: Router, http: HttpAdvanced) {
         this.http = http;
         this.router = router;
 
-        this.http.get('/tracks/list').map((res) => res.json()).subscribe((res) => {
+        this.http.get('/tracks/list', (res) => {
             console.log(res);
             this.tracks = new Array();
             for (let i in res.data) {
                 this.tracks.push(new Track(res.data[i]));
             }
-        }, (err) => console.log(err));
+        });
     }
 }
 

@@ -1,10 +1,8 @@
 import { Component, Input } from 'angular2/core';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
-import 'rxjs/Rx';
 
-import { NavigationProvider } from "../../services/routingProvider";
-import { AuthService } from '../../services/authService';
+import { NavigationProvider, AuthService } from '../../services/services';
 
 
 @Component({

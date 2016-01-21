@@ -2,10 +2,8 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
-import { Http } from 'angular2/http';
 
-import { urlEncode } from '../../services/utilities';
-import { AuthService } from '../../services/authService';
+import { HttpAdvanced, AuthService } from '../../services/services';
 
 @Component({
     selector: 'ManageRadiostation',
@@ -13,7 +11,7 @@ import { AuthService } from '../../services/authService';
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageRadiostation {
-    http: Http;
+    http: HttpAdvanced;
     myForm: ControlGroup;
 
     isFormDisabled: boolean;
@@ -29,14 +27,14 @@ export class ManageRadiostation {
 
     onSubmit(value: String): void {
         console.log(value);
-        this.http.post('/owner/station/modify', urlEncode(value)).map((resp) => resp.text()).subscribe((resp) => console.log(resp), (err) => console.log(err));
+        this.http.post('/owner/station/modify', value);
     }
 
     toggleEditing() {
         if (this.isOwner) this.isFormDisabled = !this.isFormDisabled;
     }
 
-    constructor(fb: FormBuilder, http: Http, authService: AuthService) {
+    constructor(fb: FormBuilder, http: HttpAdvanced, authService: AuthService) {
         this.http = http;
 
         this.isOwner = authService.isOwner();
@@ -52,12 +50,12 @@ export class ManageRadiostation {
             'frequency': this.frequency
         });
 
-        this.http.get('/station/get').map((text) => text.json()).subscribe((response) => {
+        this.http.get('/station/get', (response) => {
             let stationObj = response.data;
             console.log(stationObj);
             for (let name in stationObj) {
                 this[name].updateValue(stationObj[name]);
             }
-        }, (err) => console.log(err));
+        });
     }
 }

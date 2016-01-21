@@ -1,23 +1,29 @@
-import { Injectable, Injector } from 'angular2/core';
-import { Http, HTTP_PROVIDERS } from 'angular2/http';
+import { Injectable, Injector, Inject, provide } from 'angular2/core';
+
+import { HttpAdvanced } from './../services/services';
 
 let ACCOUNT_TYPE: string = "accountType";
 
-
 @Injectable()
 export class AuthService {
-    private http: Http;
+    private http: HttpAdvanced;
+
+    constructor(@Inject(HttpAdvanced) http: HttpAdvanced) {
+        this.http = http;
+        this.storeUserAuthentication();
+    }
 
     storeUserAuthentication(callback?: Function) {
-        this.http.get('/user/account/type').map((res) => res.json()).subscribe((res) => {
+        this.http.get('/user/account/type', (res) => {
             console.log(res);
-            sessionStorage.setItem(ACCOUNT_TYPE, res.data.account_type);
+            console.log(1);
+            sessionStorage.setItem(ACCOUNT_TYPE, res.account_type);
             if (callback) callback();
-        }, (err) => console.log(err));
+        });
     }
 
     isInitialized() {
-        return sessionStorage.getItem(ACCOUNT_TYPE) !== null;
+        return !!sessionStorage.getItem(ACCOUNT_TYPE);
     }
 
     getAuthLevel() {
@@ -46,21 +52,15 @@ export class AuthService {
     }
 
     static isUserInjector() {
-        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isUser();
+        return (next, prev) => Injector.resolveAndCreate([AuthService, provide(HttpAdvanced, { useClass: HttpAdvanced })]).get(AuthService).isUser();
     }
     static isEditorInjector() {
-        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isEditor();
+        return (next, prev) => Injector.resolveAndCreate([AuthService, provide(HttpAdvanced, { useClass: HttpAdvanced })]).get(AuthService).isEditor();
     }
     static isAdminInjector() {
-        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isAdmin();
+        return (next, prev) => Injector.resolveAndCreate([AuthService, provide(HttpAdvanced, { useClass: HttpAdvanced })]).get(AuthService).isAdmin();
     }
     static isOwnerInjector() {
-        return (next, prev) => Injector.resolveAndCreate([AuthService, HTTP_PROVIDERS]).get(AuthService).isOwner();
-    }
-
-
-    constructor(http: Http) {
-        this.http = http;
-        this.storeUserAuthentication();
+        return (next, prev) => Injector.resolveAndCreate([AuthService, provide(HttpAdvanced, { useClass: HttpAdvanced })]).get(AuthService).isOwner();
     }
 }

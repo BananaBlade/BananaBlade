@@ -1,6 +1,7 @@
 import { Component } from 'angular2/core';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
-import { Http } from 'angular2/http';
+
+import { HttpAdvanced } from '../../../services/services';
 
 @Component({
     selector : 'popular-track',
@@ -8,21 +9,20 @@ import { Http } from 'angular2/http';
     directives : [ COMMON_DIRECTIVES ]
 })
 export class PopularTrack{
-    http : Http;
+    http: HttpAdvanced;
     track : Track;
     count : number = -1;
     start_date : string;
     end_date : string;
 
-    constructor( http : Http ){
+    constructor(http: HttpAdvanced) {
         this.http = http;
         this.track = new Track( { title : '', artist : '', album : '', genre : '', year : 0 })
-        this.http.get( '/stats/tracks/most_wanted' ).subscribe( ( res ) => this.track = new Track( res.json().data ), ( err ) => console.log( err ) );
+        this.http.get('/stats/tracks/most_wanted', (res) => this.track = new Track(res));
     }
 
     onSubmit(){
-        this.http.get( '/stats/tracks/most_wanted/wish_count/' + this.start_date + '/'  + this.end_date )
-            .subscribe( ( res ) => this.count = res.json().data.count, ( err ) => console.log( err ) );
+        this.http.get('/stats/tracks/most_wanted/wish_count/' + this.start_date + '/' + this.end_date, (res) => this.count = res.count);
     }
 }
 

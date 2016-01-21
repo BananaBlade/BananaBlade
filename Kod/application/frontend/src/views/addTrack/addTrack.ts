@@ -1,8 +1,7 @@
 import { Component } from 'angular2/core';
-import { Location, RouteConfig, RouterLink, Router } from 'angular2/router';
 import { FORM_DIRECTIVES } from 'angular2/common';
-import { FILE_UPLOAD_DIRECTIVES, FileUploader } from '../../services/ng2-file-upload2/ng2-file-upload';
-import { urlEncode } from '../../services/utilities';
+
+import { FILE_UPLOAD_DIRECTIVES, FileUploader } from '../../services/services';
 
 @Component({
     selector: 'AddTrack',

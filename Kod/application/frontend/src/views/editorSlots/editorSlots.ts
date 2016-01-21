@@ -1,13 +1,11 @@
 
 import { View, Component, Injector } from 'angular2/core';
 import { Router, RouteConfig, RouterLink, CanActivate } from 'angular2/router';
-import { Http } from 'angular2/http';
 import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIRECTIVES,
     FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 // NgSelectOption CheckboxControlValueAccessor
 
-import { urlEncode } from '../../services/utilities';
-import { AuthService } from '../../services/authService';
+import { HttpAdvanced, AuthService } from '../../services/services';
 
 
 @CanActivate(AuthService.isEditorInjector())
@@ -17,7 +15,7 @@ import { AuthService } from '../../services/authService';
     directives: [ ]
 })
 export class EditorSlots {
-    http: Http;
+    http: HttpAdvanced;
     fb: FormBuilder;
     router: Router;
 
@@ -67,7 +65,7 @@ export class EditorSlots {
             'start_date': start_date2,
             'end_date': end_date2
         };
-        this.http.post('/editor/slots/request', urlEncode(requestObj)).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
+        this.http.post('/editor/slots/request', requestObj);
     }
 
     initCalendar() {
@@ -95,7 +93,7 @@ export class EditorSlots {
         }
     }
 
-    constructor(http: Http, fb: FormBuilder, router: Router) {
+    constructor(http: HttpAdvanced, fb: FormBuilder, router: Router) {
         // Initialising injected services.
         this.http = http;
         this.fb = fb;
@@ -129,14 +127,14 @@ export class EditorSlots {
         this.initCalendar();
 
         // Fetching the list of allowed slots
-        http.get('/editor/slots/list').map((res) => res.json()).subscribe((res) => {
+        http.get('/editor/slots/list', (res) => {
             this.slots = new Array();
             for (let i in res.data.slots) {
                 this.slots.push(new Slot(res.data.slots[i]));
             }
             this.updateCalendar();
             console.log(res);
-        }, (err) => console.log(err));
+        });
     }
 
     toggleState(){ this.changing = !this.changing }

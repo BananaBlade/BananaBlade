@@ -2,8 +2,8 @@
 import { Component } from 'angular2/core';
 import { COMMON_DIRECTIVES } from 'angular2/common';
 import {Location, RouteConfig, RouterLink, Router, CanActivate, RouteParams} from 'angular2/router';
-import { Http } from 'angular2/http';
-import { urlEncode } from '../../services/utilities';
+
+import { HttpAdvanced } from '../../services/services';
 
 @Component({
   selector: 'MakePlaylist',
@@ -11,7 +11,7 @@ import { urlEncode } from '../../services/utilities';
   directives: [ COMMON_DIRECTIVES ]
 })
 export class MakePlaylist {
-    http: Http;
+    http: HttpAdvanced;
     slotId: string;
     editable: boolean = false;
     playlist: Track[] = new Array();
@@ -85,13 +85,12 @@ export class MakePlaylist {
     onKeyPressed(event) {
         let query = this.trackSearch + String.fromCharCode(event.charCode);
         console.log(query);
-        this.http.get('/tracks/search/' + query).map((res) => res.json()).subscribe((res) => {
+        this.http.get('/tracks/search/' + query, (res) => {
             this.searchResults = new Array();
-            for (let i in res.data) {
-                this.searchResults.push(new Track(res.data[i]));
+            for (let i in res) {
+                this.searchResults.push(new Track(res[i]));
             }
-            console.log(res);
-        }, (err) => console.log(err));
+        });
     }
 
     submitPlaylist() {
@@ -108,29 +107,27 @@ export class MakePlaylist {
         }
         let track_list2 = JSON.stringify(track_list);
 
-        this.http.post('/editor/slots/' + this.slotId + '/set_list', track_list2).map((res) => res.json()).subscribe((res) => console.log(res), (err) => console.log(err));
+        this.http.post('/editor/slots/' + this.slotId + '/set_list', track_list2);
     }
 
-    constructor(http: Http, routeParams: RouteParams) {
+    constructor(http: HttpAdvanced, routeParams: RouteParams) {
         this.http = http;
 
         this.slotId = routeParams.get('slotId');
 
-        this.http.get('/editor/slots/' + this.slotId + '/get_list').map((res) => res.json()).subscribe((res) => {
-            console.log(res);
+        this.http.get('/editor/slots/' + this.slotId + '/get_list', (res) => {
             this.playlist = new Array();
             for (let i in res.data) {
                 this.playlist.push(new Track(res.data[i]));
             }
             this.updateBar();
-        }, (err) => console.log(err));
+        });
 
-        this.http.get( '/tracks/wishlist' ).subscribe( ( res ) => {
-            var array = res.json().data;
-            var end = Math.min( array.length, 10 );
-            for ( var i = 0; i < end; ++i )
-                this.wishes.push( new Track( array[ i ] ) );
-        }, ( err ) => console.log( err ) );
+        this.http.get('/tracks/wishlist', (res) => {
+            var end = Math.min(res.length, 10);
+            for (var i = 0; i < end; ++i)
+                this.wishes.push(new Track(res[i]));
+        });
     }
 }
 

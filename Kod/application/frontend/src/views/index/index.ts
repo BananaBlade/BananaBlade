@@ -1,10 +1,8 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
-import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
-import { Http } from 'angular2/http';
+import { COMMON_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
-import { urlEncode } from '../../services/utilities';
-import { AuthService } from '../../services/authService';
+import { HttpAdvanced, AuthService } from '../../services/services';
 
 import { Messages } from '../../components/messages/messages';
 import { Player } from '../../components/player/player';
@@ -18,7 +16,7 @@ import { Station } from '../../components/station/station';
     templateUrl: './dest/views/index/index.html'
 })
 export class Index {
-    http: Http;
+    http: HttpAdvanced;
     registerForm: ControlGroup;
     authService: AuthService;
 
@@ -30,21 +28,11 @@ export class Index {
     year_of_birth: Control;
     occupation: Control;
 
-    messageText: string = '';
-    messageType: number = 0;
-
-    onSubmitRegistration(value: String): void {
-        this.http.post('/user/auth/register', urlEncode( value ) ).subscribe(
-            ( res ) => {
-                this.messageType = 2; this.messageText = res.json().success_message;
-                this.resetControls();
-            },
-            ( err ) => {
-                this.messageType = 3; this.messageText = err.json().error_message;
-            });
+    onSubmitRegistration(values: String): void {
+        this.http.post('/user/auth/register', values);
     }
 
-    constructor(fb: FormBuilder, http: Http, authService : AuthService) {
+    constructor(fb: FormBuilder, http: HttpAdvanced, authService: AuthService) {
         this.http = http;
         this.authService = authService;
 

@@ -1,10 +1,9 @@
 
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
-import { Http } from 'angular2/http';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 
-import { Form } from '../../services/utilities';
+import { Form, HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'ManageEditors',
@@ -12,7 +11,7 @@ import { Form } from '../../services/utilities';
     directives: [ COMMON_DIRECTIVES, FORM_DIRECTIVES ]
 })
 export class ManageEditors {
-    http: Http;
+    http: HttpAdvanced;
     editors: User[] = new Array();
     closestMatches: any[] = new Array();
     editable: boolean = false;
@@ -28,14 +27,12 @@ export class ManageEditors {
 
         if (this.userSearch.length < 2) return;
 
-        this.http.get('/users/search/' + this.userSearch + enteredLetter).subscribe((res) => {
+        this.http.get('/users/search/' + this.userSearch + enteredLetter, (res) => {
             this.closestMatches = new Array();
-            console.log(res);
-            let data = res.json().data;
-            for (let i = 0; i < 3 && data[i]; i += 1) {
-                this.closestMatches.push(data[i]);
+            for (let i = 0; i < 3 && res[i]; i += 1) {
+                this.closestMatches.push(res[i]);
             }
-        }, (err) => console.log(err));
+        });
     }
 
     enterCheck(event) {
@@ -45,7 +42,7 @@ export class ManageEditors {
     }
 
     addEditor() {
-        this.http.post('/admin/editors/add/' + this.closestMatches[0].id, '').map((res) => res.text()).subscribe((data) => console.log(data), (err) => console.log(err));
+        this.http.post('/admin/editors/add/' + this.closestMatches[0].id, '');
         this.editors.push(this.closestMatches[0]);
 
         this.userSearch = "";
@@ -59,20 +56,18 @@ export class ManageEditors {
                 break;
             }
         }
-        this.http.post('/admin/editors/remove/' + removedEditorId.toString(), '').subscribe((data) => console.log(data), (err) => console.log(err));
+        this.http.post('/admin/editors/remove/' + removedEditorId.toString(), '');
     }
 
-    constructor(http: Http) {
+    constructor(http: HttpAdvanced) {
         this.http = http;
 
-        http.get('/admin/editors/list').subscribe((res) => {
+        http.get('/admin/editors/list', (res) => {
             this.editors = new Array();
-            let data = res.json().data;
-            console.log(data);
-            for (let i in data) {
-                this.editors.push(new User(data[i]));
+            for (let i in res) {
+                this.editors.push(new User(res[i]));
             }
-        }, (err) => console.log(err));
+        });
     }
 }
 

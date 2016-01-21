@@ -1,6 +1,7 @@
 import { Component } from 'angular2/core';
 import { COMMON_DIRECTIVES } from 'angular2/common';
-import { Http } from 'angular2/http';
+
+import { HttpAdvanced } from './../../services/services';
 
 @Component({
     selector: 'schedule',
@@ -9,21 +10,21 @@ import { Http } from 'angular2/http';
 })
 export class Schedule{
     items: any[] = [];
-    http: Http;
+    http: HttpAdvanced;
 
-    constructor( http : Http ){
+    constructor( http : HttpAdvanced ){
         this.http = http;
         this.getItems();
     }
 
-    getItems( self? : any ){
-        if ( !self ) self = this;
-        self.http.get( '/player/schedule' ).map( ( res ) => res.json() ).subscribe( ( res ) => {
+    getItems(self? : any){
+        if (!self) self = this;
+        self.http.get('/player/schedule', (res) => {
             self.items = []
             for ( let i in res.data ){
                 self.items.push( new ScheduleItem( res.data[ i ].editor, res.data[ i ].time ) )
             }
-        }, ( err ) => console.log( err ) );
+        });
         var dt : number;
         dt = 60 - ( new Date() ).getMinutes();
         if ( dt == 0 ) dt = 60;

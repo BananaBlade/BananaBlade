@@ -2,9 +2,8 @@
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, RouteParams } from 'angular2/router';
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
-import { Http } from 'angular2/http';
 
-import { urlEncode } from '../../services/utilities';
+import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'AddTrack',
@@ -12,7 +11,7 @@ import { urlEncode } from '../../services/utilities';
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class EditTrack {
-    http: Http;
+    http: HttpAdvanced;
 
     track: Track;
     trackId: string;
@@ -34,7 +33,7 @@ export class EditTrack {
 
     editable : boolean = false;
 
-    constructor(http: Http, routeParams: RouteParams, fb: FormBuilder) {
+    constructor(http: HttpAdvanced, routeParams: RouteParams, fb: FormBuilder) {
         this.http = http;
 
         this.trackId = routeParams.get('trackId');
@@ -55,17 +54,20 @@ export class EditTrack {
             path: this.path
         });
 
-        http.get('/admin/tracks/' + this.trackId + '/get').map((res) => res.json()).subscribe((res) => {
+        http.get('/admin/tracks/' + this.trackId + '/get', (res) => {
             console.log(res);
             this.track = new Track(res.data);
             for (let name in res.data) {
                 this[name].updateValue(res.data[name]);
             }
-        }, (err) => console.log(err));
+        });
     }
 
     onSubmit(values) {
-        this.http.post('/admin/tracks/' + this.trackId + '/edit', urlEncode(values)).map((res) => res.json()).subscribe((res) => {console.log(res); this.editable = false; }, (err) => console.log(err));
+        this.http.postWithRes('/admin/tracks/' + this.trackId + '/edit', values, (res) => { 
+            console.log(res); 
+            this.editable = false; 
+        });
     }
 
     toggleEditable(){ this.editable = !this.editable; }

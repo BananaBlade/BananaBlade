@@ -1,7 +1,7 @@
 import { Component, Input } from 'angular2/core';
 import { COMMON_DIRECTIVES } from 'angular2/common';
 
-import { MessageServiceInternal } from '../../services/messageService';
+import { MsgServiceInternal } from '../../services/services';
 
 @Component({
     selector : 'messages',
@@ -15,13 +15,13 @@ export class Messages{
     listenTimeoutInterval: number;
     displayTimeoutInterval: number;
 
-    messageService: MessageServiceInternal;
+    messageService: MsgServiceInternal;
 
-    constructor(){
+    constructor(msgServiceInternal: MsgServiceInternal){
         this.shown = false;
         this.listenTimeoutInterval = 100;
         this.displayTimeoutInterval = 2100;
-        this.messageService = new MessageServiceInternal();
+        this.messageService = msgServiceInternal;
         this.watchForMessage(this);
     }
 
@@ -30,7 +30,7 @@ export class Messages{
     }
 
     watchForMessage(self: Messages) {
-        let msgService: MessageServiceInternal = self.messageService;
+        let msgService: MsgServiceInternal = self.messageService;
         let msg: string = "";
         if (msgService.hasMessage())
         {

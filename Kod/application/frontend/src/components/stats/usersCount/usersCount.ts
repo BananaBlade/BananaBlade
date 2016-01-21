@@ -11,6 +11,6 @@ export class UsersCount{
 
     constructor( http : Http ){
         this.http = http;
-        this.http.get( '/stats/active_users/count' ).subscribe( ( res ) => this.count = res.json().data.count, ( err ) => console.log( err ) );
+        this.http.get('/stats/active_users/count', (res) => this.count = res.count);
     }
 }

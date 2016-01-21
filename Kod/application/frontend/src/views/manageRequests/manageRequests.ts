@@ -1,9 +1,9 @@
 
 import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
-import { Http } from 'angular2/http';
 import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
+import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'ManageRequests',
@@ -11,41 +11,39 @@ import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
     directives: [ NgFor, NgIf ]
 })
 export class ManageRequests {
-    http: Http;
+    http: HttpAdvanced;
     requests: Request[] = new Array();
 
     approveSlot(slotId) {
-        this.http.post('/admin/requests/' + slotId + '/allow', '').map((res) => res.json()).subscribe((res) => {
+        this.http.postWithRes('/admin/requests/' + slotId + '/allow', '', (res) => {
             for (let i in this.requests) {
                 if (this.requests[i].id === slotId) {
                     this.requests.splice(i, 1);
                     break;
                 }
             }
-            console.log(res);
-        }, (err) => console.log(err));
+        });
     }
 
     rejectSlot(slotId) {
-        this.http.post('/admin/requests/' + slotId + '/deny', '').map((res) => res.json()).subscribe((res) => {
+        this.http.postWithRes('/admin/requests/' + slotId + '/deny', '', (res) => {
             for (let i in this.requests) {
                 if (this.requests[i].id === slotId) {
                     this.requests.splice(i, 1);
                     break;
                 }
             }
-            console.log(res);
-        }, (err) => console.log(err));
+        });
     }
 
-    constructor(http: Http) {
+    constructor(http: HttpAdvanced) {
        this.http = http;
 
-       http.get('/admin/requests/list').map((res) => res.json().data).subscribe((res) => {
+       http.get('/admin/requests/list', (res) => {
            for (let i in res) {
                this.requests.push(new Request(res[i]));
            }
-       }, (err) => console.log(err));
+       });
    }
 
    deconstructBitmask( bm ){

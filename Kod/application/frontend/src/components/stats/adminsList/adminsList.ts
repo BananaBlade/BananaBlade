@@ -1,6 +1,7 @@
 import { Component } from 'angular2/core';
 import { COMMON_DIRECTIVES } from 'angular2/common';
-import { Http } from 'angular2/http';
+
+import { HttpAdvanced } from '../../../services/services';
 
 @Component({
     selector : 'admins-list',
@@ -8,13 +9,11 @@ import { Http } from 'angular2/http';
     directives : [ COMMON_DIRECTIVES ]
 })
 export class AdminsList{
-    http : Http;
+    http: HttpAdvanced;
     admins : string[] = [];
 
-    constructor( http : Http ){
+    constructor(http: HttpAdvanced) {
         this.http = http;
-        this.http.get( '/stats/active_admins/list' ).subscribe(
-            ( res ) => this.admins = res.json().data,
-            ( err ) => console.log( err ) );
+        this.http.get('/stats/active_admins/list', (res) => this.admins = res);
     }
 }
