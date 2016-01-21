@@ -667,7 +667,12 @@ def allow_request( request_id ):
     No request params.
     """
     try:
+        req = SlotRequest.get( SlotRequest.id == request_id ).join( User )
         g.user.allow_request( request_id )
+        rs = RadioStation.get()
+        send_mail( '{} - Odobren zahtjev za terminima'.format( rs.name ),
+            render_template( 'mail/request_allowed.html', time = req.time, days = day_names( req.days_bit_mask ), start_date = req.start_date, end_date = req.end_date ),
+            rs.email, req.editor.email )
         return success_response( 'Zahtjev uspješno odobren.' )
     except AuthorizationError:
         return error_response( 'Neuspješno odobravanje zahtjeva: Nedovoljne ovlasti.', 403 )
@@ -675,7 +680,7 @@ def allow_request( request_id ):
         return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim ID-om.', 404 )
     except peewee.IntegrityError:
         return error_response( 'Neuspješno odobravanje zahtjeva: Preklapanje s već postojećim terminom.', 409 )
-    except Exception as e:
+    except:
         return error_response( 'Neuspješno odobravanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
@@ -686,7 +691,12 @@ def deny_request( request_id ):
     No request params.
     """
     try:
+        req = SlotRequest.get( SlotRequest.id == request_id ).join( User )
         g.user.deny_request( request_id )
+        rs = RadioStation.get()
+        send_mail( '{} - Odbijen zahtjev za terminima'.format( rs.name ),
+            render_template( 'mail/request_denied.html', time = req.time, days = day_names( req.days_bit_mask ), start_date = req.start_date, end_date = req.end_date ),
+            rs.email, req.editor.email )
         return success_response( 'Zahtjev uspješno odbijen.' )
     except AuthorizationError:
         return error_response( 'Neuspješno odbijanje zahtjeva: Nedovoljne ovlasti.', 403 )

@@ -83,6 +83,12 @@ def is_same_week( date1, date2 ):
     """Checks whether two dates are within the same week"""
     return date1.year == date2.year and date1.strftime( '%W' ) == date2.strftime( '%W' )
 
+def days_names( bitmask ):
+    """Returns a string of day names contained in a given bitmask"""
+    days = list( deconstruct_bitmask( bitmask ) )
+    names = [ 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned' ]
+    result = [ names[ i ] for i in range( 7 ) if i in days ]
+    return ', '.join( result )
 
 # JSON response helpers
 
