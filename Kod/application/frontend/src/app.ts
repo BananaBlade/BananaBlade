@@ -8,11 +8,14 @@ import { HeaderBar } from './components/headerBar/headerBar';
 import { Index } from './views/index/index';
 import { Settings } from './settings';
 
+import { Messages } from './components/messages/messages';
+import { MessageService } from './services/messageService';
+
 @Component({
     selector: 'App',
     templateUrl: './dest/app.html',
     styles: [],
-    directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar ]
+    directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar, Messages ]
 })
 @RouteConfig([
     { path: '/', name: 'Index', component: Index, useAsDefault: true },

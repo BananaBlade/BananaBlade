@@ -4,8 +4,7 @@ import { Http } from 'angular2/http';
 import { RouterLink } from 'angular2/router';
 import 'rxjs/Rx';
 
-import { Form, urlEncode } from '../../services/utilities';
-import { AuthService } from '../../services/authService';
+import { AuthService, Form, urlEncode } from '../../services/services';
 
 @Component({
     selector: 'header-bar',
