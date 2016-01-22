@@ -87,7 +87,7 @@ export class NavigationProvider {
         return this.navigationArray;
     }
 
-    static getRouteConfig() {
+    static getRouteConfig(dataObj? : any) {
         let routeDefinitionArray: RouteDefinition[] = [];
 
         for ( let i in this.navigationArray ){
@@ -98,6 +98,11 @@ export class NavigationProvider {
             if ( this.navigationArray[ i ].hasLink ) {
                 if (this.navigationArray[i].link.componentName == "Index") continue;
                 else routeDefinitionArray.push( this.navigationArray[ i ].link.getRoute() );
+            }
+        }
+        if (dataObj) {
+            for (let i in routeDefinitionArray) {
+                routeDefinitionArray[i].data = dataObj;
             }
         }
 

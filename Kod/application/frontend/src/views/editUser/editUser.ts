@@ -1,18 +1,17 @@
 
 import { View, Component } from 'angular2/core';
-import { Location, RouteConfig, RouterLink, Router, RouteParams } from 'angular2/router';
-import { COMMON_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
-import { Http } from 'angular2/http';
+import { RouteParams } from 'angular2/router';
+import { COMMON_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
-import { urlEncode } from '../../services/utilities';
+import { HttpAdvanced } from '../../services/services';
 
 @Component({
   selector: 'EditUser',
   templateUrl: './dest/views/editUser/editUser.html',
-  directives: COMMON_DIRECTIVES
+  directives: [ COMMON_DIRECTIVES ]
 })
 export class EditUser {
-    http: Http;
+    http: HttpAdvanced;
 
     userId: string;
     userForm: ControlGroup;
@@ -26,7 +25,7 @@ export class EditUser {
     account_type: string;
     editable: boolean = false;
 
-    constructor(http: Http, routeParams: RouteParams, fb: FormBuilder) {
+    constructor(http: HttpAdvanced, routeParams: RouteParams, fb: FormBuilder) {
         this.http = http;
 
         this.userId = routeParams.get('userId');
@@ -39,7 +38,7 @@ export class EditUser {
             occupation: this.occupation
         });
 
-        http.get('admin/users/' + this.userId + '/get').map((res) => res.json()).subscribe((res) => {
+        http.get('admin/users/' + this.userId + '/get', (res) => {
             console.log(res);
             for (let name in res.data) {
                 console.log(name);
@@ -52,12 +51,15 @@ export class EditUser {
                 else if (name == 'id') continue;
                 else this[name].updateValue(res.data[name]);
             }
-        }, (err) => console.log(err));
+        });
     }
 
     toggleEditable(){ this.editable = !this.editable; }
 
     onSubmit(values) {
-        this.http.post('/admin/users/' + this.userId + '/modify', urlEncode(values)).map((res) => res.json()).subscribe((res) => {console.log(res); this.editable = false; }, (err) => console.log(err));
+        this.http.postWithRes('/admin/users/' + this.userId + '/modify', values, (res) => { 
+            console.log(res); 
+            this.editable = false; 
+        });
     }
 }

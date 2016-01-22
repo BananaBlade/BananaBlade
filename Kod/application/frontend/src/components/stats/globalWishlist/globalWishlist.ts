@@ -1,6 +1,7 @@
 import { Component } from 'angular2/core';
 import { COMMON_DIRECTIVES } from 'angular2/common';
-import { Http } from 'angular2/http';
+
+import { HttpAdvanced } from '../../../services/services';
 
 @Component({
     selector : 'global-wishlist',
@@ -8,18 +9,16 @@ import { Http } from 'angular2/http';
     directives : [ COMMON_DIRECTIVES ]
 })
 export class GlobalWishlist{
-    http : Http;
+    http: HttpAdvanced;
     wishes : Wish[] = [];
 
-    constructor( http : Http ){
+    constructor(http: HttpAdvanced) {
         this.http = http;
-        this.http.get( '/stats/tracks/wishlist' ).subscribe(
-            ( res ) => {
-                var data = res.json().data;
-                var end = Math.min( 10, data.length );
-                for ( var i = 0; i < end; ++i )
-                    this.wishes.push( new Wish( data[ i ] ) );
-            }, ( err ) => console.log( err ) );
+        this.http.get('/stats/tracks/wishlist', (data) => {
+            var end = Math.min(10, data.length);
+            for (var i = 0; i < end; ++i)
+                this.wishes.push(new Wish(data[i]));
+        });
     }
 }
 

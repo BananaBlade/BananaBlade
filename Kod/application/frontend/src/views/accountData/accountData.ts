@@ -2,8 +2,9 @@
 import {View, Component} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/router';
 import { COMMON_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
-import { Http } from 'angular2/http';
-import { urlEncode } from '../../services/utilities';
+
+
+import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'AccountData',
@@ -11,7 +12,7 @@ import { urlEncode } from '../../services/utilities';
     templateUrl: './dest/views/accountData/accountData.html'
 })
 export class AccountData {
-    http: Http;
+    http: HttpAdvanced;
 
     userForm: ControlGroup;
 
@@ -24,7 +25,7 @@ export class AccountData {
     account_type: string;
     editable : boolean = false;
 
-    constructor( http: Http, fb: FormBuilder ){
+    constructor(http: HttpAdvanced, fb: FormBuilder) {
         this.http = http;
 
         this.userForm = fb.group({
@@ -35,7 +36,7 @@ export class AccountData {
             occupation: this.occupation
         });
 
-        http.get('user/account/get').map((res) => res.json()).subscribe((res) => {
+        http.get('user/account/get', (res) => {
             console.log(res);
             for (let name in res.data) {
                 console.log(name);
@@ -48,12 +49,15 @@ export class AccountData {
                 else if (name == 'id') continue;
                 else this[name].updateValue(res.data[name]);
             }
-        }, (err) => console.log(err));
+        });
     }
 
     toggleEditable(){ this.editable = !this.editable; }
 
     onSubmit(values) {
-        this.http.post('/user/account/modify', urlEncode(values)).map((res) => res.json()).subscribe((res) => {console.log(res); this.editable = false; }, (err) => console.log(err));
+        this.http.postWithRes('/user/account/modify', values, (res) => { 
+            console.log(res); 
+            this.editable = false; 
+        });
     }
 }
