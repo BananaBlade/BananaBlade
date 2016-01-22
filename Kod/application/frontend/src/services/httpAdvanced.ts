@@ -24,6 +24,19 @@ export class HttpAdvanced {
     }
 
     /*
+     * GET without logging to message service.
+     */
+    public getNoError(url, callback) {
+        return this.http.get(url).subscribe((res) => {
+            let data = res.json().data;
+            callback(data);
+        }, (err) => {
+            console.log("err:");
+            console.log(err);
+        });
+    }
+
+    /*
      * This is for POST request WITHOUT callback.
      * (Simply the positive response will be logged to console and 
      *  negative to msgService)

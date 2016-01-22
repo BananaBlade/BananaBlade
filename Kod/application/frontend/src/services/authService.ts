@@ -8,7 +8,7 @@ let ACCOUNT_TYPE: string = "accountType";
 export class AuthService {
     private http: HttpAdvanced;
 
-    constructor(@Inject(HttpAdvanced) http: HttpAdvanced) {
+    constructor(http: HttpAdvanced) {
         this.http = http;
         this.storeUserAuthentication();
     }

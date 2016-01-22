@@ -16,11 +16,11 @@ export class Station{
     constructor(http: HttpAdvanced) {
         this.http = http;
         this.http.get('/station/get', ( res ) => {
-            this.name = res.data.name;
-            this.oib = res.data.oib;
-            this.address = res.data.address;
-            this.email = res.data.email;
-            this.frequency = res.data.frequency;
+            this.name = res.name;
+            this.oib = res.oib;
+            this.address = res.address;
+            this.email = res.email;
+            this.frequency = res.frequency;
         });
     }
 };

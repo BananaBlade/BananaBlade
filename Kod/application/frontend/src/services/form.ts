@@ -1,5 +1,6 @@
 import { Http, URLSearchParams } from 'angular2/http';
 import { FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
+import { Injectable } from 'angular2/core';
 
 import { HttpAdvanced } from './services';
 
@@ -47,6 +48,7 @@ export class Form {
     }
 }
 
+@Injectable()
 export class FormBuilderAdvanced {
     http: HttpAdvanced;
     fb: FormBuilder;

@@ -25,11 +25,16 @@ bootstrap(
         HTTP_PROVIDERS,
         provide(LocationStrategy, { useClass: PathLocationStrategy }),
         provide(RequestOptions, { useClass: DefaultRequestOptions }),
-        provide(MsgService, { useClass: MsgService }),
-        provide(HttpAdvanced, { useClass: HttpAdvanced }),
-        provide(AuthService, { useFactory: (HttpAdvanced) => new AuthService(HttpAdvanced), deps: [HttpAdvanced] }),
-        provide(FormBuilderAdvanced, { useFactory: (FormBuilder, HttpAdvanced) => new FormBuilderAdvanced(FormBuilder, HttpAdvanced), deps: [FormBuilder, HttpAdvanced] }),
-        provide(MsgService, { useClass: MsgService }),
-        provide(MsgServiceInternal, { useClass: MsgServiceInternal })
+        MsgService,
+        MsgServiceInternal,
+        HttpAdvanced,
+        AuthService,
+        FormBuilderAdvanced
+        // provide(MsgService, { useClass: MsgService }),
+        // provide(HttpAdvanced, { useClass: HttpAdvanced }),
+        // provide(AuthService, { useFactory: (HttpAdvanced) => new AuthService(HttpAdvanced), deps: [HttpAdvanced] }),
+        // provide(FormBuilderAdvanced, { useFactory: (FormBuilder, HttpAdvanced) => new FormBuilderAdvanced(FormBuilder, HttpAdvanced), deps: [FormBuilder, HttpAdvanced] }),
+        // provide(MsgService, { useClass: MsgService }),
+        // provide(MsgServiceInternal, { useClass: MsgServiceInternal })
     ]
 );

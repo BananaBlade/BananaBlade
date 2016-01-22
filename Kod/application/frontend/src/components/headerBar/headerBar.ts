@@ -33,9 +33,8 @@ export class HeaderBar {
         this.authService.storeUserAuthentication(() => {
             this.isLoggedIn = this.authService.isLoggedIn();
 
-            this.http.get('/user/account/get', (res) => {
-                console.log(res);
-                let data = res.json().data;
+            this.http.get('/user/account/get', (data) => {
+                console.log(data);
                 this.userName = data.first_name + ' ' + data.last_name;
                 let role = data.account_type;
                 if (role == 1) this.userRole = "korisnik";
