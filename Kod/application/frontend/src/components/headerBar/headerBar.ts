@@ -22,34 +22,14 @@ export class HeaderBar {
         this.http = http;
         this.authService = authService;
 
-        this.updateLoginStatus();
+        this.authService.updateLoginStatus();
 
         let loginEntities = ['email', 'password'];
         this.loginForm = fb.create(loginEntities, '/user/auth/login');
     }
 
-    updateLoginStatus() {
-        this.isLoggedIn = this.authService.isLoggedIn();
-        this.authService.storeUserAuthentication(() => {
-            this.isLoggedIn = this.authService.isLoggedIn();
 
-            this.http.getNoError('/user/account/get', (data) => {
-                console.log(data);
-                this.userName = data.first_name + ' ' + data.last_name;
-                let role = data.account_type;
-                if (role == 1) this.userRole = "korisnik";
-                if (role == 2) this.userRole = "urednik";
-                if (role == 3) this.userRole = "administrator";
-                if (role == 4) this.userRole = "vlasnik";
-            });
-        });
-    }
-
-    onSubmit(value: String): void {
-        console.log(value);
-        this.http.postWithRes('/user/auth/login', value, (res) => {
-            console.log(res);
-            this.updateLoginStatus();
-        });
+    onSubmit(value): void {
+        this.authService.loginX(value.email, value.password);
     }
 }

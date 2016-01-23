@@ -206,7 +206,8 @@ def process_signout():
     After signing out, user is redirected to the index page.
     """
     session.clear()
-    return redirect( '/' )
+    return success_response( 'Uspješna odjava.' )
+    # return redirect( '/' )
 
 
 # User account management
@@ -403,11 +404,12 @@ def upload_track():
 
     try:
         g.user._assert_admin()
-        path = generate_filename( audio_file.filename )
-        print( path )
-        audio_file.save( path )
+        staticPath, absPath = generate_filename( audio_file.filename )
+        print( staticPath, '\n', absPath )
+        
+        audio_file.save( absPath )
 
-        return data_response( { 'path' : path }, 201 )
+        return data_response( { 'path' : staticPath }, 201 )
 
     except AuthorizationError:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )

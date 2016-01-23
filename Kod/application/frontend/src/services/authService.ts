@@ -7,6 +7,11 @@ let ACCOUNT_TYPE: string = "accountType";
 @Injectable()
 export class AuthService {
     private http: HttpAdvanced;
+    public isLoggedIn: boolean;
+    public userRole: string;
+    public userName: string;
+
+    public accountType: number = 0;
 
     constructor(http: HttpAdvanced) {
         this.http = http;
@@ -29,7 +34,7 @@ export class AuthService {
         return sessionStorage.getItem(ACCOUNT_TYPE);
     }
 
-    isLoggedIn() {
+    isLoggedInFn() {
         return this.isUser() || this.isEditor() || this.isAdmin() || this.isOwner();
     }
 
@@ -60,5 +65,65 @@ export class AuthService {
     }
     static isOwnerInjector() {
         return (next, prev) => Injector.resolveAndCreate([AuthService, provide(HttpAdvanced, { useClass: HttpAdvanced })]).get(AuthService).isOwner();
+    }
+
+    /*
+     * Moved from Header Bar
+     */
+
+    updateLoginStatus() {
+        this.isLoggedIn = this.isLoggedInFn();
+        this.storeUserAuthentication(() => {
+            this.isLoggedIn = this.isLoggedInFn();
+
+            this.http.getNoError('/user/account/get', (data) => {
+                this.userName = data.first_name + ' ' + data.last_name;
+                let role = data.account_type;
+                this.accountType = role;
+                if (role == 1) this.userRole = "korisnik";
+                if (role == 2) this.userRole = "urednik";
+                if (role == 3) this.userRole = "administrator";
+                if (role == 4) this.userRole = "vlasnik";
+            });
+        });
+    }
+
+    logout(callback?: Function) {
+        if (this.isLoggedInFn()) {
+            this.http.getNoError('/user/auth/signout', () => {
+                if (callback) callback();
+            });
+        }
+    }
+
+    loginX(mail: string, password: string) {
+        console.log(this.isLoggedInFn());
+        if (this.isLoggedInFn()) {
+            this.logout(() => {
+                this.http.postWithRes('/user/auth/login', { email: mail, password: password }, () => {
+                    this.updateLoginStatus();
+                });
+            });
+        }
+        else {
+            this.http.postWithRes('/user/auth/login', { email: mail, password: password }, () => {
+                this.updateLoginStatus();
+            });
+        }
+    }
+
+    loginAdmin() {
+        this.loginX('dito@dito.ninja', '1dominik');
+    }
+
+    loginOwner() {
+        this.loginX('xdwarrior@gmail.com', 'NeprobojnaLozinka');
+    }
+
+    loginEditor() {
+        this.loginX('dominik.ivosevic@gmail.com', '1dominik');
+    }
+    loginUser() {
+        this.loginX('dominik.ivosevic@dito.ninja', '1dominik');
     }
 }

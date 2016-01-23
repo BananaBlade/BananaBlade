@@ -38,9 +38,12 @@ def generate_filename( filename ):
     """Generate a (probably) unique and definitely secure filename"""
     filename = secure_filename( generate_random_string( 12 ) + '_' + filename )
     validate_filename( filename )
-    path = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
-    path = os.path.abspath( path )
-    return path
+    staticPath = os.path.join( app.config[ 'UPLOAD_FOLDER' ], filename )
+    staticPath = os.path.normpath(staticPath)
+    absPath = os.path.abspath( staticPath )
+    abspath = os.path.normpath(absPath)
+
+    return staticPath, absPath
 
 # Query ranking helpers
 

@@ -1,18 +1,24 @@
-header.header-bar('[ngClass]'='{"logged-in" : isLoggedIn, "not-logged-in" : !isLoggedIn}')
+header.header-bar.row
   .app-box
     .app-name
       a( href = '/' )
         img( src = "/src/static/img/logo.png" alt="FM Radio" )
-  .user-box
-    .user-form-box
+  .debug.row
+    button.dim(type='button' '(click)'="authService.loginOwner()") Owner
+    button.dim(type='button' '(click)'="authService.loginAdmin()") Admin
+    button.dim(type='button' '(click)'="authService.loginEditor()") Editor
+    button.dim(type='button' '(click)'="authService.loginUser()") User
+  .user-box 
+    //| {{authService.isLoggedInFn()}} {{authService.isLoggedIn}}
+    .user-form-box( '*ngIf'="!authService.isLoggedInFn()" )
       form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="onSubmit(loginForm.group.value)")
         input(type='email', id='email', placeholder='E-mail' '[ngFormControl]'="loginForm.controls['email']" )
         input(type='password', id='password', placeholder='Lozinka' '[ngFormControl]'="loginForm.controls['password']" )
         button(type='submit') Prijavi se
         a( href = "#register" )
           button.dim(type='button') Registriraj se
-    .user-name-box
+    .user-name-box( '*ngIf'="authService.isLoggedInFn()" )
       a( '[routerLink]' = "['/Settings', 'Overview']" )
         i.material-icons.user-icon settings
-      .user-name {{userName}}
-        span.user-type {{userRole}}
+      span.user-name {{authService.userName}}
+      span.user-type {{authService.userRole}}
