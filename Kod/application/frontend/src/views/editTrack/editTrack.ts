@@ -56,9 +56,9 @@ export class EditTrack {
 
         http.get('/admin/tracks/' + this.trackId + '/get', (res) => {
             console.log(res);
-            this.track = new Track(res.data);
-            for (let name in res.data) {
-                this[name].updateValue(res.data[name]);
+            this.track = new Track(res);
+            for (let name in res) {
+                this[name].updateValue(res[name]);
             }
         });
     }

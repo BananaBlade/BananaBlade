@@ -15,7 +15,7 @@
     nav.content-options.uneditable-ui
       button( '(click)' = 'toggleEditable()' ) Izmijeni osobne podatke
     .content-primary.content-form
-      form( '[ngFormModel]'="userForm" '(ngSubmit)'="onSubmit(userForm.value)" )
+      form( '[ngFormModel]'="userForm.group" '(ngSubmit)'="onSubmit(userForm.value)" )
         fieldset( '[disabled]' = '!editable' )
             .form-line
               label(for='first_name') Ime

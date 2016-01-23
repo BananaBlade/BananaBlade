@@ -405,7 +405,7 @@ def upload_track():
         g.user._assert_admin()
         path = generate_filename( audio_file.filename )
         print( path )
-        # audio_file.save( path )
+        audio_file.save( path )
 
         return data_response( { 'path' : path }, 201 )
 
@@ -429,7 +429,10 @@ def add_track():
     `carrier_type`, `year`, and `path` of a file previously stored on the server.
 
     TODO: Extensive testing!!
+
     """
+    print(request.values)
+
     title           = request.values.get( 'title' )
     artist          = request.values.get( 'artist' )
     album           = request.values.get( 'album' )

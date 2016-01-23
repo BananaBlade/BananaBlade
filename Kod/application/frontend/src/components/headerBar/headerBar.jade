@@ -6,8 +6,8 @@ header.header-bar('[ngClass]'='{"logged-in" : isLoggedIn, "not-logged-in" : !isL
   .user-box
     .user-form-box
       form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="onSubmit(loginForm.group.value)")
-        input(type='email', id='email', placeholder='E-mail' '[ngFormControl]'="loginForm.group.controls['email']" )
-        input(type='password', id='password', placeholder='Lozinka' '[ngFormControl]'="loginForm.group.controls['password']" )
+        input(type='email', id='email', placeholder='E-mail' '[ngFormControl]'="loginForm.controls['email']" )
+        input(type='password', id='password', placeholder='Lozinka' '[ngFormControl]'="loginForm.controls['password']" )
         button(type='submit') Prijavi se
         a( href = "#register" )
           button.dim(type='button') Registriraj se

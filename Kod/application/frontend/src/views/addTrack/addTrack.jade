@@ -11,46 +11,46 @@
       .content-header-right
         i.material-icons.icon audiotrack
     .content-primary.content-form.wide-labels
-      form( '(ngSubmit)' = 'onSubmit()' )
-        .form-line.emph-line
+      .form-line.emph-line
           label(for='file') Datoteka zapisa
           input( type='file', accept='audio/*' 'ng2-file-select'="" '[uploader]'="uploader" 'multiple'="false" )
+      form( '[ngFormModel]'="trackForm.group" '(ngSubmit)' = 'onSubmit(trackForm.group.value)' )
         .form-line
           label(for='title') Naslov zapisa
-          input(type='text', name='title' pattern='.{1,128}' '[(ngModel)]' = 'title')
+          input(type='text', name='title' pattern='.{1,128}' '[(ngFormControl)]' = 'trackForm.group.controls["title"]')
         .form-line
           label(for='artist') Izvođač
-          input(type='text', name='artist' pattern='.{1,128}' '[(ngModel)]' = 'artist')
+          input(type='text', name='artist' pattern='.{1,128}' '[(ngFormControl)]' = 'trackForm.group.controls["artist"]')
         .form-line
           label(for='album') Album
-          input(type='text', name='album' pattern='.{0,64}' '[(ngModel)]' = 'album')
+          input(type='text', name='album' pattern='.{0,64}' '[(ngFormControl)]' = 'trackForm.group.controls["album"]')
         .form-line
           label(for='duration') Trajanje zapisa (s)
-          input(type='number', name='duration', min='1' '[(ngModel)]' = 'duration')
+          input(type='number', name='duration', min='1' '[(ngFormControl)]' = 'trackForm.group.controls["duration"]')
         .form-line
           label(for='file_format') Format zapisa
-          select(name='file_format' '[(ngModel)]' = 'file_format')
-            option(value='0') MP3
-            option(value='1') WAV
-            option(value='2') OGG
+          select(name='file_format' '[(ngFormControl)]' = 'trackForm.group.controls["file_format"]')
+            option(value='MP3') MP3
+            option(value='WAV') WAV
+            option(value='OGG') OGG
         .form-line
           label(for='sample_rate') Frekvencija uzorkovanja (kHz)
-          input(type='text', name='sample_rate' min = '8' max = '512' '[(ngModel)]' = 'sample_rate')
+          input(type='text', name='sample_rate' min = '8' max = '512' '[(ngFormControl)]' = 'trackForm.group.controls["sample_rate"]')
         .form-line
           label(for='bits_per_sample') Broj bitova kvantizacije
-          input(type='number', name='bits_per_sample', min='4', max='512' '[(ngModel)]' = 'bits_per_sample')
+          input(type='number', name='bits_per_sample', min='4', max='512' '[(ngFormControl)]' = 'trackForm.group.controls["bits_per_sample"]')
         .form-line
           label(for='genre') Žanr zapisa
-          input(type='text', name='genre' pattern = '(.{2,128}|)' '[(ngModel)]' = 'genre')
+          input(type='text', name='genre' pattern = '(.{2,128}|)' '[(ngFormControl)]' = 'trackForm.group.controls["genre"]')
         .form-line
           label(for='publisher') Izdavač
-          input(type='text', name='publisher' pattern = '(.{2,64}|)' '[(ngModel)]' = 'publisher')
+          input(type='text', name='publisher' pattern = '(.{2,64}|)' '[(ngFormControl)]' = 'trackForm.group.controls["publisher"]')
         .form-line
           label(for='carrier_type') Vrsta nosača zvuka
-          input(type='text', name='carrier_type' pattern = '(.{2,64}|)' '[(ngModel)]' = 'carrier_type')
+          input(type='text', name='carrier_type' pattern = '(.{2,64}|)' '[(ngFormControl)]' = 'trackForm.group.controls["carrier_type"]')
         .form-line
           label(for='year') Godina izdavanja
-          input(type='number', name='year', min='-5000', max='2100' '[(ngModel)]' = 'year')
+          input(type='number', name='year', min='-5000', max='2100' '[(ngFormControl)]' = 'trackForm.group.controls["year"]')
         .form-line
           .left-spacer
-          button.raised( type = "submit" ) Dodaj zapis
+          button.raised( type = "submit" '[disabled]'='!trackForm.group.valid') Dodaj zapis

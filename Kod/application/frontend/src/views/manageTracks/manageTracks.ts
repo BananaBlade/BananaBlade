@@ -42,8 +42,8 @@ export class ManageTracks {
         this.http.get('/tracks/list', (res) => {
             console.log(res);
             this.tracks = new Array();
-            for (let i in res.data) {
-                this.tracks.push(new Track(res.data[i]));
+            for (let i in res) {
+                this.tracks.push(new Track(res[i]));
             }
         });
     }

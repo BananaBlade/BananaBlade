@@ -15,8 +15,6 @@ export class AuthService {
 
     storeUserAuthentication(callback?: Function) {
         this.http.get('/user/account/type', (res) => {
-            console.log(res);
-            console.log(1);
             sessionStorage.setItem(ACCOUNT_TYPE, res.account_type);
             if (callback) callback();
         });
