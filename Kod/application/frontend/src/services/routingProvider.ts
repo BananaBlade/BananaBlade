@@ -106,6 +106,7 @@ export class NavigationProvider {
             }
         }
 
+        routeDefinitionArray[0].useAsDefault = true;
         return routeDefinitionArray;
     }
 }

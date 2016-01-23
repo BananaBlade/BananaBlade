@@ -13,7 +13,7 @@
       .content-header-right
         i.material-icons.icon radio
     nav.content-options.uneditable-ui
-      button( '*ngIf'="isOwner" '(click)'="toggleEditing()" ) Izmijeni podatke o postaji
+      button( '*ngIf'="isOwner && isFormDisabled" '(click)'="toggleEditing()" ) Izmijeni podatke o postaji
     .content-primary.content-form
       fieldset('[disabled]'="isFormDisabled")
         form('[ngFormModel]'="myForm" '(ngSubmit)'="onSubmit(myForm.value)")
@@ -39,5 +39,5 @@
             | Neispravan unos
           .form-line.editable-ui
             .left-spacer
-            button.raised.alt.right(type="reset") Odustani
+            button.raised.alt.right(type="button" '(click)'="resetRadiostation()" ) Odustani
             button.raised.left(type="submit" '[disabled]'="!myForm.valid") Spremi promjene

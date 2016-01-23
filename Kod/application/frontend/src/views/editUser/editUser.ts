@@ -3,7 +3,7 @@ import { View, Component } from 'angular2/core';
 import { RouteParams } from 'angular2/router';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
-import { HttpAdvanced } from '../../services/services';
+import { HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
   selector: 'EditUser',
@@ -12,6 +12,7 @@ import { HttpAdvanced } from '../../services/services';
 })
 export class EditUser {
     http: HttpAdvanced;
+    msgService: MsgService;
 
     userId: string;
     userForm: ControlGroup;
@@ -25,8 +26,9 @@ export class EditUser {
     account_type: string;
     editable: boolean = false;
 
-    constructor(http: HttpAdvanced, routeParams: RouteParams, fb: FormBuilder) {
+    constructor(http: HttpAdvanced, routeParams: RouteParams, fb: FormBuilder, msgService: MsgService) {
         this.http = http;
+        this.msgService = msgService;
 
         this.userId = routeParams.get('userId');
 
@@ -38,27 +40,32 @@ export class EditUser {
             occupation: this.occupation
         });
 
-        http.get('admin/users/' + this.userId + '/get', (res) => {
-            console.log(res);
-            for (let name in res.data) {
-                console.log(name);
+        this.resetForm();
+    }
+
+    resetForm() {
+        this.http.get('admin/users/' + this.userId + '/get', (res) => {
+            for (let name in res) {
                 if (name == 'account_type') {
-                    if (res.data.account_type == 1) this.account_type = "korisnik";
-                    else if (res.data.account_type == 2) this.account_type = "urednik";
-                    else if (res.data.account_type == 3) this.account_type = "administrator";
-                    else if (res.data.account_type == 4) this.account_type = "vlasnik";
+                    if (res.account_type == 1) this.account_type = "korisnik";
+                    else if (res.account_type == 2) this.account_type = "urednik";
+                    else if (res.account_type == 3) this.account_type = "administrator";
+                    else if (res.account_type == 4) this.account_type = "vlasnik";
                 }
                 else if (name == 'id') continue;
-                else this[name].updateValue(res.data[name]);
+                else this[name].updateValue(res[name]);
             }
         });
     }
 
-    toggleEditable(){ this.editable = !this.editable; }
+    toggleEditable(){
+        this.resetForm();
+        this.editable = !this.editable; 
+    }
 
     onSubmit(values) {
-        this.http.postWithRes('/admin/users/' + this.userId + '/modify', values, (res) => { 
-            console.log(res); 
+        this.http.postWithRes('/admin/users/' + this.userId + '/modify', values, (res) => {
+            this.msgService.setMessage(res.success_message);
             this.editable = false; 
         });
     }

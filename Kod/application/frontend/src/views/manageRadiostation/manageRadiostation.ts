@@ -39,8 +39,6 @@ export class ManageRadiostation {
 
         this.isOwner = authService.isOwner();
 
-        this.isFormDisabled = true;
-
         this.myForm = fb.group({
             'name': this.name,
             'description': this.description,
@@ -50,8 +48,13 @@ export class ManageRadiostation {
             'frequency': this.frequency
         });
 
+        this.resetRadiostation();
+    }
+
+    resetRadiostation() {
+        this.isFormDisabled = true;
         this.http.get('/station/get', (response) => {
-            let stationObj = response.data;
+            let stationObj = response;
             console.log(stationObj);
             for (let name in stationObj) {
                 this[name].updateValue(stationObj[name]);

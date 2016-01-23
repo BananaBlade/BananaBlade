@@ -54,7 +54,11 @@ export class EditTrack {
             path: this.path
         });
 
-        http.get('/admin/tracks/' + this.trackId + '/get', (res) => {
+        this.resetForm();
+    }
+
+    resetForm() {
+        this.http.get('/admin/tracks/' + this.trackId + '/get', (res) => {
             console.log(res);
             this.track = new Track(res);
             for (let name in res) {
@@ -70,7 +74,10 @@ export class EditTrack {
         });
     }
 
-    toggleEditable(){ this.editable = !this.editable; }
+    toggleEditable(){
+        this.resetForm();
+        this.editable = !this.editable; 
+    }
 }
 
 

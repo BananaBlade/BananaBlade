@@ -19,6 +19,8 @@ export class ManageAdmins {
 
     toggleEditable() {
         this.editable = !this.editable;
+        this.closestMatches = new Array();
+        this.userSearch = "";
     }
 
     onKeyPressed(event?) {
@@ -67,7 +69,7 @@ export class ManageAdmins {
     constructor(http: HttpAdvanced) {
         this.http = http;
 
-        http.get('/admin/editors/list', (res) => {
+        http.get('/owner/admins/list', (res) => {
             this.admins = new Array();
             for (let i in res) {
                 this.admins.push(new User(res[i]));

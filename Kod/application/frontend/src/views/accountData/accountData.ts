@@ -25,9 +25,11 @@ export class AccountData {
         let controlsNames = ["first_name", "last_name", "email", "year_of_birth", "occupation"];
         this.userForm = fb.create(controlsNames, 'user/account/modify');
 
-        http.get('user/account/get', (res) => {
-            console.log('asd');
-            console.log(res);
+        this.resetForm();
+    }
+
+    resetForm() {
+        this.http.get('user/account/get', (res) => {
             for (let name in res) {
                 if (name == 'account_type') {
                     if (res.account_type == 1) this.account_type = "korisnik";
@@ -42,9 +44,13 @@ export class AccountData {
         });
     }
 
-    toggleEditable(){ this.editable = !this.editable; }
+    toggleEditable(){ 
+        this.resetForm();
+        this.editable = !this.editable; 
+    }
 
     onSubmit(values) {
+        console.log(values);
         this.http.postWithRes('/user/account/modify', values, (res) => { 
             console.log(res); 
             this.editable = false; 

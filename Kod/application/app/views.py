@@ -263,7 +263,8 @@ def modify_account_data():
         return error_response( 'Promjena podataka nije uspjela: Nisu uneseni ispravni podaci: ' + str( e ) )
     except peewee.IntegrityError:
         return error_response( 'Promjena podataka nije uspjela: Email adresa se već koristi.', 409 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Promjena podataka nije uspjela: Nevaljan zahtjev.' )
 
 @app.route( '/user/account/delete', methods = [ 'POST' ] )
@@ -672,7 +673,10 @@ def allow_request( request_id ):
     No request params.
     """
     try:
-        req = SlotRequest.get( SlotRequest.id == request_id ).join( User )
+        req = SlotRequest.join( User ).get( SlotRequest.id == request_id )
+        print(req)
+        req = req
+        print(req)
         g.user.allow_request( request_id )
         rs = RadioStation.get()
         send_mail( '{} - Odobren zahtjev za terminima'.format( rs.name ),
@@ -685,7 +689,8 @@ def allow_request( request_id ):
         return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim ID-om.', 404 )
     except peewee.IntegrityError:
         return error_response( 'Neuspješno odobravanje zahtjeva: Preklapanje s već postojećim terminom.', 409 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno odobravanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
@@ -696,7 +701,7 @@ def deny_request( request_id ):
     No request params.
     """
     try:
-        req = SlotRequest.get( SlotRequest.id == request_id ).join( User )
+        req = SlotRequest.join( User ).get( SlotRequest.id == request_id )
         g.user.deny_request( request_id )
         rs = RadioStation.get()
         send_mail( '{} - Odbijen zahtjev za terminima'.format( rs.name ),
@@ -839,16 +844,16 @@ def list_editor_slots( date ):
                 'count' : slot.count
             } for slot in slots ],
 
-            'requests' : [{
-                'id'    : req.id,
-                'times' : map( datetime.isoformat, generate_times( req.time, req.days_bit_mask, req.start_date, req.end_date ) )
-            } for req in requests ]
-
+            # 'requests' : [{
+            #     'id'    : req.id,
+            #     'times' : map( datetime.isoformat, generate_times( req.time, req.days_bit_mask, req.start_date, req.end_date ) )
+            # } for req in requests ]
         }
         return data_response( data )
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje popisa termina: Nedovoljne ovlasti.', 403 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno dohvaćanje popisa termina: Nevaljan zahtjev.' )
 
 @app.route( '/editor/slots/request', methods = [ 'POST' ] )

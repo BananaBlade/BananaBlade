@@ -19,6 +19,8 @@ export class ManageEditors {
 
     toggleEditable() {
         this.editable = !this.editable;
+        this.closestMatches = new Array();
+        this.userSearch = "";
     }
 
     onKeyPressed(event?) {
@@ -37,14 +39,16 @@ export class ManageEditors {
 
     enterCheck(event) {
         if (event.keyCode == 13) {
-            this.addEditor();
+            //this.addEditor();
         }
     }
 
     addEditor() {
+        console.log(this.closestMatches[0]);
         this.http.post('/admin/editors/add/' + this.closestMatches[0].id, '');
         this.editors.push(this.closestMatches[0]);
 
+        console.log(this.editors[this.editors.length - 1]);
         this.userSearch = "";
         this.closestMatches = new Array();
     }

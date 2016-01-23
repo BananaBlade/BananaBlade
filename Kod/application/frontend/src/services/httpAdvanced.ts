@@ -43,8 +43,11 @@ export class HttpAdvanced {
      */
     public post(url, data) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
-            let data = res.json().data;
-            console.log(data);
+            if (res.json) {
+                if (res.json().data) console.log(res.json().data);
+                else console.log(res.json());
+            }
+            else console.log(res);
         }, this.msgService.httpErrorHandler);
     }
 
@@ -53,8 +56,17 @@ export class HttpAdvanced {
      */
     public postWithRes(url, data, callback) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
-            let data = res.json().data;
-            callback(data);
+            if (res.json) {
+                if (res.json().data) callback(res.json().data);
+                else callback(res.json());
+            }
+            else callback(res);
+        }, this.msgService.httpErrorHandler);
+    }
+
+    public postWithBothMsg(url, data) {
+        this.postWithRes(url, data, (res) => {
+            if (res.success_response) this.msgService.setMessage(res.success_response);
         });
     }
 }

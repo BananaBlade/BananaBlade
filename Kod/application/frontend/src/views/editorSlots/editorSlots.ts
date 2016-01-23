@@ -8,7 +8,7 @@ import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIR
 import { HttpAdvanced, AuthService } from '../../services/services';
 
 
-@CanActivate(AuthService.isEditorInjector())
+//@CanActivate(AuthService.isEditorInjector())
 @Component({
     selector: 'EditorSlots',
     templateUrl: './dest/views/editorSlots/editorSlots.html',
@@ -65,7 +65,7 @@ export class EditorSlots {
             'start_date': start_date2,
             'end_date': end_date2
         };
-        this.http.post('/editor/slots/request', requestObj);
+        this.http.postWithBothMsg('/editor/slots/request', requestObj);
     }
 
     initCalendar() {
@@ -129,8 +129,8 @@ export class EditorSlots {
         // Fetching the list of allowed slots
         http.get('/editor/slots/list', (res) => {
             this.slots = new Array();
-            for (let i in res.data.slots) {
-                this.slots.push(new Slot(res.data.slots[i]));
+            for (let i in res.slots) {
+                this.slots.push(new Slot(res.slots[i]));
             }
             this.updateCalendar();
             console.log(res);
