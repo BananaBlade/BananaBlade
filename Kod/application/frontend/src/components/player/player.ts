@@ -45,10 +45,8 @@ export class Player{
 
         this.track = new Track( -1, 'Nepostojeći zapis', 'n/a', 'n/a', 'n/a', 0, 0, 0, 'n/a' );
         this.audio = document.getElementById( 'audio-player' );
-        //this.audio.src = this.sourceUrl;
         this.playing = false;
-        //this.getTrack();
-        if (this.audio) {
+        if ( this.audio ) {
             this.audio.src = this.sourceUrl;
             this.playing = false;
             this.getTrack();
@@ -62,7 +60,7 @@ export class Player{
         self.audio.pause()
         self.getTrackData();
         self.audio.src = self.sourceUrl;
-        //self.audio.load();
+        if ( self.playing ) self.audio.load();
         var delta = ( self.track.play_duration - self.track.play_location );
         console.log( delta );
         if ( delta == 0 ) delta = 100;
@@ -73,8 +71,9 @@ export class Player{
     play(){
         console.log( 'playing' );
         this.playing = true;
-        this.http.get('/player/location', (res) => {
-            this.track.play_location = res.play_location, (err) => console.log(err)
+        this.http.getNoError('/player/location', (res) => {
+            this.track.play_location = res.play_location;
+            console.log( res.play_location )
         });
         // Test for Apache
         this.audio.onloadedmetadata = () => {
@@ -100,7 +99,7 @@ export class Player{
     }
 
     getTrackData(){
-        this.http.get('/player/info', ( res ) => {
+        this.http.getNoError('/player/info', ( res ) => {
             this.track = new Track( res.id, res.title, res.artist, res.album, res.genre, res.year, res.play_duration, res.play_location, res.editor );
             console.log( [ 'Getting track data: ', this.track ] );
         });
