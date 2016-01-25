@@ -74,8 +74,7 @@ export class Player{
         console.log( 'playing' );
         this.playing = true;
         this.http.get('/player/location', (res) => {
-            let data = res.json().data;
-            this.track.play_location = data.play_location, (err) => console.log(err)
+            this.track.play_location = res.play_location, (err) => console.log(err)
         });
         // Test for Apache
         this.audio.onloadedmetadata = () => {
@@ -102,7 +101,7 @@ export class Player{
 
     getTrackData(){
         this.http.get('/player/info', ( res ) => {
-            this.track = new Track( res.data.id, res.data.title, res.data.artist, res.data.album, res.data.genre, res.data.year, res.data.play_duration, res.data.play_location, res.data.editor );
+            this.track = new Track( res.id, res.title, res.artist, res.album, res.genre, res.year, res.play_duration, res.play_location, res.editor );
             console.log( [ 'Getting track data: ', this.track ] );
         });
     }
