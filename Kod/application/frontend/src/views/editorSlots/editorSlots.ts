@@ -52,9 +52,7 @@ export class EditorSlots {
     end_date: Control;
 
     requestSlot(values) {
-        console.log(values);
         let days_bit_mask = '' + (values.day0 ? 1 : 0) + (values.day1 ? 1 : 0) + (values.day2 ? 1 : 0) + (values.day3 ? 1 : 0) + (values.day4 ? 1 : 0) + (values.day5 ? 1 : 0) + (values.day6 ? 1 : 0);
-        console.log(days_bit_mask);
         let start_date = new Date(values.start_date);
         let start_date2 = start_date.getFullYear() + '-' + (start_date.getMonth() + 1) + '-' + start_date.getDate();
         let end_date = new Date(values.end_date);
@@ -77,18 +75,19 @@ export class EditorSlots {
                 this.calendarFields[this.daysNum[day]][this.hours[hour]] = 0;
             }
         }
-        console.log(this.calendarFields);
     }
 
     updateCalendar() {
         this.initCalendar();
         let nextMonday = new Date(this.mondayDay.getTime() + 7 * 24 * 60 * 60 * 1000);
         for (let i in this.slots) {
-            let slotTime = this.slots[i].time.getTime();
+            let slot = this.slots[i];
+            let slotTime = slot.time.getTime();
             if (slotTime >= this.mondayDay.getTime() && slotTime <= nextMonday.getTime()) {
                 let dayOfWeek = ~~(((slotTime-this.mondayDay.getTime()) / 1000 / 60 / 60 / 24) % 7);
                 let hourOfDay = (slotTime / 1000 / 60 / 60) % 24;
                 this.calendarFields[dayOfWeek][hourOfDay] = this.slots[i].id;
+
             }
         }
     }
@@ -123,17 +122,19 @@ export class EditorSlots {
         let secSinceMonday = this.today.getMilliseconds() + 1000 * (this.today.getSeconds() + 60 * (this.today.getMinutes() + 60 * (this.today.getHours() + 24 * ((this.today.getDay() + 6) % 7))));
         // Getting the Date object of this week's Monday at 00:00:00
         this.mondayDay = new Date(this.today.getTime() - secSinceMonday);
+        console.log(this.mondayDay);
 
         this.initCalendar();
 
         // Fetching the list of allowed slots
-        http.get('/editor/slots/list', (res) => {
+        http.getNoError('/editor/slots/list', (res) => {
+            console.log(res.slots);
             this.slots = new Array();
             for (let i in res.slots) {
+                console.log(res.slots[i]);
                 this.slots.push(new Slot(res.slots[i]));
             }
             this.updateCalendar();
-            console.log(res);
         });
     }
 

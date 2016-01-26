@@ -54,18 +54,25 @@ export class MakeWishlist {
         this.searchResults = [];
     }
 
-    onKeyPressed(event) {
-        let query = this.trackSearch + String.fromCharCode(event.charCode);
-        if ( query.length < 3 ){
-            searchResults = [];
-            return;
+    onKeyPressed(charCode) {
+        let query = this.trackSearch && (this.trackSearch + String.fromCharCode(charCode));
+        if (query && query.length >= 3) {
+            this.http.getNoError('/tracks/search/' + query, (res) => {
+                this.searchResults = new Array();
+                for (let i in res) {
+                    this.searchResults.push(new Track(res[i]));
+                }
+            });
         }
-        this.http.get('/tracks/search/' + query, (res) => {
+    }
+
+    enterCheck(event) {
+        if (event.keyCode == 13 && this.searchResults.length > 0) {
+            this.addToWishlist(this.searchResults[0]);
             this.searchResults = new Array();
-            for (let i in res) {
-                this.searchResults.push(new Track(res[i]));
-            }
-        });
+            this.trackSearch = "";
+        }
+        else if (event.keyCode >= 65 && event.keyCode <= 90) this.onKeyPressed(event.keyCode)
     }
 
     removeFromWishlist( track : Track ){

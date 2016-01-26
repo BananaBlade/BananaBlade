@@ -14,37 +14,32 @@ export class ManageRequests {
     http: HttpAdvanced;
     requests: Request[] = new Array();
 
-    approveSlot(slotId) {
-        this.http.postWithRes('/admin/requests/' + slotId + '/allow', '', (res) => {
-            for (let i in this.requests) {
-                if (this.requests[i].id === slotId) {
-                    this.requests.splice(i, 1);
-                    break;
-                }
+    constructor(http: HttpAdvanced) {
+        this.http = http;
+
+        this.resetList();
+    }
+
+    resetList() {
+        this.http.get('/admin/requests/list', (res) => {
+            this.requests = new Array();
+            for (let i in res) {
+                this.requests.push(new Request(res[i]));
             }
+        });
+    }
+
+    approveSlot(slotId) {
+        this.http.postWithBothMsg('/admin/requests/' + slotId + '/allow', '', (res) => {
+            this.resetList();
         });
     }
 
     rejectSlot(slotId) {
-        this.http.postWithRes('/admin/requests/' + slotId + '/deny', '', (res) => {
-            for (let i in this.requests) {
-                if (this.requests[i].id === slotId) {
-                    this.requests.splice(i, 1);
-                    break;
-                }
-            }
+        this.http.postWithBothMsg('/admin/requests/' + slotId + '/deny', '', (res) => {
+            this.resetList();
         });
     }
-
-    constructor(http: HttpAdvanced) {
-       this.http = http;
-
-       http.get('/admin/requests/list', (res) => {
-           for (let i in res) {
-               this.requests.push(new Request(res[i]));
-           }
-       });
-   }
 
    deconstructBitmask( bm ){
        var days : string[] = [ 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned' ];

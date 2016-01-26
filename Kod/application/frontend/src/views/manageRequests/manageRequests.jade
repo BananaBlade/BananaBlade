@@ -18,7 +18,7 @@
             .content-list-item-data-item.request-editor {{request.editor.first_name}} {{request.editor.last_name}}
             .content-list-item-data-item.request-date-interval {{ request.start_date }} – {{ request.end_date }}
             .content-list-item-data-item.request-collisions-negative( '*ngIf' = '!request.collisions' ) Nema preklapanja
-            .content-list-item-data-item.request-collisions-positive( '*ngIf' = 'request.collisions' ) Postoi preklapanje
+            .content-list-item-data-item.request-collisions-positive( '*ngIf' = 'request.collisions' ) Postoji preklapanje
         .content-list-item-options.editable-ui
           button( '[disabled]'="request.collisions" )
             i.material-icons( '(click)'="approveSlot(request.id)" ) check

@@ -33,6 +33,8 @@ export class Messages{
         let msgService: MsgServiceInternal = self.messageService;
         if (msgService.hasMessage())
         {
+            console.log(msgService.hasMessage());
+
             var message = msgService.getMessage();
             self.messageType = message.messageType;
             self.messageText = message.messageText;
