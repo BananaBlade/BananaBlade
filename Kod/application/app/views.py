@@ -365,7 +365,6 @@ def set_wishlist():
     """
     try:
         track_list = request.get_json( force = True )
-        print( track_list )
         g.user.set_wishlist( track_list )
         return success_response( 'Lista želja uspješno pohranjena.', 201 )
     except AuthorizationError:
@@ -665,7 +664,7 @@ def day_names(bit_mask):
     days = [ 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned' ];
     present = [];
     for i, day in enumerate(days):
-        if bit_mask & (2**i): 
+        if bit_mask & (2**i):
             present.append(day)
 
     return present
