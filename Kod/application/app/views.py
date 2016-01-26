@@ -848,7 +848,7 @@ def list_editor_slots( date ):
 
             'requests' : [{
                 'id'    : req.id,
-                'times' : map( datetime.isoformat, generate_times( req.time, req.days_bit_mask, req.start_date, req.end_date ) )
+                'times' : list( map( datetime.isoformat, generate_times( req.time, req.days_bit_mask, req.start_date, req.end_date ) ) )
             } for req in requests ]
         }
         return data_response( data )

@@ -47,6 +47,7 @@ export class Player{
         this.audio = document.getElementById( 'audio-player' );
         this.playing = false;
         if ( this.audio ) {
+            console.log( 'init playing' )
             this.audio.src = this.sourceUrl;
             this.playing = false;
             this.getTrack();
@@ -57,7 +58,7 @@ export class Player{
         if ( !self ) self = this;
         clearTimeout( self.timeout );
         console.log( 'Getting new track' );
-        self.audio.pause()
+        self.pause()
         self.getTrackData();
         self.audio.src = self.sourceUrl;
         var delta = ( self.track.play_duration - self.track.play_location );
@@ -77,9 +78,10 @@ export class Player{
         // Test for Apache
         this.audio.onloadedmetadata = () => {
             console.log( 'MD loaded' );
-            this.audio.currentTime = 100;
+            this.audio.currentTime = this.track.play_location;
             console.log( this.audio.currentTime );
             this.audio.play();
+            this.playing = true;
         }
     }
 
