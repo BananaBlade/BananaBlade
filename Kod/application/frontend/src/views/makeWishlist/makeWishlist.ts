@@ -38,6 +38,12 @@ export class MakeWishlist {
             console.log( 'Too many tracks' );
             return;
         }
+        for ( let i in this.tracks )
+            if ( this.tracks[ i ].id == track.id ){
+                console.log( 'Duplicate.' )
+                return;
+            }
+
         this.tracks.push( track );
         this.trackSearch = '';
         this.searchResults = [];
@@ -75,8 +81,8 @@ export class MakeWishlist {
         for ( let i in this.tracks )
             ids.push( this.tracks[ i ].id );
         let json_ids = JSON.stringify( ids );
-        this.http.postWithRes('/user/wishlist/set', json_ids, (res) => { 
-            this.editable = false; 
+        this.http.postWithRes('/user/wishlist/set', json_ids, (res) => {
+            this.editable = false;
         });
     }
 
