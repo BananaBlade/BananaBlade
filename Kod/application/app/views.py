@@ -339,7 +339,7 @@ def get_wishlist():
     except:
         return error_response( 'Listu želja nije moguće dohvatiti: Nevaljan zahtjev.' )
 
-@app.route( '/user/wishlist/can_confirmation', methods = [ 'GET' ] )
+@app.route( '/user/wishlist/can_confirm', methods = [ 'GET' ] )
 @login_required
 def get_wishlist_confirmation_time():
     """Return whether user can confirm his wishlist or not
@@ -348,11 +348,12 @@ def get_wishlist_confirmation_time():
     """
     try:
         confirmation_time = g.user.get_wishlist_confirmation_time()
-        return data_response( { 'can_confirm' : datetime.now() - confirmation_time > timedelta( days = 1 ) } )
+        can_confirm = datetime.now() - confirmation_time > timedelta( days = 1 ) if confirmation_time is not None else True
+        return data_response( { 'can_confirm' : can_confirm } )
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja: Nedozvoljena mogućnost.', 403 )
-    except:
-        return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja.' )
+    # except:
+    #     return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja.' )
 
 @app.route( '/user/wishlist/set', methods = [ 'POST' ] )
 @login_required

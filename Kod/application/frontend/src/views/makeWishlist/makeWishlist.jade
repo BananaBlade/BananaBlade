@@ -13,7 +13,7 @@
         i.material-icons.icon assignment
     nav.content-options.uneditable-ui
       button( '(click)' = 'toggleEditable()' ) Uredi listu želja
-      button( '(click)' = 'confirmWishlist()') Potvrdi listu želja
+      button( '(click)' = 'confirmWishlist()' '[disabled]' = '!can_confirm' ) Potvrdi listu želja
     nav.content-options.editable-ui
       button( '(click)' = 'saveWishlist()') Spremi listu želja
       button( '(click)' = 'toggleEditable()' ) Odustani od promjena

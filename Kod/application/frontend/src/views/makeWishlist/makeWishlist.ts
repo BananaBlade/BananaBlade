@@ -18,17 +18,22 @@ export class MakeWishlist {
     searchResults: Track[] = new Array();
     editable : boolean = false;
     matching: boolean = false;
+    can_confirm : boolean = false;
+    msgService : MsgService;
 
-    constructor(http: HttpAdvanced, router: Router) {
+    constructor(http: HttpAdvanced, router: Router, msgService : MsgService) {
         this.http = http;
         this.router = router;
+        this.msgService = msgService;
 
         this.http.get('/user/wishlist/get', (res) => {
             for (let i in res)
                 this.tracks.push(new Track(res));
         });
 
-
+        this.http.get( '/user/wishlist/can_confirm', (res) => {
+            this.can_confirm = res.can_confirm;
+        });
     }
 
     toggleEditable(){ this.editable = !this.editable; }
@@ -51,11 +56,14 @@ export class MakeWishlist {
 
     onKeyPressed(event) {
         let query = this.trackSearch + String.fromCharCode(event.charCode);
-        console.log(query);
+        if ( query.length < 3 ){
+            searchResults = [];
+            return;
+        }
         this.http.get('/tracks/search/' + query, (res) => {
             this.searchResults = new Array();
-            for (let i in res.data) {
-                this.searchResults.push(new Track(res.data[i]));
+            for (let i in res) {
+                this.searchResults.push(new Track(res[i]));
             }
         });
     }
@@ -71,7 +79,8 @@ export class MakeWishlist {
         for ( let i in this.tracks )
             ids.push( this.tracks[ i ].id );
         let json_ids = JSON.stringify( ids );
-        this.http.postWithRes('/user/wishlist/set', json_ids, (res) => {
+        console.log( json_ids );
+        this.http.postWithRes( '/user/wishlist/set', json_ids, (res) => {
             this.editable = false;
         });
     }
