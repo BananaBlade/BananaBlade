@@ -1,15 +1,15 @@
 import { Component } from 'angular2/core';
-import { Http } from 'angular2/http';
+import { HttpAdvanced } from '../../../services/httpAdvanced';
 
 @Component({
     selector : 'users-count',
     templateUrl : './dest/components/stats/usersCount/usersCount.html'
 })
 export class UsersCount{
-    http : Http;
+    http : HttpAdvanced;
     count : number;
 
-    constructor( http : Http ){
+    constructor( http : HttpAdvanced ){
         this.http = http;
         this.http.get('/stats/active_users/count', (res) => this.count = res.count);
     }

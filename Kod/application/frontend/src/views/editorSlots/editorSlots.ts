@@ -86,7 +86,7 @@ export class EditorSlots {
         for (let i in this.slots) {
             let slotTime = this.slots[i].time.getTime();
             if (slotTime >= this.mondayDay.getTime() && slotTime <= nextMonday.getTime()) {
-                let dayOfWeek = ~~((slotTime / 1000 / 60 / 60 / 24) % 7);
+                let dayOfWeek = ~~(((slotTime-this.mondayDay.getTime()) / 1000 / 60 / 60 / 24) % 7);
                 let hourOfDay = (slotTime / 1000 / 60 / 60) % 24;
                 this.calendarFields[dayOfWeek][hourOfDay] = this.slots[i].id;
             }

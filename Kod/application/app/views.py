@@ -206,8 +206,7 @@ def process_signout():
     After signing out, user is redirected to the index page.
     """
     session.clear()
-    return success_response( 'Uspješna odjava.' )
-    # return redirect( '/' )
+    return redirect( '/' )
 
 
 # User account management
@@ -340,16 +339,16 @@ def get_wishlist():
     except:
         return error_response( 'Listu želja nije moguće dohvatiti: Nevaljan zahtjev.' )
 
-@app.route( '/user/wishlist/confirmation_time', methods = [ 'GET' ] )
+@app.route( '/user/wishlist/can_confirmation', methods = [ 'GET' ] )
 @login_required
 def get_wishlist_confirmation_time():
-    """Return time of last confirmation of user's wishlist
+    """Return whether user can confirm his wishlist or not
 
     No request params.
     """
     try:
         confirmation_time = g.user.get_wishlist_confirmation_time()
-        return data_response( { 'confirmation_time' : confirmation_time } )
+        return data_response( { 'can_confirm' : datetime.now() - confirmation_time > timedelta( days = 1 ) } )
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja: Nedozvoljena mogućnost.', 403 )
     except:
@@ -406,8 +405,7 @@ def upload_track():
     try:
         g.user._assert_admin()
         staticPath, absPath = generate_filename( audio_file.filename )
-        print( staticPath, '\n', absPath )
-        
+
         audio_file.save( absPath )
 
         return data_response( { 'path' : staticPath }, 201 )
@@ -416,9 +414,8 @@ def upload_track():
         return error_response( 'Dodavanje zapisa nije uspjelo: Nedovoljne ovlasti.', 403 )
     except ValueError as e:
         return error_response( 'Dodavanje zapisa nije uspjelo: Nisu uneseni ispravni podaci: ' + str( e ) )
-    # except Exception as e:
-    #     print( e )
-    #     return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
+    except Exception:
+        return error_response( 'Dodavanje zapisa nije uspjelo: Nevaljan zahtjev.' )
 
 
 
@@ -434,8 +431,6 @@ def add_track():
     TODO: Extensive testing!!
 
     """
-    print(request.values)
-
     title           = request.values.get( 'title' )
     artist          = request.values.get( 'artist' )
     album           = request.values.get( 'album' )
@@ -551,8 +546,6 @@ def delete_track( track_id ):
     """
     try:
         path = Track.get( Track.id == track_id ).path
-        print( path )
-        print( app.config[ '' ] )
         os.remove( path )
         g.user.remove_track( track_id )
         return success_response( 'Zvučni zapis uspješno izbrisan.' )
@@ -562,8 +555,8 @@ def delete_track( track_id ):
         return error_response( 'Brisanje nije uspjelo: Ne postoji zvučni zapis s danim ID-om.', 404 )
     except OSError:
         return error_response( 'Brisanje nije uspjelo: Greška u sustavu.' )
-    #except:
-    #    return error_response( 'Brisanje nije uspjelo: Nevaljan zahtjev.' )
+    except:
+        return error_response( 'Brisanje nije uspjelo: Nevaljan zahtjev.' )
 
 
 # Admin editors management
@@ -674,9 +667,6 @@ def allow_request( request_id ):
     """
     try:
         req = SlotRequest.join( User ).get( SlotRequest.id == request_id )
-        print(req)
-        req = req
-        print(req)
         g.user.allow_request( request_id )
         rs = RadioStation.get()
         send_mail( '{} - Odobren zahtjev za terminima'.format( rs.name ),
@@ -689,8 +679,7 @@ def allow_request( request_id ):
         return error_response( 'Neuspješno odobravanje zahtjeva: Ne postoji zahtjev s danim ID-om.', 404 )
     except peewee.IntegrityError:
         return error_response( 'Neuspješno odobravanje zahtjeva: Preklapanje s već postojećim terminom.', 409 )
-    except Exception as e:
-        print(e)
+    except:
         return error_response( 'Neuspješno odobravanje zahtjeva: Nevaljan zahtjev.' )
 
 @app.route( '/admin/requests/<int:request_id>/deny', methods = [ 'POST' ] )
@@ -844,10 +833,10 @@ def list_editor_slots( date ):
                 'count' : slot.count
             } for slot in slots ],
 
-            # 'requests' : [{
-            #     'id'    : req.id,
-            #     'times' : map( datetime.isoformat, generate_times( req.time, req.days_bit_mask, req.start_date, req.end_date ) )
-            # } for req in requests ]
+            'requests' : [{
+                'id'    : req.id,
+                'times' : map( datetime.isoformat, generate_times( req.time, req.days_bit_mask, req.start_date, req.end_date ) )
+            } for req in requests ]
         }
         return data_response( data )
     except AuthorizationError:

@@ -14,12 +14,13 @@ export class MsgServiceInternal {
     }
 
     hasMessage() {
-        let does = !!sessionStorage.getItem(MESSAGE);
-        return does;
+        let msg = sessionStorage.getItem( MESSAGE );
+        return !!msg && !!msg.messageText;
     }
 
-    setMessage(msg: string) {
-        sessionStorage.setItem(MESSAGE, msg);
+    setMessage(msg: string, type?: string) {
+        if ( !type ) type = "info";
+        sessionStorage.setItem( MESSAGE, this.encode( msg, type ) );
     }
 
     deleteMessage() {
@@ -27,7 +28,19 @@ export class MsgServiceInternal {
     }
 
     getMessage() {
-        return sessionStorage.getItem(MESSAGE);
+        return this.decode( sessionStorage.getItem( MESSAGE ) );
+    }
+
+    encode( msg : string, type : string ){
+        return type + ':' + msg;
+    }
+
+    decode( encoded : string ){
+        var x = encoded.split( ':', 1 ), res;
+        res.messageType = x[ 0 ];
+        res.messageText = x[ 1 ];
+        console.log( 'Decoding ' + encoded + ' => ' + res );
+        return res;
     }
 }
 
@@ -40,7 +53,7 @@ export class MsgService {
         THIS = this;
     }
 
-    setMessage(msg: string) {
+    setMessage(msg: string, type?: string) {
         console.log(msg);
         this.msgServiceInternal.setMessage(msg);
     }

@@ -22,7 +22,7 @@ export class Messages{
         this.listenTimeoutInterval = 100;
         this.displayTimeoutInterval = 2100;
         this.messageService = msgServiceInternal;
-        this.watchForMessage(this);
+        this.watchForMessage( this );
     }
 
     displayMessage() {
@@ -31,10 +31,11 @@ export class Messages{
 
     watchForMessage(self: Messages) {
         let msgService: MsgServiceInternal = self.messageService;
-        let msg: string = "";
         if (msgService.hasMessage())
         {
-            self.messageText = msgService.getMessage();
+            var message = msgService.getMessage();
+            self.messageType = message.messageType;
+            self.messageText = message.messageText;
             msgService.deleteMessage();
             setTimeout(() => self.watchForMessage(self), self.displayTimeoutInterval);
             self.displayMessage();
