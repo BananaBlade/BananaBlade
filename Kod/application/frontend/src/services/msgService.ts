@@ -1,8 +1,13 @@
 import { Injectable, Inject } from 'angular2/core';
 
-let MESSAGE = "message";
+let MESSAGE_TEXT = "message_text";
+let MESSAGE_TYPE = "message_type";
 
-let THIS = null;
+let INFO = "info";
+let SUCCESS = "success";
+let ERROR = "error";
+
+let THIS: MsgService = null;
 
 @Injectable()
 export class MsgServiceInternal {
@@ -14,13 +19,16 @@ export class MsgServiceInternal {
     }
 
     hasMessage() {
-        let msg = sessionStorage.getItem( MESSAGE );
-        return !!msg && !!msg.messageText;
+        let msg = this.getMessage();
+        return !!msg.text;
     }
 
-    setMessage(msg: string, type?: string) {
-        if ( !type ) type = "info";
-        sessionStorage.setItem( MESSAGE, this.encode( msg, type ) );
+    setMessage(msg: any, type?: string) {
+        let msg2 = typeof msg === "string" ? msg : JSON.stringify(msg);
+
+        if ( !type ) type = INFO;
+        sessionStorage.setItem(MESSAGE_TEXT, msg2);
+        sessionStorage.setItem(MESSAGE_TYPE, type);
     }
 
     deleteMessage() {
@@ -28,19 +36,9 @@ export class MsgServiceInternal {
     }
 
     getMessage() {
-        return this.decode( sessionStorage.getItem( MESSAGE ) );
-    }
-
-    encode( msg : string, type : string ){
-        return type + ':' + msg;
-    }
-
-    decode( encoded : string ){
-        var x = encoded.split( ':', 1 ), res;
-        res.messageType = x[ 0 ];
-        res.messageText = x[ 1 ];
-        console.log( 'Decoding ' + encoded + ' => ' + res );
-        return res;
+        let msg = sessionStorage.getItem(MESSAGE_TEXT);
+        let type = sessionStorage.getItem(MESSAGE_TYPE);
+        return { text: msg, type: type };
     }
 }
 
@@ -55,26 +53,5 @@ export class MsgService {
 
     setMessage(msg: string, type?: string) {
         this.msgServiceInternal.setMessage(msg);
-    }
-
-    httpErrorHandler(err) {
-        if (typeof err === "string") THIS.setMessage(err);
-        else {
-            // Check if the 'err' can be stringified with .text
-            if (err.json) {
-                if(err.json().error_message) {
-                    THIS.setMessage(err.json().error_message);
-                }
-                else {
-                    THIS.setMessage(err.json());
-                }
-            }
-            else if (err.text) {
-                THIS.setMessage(err.text());
-            }
-            else {
-                THIS.setMessage(JSON.stringify(err));
-            }
-        }
     }
 }

@@ -14,9 +14,9 @@
       .calendar-wrapper
         h2 Kalendar 
           .calendar-nav
-            a &lt; 
-            | 11.01. &ndash; 17.01. 
-            a &gt;
+            a( '(click)'="prevWeek()" ) &lt; 
+            | {{mondayString}} &ndash; {{sundayString}}
+            a( '(click)'="nextWeek()" ) &gt;
         .calendar.large-calendar
           table
             caption

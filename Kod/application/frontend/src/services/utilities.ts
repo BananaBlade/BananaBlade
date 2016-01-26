@@ -14,3 +14,10 @@ export function urlEncode(obj: Object): string {
     }
     return urlSearchParams.toString();
 }
+
+/// In case the number is 1 digit, make it 2 digits. (Used for calendar numbers)
+export function numberTo2digits(num) {
+    let num2 = typeof num === "string" ? num : num.toString();
+
+    return num2.length === 1 ? '0' + num2 : num2;
+}

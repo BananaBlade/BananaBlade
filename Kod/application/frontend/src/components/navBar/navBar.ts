@@ -18,6 +18,7 @@ export class NavBar {
     constructor(authService: AuthService, router: Router){
         this.authService = authService;
         this.navigation = NavigationProvider.getNavigationArray();
+        this.router = router;
     }
 
     isVisible( at : number ){
@@ -25,6 +26,7 @@ export class NavBar {
     }
 
     logout() {
+        
         this.authService.logout(() => this.router.navigate(['/Index']));
     }
 }

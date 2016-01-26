@@ -206,7 +206,8 @@ def process_signout():
     After signing out, user is redirected to the index page.
     """
     session.clear()
-    return redirect( '/' )
+    #return redirect( '/' )
+    return success_response( 'Uspješna odjava.' )
 
 
 # User account management

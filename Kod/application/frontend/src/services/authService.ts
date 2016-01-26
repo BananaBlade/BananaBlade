@@ -4,6 +4,12 @@ import { HttpAdvanced } from './../services/services';
 
 let ACCOUNT_TYPE: string = "accountType";
 
+let UNLOGGED = '-1';
+let USER = '1';
+let EDITOR = '2';
+let ADMIN = '3';
+let OWNER = '4';
+
 @Injectable()
 export class AuthService {
     private http: HttpAdvanced;
@@ -20,7 +26,8 @@ export class AuthService {
 
     storeUserAuthentication(callback?: Function) {
         this.http.get('/user/account/type', (res) => {
-            sessionStorage.setItem(ACCOUNT_TYPE, res.account_type);
+            if (res.account_type && res.account_type > 0) sessionStorage.setItem(ACCOUNT_TYPE, res.account_type);
+            else if (res.account_type === 0) sessionStorage.setItem(ACCOUNT_TYPE, UNLOGGED);
             if (callback) callback();
         });
     }
@@ -39,19 +46,19 @@ export class AuthService {
     }
 
     isUser() {
-        return this.getAuthLevel() == '1';
+        return this.getAuthLevel() == USER;
     }
 
     isEditor() {
-        return this.getAuthLevel() == '2';
+        return this.getAuthLevel() == EDITOR;
     }
 
     isAdmin() {
-        return this.getAuthLevel() == '3';
+        return this.getAuthLevel() == ADMIN;
     }
 
     isOwner() {
-        return this.getAuthLevel() == '4';
+        return this.getAuthLevel() == OWNER;
     }
 
     static isUserInjector() {
@@ -91,7 +98,8 @@ export class AuthService {
     logout(callback?: Function) {
         if (this.isLoggedInFn()) {
             this.http.getNoError('/user/auth/signout', () => {
-                if (callback) callback();
+                this.isLoggedInFn();
+                this.storeUserAuthentication(callback);
             });
         }
     }

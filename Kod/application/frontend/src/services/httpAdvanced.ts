@@ -3,6 +3,12 @@ import { Http } from 'angular2/http';
 
 import { MsgService, urlEncode } from './services'
 
+let INFO = "info";
+let SUCCESS = "success";
+let ERROR = "error";
+
+let SELF: HttpAdvanced = null;
+
 @Injectable()
 export class HttpAdvanced {
     msgService: MsgService;
@@ -11,6 +17,7 @@ export class HttpAdvanced {
     constructor(msgService: MsgService, http: Http) {
         this.msgService = msgService;
         this.http = http;
+        SELF = this;
     }
 
     /*
@@ -18,9 +25,9 @@ export class HttpAdvanced {
      */
     public get(url, callback) {
         return this.http.get(url).subscribe((res) => {
-            let data = res.json().data;
-            callback(data);
-        }, this.msgService.httpErrorHandler);
+            let msg = this.extractMsg(res);
+            callback(msg);
+        }, this.httpErrorHandler);
     }
 
     /*
@@ -28,11 +35,12 @@ export class HttpAdvanced {
      */
     public getNoError(url, callback) {
         return this.http.get(url).subscribe((res) => {
-            let data = res.json().data;
-            callback(data);
+            let msg = this.extractMsg(res);
+            callback(msg);
         }, (err) => {
             console.log("err:");
-            console.log(err);
+            let msg = this.extractMsg(err);
+            console.log(msg);
         });
     }
 
@@ -43,15 +51,9 @@ export class HttpAdvanced {
      */
     public post(url, data) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
-            if (res.json) {
-                if (res.json().data) {
-                    if (res.json().data.success_message) console.log(res.json().data.success_message);
-                    else console.log(res.json().data);
-                }
-                else console.log(res.json());
-            }
-            else console.log(res);
-        }, this.msgService.httpErrorHandler);
+            let msg = this.extractMsg(res);
+            this.msgService.setMessage(msg);
+        }, this.httpErrorHandler);
     }
 
     /*
@@ -59,58 +61,41 @@ export class HttpAdvanced {
      */
     public postWithRes(url, data, callback) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
-            if (res.json) {
-                console.log(res.json());
-                if (res.json().data) callback(res.json().data);
-                else callback(res.json());
-            }
-            else callback(res);
-        }, this.msgService.httpErrorHandler);
+            let msg = this.extractMsg(res);
+            if (callback) callback(msg);
+        }, this.httpErrorHandler);
     }
 
     public postWithBothMsg(url, data, callback?) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
-            if (res.json) {
-                console.log(res.json());
-                if (res.json().data) {
-                    this.msgService.setMessage(res.json().data);
-                    if (callback) callback(res.json().data);
-                }
-                if (res.json().success_message) {
-                    this.msgService.setMessage(res.json().success_message);
-                    if (callback) callback(res.json());
-                }
-                else {
-                    this.msgService.setMessage(res.json());
-                    if (callback) callback(res.json());
-                }
-            }
-            else {
-                if (callback) callback(res);
-            }
-        }, this.msgService.httpErrorHandler);
+            let msg = this.extractMsg(res);
+            this.msgService.setMessage(msg);
+            if (callback) callback(msg);
+        }, this.httpErrorHandler);
     }
 
     public postPure(url, data, callback?) {
         return this.http.post(url, data).subscribe((res) => {
-            if (res.json) {
-                console.log(res.json());
-                if (res.json().data) {
-                    this.msgService.setMessage(res.json().data);
-                    if (callback) callback(res.json().data);
-                }
-                if (res.json().success_message) {
-                    this.msgService.setMessage(res.json().success_message);
-                    if (callback) callback(res.json());
-                }
-                else {
-                    this.msgService.setMessage(res.json());
-                    if (callback) callback(res.json());
-                }
-            }
-            else {
-                if (callback) callback(res);
-            }
-        }, this.msgService.httpErrorHandler);
+            let msg = this.extractMsg(res);
+            this.msgService.setMessage(msg);
+            if (callback) callback(msg);
+        }, this.httpErrorHandler);
+    }
+
+    private extractMsg(msg) {
+        let msg2 = msg.json ? (msg.json().error_message || msg.json().success_message || msg.json().data || msg.json()) : msg;
+        return msg2;
+    }
+
+    private httpErrorHandler(err) {
+        let msg = SELF.extractMsg(err);
+        SELF.msgService.setMessage(msg, ERROR);
+        return msg;
+    }
+
+    private httpSuccessHandler(success) {
+        let msg = SELF.extractMsg(success);
+        SELF.msgService.setMessage(msg, SUCCESS);
+        return msg;
     }
 }

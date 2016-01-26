@@ -5,7 +5,7 @@ import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIR
     FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 // NgSelectOption CheckboxControlValueAccessor
 
-import { HttpAdvanced, AuthService } from '../../services/services';
+import { HttpAdvanced, AuthService, numberTo2digits } from '../../services/services';
 
 
 //@CanActivate(AuthService.isEditorInjector())
@@ -27,6 +27,8 @@ export class EditorSlots {
 
     today: Date = new Date();
     mondayDay: Date;
+    mondayString: string = "";
+    sundayString: string = "";
 
     calendarFields: number[][];
 
@@ -90,6 +92,12 @@ export class EditorSlots {
 
             }
         }
+
+        let sunday = new Date(this.mondayDay.getTime() + 1000 * 60 * 60 * 24 * 6);
+        let pad = numberTo2digits;
+
+        this.mondayString = pad(this.mondayDay.getDate()) + '.' + pad(this.mondayDay.getMonth() + 1) + '.';
+        this.sundayString = pad(sunday.getDate()) + '.' + pad(sunday.getMonth() + 1) + '.';
     }
 
     constructor(http: HttpAdvanced, fb: FormBuilder, router: Router) {
@@ -136,6 +144,18 @@ export class EditorSlots {
             }
             this.updateCalendar();
         });
+    }
+
+    prevWeek() {
+        this.mondayDay = new Date(this.mondayDay.getTime() - (1000 * 60 * 60 * 24 * 7));
+
+        this.updateCalendar();
+    }
+
+    nextWeek() {
+        this.mondayDay = new Date(this.mondayDay.getTime() + (1000 * 60 * 60 * 24 * 7));
+
+        this.updateCalendar();
     }
 
     toggleState(){ this.changing = !this.changing }

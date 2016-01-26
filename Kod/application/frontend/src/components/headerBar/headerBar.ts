@@ -10,7 +10,6 @@ import { AuthService, Form, FormBuilderAdvanced, HttpAdvanced } from '../../serv
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, RouterLink ]
 })
 export class HeaderBar {
-    isLoggedIn : boolean;
     loginForm: Form;
     http: HttpAdvanced;
     authService: AuthService;

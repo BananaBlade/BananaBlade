@@ -22,7 +22,7 @@ export class Messages{
         this.listenTimeoutInterval = 100;
         this.displayTimeoutInterval = 2100;
         this.messageService = msgServiceInternal;
-        this.watchForMessage( this );
+        this.watchForMessage(this);
     }
 
     displayMessage() {
@@ -31,13 +31,12 @@ export class Messages{
 
     watchForMessage(self: Messages) {
         let msgService: MsgServiceInternal = self.messageService;
-        if (msgService.hasMessage())
+        let hasMessage = msgService.hasMessage();
+        if (hasMessage)
         {
-            console.log(msgService.hasMessage());
-
             var message = msgService.getMessage();
-            self.messageType = message.messageType;
-            self.messageText = message.messageText;
+            self.messageType = message.type;
+            self.messageText = message.text;
             msgService.deleteMessage();
             setTimeout(() => self.watchForMessage(self), self.displayTimeoutInterval);
             self.displayMessage();
@@ -54,7 +53,7 @@ export class Messages{
 
     show(){
         this.shown = true;
-        setTimeout( () => this.hide( this ), 5000 );
+        setTimeout(() => this.hide(this), 5000);
     }
 
     hide( self? : any ){
