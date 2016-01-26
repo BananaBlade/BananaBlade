@@ -3,7 +3,7 @@
         h2 Trenutno na programu
     .player-body
         .current-editor
-            span Urednik:
+            span Urednik: 
             | {{ track.editor }}
         .player-track
             .player-track-title {{ track.title }}
@@ -13,9 +13,9 @@
                 .player-track-info-item.player-track-year {{ track.year }}
                 .player-track-info-item.player-track-genre {{ track.genre }}
 
-    audio#audio-player( preload = "false" )
+    audio#audio-player( preload = "metadata" )
     .player-progress-bar
-        //.player-progress( '[style.width]' = 'this.audio.currentTime / this.audio.duration')
+        .player-progress( '[hidden]' = '!playing' '[style.width]' = '"" + (audio.currentTime / audio.duration * 100) + "%"' )
         
     .player-controls
         .control-buttons

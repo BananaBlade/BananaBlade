@@ -442,7 +442,6 @@ body
     line-height        :     2rem
     height             :     2rem
     padding            :     0.5rem 0
-    width              :     15rem
 
     input
         height               :     1.5rem
@@ -1562,6 +1561,16 @@ fieldset[ disabled ]
 .player-track-artist, .player-track-genre
     font-family       :     $header_font
 
+.player-progress-bar
+    background        :     darken( $accent2_color, 15% )
+    height            :     1rem
+    width             :     100%
+
+
+.player-progress
+    background        :     $alt_text_color
+    height            :     1rem
+
 .control-buttons
     margin            :     0 auto 0 auto
     overflow          :     hidden
@@ -1888,6 +1897,18 @@ p.register-bait
         font-size           :     1.1rem
         line-height         :     1.75rem
         width               :     50rem
+
+
+// Debug
+
+.debug
+    justify-content   :     center
+    height            :     2rem
+    left              :     0
+    padding           :     0.5rem 0
+    position          :     fixed
+    top               :     0
+    width             :     100%
 
 
 // Loading screen
