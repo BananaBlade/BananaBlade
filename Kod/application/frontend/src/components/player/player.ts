@@ -102,7 +102,7 @@ export class Player{
 
     getTrackData(){
         this.http.get('/player/info', ( res ) => {
-            this.track = new Track( res.data.id, res.data.title, res.data.artist, res.data.album, res.data.genre, res.data.year, res.data.play_duration, res.data.play_location, res.data.editor );
+            this.track = new Track( res.id, res.title, res.artist, res.album, res.genre, res.year, res.play_duration, res.play_location, res.editor );
             console.log( [ 'Getting track data: ', this.track ] );
         });
     }

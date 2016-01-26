@@ -20,6 +20,7 @@ export class MsgServiceInternal {
 
     setMessage(msg: string) {
         sessionStorage.setItem(MESSAGE, msg);
+        console.log(msg);
     }
 
     deleteMessage() {
@@ -41,7 +42,6 @@ export class MsgService {
     }
 
     setMessage(msg: string) {
-        console.log(msg);
         this.msgServiceInternal.setMessage(msg);
     }
 

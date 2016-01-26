@@ -573,7 +573,7 @@ class User( BaseModel ):
         """
         self._assert_editor()
         return ( Slot.select( Slot, fn.Count( PlaylistTrack.id ).alias( 'count' ) )
-            .where( ( Slot.editor == self ) & ( Slot.time > datetime.now() ) )
+            .where( ( Slot.editor == self ) & ( Slot.time > datetime.now() - timedelta(days = 7) ) )
             .join( PlaylistTrack, JOIN.LEFT_OUTER ).group_by( Slot ) )
 
     def get_reserved_slots( self ):
@@ -584,7 +584,7 @@ class User( BaseModel ):
         Raises AuthorizationError
         """
         self._assert_editor()
-        return Slot.select().where( Slot.time > datetime.now() )
+        return Slot.select().where( Slot.time > datetime.now() - timedelta(days = 7) )
 
     def get_all_slots( self ):
         """Returns a list of all future slots allocated to anyone

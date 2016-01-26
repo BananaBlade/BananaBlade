@@ -44,7 +44,10 @@ export class HttpAdvanced {
     public post(url, data) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
             if (res.json) {
-                if (res.json().data) console.log(res.json().data);
+                if (res.json().data) {
+                    if (res.json().data.success_message) console.log(res.json().data.success_message);
+                    else console.log(res.json().data);
+                }
                 else console.log(res.json());
             }
             else console.log(res);
@@ -57,6 +60,7 @@ export class HttpAdvanced {
     public postWithRes(url, data, callback) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
             if (res.json) {
+                console.log(res.json());
                 if (res.json().data) callback(res.json().data);
                 else callback(res.json());
             }
@@ -64,9 +68,49 @@ export class HttpAdvanced {
         }, this.msgService.httpErrorHandler);
     }
 
-    public postWithBothMsg(url, data) {
-        this.postWithRes(url, data, (res) => {
-            if (res.success_response) this.msgService.setMessage(res.success_response);
-        });
+    public postWithBothMsg(url, data, callback?) {
+        return this.http.post(url, urlEncode(data)).subscribe((res) => {
+            if (res.json) {
+                console.log(res.json());
+                if (res.json().data) {
+                    this.msgService.setMessage(res.json().data);
+                    if (callback) callback(res.json().data);
+                }
+                if (res.json().success_message) {
+                    this.msgService.setMessage(res.json().success_message);
+                    if (callback) callback(res.json());
+                }
+                else {
+                    this.msgService.setMessage(res.json());
+                    if (callback) callback(res.json());
+                }
+            }
+            else {
+                if (callback) callback(res);
+            }
+        }, this.msgService.httpErrorHandler);
+    }
+
+    public postPure(url, data, callback?) {
+        return this.http.post(url, data).subscribe((res) => {
+            if (res.json) {
+                console.log(res.json());
+                if (res.json().data) {
+                    this.msgService.setMessage(res.json().data);
+                    if (callback) callback(res.json().data);
+                }
+                if (res.json().success_message) {
+                    this.msgService.setMessage(res.json().success_message);
+                    if (callback) callback(res.json());
+                }
+                else {
+                    this.msgService.setMessage(res.json());
+                    if (callback) callback(res.json());
+                }
+            }
+            else {
+                if (callback) callback(res);
+            }
+        }, this.msgService.httpErrorHandler);
     }
 }

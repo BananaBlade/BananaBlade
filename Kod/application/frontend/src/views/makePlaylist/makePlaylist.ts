@@ -25,6 +25,26 @@ export class MakePlaylist {
 
     matching: boolean = false;
 
+    constructor(http: HttpAdvanced, routeParams: RouteParams) {
+        this.http = http;
+
+        this.slotId = routeParams.get('slotId');
+
+        this.http.get('/editor/slots/' + this.slotId + '/get_list', (res) => {
+            this.playlist = new Array();
+            for (let i in res) {
+                this.playlist.push(new Track(res[i]));
+            }
+            this.updateBar();
+        });
+
+        this.http.get('/tracks/wishlist', (res) => {
+            var end = Math.min(res.length, 10);
+            for (var i = 0; i < end; ++i)
+                this.wishes.push(new Track(res[i]));
+        });
+    }
+
     toggleEditable() {
         this.editable = !this.editable;
     }
@@ -32,6 +52,15 @@ export class MakePlaylist {
     resetPlaylist() {
         this.toggleEditable();
         this.updateBar();
+    }
+
+    enterCheck(event) {
+        if (event.keyCode == 13 && this.searchResults.length > 0) {
+            this.addTrackToPlaylist(this.searchResults[0]);
+            this.searchResults = new Array();
+            this.trackSearch = "";
+        }
+        else if (event.keyCode >= 65 && event.keyCode <= 90) this.onKeyPressed(event.keyCode)
     }
 
     removeTrack(track) {
@@ -49,6 +78,7 @@ export class MakePlaylist {
             totalTime += this.playlist[i].duration;
         return totalTime;
     }
+
     updateBar() {
         console.log(this.playlist);
         let durationSum = this.getTotalTime();
@@ -82,15 +112,16 @@ export class MakePlaylist {
         this.updateBar();
     }
 
-    onKeyPressed(event) {
-        let query = this.trackSearch + String.fromCharCode(event.charCode);
-        console.log(query);
-        this.http.get('/tracks/search/' + query, (res) => {
-            this.searchResults = new Array();
-            for (let i in res) {
-                this.searchResults.push(new Track(res[i]));
-            }
-        });
+    onKeyPressed(charCode) {
+        let query = this.trackSearch && (this.trackSearch + String.fromCharCode(charCode));
+        if (query && query.length >= 3) {
+            this.http.getNoError('/tracks/search/' + query, (res) => {
+                this.searchResults = new Array();
+                for (let i in res) {
+                    this.searchResults.push(new Track(res[i]));
+                }
+            });
+        }
     }
 
     submitPlaylist() {
@@ -107,28 +138,9 @@ export class MakePlaylist {
         }
         let track_list2 = JSON.stringify(track_list);
 
-        this.http.post('/editor/slots/' + this.slotId + '/set_list', track_list2);
+        this.http.postPure('/editor/slots/' + this.slotId + '/set_list', track_list2);
     }
 
-    constructor(http: HttpAdvanced, routeParams: RouteParams) {
-        this.http = http;
-
-        this.slotId = routeParams.get('slotId');
-
-        this.http.get('/editor/slots/' + this.slotId + '/get_list', (res) => {
-            this.playlist = new Array();
-            for (let i in res.data) {
-                this.playlist.push(new Track(res.data[i]));
-            }
-            this.updateBar();
-        });
-
-        this.http.get('/tracks/wishlist', (res) => {
-            var end = Math.min(res.length, 10);
-            for (var i = 0; i < end; ++i)
-                this.wishes.push(new Track(res[i]));
-        });
-    }
 }
 
 class Track {

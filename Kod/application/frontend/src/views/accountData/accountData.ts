@@ -39,7 +39,7 @@ export class AccountData {
                 }
                 else if (name == 'id') continue;
                 else this.userForm.controls[name].updateValue(res[name]);
-                //else this[name].updateValue(res.data[name]);
+                //else this[name].updateValue(res[name]);
             }
         });
     }

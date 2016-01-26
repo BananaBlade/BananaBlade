@@ -21,8 +21,8 @@ export class Schedule{
         if (!self) self = this;
         self.http.get('/player/schedule', (res) => {
             self.items = []
-            for ( let i in res.data ){
-                self.items.push( new ScheduleItem( res.data[ i ].editor, res.data[ i ].time ) )
+            for ( let i in res ){
+                self.items.push( new ScheduleItem( res[ i ].editor, res[ i ].time ) )
             }
         });
         var dt : number;

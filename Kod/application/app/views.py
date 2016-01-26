@@ -665,6 +665,17 @@ def list_requests():
     except:
         return error_response( 'Neuspješno dohvaćanje popisa zahtjeva.' )
 
+def day_names(bit_mask):
+    print(bit_mask)
+    bit_mask = int(bit_mask)
+    days = [ 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned' ];
+    present = [];
+    for i, day in enumerate(days):
+        if bit_mask & (2**i): 
+            present.append(day)
+
+    return present
+
 @app.route( '/admin/requests/<int:request_id>/allow', methods = [ 'POST' ] )
 @login_required
 def allow_request( request_id ):
@@ -673,9 +684,7 @@ def allow_request( request_id ):
     No request params.
     """
     try:
-        req = SlotRequest.join( User ).get( SlotRequest.id == request_id )
-        print(req)
-        req = req
+        req = SlotRequest.get( SlotRequest.id == request_id ).select().join( User ).first()
         print(req)
         g.user.allow_request( request_id )
         rs = RadioStation.get()
@@ -701,7 +710,8 @@ def deny_request( request_id ):
     No request params.
     """
     try:
-        req = SlotRequest.join( User ).get( SlotRequest.id == request_id )
+        req = SlotRequest.get( SlotRequest.id == request_id ).select().join( User ).first()
+        print(req)
         g.user.deny_request( request_id )
         rs = RadioStation.get()
         send_mail( '{} - Odbijen zahtjev za terminima'.format( rs.name ),
@@ -712,7 +722,8 @@ def deny_request( request_id ):
         return error_response( 'Neuspješno odbijanje zahtjeva: Nedovoljne ovlasti.', 403 )
     except DoesNotExist:
         return error_response( 'Neuspješno odbijanje zahtjeva: Ne postoji zahtjev s danim ID-om.', 404 )
-    except:
+    except Exception as e:
+        print(e)
         return error_response( 'Neuspješno odbijanje zahtjeva: Nevaljan zahtjev.' )
 
 
@@ -921,7 +932,9 @@ def set_playlist( slot_id ):
     """
 
     try:
+        print(request)
         track_list = request.get_json( force = True )
+        print(track_list)
         # TODO: Perform a check for list correctness
         g.user.set_slot_playlist( slot_id, track_list )
         return success_response( 'Lista za reprodukciju uspješno pohranjena', 201 )
