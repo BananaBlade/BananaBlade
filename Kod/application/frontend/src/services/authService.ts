@@ -83,15 +83,17 @@ export class AuthService {
         this.storeUserAuthentication(() => {
             this.isLoggedIn = this.isLoggedInFn();
 
-            this.http.getNoError('/user/account/get', (data) => {
-                this.userName = data.first_name + ' ' + data.last_name;
-                let role = data.account_type;
-                this.accountType = role;
-                if (role == 1) this.userRole = "korisnik";
-                if (role == 2) this.userRole = "urednik";
-                if (role == 3) this.userRole = "administrator";
-                if (role == 4) this.userRole = "vlasnik";
-            });
+            if (this.isLoggedInFn()) {
+                this.http.getNoError('/user/account/get', (data) => {
+                    this.userName = data.first_name + ' ' + data.last_name;
+                    let role = data.account_type;
+                    this.accountType = role;
+                    if (role == 1) this.userRole = "korisnik";
+                    if (role == 2) this.userRole = "urednik";
+                    if (role == 3) this.userRole = "administrator";
+                    if (role == 4) this.userRole = "vlasnik";
+                });
+            }
         });
     }
 

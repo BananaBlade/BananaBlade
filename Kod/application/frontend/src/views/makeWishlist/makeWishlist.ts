@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import { COMMON_DIRECTIVES } from 'angular2/common';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 
-import { HttpAdvanced } from '../../services/services';
+import { HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
   selector: 'MakeWishlist',
@@ -12,6 +12,8 @@ import { HttpAdvanced } from '../../services/services';
 export class MakeWishlist {
     http: HttpAdvanced;
     router : Router;
+    msgService: MsgService;
+
     tracks : Track[] = [];
     confirmation_time : number;
     trackSearch: string;
@@ -19,9 +21,10 @@ export class MakeWishlist {
     editable : boolean = false;
     matching: boolean = false;
 
-    constructor(http: HttpAdvanced, router: Router) {
+    constructor(http: HttpAdvanced, router: Router, msgService: MsgService) {
         this.http = http;
         this.router = router;
+        this.msgService = msgService;
 
         this.http.get('/user/wishlist/get', (res) => {
             for (let i in res)
@@ -62,12 +65,14 @@ export class MakeWishlist {
     }
 
     enterCheck(event) {
+        console.log(event);
+        console.log(event.keyCode);
         if (event.keyCode == 13 && this.searchResults.length > 0) {
             this.addToWishlist(this.searchResults[0]);
             this.searchResults = new Array();
             this.trackSearch = "";
         }
-        else if (event.keyCode >= 65 && event.keyCode <= 90) this.onKeyPressed(event.keyCode)
+        else if (event.keyCode >= 65 && event.keyCode <= 90 || event.keyCode >= 97 && event.keyCode <= 122) this.onKeyPressed(event.keyCode)
     }
 
     removeFromWishlist( track : Track ){
