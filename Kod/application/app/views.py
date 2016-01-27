@@ -1161,7 +1161,10 @@ def search_users( term ):
         data = [{
             'id'            :   user.id,
             'first_name'    :   user.first_name,
-            'last_name'     :   user.last_name
+            'last_name'     :   user.last_name,
+            'email'         :   user.email,
+            'occupation'    :   user.occupation,
+            'year_of_birth' :   user.year_of_birth
         } for user in users ]
         return data_response( data )
     except AuthorizationError:

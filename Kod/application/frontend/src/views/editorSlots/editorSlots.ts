@@ -66,7 +66,7 @@ export class EditorSlots {
             'start_date': start_date2,
             'end_date': end_date2
         };
-        this.http.postWithBothMsg('/editor/slots/request', requestObj);
+        this.http.postWithBothMsg('/editor/slots/request', requestObj, (res) => this.loadData() );
     }
 
     initCalendar() {
@@ -144,9 +144,12 @@ export class EditorSlots {
         console.log(this.mondayDay);
 
         this.initCalendar();
+        this.loadData();
+    }
 
+    loadData() {
         // Fetching the list of allowed slots
-        http.getNoError('/editor/slots/list', (res) => {
+        this.http.getNoError('/editor/slots/list', (res) => {
             console.log(res.slots);
             this.slots = new Array();
             this.requests = new Array();

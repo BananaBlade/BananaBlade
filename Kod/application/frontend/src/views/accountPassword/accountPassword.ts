@@ -25,12 +25,10 @@ export class AccountPassword {
     }
 
     submitChange() {
-        this.http.postWithRes('/user/account/change_password', { 
-            old_password: this.old_password, 
-            new_password1: this.new_password1, 
+        this.http.postWithBothMsg('/user/account/change_password', { 
+            old_password: this.old_password,
+            new_password1: this.new_password1,
             new_password2: this.new_password2 }, (res) => {
-                console.log(res);
-                this.msgService.setMessage('Uspješno promijenjena lozinka.');
                 this.old_password = "";
                 this.new_password1 = "";
                 this.new_password2 = "";
