@@ -45,18 +45,20 @@ export class ManageEditors {
         let keyCode = event.keyCode;
         if (keyCode == 13 && this.closestMatches.length > 0) {
             this.addEditor();
-            this.closestMatches = new Array();
-            this.userSearch = "";
         }
         else if (keyCode >= 65 && keyCode <= 90 || keyCode >= 97 && keyCode <= 122 || keyCode == 8) this.onKeyPressed(keyCode)
     }
 
     addEditor() {
-        console.log(this.closestMatches[0]);
+        if (this.closestMatches.length == 0) return;
+
+
+
+        
+        let id = this.closestMatches[0].id;
         this.http.post('/admin/editors/add/' + this.closestMatches[0].id, '');
         this.editors.push(this.closestMatches[0]);
 
-        console.log(this.editors[this.editors.length - 1]);
         this.userSearch = "";
         this.closestMatches = new Array();
     }

@@ -21,7 +21,7 @@
         form
           .content-list-item-content
             label(for='add-item-search') Dodaj urednika
-            input.add-item-search(type='text', name='add_track_search' autocomplete = "off" '(input)'="onKeyPressed($event)" '(keydown)'="enterCheck($event)" '[(ngModel)]'="userSearch" )
+            input.add-item-search(type='text', name='add_track_search' autocomplete = "off" '(keydown)'="enterCheck($event)" '[(ngModel)]'="userSearch" )
           .content-list-item-options
             button.raised.add-item-button('[disabled]'="!closestMatches" '(click)'="addAdmin()")
               i.material-icons person_add

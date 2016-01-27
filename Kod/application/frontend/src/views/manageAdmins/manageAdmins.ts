@@ -45,19 +45,18 @@ export class ManageAdmins {
         let keyCode = event.keyCode;
         if (keyCode == 13 && this.closestMatches.length > 0) {
             this.addAdmin();
-            this.closestMatches = new Array();
-            this.userSearch = "";
         }
         else if (keyCode >= 65 && keyCode <= 90 || keyCode >= 97 && keyCode <= 122 || keyCode == 8) this.onKeyPressed(keyCode)
     }
 
-
     addAdmin() {
+        if (this.closestMatches.length == 0) return;
         if ( this.admins.length > 9 ){
             console.log( 'Too many admins.' );
             return;
         }
-        this.http.post('/owner/admins/add/' + this.closestMatches[0].id, '');
+        let id = this.closestMatches[0].id;
+        this.http.post('/owner/admins/add/' + id, '');
         this.admins.push(this.closestMatches[0]);
 
         this.userSearch = "";
