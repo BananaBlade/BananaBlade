@@ -26,6 +26,7 @@ export class Messages{
     }
 
     displayMessage() {
+        console.log( this.messageType, this.messageText );
         this.show();
     }
 
