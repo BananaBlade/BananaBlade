@@ -30,7 +30,7 @@
         form
           .content-list-item-content
             label(for='add_track_search') Dodaj na listu
-            input.add-item-search(type='text', name='add_track_search' '(keydown)'="enterCheck($event)" '[(ngModel)]'="trackSearch" )
+            input.add-item-search(type='text', name='add_track_search' '(keydown)'="enterCheck($event)" '[(ngModel)]'="trackSearch" autocomplete = "off" )
           .content-list-item-options
             button.raised.add-item-button( '[disabled]'="!matching" '(click)'="addTrack()" )
               i.material-icons playlist_add

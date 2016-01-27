@@ -3,7 +3,7 @@ import { Component } from 'angular2/core';
 import { COMMON_DIRECTIVES } from 'angular2/common';
 import {Location, RouteConfig, RouterLink, Router, CanActivate, RouteParams} from 'angular2/router';
 
-import { HttpAdvanced } from '../../services/services';
+import { HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
   selector: 'MakePlaylist',
@@ -12,6 +12,7 @@ import { HttpAdvanced } from '../../services/services';
 })
 export class MakePlaylist {
     http: HttpAdvanced;
+    msgService : MsgService;
     slotId: string;
     editable: boolean = false;
     playlist: Track[] = new Array();
@@ -25,8 +26,9 @@ export class MakePlaylist {
 
     matching: boolean = false;
 
-    constructor(http: HttpAdvanced, routeParams: RouteParams) {
+    constructor(http: HttpAdvanced, routeParams: RouteParams, msgService : MsgService) {
         this.http = http;
+        this.msgService = msgService;
 
         this.slotId = routeParams.get('slotId');
 
@@ -55,12 +57,13 @@ export class MakePlaylist {
     }
 
     enterCheck(event) {
-        if (event.keyCode == 13 && this.searchResults.length > 0) {
+        let keyCode = event.keyCode;
+        if (keyCode == 13 && this.searchResults.length > 0) {
             this.addTrackToPlaylist(this.searchResults[0]);
             this.searchResults = new Array();
             this.trackSearch = "";
         }
-        else if (event.keyCode >= 65 && event.keyCode <= 90) this.onKeyPressed(event.keyCode)
+        else if (keyCode >= 65 && keyCode <= 90 || keyCode >= 97 && keyCode <= 122 || keyCode == 8) this.onKeyPressed(keyCode)
     }
 
     removeTrack(track) {
@@ -92,17 +95,20 @@ export class MakePlaylist {
     addTrackToPlaylist(track) {
         var totalTime = this.getTotalTime()
         if ( totalTime > 60*60 ){
-            console.log( 'Over the limit already, wont add.' );
+            this.msgService.setMessage( 'Nije moguće dodati novi zapis - već je prekoračeno dozvoljeno vrijeme trajanja liste za reprodukciju.', 'error' );
+            this.trackSearch = '';
+            this.searchResults = [];
             return;
         }
         var delta = 60*60 - totalTime - track.duration;
         if ( delta > 0 && delta < 15 ){
-            console.log( 'Next track will be played too shortly - cannot add this.' );
+            this.msgService.setMessage( 'Dodani zapis reproducirao bi se kraće od 15 sekundi, stoga ga nije moguće dodati.', 'error' );
+            this.trackSearch = '';
+            this.searchResults = [];
             return;
         }
 
-        if ( delta < 0 )
-            track.duration = 60*60 - totalTime;
+        if ( delta < 0 ) track.duration = 60*60 - totalTime;
         track.calculateMS();
 
         this.playlist.push(track);
@@ -113,7 +119,10 @@ export class MakePlaylist {
     }
 
     onKeyPressed(charCode) {
-        let query = this.trackSearch && (this.trackSearch + String.fromCharCode(charCode));
+        let query = "";
+        if (charCode == 8) query = this.trackSearch.slice(0, this.trackSearch.length - 1);
+        else query = this.trackSearch ? (this.trackSearch + String.fromCharCode(charCode)) : String.fromCharCode(charCode);
+
         if (query && query.length >= 3) {
             this.http.getNoError('/tracks/search/' + query, (res) => {
                 this.searchResults = new Array();
@@ -122,13 +131,16 @@ export class MakePlaylist {
                 }
             });
         }
+        else {
+            this.searchResults = new Array();
+        }
     }
 
     submitPlaylist() {
         this.editable = false;
 
         if ( this.getTotalTime() < 60*60 ){
-            console.log( 'Playlist too short.' );
+            this.msgService.setMessage( 'Lista za reprodukciju nije dovoljno duga - treba trajati točno 1 sat.', 'error' );
             return;
         }
 

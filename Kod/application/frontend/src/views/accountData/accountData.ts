@@ -39,21 +39,19 @@ export class AccountData {
                 }
                 else if (name == 'id') continue;
                 else this.userForm.controls[name].updateValue(res[name]);
-                //else this[name].updateValue(res[name]);
             }
         });
     }
 
-    toggleEditable(){ 
+    toggleEditable(){
         this.resetForm();
-        this.editable = !this.editable; 
+        this.editable = !this.editable;
     }
 
     onSubmit(values) {
         console.log(values);
-        this.http.postWithRes('/user/account/modify', values, (res) => { 
-            console.log(res); 
-            this.editable = false; 
+        this.http.postWithBothMsg('/user/account/modify', values, (res) => {
+            this.editable = false;
         });
     }
 }

@@ -792,7 +792,7 @@ class Slot( BaseModel ):
     @classmethod
     def get_next_on_schedule( cls ):
         """Returns a list of the current and next six slots on the schedule"""
-        return cls.select().where( Slot.time > datetime.now() - timedelta( hours = 1 ) ).join( User ).limit( 7 )
+        return cls.select().where( Slot.time > datetime.now() - timedelta( hours = 1 ) ).order_by( Slot.time.asc() ).join( User ).limit( 7 )
 
     def get_playlist( self ):
         """Returns all tracks set to be played in a given slot

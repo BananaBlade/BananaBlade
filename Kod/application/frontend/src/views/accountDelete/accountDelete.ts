@@ -20,8 +20,7 @@ export class AccountDelete {
 
     submitDelete() {
         if (this.password) {
-            this.http.postWithRes('/user/account/delete', { password: this.password }, (res) => { 
-                console.log(res); 
+            this.http.postWithBothMsg('/user/account/delete', { password: this.password }, (res) => {
                 this.router.navigate(['Index']); 
             });
         }
