@@ -30,7 +30,7 @@ export class ManageAdmins {
         else query = this.userSearch ? (this.userSearch + String.fromCharCode(charCode)) : String.fromCharCode(charCode);
 
         if (query && query.length >= 3) {
-            this.http.getNoError('/users/search/' + query, (res) => {
+            this.http.get('/users/search/' + query, (res) => {
                 this.closestMatches = new Array();
                 for (let i in res) {
                     this.closestMatches.push(new User(res[i]));
@@ -59,7 +59,7 @@ export class ManageAdmins {
             return;
         }
         let id = this.closestMatches[0].id;
-        this.http.post('/owner/admins/add/' + id, '');
+        this.http.postWithBothMsg('/owner/admins/add/' + id, '');
         this.admins.push(this.closestMatches[0]);
 
         this.userSearch = "";

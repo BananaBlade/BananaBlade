@@ -52,6 +52,6 @@ export class MsgService {
     }
 
     setMessage(msg: string, type?: string) {
-        this.msgServiceInternal.setMessage(msg);
+        this.msgServiceInternal.setMessage(msg, type);
     }
 }
