@@ -35,6 +35,7 @@ def add_header( response ):
     response.headers[ 'Cache-Control' ] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
     response.headers[ 'Pragma' ] = 'no-cache'
     response.headers[ 'Expires' ] = '-1'
+    response.headers[ 'Accept-Ranges' ] = 'bytes'
     return response
 
 # Display routes
@@ -42,7 +43,7 @@ def add_header( response ):
 @app.route( '/' )
 def show_index():
     """Displays the index page"""
-    return app.send_static_file( 'index.html' )
+    return render_template( 'index.html' )
 
 
 # Player routes
@@ -56,7 +57,7 @@ def get_currently_playing_track():
     try:
         pt, _, _ = Track.get_currently_playing()
         path = pt.track.path
-        return send_file( os.path.join( '..', path ) )
+        return send_file_partial( os.path.join( '..', path ), request )
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Trenutno se ne emitira ništa.', 404 )
     except IndexError:

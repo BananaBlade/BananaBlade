@@ -42,54 +42,58 @@ export class Player{
 
     constructor( http: HttpAdvanced ){
         this.http = http;
+        this.track = new Track( -1, 'Nepostojeći zapis', 'n/a', 'n/a', 'n/a', 0, 0, 0, 'n/a' );
 
         setTimeout( () => {
-            this.track = new Track( -1, 'Nepostojeći zapis', 'n/a', 'n/a', 'n/a', 0, 0, 0, 'n/a' );
             this.audio = document.getElementById( 'audio-player' );
             this.playing = false;
             if ( this.audio ) {
-                console.log( 'init playing' )
                 this.audio.src = this.sourceUrl;
                 this.playing = false;
-                this.getTrack();
+                this.loadTrackData();
+                this.loadTrack();
             }
         }, 1000 );
     }
 
-    getTrack( self? : any ){
-        if ( !self ) self = this;
-        clearTimeout( self.timeout );
-        console.log( 'Getting new track' );
-        self.pause()
-        self.getTrackData();
-        self.audio.src = self.sourceUrl;
-        var delta = ( self.track.play_duration - self.track.play_location );
-        console.log( delta );
-        if ( delta == 0 ) delta = 100;
-        self.timeout = setTimeout( () => self.getTrack( self ), delta * 1000 );
-        if ( self.playing ) self.play();
+    setLoadDelay(){
+
     }
 
-    play(){
-        console.log( 'start playing' );
-        this.audio.load();
-        // Test for Apache
-        this.audio.onloadedmetadata = () => {
-            console.log( 'MD loaded' );
-            this.http.getNoError( '/player/location', (res) => {
-                this.track.play_location = res.play_location;
-                console.log( res.play_location )
-                this.audio.currentTime = this.track.play_location;
-                console.log( this.audio.currentTime );
-                this.audio.play();
-                this.playing = true;
-            });
-        }
-        this.audio.onended = () => {
-            console.log( 'Over' );
-            this.getTrack();
-        };
-    }
+    // getTrack( self? : any ){
+    //     if ( !self ) self = this;
+    //     clearTimeout( self.timeout );
+    //     console.log( 'Getting new track' );
+    //     self.pause()
+    //     self.getTrackData();
+    //     self.audio.src = self.sourceUrl;
+    //     var delta = ( self.track.play_duration - self.track.play_location );
+    //     console.log( delta );
+    //     if ( delta == 0 ) delta = 100;
+    //     self.timeout = setTimeout( () => self.getTrack( self ), delta * 1000 );
+    //     if ( self.playing ) self.play();
+    // }
+    //
+    // play(){
+    //     console.log( 'start playing' );
+    //     this.audio.load();
+    //     // Test for Apache
+    //     this.audio.onloadedmetadata = () => {
+    //         console.log( 'MD loaded' );
+    //         this.http.getNoError( '/player/location', (res) => {
+    //             this.track.play_location = res.play_location;
+    //             console.log( res.play_location )
+    //             this.audio.currentTime = this.track.play_location;
+    //             console.log( this.audio.currentTime );
+    //             this.audio.play();
+    //             this.playing = true;
+    //         });
+    //     }
+    //     this.audio.onended = () => {
+    //         console.log( 'Over' );
+    //         this.getTrack();
+    //     };
+    // }
 
     pause(){
         this.playing = false;
@@ -104,10 +108,9 @@ export class Player{
         this.audio.volume = Math.max( this.audio.volume - 0.1, 0 );
     }
 
-    getTrackData(){
+    loadTrackData(){
         this.http.getNoError('/player/info', ( res ) => {
             this.track = new Track( res.id, res.title, res.artist, res.album, res.genre, res.year, res.play_duration, res.play_location, res.editor );
-            console.log( [ 'Getting track data: ', this.track ] );
         });
     }
 }

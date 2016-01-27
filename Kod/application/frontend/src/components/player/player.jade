@@ -15,7 +15,7 @@
 
     audio#audio-player( preload = "metadata" )
     .player-progress-bar
-        //.player-progress( '[hidden]' = '!playing' '[style.width]' = '"" + (audio.currentTime / audio.duration * 100) + "%"' )
+        .player-progress( '[hidden]' = '!playing' '[style.width]' = '"" + (audio.currentTime / audio.duration * 100) + "%"' )
     
     .player-controls
         .control-buttons
