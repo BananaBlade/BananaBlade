@@ -18,11 +18,11 @@ export class PopularTrack{
     constructor(http: HttpAdvanced) {
         this.http = http;
         this.track = new Track( { title : '', artist : '', album : '', genre : '', year : 0 })
-        this.http.get('/stats/tracks/most_wanted', (res) => this.track = new Track(res));
+        this.http.getNoError('/stats/tracks/most_wanted', (res) => this.track = new Track(res));
     }
 
     onSubmit(){
-        this.http.get('/stats/tracks/most_wanted/wish_count/' + this.start_date + '/' + this.end_date, (res) => this.count = res.count);
+        this.http.getNoError('/stats/tracks/most_wanted/wish_count/' + this.start_date + '/' + this.end_date, (res) => this.count = res.count);
     }
 }
 

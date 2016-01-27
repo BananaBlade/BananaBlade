@@ -84,7 +84,8 @@ export class NavigationProvider {
     ];
 
     static getNavigationArray() {
-        this.navigationArray[ 2 ].components.push( new MyAsyncComponent( 'Statistike', 'ShowStats', 'showStats', './stats' ) );
+        if (this.navigationArray[ 2 ].components.length < 3)
+            this.navigationArray[ 2 ].components.push( new MyAsyncComponent( 'Statistike', 'ShowStats', 'showStats', './stats' ) );
         return this.navigationArray;
     }
 

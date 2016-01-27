@@ -11,6 +11,6 @@ export class UsersCount{
 
     constructor( http : HttpAdvanced ){
         this.http = http;
-        this.http.get('/stats/active_users/count', (res) => this.count = res.count);
+        this.http.getNoError('/stats/active_users/count', (res) => this.count = res.count);
     }
 }
