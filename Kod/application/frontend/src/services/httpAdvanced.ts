@@ -78,7 +78,7 @@ export class HttpAdvanced {
         return this.http.post(url, data).subscribe((res) => {
             let msg = this.extractMsg(res);
             this.msgService.setMessage(msg, SUCCESS);
-            if (callback) callback(msg);
+            if (callback) callback(res);
         }, this.httpErrorHandler);
     }
 

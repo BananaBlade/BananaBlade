@@ -33,7 +33,7 @@ export class AddTrack {
             data.path = res.data.path;
             console.log( res );
 
-            //SELF.http.post('/admin/tracks/add', data);
+            SELF.http.post('/admin/tracks/add', data);
             console.log(SELF.trackForm.group.value);
         }
     }

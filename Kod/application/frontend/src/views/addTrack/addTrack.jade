@@ -53,4 +53,4 @@
           input(type='number', name='year', min='-5000', max='2100' '[(ngFormControl)]' = 'trackForm.group.controls["year"]')
         .form-line
           .left-spacer
-          button.raised( type = "submit" '[disabled]'='trackForm.group.valid') Dodaj zapis
+          button.raised( type = "submit" '[disabled]'='!trackForm.group.valid') Dodaj zapis
