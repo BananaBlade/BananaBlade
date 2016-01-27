@@ -19,6 +19,7 @@ from app.validators import CharValidator, EmailValidator
 def preprocess_request():
     """Before processing each request, make the current user available to everyone via flask g object,
     and store activity time"""
+    db.connect()
     g.user = User.get( User.id == int( session[ 'user_id' ] ) ) if 'user_id' in session else None
     if g.user is not None: g.user.update_activity()
 
@@ -29,6 +30,7 @@ def add_header( response ):
     Add headers to both force latest IE rendering engine or Chrome Frame,
     and also to prevent caching pages.
     """
+    db.close()
     response.headers[ 'X-UA-Compatible' ] = 'IE=Edge,chrome=1'
     response.headers[ 'Cache-Control' ] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
     response.headers[ 'Pragma' ] = 'no-cache'

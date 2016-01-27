@@ -21,7 +21,6 @@ export class MakeWishlist {
     editable : boolean = false;
     matching: boolean = false;
     can_confirm : boolean = false;
-    msgService : MsgService;
 
     constructor(http: HttpAdvanced, router: Router, msgService : MsgService) {
         this.http = http;
@@ -46,12 +45,12 @@ export class MakeWishlist {
 
     addToWishlist( track : Track ){
         if ( this.tracks.length > 9 ){
-            msgService.setMessage( 'Na listi želja je već deset zapisa, nije moguće dodati još jedan.', 'error' );
+            this.msgService.setMessage( 'Na listi želja je već deset zapisa, nije moguće dodati još jedan.', 'error' );
             return;
         }
         for ( let i in this.tracks )
             if ( this.tracks[ i ].id == track.id ){
-                msgService.setMessage( 'Taj je zapis već na listi želja.', 'error' );
+                this.msgService.setMessage( 'Taj je zapis već na listi želja.', 'error' );
                 return;
             }
 
@@ -100,7 +99,7 @@ export class MakeWishlist {
     }
 
     confirmWishlist(){
-        this.http.postWithRes( '/user/wishlist/confirm', ( res ) => {
+        this.http.postWithRes( '/user/wishlist/confirm', '', ( res ) => {
             console.log( 'done' );
             this.loadData();
         })

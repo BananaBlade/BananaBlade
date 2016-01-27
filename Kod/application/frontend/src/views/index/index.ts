@@ -7,12 +7,13 @@ import { HttpAdvanced, AuthService } from '../../services/services';
 import { Messages } from '../../components/messages/messages';
 import { Player } from '../../components/player/player';
 import { Popular } from '../../components/popular/popular';
+import { RadioDescr } from '../../components/radioDescr/radioDescr';
 import { Schedule } from '../../components/schedule/schedule';
 import { Station } from '../../components/station/station';
 
 @Component({
     selector: 'Index',
-    directives: [ Messages, Player, Popular, Schedule, Station ],
+    directives: [ Messages, Player, Popular, RadioDescr, Schedule, Station ],
     templateUrl: './dest/views/index/index.html'
 })
 export class Index {
