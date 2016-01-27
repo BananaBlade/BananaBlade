@@ -150,11 +150,9 @@ export class EditorSlots {
     loadData() {
         // Fetching the list of allowed slots
         this.http.getNoError('/editor/slots/list', (res) => {
-            console.log(res.slots);
             this.slots = new Array();
             this.requests = new Array();
             for (let i in res.slots) {
-                console.log(res.slots[i]);
                 this.slots.push(new Slot(res.slots[i]));
             }
             for (let i in res.requests) {

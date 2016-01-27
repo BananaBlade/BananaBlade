@@ -1,7 +1,7 @@
 import { Component } from 'angular2/core';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
 
-import { HttpAdvanced } from '../../../services/services';
+import { HttpAdvanced, AuthService } from '../../../services/services';
 
 @Component({
     selector : 'popular-track',
@@ -15,10 +15,12 @@ export class PopularTrack{
     start_date : string;
     end_date : string;
 
-    constructor(http: HttpAdvanced) {
+    constructor(http: HttpAdvanced, authService: AuthService) {
         this.http = http;
         this.track = new Track( { title : '', artist : '', album : '', genre : '', year : 0 })
-        this.http.getNoError('/stats/tracks/most_wanted', (res) => this.track = new Track(res));
+
+        if (authService.isAdmin())
+            this.http.getNoError('/stats/tracks/most_wanted', (res) => this.track = new Track(res));
     }
 
     onSubmit(){
