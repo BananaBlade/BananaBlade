@@ -43,15 +43,17 @@ export class Player{
     constructor( http: HttpAdvanced ){
         this.http = http;
 
-        this.track = new Track( -1, 'Nepostojeći zapis', 'n/a', 'n/a', 'n/a', 0, 0, 0, 'n/a' );
-        this.audio = document.getElementById( 'audio-player' );
-        this.playing = false;
-        if ( this.audio ) {
-            console.log( 'init playing' )
-            this.audio.src = this.sourceUrl;
+        setTimeout( () => {
+            this.track = new Track( -1, 'Nepostojeći zapis', 'n/a', 'n/a', 'n/a', 0, 0, 0, 'n/a' );
+            this.audio = document.getElementById( 'audio-player' );
             this.playing = false;
-            this.getTrack();
-        }
+            if ( this.audio ) {
+                console.log( 'init playing' )
+                this.audio.src = this.sourceUrl;
+                this.playing = false;
+                this.getTrack();
+            }
+        }, 1000 );
     }
 
     getTrack( self? : any ){
@@ -69,20 +71,24 @@ export class Player{
     }
 
     play(){
-        console.log( 'playing' );
-        this.playing = true;
-        this.http.getNoError( '/player/location', (res) => {
-            this.track.play_location = res.play_location;
-            console.log( res.play_location )
-        });
+        console.log( 'start playing' );
+        this.audio.load();
         // Test for Apache
         this.audio.onloadedmetadata = () => {
             console.log( 'MD loaded' );
-            this.audio.currentTime = this.track.play_location;
-            console.log( this.audio.currentTime );
-            this.audio.play();
-            this.playing = true;
+            this.http.getNoError( '/player/location', (res) => {
+                this.track.play_location = res.play_location;
+                console.log( res.play_location )
+                this.audio.currentTime = this.track.play_location;
+                console.log( this.audio.currentTime );
+                this.audio.play();
+                this.playing = true;
+            });
         }
+        this.audio.onended = () => {
+            console.log( 'Over' );
+            this.getTrack();
+        };
     }
 
     pause(){
