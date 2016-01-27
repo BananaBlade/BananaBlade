@@ -60,9 +60,9 @@
                 li N
           .form-line
             label(for='start_date') Početni datum
-            input(type='date', name='start_date' '[ngFormControl]'="requestForm.controls['start_date']" placeholder = "dd/mm/yyyy")
+            input(type='date', name='start_date' '[ngFormControl]'="requestForm.controls['start_date']" placeholder = "mm/dd/yyyy")
           .form-line
             label(for='end_date') Završni datum
-            input(type='date', name='end_date' '[ngFormControl]'="requestForm.controls['end_date']" placeholder = "dd/mm/yyyy")
+            input(type='date', name='end_date' '[ngFormControl]'="requestForm.controls['end_date']" placeholder = "mm/dd/yyyy")
           .form-line
             button(type="submit" '(click)' = 'toggleState()' ).raised Zatraži termin

@@ -3,7 +3,7 @@ import { View, Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 
-import { Form, HttpAdvanced } from '../../services/services';
+import { Form, HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
     selector: 'ManageAdmins',
@@ -12,6 +12,7 @@ import { Form, HttpAdvanced } from '../../services/services';
 })
 export class ManageAdmins {
     http: HttpAdvanced;
+    msgService : MsgService;
     admins: User[] = new Array();
     closestMatches: any[] = new Array();
     editable: boolean = false;
@@ -52,7 +53,9 @@ export class ManageAdmins {
     addAdmin() {
         if (this.closestMatches.length == 0) return;
         if ( this.admins.length > 9 ){
-            console.log( 'Too many admins.' );
+            this.msgService.setMessage( 'U sustavu već postoji 10 administratora, nije moguće dodati još jednog.', 'error' );
+            this.userSearch = "";
+            this.closestMatches = new Array();
             return;
         }
         let id = this.closestMatches[0].id;
@@ -73,8 +76,9 @@ export class ManageAdmins {
         this.http.post('/owner/admins/remove/' + removedAdminId.toString(), '');
     }
 
-    constructor(http: HttpAdvanced) {
+    constructor(http: HttpAdvanced, msgService : MsgService) {
         this.http = http;
+        this.msgService = msgService;
 
         http.get('/owner/admins/list', (res) => {
             this.admins = new Array();
