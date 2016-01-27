@@ -23,24 +23,32 @@ export class ManageEditors {
         this.userSearch = "";
     }
 
-    onKeyPressed(event?) {
-        let count = 0;
-        let enteredLetter = event ? String.fromCharCode(event.keyCode) : '';
+    onKeyPressed(charCode) {
+        let query = "";
+        if (charCode == 8) query = this.userSearch.slice(0, this.userSearch.length - 1);
+        else query = this.userSearch ? (this.userSearch + String.fromCharCode(charCode)) : String.fromCharCode(charCode);
 
-        if (this.userSearch.length < 2) return;
-
-        this.http.get('/users/search/' + this.userSearch + enteredLetter, (res) => {
-            this.closestMatches = new Array();
-            for (let i = 0; i < 3 && res[i]; i += 1) {
-                this.closestMatches.push(res[i]);
-            }
-        });
-    }
-
-    enterCheck(event) {
-        if (event.keyCode == 13) {
-            //this.addEditor();
+        if (query && query.length >= 3) {
+            this.http.getNoError('/users/search/' + query, (res) => {
+                this.closestMatches = new Array();
+                for (let i in res) {
+                    this.closestMatches.push(new User(res[i]));
+                }
+            });
         }
+        else {
+            this.closestMatches = new Array();
+        }
+    }
+    
+    enterCheck(event) {
+        let keyCode = event.keyCode;
+        if (keyCode == 13 && this.closestMatches.length > 0) {
+            this.addEditor();
+            this.closestMatches = new Array();
+            this.userSearch = "";
+        }
+        else if (keyCode >= 65 && keyCode <= 90 || keyCode >= 97 && keyCode <= 122 || keyCode == 8) this.onKeyPressed(keyCode)
     }
 
     addEditor() {
