@@ -46,7 +46,7 @@ export class HttpAdvanced {
 
     /*
      * This is for POST request WITHOUT callback.
-     * (Simply the positive response will be logged to console and 
+     * (Simply the positive response will be logged to console and
      *  negative to msgService)
      */
     public post(url, data) {

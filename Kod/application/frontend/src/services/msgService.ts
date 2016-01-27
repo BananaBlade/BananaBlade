@@ -25,7 +25,6 @@ export class MsgServiceInternal {
 
     setMessage(msg: any, type?: string) {
         let msg2 = typeof msg === "string" ? msg : JSON.stringify(msg);
-
         if ( !type ) type = INFO;
         sessionStorage.setItem(MESSAGE_TEXT, msg2);
         sessionStorage.setItem(MESSAGE_TYPE, type);
@@ -52,6 +51,6 @@ export class MsgService {
     }
 
     setMessage(msg: string, type?: string) {
-        this.msgServiceInternal.setMessage(msg);
+        this.msgServiceInternal.setMessage(msg, type);
     }
 }
