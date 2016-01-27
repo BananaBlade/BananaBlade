@@ -42,7 +42,7 @@
               tr( '*ngFor'= "#hour of hours" )
                 td.rh {{ hour }}:00
                 td( '*ngFor'="#day of daysNum" '(click)'="slotClicked(day, hour)" 
-                '[ngClass]'="{c1 : getCount( day, hour ) == 0, c2 : getCount( day, hour ) > 0 }" )
+                '[ngClass]'="{c1 : getCount( day, hour ) == 0, c2 : getCount( day, hour ) > 0 , c3 : isRequest( day, hour )}" )
       .calendar-actions
         button( '(click)' = 'toggleState()') Zatraži novi termin
       .calendar-option

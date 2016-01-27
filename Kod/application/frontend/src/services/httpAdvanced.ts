@@ -52,7 +52,7 @@ export class HttpAdvanced {
     public post(url, data) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
             let msg = this.extractMsg(res);
-            this.msgService.setMessage(msg);
+            this.msgService.setMessage(msg, SUCCESS);
         }, this.httpErrorHandler);
     }
 
@@ -69,7 +69,7 @@ export class HttpAdvanced {
     public postWithBothMsg(url, data, callback?) {
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
             let msg = this.extractMsg(res);
-            this.msgService.setMessage(msg);
+            this.msgService.setMessage(msg, SUCCESS);
             if (callback) callback(msg);
         }, this.httpErrorHandler);
     }
@@ -77,7 +77,7 @@ export class HttpAdvanced {
     public postPure(url, data, callback?) {
         return this.http.post(url, data).subscribe((res) => {
             let msg = this.extractMsg(res);
-            this.msgService.setMessage(msg);
+            this.msgService.setMessage(msg, SUCCESS);
             if (callback) callback(msg);
         }, this.httpErrorHandler);
     }
