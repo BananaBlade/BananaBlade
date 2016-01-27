@@ -340,7 +340,7 @@ def get_wishlist():
     except:
         return error_response( 'Listu želja nije moguće dohvatiti: Nevaljan zahtjev.' )
 
-@app.route( '/user/wishlist/can_confirmation', methods = [ 'GET' ] )
+@app.route( '/user/wishlist/can_confirm', methods = [ 'GET' ] )
 @login_required
 def get_wishlist_confirmation_time():
     """Return whether user can confirm his wishlist or not
@@ -349,11 +349,12 @@ def get_wishlist_confirmation_time():
     """
     try:
         confirmation_time = g.user.get_wishlist_confirmation_time()
-        return data_response( { 'can_confirm' : datetime.now() - confirmation_time > timedelta( days = 1 ) } )
+        can_confirm = datetime.now() - confirmation_time > timedelta( days = 1 ) if confirmation_time is not None else True
+        return data_response( { 'can_confirm' : can_confirm } )
     except AuthorizationError:
         return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja: Nedozvoljena mogućnost.', 403 )
-    except:
-        return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja.' )
+    # except:
+    #     return error_response( 'Neuspješno dohvaćanje vremena zadnjeg potvrđivanja.' )
 
 @app.route( '/user/wishlist/set', methods = [ 'POST' ] )
 @login_required
@@ -365,7 +366,6 @@ def set_wishlist():
     """
     try:
         track_list = request.get_json( force = True )
-        print( track_list )
         g.user.set_wishlist( track_list )
         return success_response( 'Lista želja uspješno pohranjena.', 201 )
     except AuthorizationError:
@@ -665,7 +665,7 @@ def day_names(bit_mask):
     days = [ 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned' ];
     present = [];
     for i, day in enumerate(days):
-        if bit_mask & (2**i): 
+        if bit_mask & (2**i):
             present.append(day)
 
     return present

@@ -20,30 +20,38 @@ export class MakeWishlist {
     searchResults: Track[] = new Array();
     editable : boolean = false;
     matching: boolean = false;
+    can_confirm : boolean = false;
+    msgService : MsgService;
 
-    constructor(http: HttpAdvanced, router: Router, msgService: MsgService) {
+    constructor(http: HttpAdvanced, router: Router, msgService : MsgService) {
         this.http = http;
         this.router = router;
         this.msgService = msgService;
+        this.loadData();
+    }
 
+    loadData(){
         this.http.get('/user/wishlist/get', (res) => {
+            this.tracks = [];
             for (let i in res)
-                this.tracks.push(new Track(res));
+                this.tracks.push(new Track(res[ i ]));
         });
 
-
+        this.http.get( '/user/wishlist/can_confirm', (res) => {
+            this.can_confirm = res.can_confirm;
+        });
     }
 
     toggleEditable(){ this.editable = !this.editable; }
 
     addToWishlist( track : Track ){
         if ( this.tracks.length > 9 ){
-            console.log( 'Too many tracks' );
+            msgService.setMessage( 'Na listi želja je već deset zapisa, nije moguće dodati još jedan.', 'error' );
             return;
         }
         for ( let i in this.tracks )
             if ( this.tracks[ i ].id == track.id ){
-                console.log( 'Duplicate.' )
+                msgService.setMessage( 'Taj je zapis već na listi želja.', 'error' );
                 return;
             }
 
@@ -63,7 +71,6 @@ export class MakeWishlist {
             });
         }
     }
-
     enterCheck(event) {
         console.log(event);
         console.log(event.keyCode);
@@ -86,11 +93,18 @@ export class MakeWishlist {
         for ( let i in this.tracks )
             ids.push( this.tracks[ i ].id );
         let json_ids = JSON.stringify( ids );
-        this.http.postWithRes('/user/wishlist/set', json_ids, (res) => {
+        console.log( json_ids );
+        this.http.postPure( '/user/wishlist/set', json_ids, (res) => {
             this.editable = false;
         });
     }
 
+    confirmWishlist(){
+        this.http.postWithRes( '/user/wishlist/confirm', ( res ) => {
+            console.log( 'done' );
+            this.loadData();
+        })
+    }
 }
 
 class Track {

@@ -11,7 +11,7 @@ header.header-bar.row
   .user-box 
     //| {{authService.isLoggedInFn()}} {{authService.isLoggedIn}}
     .user-form-box( '*ngIf'="!authService.isLoggedInFn()" )
-      form.row('[ngFormModel]'="loginForm.group" '(ngSubmit)'="onSubmit(loginForm.group.value)")
+      form('[ngFormModel]'="loginForm.group" '(ngSubmit)'="onSubmit(loginForm.group.value)")
         input(type='email', id='email', placeholder='E-mail' '[ngFormControl]'="loginForm.controls['email']" )
         input(type='password', id='password', placeholder='Lozinka' '[ngFormControl]'="loginForm.controls['password']" )
         button(type='submit') Prijavi se
