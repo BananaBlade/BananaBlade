@@ -57,7 +57,7 @@ def get_currently_playing_track():
     try:
         pt, _, _ = Track.get_currently_playing()
         path = pt.track.path
-        return send_file_partial( os.path.join( '..', path ), request )
+        return send_file( os.path.join( '..', path ) )
     except DoesNotExist:
         return error_response( 'Nije moguće dohvatiti trenutno svirani zapis: Trenutno se ne emitira ništa.', 404 )
     except IndexError:
