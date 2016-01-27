@@ -14,6 +14,6 @@ export class AdminsList{
 
     constructor(http: HttpAdvanced) {
         this.http = http;
-        this.http.get('/stats/active_admins/list', (res) => this.admins = res);
+        this.http.getNoError('/stats/active_admins/list', (res) => this.admins = res);
     }
 }

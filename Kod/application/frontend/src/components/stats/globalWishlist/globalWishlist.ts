@@ -14,7 +14,7 @@ export class GlobalWishlist{
 
     constructor(http: HttpAdvanced) {
         this.http = http;
-        this.http.get('/stats/tracks/wishlist', (data) => {
+        this.http.getNoError('/stats/tracks/wishlist', (data) => {
             var end = Math.min(10, data.length);
             for (var i = 0; i < end; ++i)
                 this.wishes.push(new Wish(data[i]));

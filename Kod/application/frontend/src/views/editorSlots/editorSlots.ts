@@ -38,7 +38,7 @@ export class EditorSlots {
 
     slotClicked(day, hour) {
         console.log(day + ' ' + hour);
-        if (this.calendarFields[day][hour])
+        if (this.calendarFields[day][hour] > 0)
             this.router.navigate(['MakePlaylist', { 'slotId': this.calendarFields[day][hour] }]);
     }
 
