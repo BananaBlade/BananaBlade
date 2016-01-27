@@ -60,7 +60,10 @@ export class MakeWishlist {
     }
 
     onKeyPressed(charCode) {
-        let query = this.trackSearch && (this.trackSearch + String.fromCharCode(charCode));
+        let query = "";
+        if (charCode == 8) query = this.trackSearch.slice(0, this.trackSearch.length - 1);
+        else query = this.trackSearch ? (this.trackSearch + String.fromCharCode(charCode)) : String.fromCharCode(charCode);
+
         if (query && query.length >= 3) {
             this.http.getNoError('/tracks/search/' + query, (res) => {
                 this.searchResults = new Array();
@@ -69,16 +72,18 @@ export class MakeWishlist {
                 }
             });
         }
+        else {
+            this.searchResults = new Array();
+        }
     }
     enterCheck(event) {
-        console.log(event);
-        console.log(event.keyCode);
-        if (event.keyCode == 13 && this.searchResults.length > 0) {
+        let keyCode = event.keyCode;
+        if (keyCode == 13 && this.searchResults.length > 0) {
             this.addToWishlist(this.searchResults[0]);
             this.searchResults = new Array();
             this.trackSearch = "";
         }
-        else if (event.keyCode >= 65 && event.keyCode <= 90 || event.keyCode >= 97 && event.keyCode <= 122) this.onKeyPressed(event.keyCode)
+        else if (keyCode >= 65 && keyCode <= 90 || keyCode >= 97 && keyCode <= 122 || keyCode == 8) this.onKeyPressed(keyCode)
     }
 
     removeFromWishlist( track : Track ){
@@ -100,7 +105,7 @@ export class MakeWishlist {
 
     confirmWishlist(){
         this.http.postWithRes( '/user/wishlist/confirm', '', ( res ) => {
-            console.log( 'done' );
+            this.msgService.setMessage('Lista želja uspješno potvrđena', 'success');
             this.loadData();
         })
     }

@@ -12,7 +12,7 @@ import { HttpAdvanced, AuthService, numberTo2digits } from '../../services/servi
 @Component({
     selector: 'EditorSlots',
     templateUrl: './dest/views/editorSlots/editorSlots.html',
-    directives: [ ]
+    directives: []
 })
 export class EditorSlots {
     http: HttpAdvanced;
@@ -23,7 +23,7 @@ export class EditorSlots {
     hours: number[] = new Array();
     daysNum: number[] = [0, 1, 2, 3, 4, 5, 6];
 
-    changing : boolean = false;
+    changing: boolean = false;
 
     today: Date = new Date();
     mondayDay: Date;
@@ -33,12 +33,13 @@ export class EditorSlots {
     calendarFields: number[][];
 
     slots: Slot[];
+    requests: any[];
     thisWeeksSlots: Slot[];
 
     slotClicked(day, hour) {
         console.log(day + ' ' + hour);
         if (this.calendarFields[day][hour])
-            this.router.navigate(['MakePlaylist', {'slotId': this.calendarFields[day][hour]}]);
+            this.router.navigate(['MakePlaylist', { 'slotId': this.calendarFields[day][hour] }]);
     }
 
     requestForm: ControlGroup;
@@ -86,10 +87,20 @@ export class EditorSlots {
             let slot = this.slots[i];
             let slotTime = slot.time.getTime();
             if (slotTime >= this.mondayDay.getTime() && slotTime <= nextMonday.getTime()) {
-                let dayOfWeek = ~~(((slotTime-this.mondayDay.getTime()) / 1000 / 60 / 60 / 24) % 7);
+                let dayOfWeek = ~~(((slotTime - this.mondayDay.getTime()) / 1000 / 60 / 60 / 24) % 7);
                 let hourOfDay = (slotTime / 1000 / 60 / 60) % 24;
                 this.calendarFields[dayOfWeek][hourOfDay] = this.slots[i].id;
 
+            }
+        }
+
+        for (let i in this.requests) {
+            let req = this.requests[i];
+            let reqDate = new Date(req).getTime();
+            if (reqDate >= this.mondayDay.getTime() && reqDate <= nextMonday.getTime()) {
+                let dayOfWeek = ~~(((reqDate - this.mondayDay.getTime()) / 1000 / 60 / 60 / 24) % 7);
+                let hourOfDay = (reqDate / 1000 / 60 / 60) % 24;
+                this.calendarFields[dayOfWeek][hourOfDay] = -i - 1;
             }
         }
 
@@ -138,9 +149,15 @@ export class EditorSlots {
         http.getNoError('/editor/slots/list', (res) => {
             console.log(res.slots);
             this.slots = new Array();
+            this.requests = new Array();
             for (let i in res.slots) {
                 console.log(res.slots[i]);
                 this.slots.push(new Slot(res.slots[i]));
+            }
+            for (let i in res.requests) {
+                for (let j in res.requests[i].times) {
+                    this.requests.push(res.requests[i].times[j]);
+                }
             }
             this.updateCalendar();
         });
@@ -158,10 +175,13 @@ export class EditorSlots {
         this.updateCalendar();
     }
 
-    toggleState(){ this.changing = !this.changing }
+    toggleState() { this.changing = !this.changing }
+
+    isRequest(day, hour) { return this.calendarFields[day][hour] < 0 };
 
     getCount( day, hour ){
         var id = this.calendarFields[ day ][ hour ];
+        if (id < 0) return -1;
         for ( let i in this.slots )
             if ( id == this.slots[ i ].id )
                 return this.slots[ i ].count;
