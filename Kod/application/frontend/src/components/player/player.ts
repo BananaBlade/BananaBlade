@@ -36,9 +36,10 @@ export class Player{
     track: Track;
     http: HttpAdvanced;
     sourceUrl: string = '/player/get';
-    audio: any;
+    audio: any = { currentTime : 0, duration : 100 };
     playing: boolean;
     timeout: any;
+    progress: number = 0;
 
     constructor( http: HttpAdvanced ){
         this.http = http;
@@ -49,21 +50,40 @@ export class Player{
             this.playing = false;
             if ( this.audio ) {
                 this.audio.src = this.sourceUrl;
+                this.audio.volume = 0.6;
                 this.playing = false;
                 this.loadTrackData();
-                this.loadTrack();
+                this.calcProgress();
             }
         }, 1000 );
     }
 
-    setLoadDelay(){
-
+    calcProgress(){
+        this.progress = this.audio.currentTime / this.audio.duration;
+        setTimeout( () => this.calcProgress(), 1000 );
     }
 
-    // getTrack( self? : any ){
+    calcDelta(){
+        var delta = ( this.track.play_duration - this.track.play_location );
+        if ( delta == 0 ) delta = 100;
+        return delta * 1000;
+    }
+
+    play(){
+        this.audio.load();
+        this.audio.onloadedmetadata = () => {
+            this.http.getNoError( '/player/location', (res) => {
+                this.track.play_location = res.play_location;
+                this.audio.currentTime = this.track.play_location;
+                this.audio.play();
+                this.playing = true;
+            });
+        }
+    }
+
+    // loadTrack( self? : any ){
     //     if ( !self ) self = this;
     //     clearTimeout( self.timeout );
-    //     console.log( 'Getting new track' );
     //     self.pause()
     //     self.getTrackData();
     //     self.audio.src = self.sourceUrl;
@@ -89,15 +109,12 @@ export class Player{
     //             this.playing = true;
     //         });
     //     }
-    //     this.audio.onended = () => {
-    //         console.log( 'Over' );
-    //         this.getTrack();
-    //     };
     // }
 
     pause(){
         this.playing = false;
         this.audio.pause();
+        clearTimeout( this.timeout );
     }
 
     volumeUp(){
@@ -111,6 +128,17 @@ export class Player{
     loadTrackData(){
         this.http.getNoError('/player/info', ( res ) => {
             this.track = new Track( res.id, res.title, res.artist, res.album, res.genre, res.year, res.play_duration, res.play_location, res.editor );
+
+            this.http.getNoError( '/player/location', ( res ) => {
+                this.track.play_location = res.play_location;
+                console.log( 'Reload' );
+                console.log( this.playing );
+                if ( this.playing ){
+                    this.play();
+                }
+            });
+
+            setTimeout( () => this.loadTrackData(), this.calcDelta() );
         });
     }
 }
