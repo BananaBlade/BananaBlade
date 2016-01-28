@@ -27,7 +27,7 @@ export class ManageRadiostation {
 
     onSubmit(value: String): void {
         console.log(value);
-        this.http.post('/owner/station/modify', value);
+        this.http.postWithBothMsg('/owner/station/modify', value);
     }
 
     toggleEditing() {

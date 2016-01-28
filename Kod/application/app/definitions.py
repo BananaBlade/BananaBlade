@@ -1,5 +1,3 @@
-from enum import Enum
-
 class AuthenticationError( Exception ):
     """An exception raised on wrong login attempt"""
     pass

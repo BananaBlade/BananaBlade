@@ -22,9 +22,9 @@ export class ManageUsers {
             for (let i in res) this.users.push(res[i]);
         });
     }
-    
-    editUser(userId) { 
-        this.router.navigate(['/Settings', 'EditUser', { userId: userId }]); 
+
+    editUser(userId) {
+        this.router.navigate(['/Settings', 'EditUser', { userId: userId }]);
     }
 
     deleteUser(userId) {
@@ -33,6 +33,6 @@ export class ManageUsers {
                 this.users.splice(i, 1);
             }
         }
-        this.http.post('admin/users/' + userId + '/delete', '');
+        this.http.postWithBothMsg('admin/users/' + userId + '/delete', '');
     }
 }

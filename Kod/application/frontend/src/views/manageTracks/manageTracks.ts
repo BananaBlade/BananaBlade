@@ -32,7 +32,7 @@ export class ManageTracks {
                 break;
             }
         }
-        this.http.post('admin/tracks/' + track.id + '/delete', '');
+        this.http.postWithBothMsg('admin/tracks/' + track.id + '/delete', '');
     }
 
     constructor(router: Router, http: HttpAdvanced) {
