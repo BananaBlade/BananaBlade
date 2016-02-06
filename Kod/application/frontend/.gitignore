@@ -6,3 +6,4 @@ dest/*
 
 !index.html
 !dest/static/*
+!Gruntfile.js
