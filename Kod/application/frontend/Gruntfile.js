@@ -67,7 +67,7 @@ module.exports = function (grunt) {
     connect: {
       server: {
         options: {
-          port: 9001,
+          port: 9011,
           base: '',
           keepalive: true,
           // http://danburzo.ro/grunt/chapters/server/

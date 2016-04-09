@@ -4,7 +4,7 @@
   "description": "0.0.1",
   "main": "Gruntfile.js",
   "dependencies": {
-    "angular2": "latest",
+    "angular2": "2.0.0-beta.0",
     "autoprefixer": "^6.1.0",
     "bootstrap": "^3.3.5",
     "connect": "^3.4.0",
