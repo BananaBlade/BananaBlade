@@ -1,3 +1,4 @@
+///<reference path="../node_modules/angular2/typings/browser.d.ts"/>
 
 import { FORM_PROVIDERS, FormBuilder } from 'angular2/common';
 import { ROUTER_PROVIDERS, Location, LocationStrategy, PathLocationStrategy } from 'angular2/router';

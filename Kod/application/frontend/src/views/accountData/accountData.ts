@@ -1,5 +1,5 @@
 
-import {View, Component} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/router';
 import { COMMON_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
@@ -9,7 +9,7 @@ import { HttpAdvanced, FormBuilderAdvanced, Form } from '../../services/services
 @Component({
     selector: 'AccountData',
     directives: COMMON_DIRECTIVES,
-    templateUrl: './dest/views/accountData/accountData.html'
+    templateUrl: './dist/views/accountData/accountData.html'
 })
 export class AccountData {
     http: HttpAdvanced;

@@ -4,7 +4,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     sass: {
       options: { sourceMap: true },
-      dist: { files: { 'dest/index.css': 'src/index.sass' } }
+      dist: { files: { 'dist/index.css': 'src/index.sass' } }
     },
     postcss: {
       options: {
@@ -15,7 +15,7 @@ module.exports = function (grunt) {
           require('cssnano')() // minify the result
         ]
       },
-      dist: { src: 'dest/index.css' }
+      dist: { src: 'dist/index.css' }
     },
     jade: {
       html: {
@@ -23,7 +23,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: "src",
           src: ["**/*.jade"],
-          dest: "dest",
+          dest: "dist",
           ext: ".html"
         }],
         options: {
@@ -36,31 +36,33 @@ module.exports = function (grunt) {
       default: {
         src: [ "src/**/*.ts" ],
         options: {
-          fast: 'never',
+          fast: 'always',
           module: 'commonjs',
           target: 'es5',
           emitDecoratorMetadata: true,
           experimentalDecorators: true,
           failOnTypeErrors : false,
-          jsx: 'react',
-          additionalFlags: ' --outDir ./dest'
+          sourceMap: false,
+          comments: false,
+          additionalFlags: ' --outDir ./dist'
         }
       }
     },
     watch: {
       jade:   { files: [ 'src/**/*.jade'  ], tasks: 'jade'  },
       css:    { files: [ 'src/**/*.sass'  ], tasks: 'css'   },
+      sass:   { files: [ 'src/**/*.sass'  ], tasks: 'sass'  },
       ts:     { files: [ 'src/**/*.ts'    ], tasks: 'ts'    }
     },
     clean:  { default: [ 'dest' ] },
     copy:   { default: { files: [ { expand: true, cwd: 'app/typescript/', src: './**', dest: 'app/templates'} ] } },
     concurrent: {
       watch: {
-        tasks: [ 'watch:ts', 'watch:jade', 'watch:css' ],
+        tasks: [ 'watch:ts', 'watch:jade', 'watch:sass' ],
         options: { logConcurrentOutput: true }
       },
       compile: {
-        tasks: [ 'jade', 'css', 'ts' ],
+        tasks: [ 'jade', 'sass', 'ts' ],
         options: { logConcurrentOutput: true }
       }
     },

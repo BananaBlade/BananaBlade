@@ -21,6 +21,7 @@ export class AuthService {
 
     constructor(http: HttpAdvanced) {
         this.http = http;
+        console.log("CONS");
         this.storeUserAuthentication();
     }
 
@@ -37,7 +38,7 @@ export class AuthService {
     }
 
     getAuthLevel() {
-        if (!this.isInitialized()) this.storeUserAuthentication();
+        //if (!this.isInitialized()) this.storeUserAuthentication();
         return sessionStorage.getItem(ACCOUNT_TYPE);
     }
 
@@ -79,6 +80,7 @@ export class AuthService {
      */
 
     updateLoginStatus() {
+        console.log("UPD");
         this.isLoggedIn = this.isLoggedInFn();
         this.storeUserAuthentication(() => {
             this.isLoggedIn = this.isLoggedInFn();

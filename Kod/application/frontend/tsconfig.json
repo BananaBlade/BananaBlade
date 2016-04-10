@@ -1,5 +1,6 @@
 {
-  "version": "1.7.5",
+  "version": "1.8.9",
+  "compileOnSave": true,
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -7,9 +8,12 @@
     "module": "system",
     "moduleResolution": "node",
     "removeComments": true,
-    "sourceMap": false
+    "sourceMap": false,
+    "rootDir": "src/",
+    "outDir": "dist/"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "node_modules/"
   ]
 }

@@ -6,7 +6,7 @@ import { AuthService, Form, FormBuilderAdvanced, HttpAdvanced } from '../../serv
 
 @Component({
     selector: 'header-bar',
-    templateUrl: './dest/components/headerBar/headerBar.html',
+    templateUrl: './dist/components/headerBar/headerBar.html',
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, RouterLink ]
 })
 export class HeaderBar {

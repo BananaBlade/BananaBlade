@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
@@ -7,7 +7,7 @@ import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'ManageTracks',
-    templateUrl: './dest/views/manageTracks/manageTracks.html',
+    templateUrl: './dist/views/manageTracks/manageTracks.html',
     directives: [ NgFor, RouterLink ]
 })
 export class ManageTracks {
@@ -27,8 +27,9 @@ export class ManageTracks {
 
     deleteTrack(track) {
         for (let i in this.tracks) {
-            if (this.tracks[i].id == track.id) {
-                this.tracks.splice(i, 1);
+            let ii = parseInt(i);
+            if (this.tracks[ii].id == track.id) {
+                this.tracks.splice(ii, 1);
                 break;
             }
         }

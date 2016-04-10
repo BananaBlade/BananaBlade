@@ -20,10 +20,17 @@ export class HttpAdvanced {
         SELF = this;
     }
 
+    private processUrl(oldUrl: string): string {
+        return "http://localhost:9001" + oldUrl;
+    }
+
     /*
      * This is for plain ol' GET requests .. with callback of course.
      */
     public get(url, callback) {
+        console.log(url);
+        url = this.processUrl(url);
+            console.log(url);
         return this.http.get(url).subscribe((res) => {
             let msg = this.extractMsg(res);
             callback(msg);
@@ -34,6 +41,7 @@ export class HttpAdvanced {
      * GET without logging to message service.
      */
     public getNoError(url, callback) {
+        url = this.processUrl(url);
         return this.http.get(url).subscribe((res) => {
             let msg = this.extractMsg(res);
             callback(msg);
@@ -50,6 +58,7 @@ export class HttpAdvanced {
      *  negative to msgService)
      */
     public post(url, data) {
+        url = this.processUrl(url);
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
             let msg = this.extractMsg(res);
             this.msgService.setMessage(msg, SUCCESS);
@@ -60,6 +69,7 @@ export class HttpAdvanced {
      * This is for making POST requests which plan on executing a callback.
      */
     public postWithRes(url, data, callback) {
+        url = this.processUrl(url);
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
             let msg = this.extractMsg(res);
             if (callback) callback(msg);
@@ -67,6 +77,7 @@ export class HttpAdvanced {
     }
 
     public postWithBothMsg(url, data, callback?) {
+        url = this.processUrl(url);
         return this.http.post(url, urlEncode(data)).subscribe((res) => {
             let msg = this.extractMsg(res);
             this.msgService.setMessage(msg, SUCCESS);
@@ -75,6 +86,7 @@ export class HttpAdvanced {
     }
 
     public postPure(url, data, callback?) {
+        url = this.processUrl(url);
         return this.http.post(url, data).subscribe((res) => {
             let msg = this.extractMsg(res);
             this.msgService.setMessage(msg, SUCCESS);

@@ -6,7 +6,7 @@ import { HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
   selector: 'MakeWishlist',
-  templateUrl: './dest/views/makeWishlist/makeWishlist.html',
+  templateUrl: './dist/views/makeWishlist/makeWishlist.html',
   directives: [ COMMON_DIRECTIVES ]
 })
 export class MakeWishlist {
@@ -87,9 +87,11 @@ export class MakeWishlist {
     }
 
     removeFromWishlist( track : Track ){
-        for ( let i in this.tracks )
-            if ( this.tracks[ i ] == track )
-                this.tracks.splice( i, 1 )
+        for ( let i in this.tracks ) {
+            let ii = parseInt(i);
+            if ( this.tracks[ ii ] == track )
+                this.tracks.splice( ii, 1 )
+        }
     }
 
     saveWishlist(){

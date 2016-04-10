@@ -4,7 +4,7 @@ import { AuthService } from '../../services/authService';
 
 @Component({
     directives: [ RouterLink ],
-    templateUrl: 'dest/views/overview/overview.html'
+    templateUrl: 'dist/views/overview/overview.html'
 })
 export class Overview{
     authService : AuthService;

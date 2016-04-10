@@ -6,10 +6,10 @@ import { MsgServiceInternal } from '../../services/services';
 @Component({
     selector : 'messages',
     directives : [ COMMON_DIRECTIVES ],
-    templateUrl : 'dest/components/messages/messages.html'
+    templateUrl : 'dist/components/messages/messages.html'
 })
 export class Messages{
-    messageType : number;
+    messageType : string;
     messageText : string;
     shown : boolean = false;
     listenTimeoutInterval: number;

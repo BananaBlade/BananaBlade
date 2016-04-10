@@ -1,4 +1,4 @@
-import { Component, View } from "angular2/core";
+import { Component } from "angular2/core";
 import { COMMON_DIRECTIVES } from "angular2/common";
 import { Http } from "angular2/http";
 import { RouteConfig, RouterLink, RouterOutlet, Route, ROUTER_DIRECTIVES, Router, Location} from 'angular2/router';
@@ -13,7 +13,7 @@ import { MsgService } from './services/services';
 
 @Component({
     selector: 'App',
-    templateUrl: './dest/app.html',
+    templateUrl: './dist/app.html',
     styles: [],
     directives: [ ROUTER_DIRECTIVES, COMMON_DIRECTIVES, HeaderBar, Messages ]
 })
@@ -27,7 +27,7 @@ export class App {
 
     constructor(router: Router, location: Location) {
         this.router = router;
-        
+
         // SOME OTHER DAY. Trying to fix not loading of lazy nested routes.
         // let currPath = location.path();
         // console.log(currPath);

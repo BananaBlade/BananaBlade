@@ -29,7 +29,7 @@ class Track{
 
 @Component({
     selector: 'player',
-    templateUrl: './dest/components/player/player.html',
+    templateUrl: './dist/components/player/player.html',
     directives: [ NgIf ]
 })
 export class Player{

@@ -3,7 +3,7 @@ import { HttpAdvanced } from '../../services/services'
 
 @Component({
     selector : 'radio-descr',
-    templateUrl : '/dest/components/radioDescr/radioDescr.html'
+    templateUrl : '/dist/components/radioDescr/radioDescr.html'
 })
 
 export class RadioDescr{

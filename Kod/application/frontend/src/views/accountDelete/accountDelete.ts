@@ -1,12 +1,12 @@
 
-import {View, Component} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/router';
 
 import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'AccountDelete',
-    templateUrl: './dest/views/accountDelete/accountDelete.html'
+    templateUrl: './dist/views/accountDelete/accountDelete.html'
 })
 export class AccountDelete {
     password: string = "";

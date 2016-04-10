@@ -6,7 +6,7 @@ import { HttpAdvanced } from '../../services/services';
 @Component({
     selector: 'popular',
     directives: [ COMMON_DIRECTIVES ],
-    templateUrl: '/dest/components/popular/popular.html'
+    templateUrl: '/dist/components/popular/popular.html'
 })
 export class Popular{
     http : HttpAdvanced;

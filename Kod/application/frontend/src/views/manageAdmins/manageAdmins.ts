@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 
@@ -7,7 +7,7 @@ import { Form, HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
     selector: 'ManageAdmins',
-    templateUrl: './dest/views/manageAdmins/manageAdmins.html',
+    templateUrl: './dist/views/manageAdmins/manageAdmins.html',
     directives: [COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageAdmins {
@@ -68,8 +68,9 @@ export class ManageAdmins {
 
     removeAdmin(removedAdminId) {
         for (let i in this.admins) {
-            if (this.admins[i].id === removedAdminId) {
-                this.admins.splice(i, 1);
+            let ii = parseInt(i);
+            if (this.admins[ii].id === removedAdminId) {
+                this.admins.splice(ii, 1);
                 break;
             }
         }

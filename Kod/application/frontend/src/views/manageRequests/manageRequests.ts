@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { NgIf, NgFor, FORM_DIRECTIVES} from 'angular2/common';
 
@@ -7,7 +7,7 @@ import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'ManageRequests',
-    templateUrl: './dest/views/manageRequests/manageRequests.html',
+    templateUrl: './dist/views/manageRequests/manageRequests.html',
     directives: [ NgFor, NgIf ]
 })
 export class ManageRequests {

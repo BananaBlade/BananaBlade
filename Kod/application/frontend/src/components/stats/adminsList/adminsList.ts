@@ -5,7 +5,7 @@ import { HttpAdvanced } from '../../../services/services';
 
 @Component({
     selector : 'admins-list',
-    templateUrl : './dest/components/stats/adminsList/adminsList.html',
+    templateUrl : './dist/components/stats/adminsList/adminsList.html',
     directives : [ COMMON_DIRECTIVES ]
 })
 export class AdminsList{

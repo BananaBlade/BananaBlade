@@ -5,7 +5,7 @@ import { HttpAdvanced } from '../../../services/services';
 
 @Component({
     selector : 'global-wishlist',
-    templateUrl : './dest/components/stats/globalWishlist/globalWishlist.html',
+    templateUrl : './dist/components/stats/globalWishlist/globalWishlist.html',
     directives : [ COMMON_DIRECTIVES ]
 })
 export class GlobalWishlist{

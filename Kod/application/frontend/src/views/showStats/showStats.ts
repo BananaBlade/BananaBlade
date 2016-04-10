@@ -9,7 +9,7 @@ import { PopularTrack } from '../../components/stats/popularTrack/popularTrack'
 
 @Component({
     selector: 'ShowStats',
-    templateUrl: './dest/views/showStats/showStats.html',
+    templateUrl: './dist/views/showStats/showStats.html',
     directives: [ COMMON_DIRECTIVES, UsersCount, AdminsList, GlobalWishlist, PopularTrack ]
 })
 export class ShowStats {

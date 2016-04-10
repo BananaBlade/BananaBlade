@@ -7,7 +7,7 @@ let SELF = null;
 
 @Component({
     selector: 'AddTrack',
-    templateUrl: './dest/views/addTrack/addTrack.html',
+    templateUrl: './dist/views/addTrack/addTrack.html',
     directives: [ FILE_UPLOAD_DIRECTIVES, FORM_DIRECTIVES ]
 })
 export class AddTrack {

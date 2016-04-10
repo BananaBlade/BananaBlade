@@ -3,7 +3,7 @@ import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'station',
-    templateUrl: '/dest/components/station/station.html'
+    templateUrl: '/dist/components/station/station.html'
 })
 export class Station{
     http : HttpAdvanced;

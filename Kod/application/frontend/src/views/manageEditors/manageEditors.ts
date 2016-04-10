@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 
@@ -7,7 +7,7 @@ import { Form, HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'ManageEditors',
-    templateUrl: './dest/views/manageEditors/manageEditors.html',
+    templateUrl: './dist/views/manageEditors/manageEditors.html',
     directives: [ COMMON_DIRECTIVES, FORM_DIRECTIVES ]
 })
 export class ManageEditors {
@@ -40,7 +40,7 @@ export class ManageEditors {
             this.closestMatches = new Array();
         }
     }
-    
+
     enterCheck(event) {
         let keyCode = event.keyCode;
         if (keyCode == 13 && this.closestMatches.length > 0) {
@@ -54,7 +54,7 @@ export class ManageEditors {
 
 
 
-        
+
         let id = this.closestMatches[0].id;
         this.http.post('/admin/editors/add/' + this.closestMatches[0].id, '');
         this.editors.push(this.closestMatches[0]);
@@ -65,8 +65,9 @@ export class ManageEditors {
 
     removeEditor(removedEditorId) {
         for (let i in this.editors) {
-            if (this.editors[i].id === removedEditorId) {
-                this.editors.splice(i, 1);
+            let ii = parseInt(i);
+            if (this.editors[ii].id === removedEditorId) {
+                this.editors.splice(ii, 1);
                 break;
             }
         }

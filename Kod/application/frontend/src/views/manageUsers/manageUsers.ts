@@ -1,11 +1,11 @@
-import {View, Component} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router, CanActivate} from 'angular2/router';
 
 import { HttpAdvanced } from '../../services/services';
 
 @Component({
   selector: 'ManageUsers',
-  templateUrl: './dest/views/manageUsers/manageUsers.html'
+  templateUrl: './dist/views/manageUsers/manageUsers.html'
 })
 export class ManageUsers {
     http: HttpAdvanced;
@@ -29,8 +29,9 @@ export class ManageUsers {
 
     deleteUser(userId) {
         for (let i in this.users) {
-            if (this.users[i].id.toString() === userId.toString()) {
-                this.users.splice(i, 1);
+            let ii = parseInt(i);
+            if (this.users[ii].id.toString() === userId.toString()) {
+                this.users.splice(ii, 1);
             }
         }
         this.http.postWithBothMsg('admin/users/' + userId + '/delete', '');

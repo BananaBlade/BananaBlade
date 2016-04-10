@@ -2,7 +2,7 @@ import { AsyncRoute, RouteDefinition } from 'angular2/router';
 import { Type } from 'angular2/core';
 
 declare var System: any;
-var VIEWS_DIR_PATH: string = '../dest/views/';
+var VIEWS_DIR_PATH: string = '../dist/views/';
 
 class ComponentHelper {
     static LoadComponentAsync( name, path ) {
@@ -26,7 +26,7 @@ class MyAsyncComponent {
         this.hidden = hidden ? true : false;
     }
 
-    getLoader(): Function {
+    getLoader() {
         return () => ComponentHelper.LoadComponentAsync( this.componentName, VIEWS_DIR_PATH + this.folderName + '/' + this.folderName );
     }
 

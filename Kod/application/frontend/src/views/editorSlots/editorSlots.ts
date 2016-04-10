@@ -1,5 +1,5 @@
 
-import { View, Component, Injector } from 'angular2/core';
+import { Component, Injector } from 'angular2/core';
 import { Router, RouteConfig, RouterLink, CanActivate } from 'angular2/router';
 import { CORE_DIRECTIVES, NgSelectOption, CheckboxControlValueAccessor, FORM_DIRECTIVES,
     FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
@@ -11,7 +11,7 @@ import { HttpAdvanced, AuthService, numberTo2digits } from '../../services/servi
 //@CanActivate(AuthService.isEditorInjector())
 @Component({
     selector: 'EditorSlots',
-    templateUrl: './dest/views/editorSlots/editorSlots.html',
+    templateUrl: './dist/views/editorSlots/editorSlots.html',
     directives: []
 })
 export class EditorSlots {

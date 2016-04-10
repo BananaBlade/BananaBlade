@@ -7,7 +7,7 @@ import { HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
   selector: 'MakePlaylist',
-  templateUrl: './dest/views/makePlaylist/makePlaylist.html',
+  templateUrl: './dist/views/makePlaylist/makePlaylist.html',
   directives: [ COMMON_DIRECTIVES ]
 })
 export class MakePlaylist {
@@ -68,8 +68,9 @@ export class MakePlaylist {
 
     removeTrack(track) {
         for (let i in this.playlist) {
-            if (this.playlist[i] == track) {
-                this.playlist.splice(i, 1);
+            let ii = parseInt(i);
+            if (this.playlist[ii] == track) {
+                this.playlist.splice(ii, 1);
             }
         }
         this.updateBar();

@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { RouteParams } from 'angular2/router';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
@@ -7,7 +7,7 @@ import { HttpAdvanced, MsgService } from '../../services/services';
 
 @Component({
   selector: 'EditUser',
-  templateUrl: './dest/views/editUser/editUser.html',
+  templateUrl: './dist/views/editUser/editUser.html',
   directives: [ COMMON_DIRECTIVES ]
 })
 export class EditUser {

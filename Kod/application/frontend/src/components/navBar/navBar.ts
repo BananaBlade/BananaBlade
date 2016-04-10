@@ -7,7 +7,7 @@ import { NavigationProvider, AuthService } from '../../services/services';
 
 @Component({
     selector: 'nav-bar',
-    templateUrl: './dest/components/navBar/navBar.html',
+    templateUrl: './dist/components/navBar/navBar.html',
     directives: [ FORM_DIRECTIVES, COMMON_DIRECTIVES, ROUTER_DIRECTIVES ]
 })
 export class NavBar {
@@ -22,11 +22,11 @@ export class NavBar {
     }
 
     isVisible( at : number ){
-        return ( ( 1 << this.authService.getAuthLevel() ) & at ) != 0;
+        return ( ( 1 << parseInt(this.authService.getAuthLevel()) ) & at ) != 0;
     }
 
     logout() {
-        
+
         this.authService.logout(() => this.router.navigate(['/Index']));
     }
 }

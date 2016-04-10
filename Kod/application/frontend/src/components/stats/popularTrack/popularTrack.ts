@@ -5,7 +5,7 @@ import { HttpAdvanced, AuthService } from '../../../services/services';
 
 @Component({
     selector : 'popular-track',
-    templateUrl : './dest/components/stats/popularTrack/popularTrack.html',
+    templateUrl : './dist/components/stats/popularTrack/popularTrack.html',
     directives : [ COMMON_DIRECTIVES ]
 })
 export class PopularTrack{

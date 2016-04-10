@@ -6,7 +6,7 @@ import { HttpAdvanced } from './../../services/services';
 @Component({
     selector: 'schedule',
     directives: [ COMMON_DIRECTIVES ],
-    templateUrl: '/dest/components/schedule/schedule.html'
+    templateUrl: '/dist/components/schedule/schedule.html'
 })
 export class Schedule{
     items: any[] = [];

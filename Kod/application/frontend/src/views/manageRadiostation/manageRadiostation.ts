@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
@@ -7,7 +7,7 @@ import { HttpAdvanced, AuthService } from '../../services/services';
 
 @Component({
     selector: 'ManageRadiostation',
-    templateUrl: './dest/views/manageRadiostation/manageRadiostation.html',
+    templateUrl: './dist/views/manageRadiostation/manageRadiostation.html',
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class ManageRadiostation {

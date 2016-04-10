@@ -1,8 +1,11 @@
-dest/*
+dist/
 *.js.map
 *.js
 *.css
 *.html
+.tscache/
+.tscache
+.sublime-grunt.cache
 
 !index.html
 !dest/static/*

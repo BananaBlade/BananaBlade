@@ -1,5 +1,5 @@
 
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, RouteParams } from 'angular2/router';
 import { CORE_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
@@ -7,7 +7,7 @@ import { HttpAdvanced } from '../../services/services';
 
 @Component({
     selector: 'AddTrack',
-    templateUrl: './dest/views/editTrack/editTrack.html',
+    templateUrl: './dist/views/editTrack/editTrack.html',
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class EditTrack {

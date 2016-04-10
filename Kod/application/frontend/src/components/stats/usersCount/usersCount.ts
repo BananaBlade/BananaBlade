@@ -3,7 +3,7 @@ import { HttpAdvanced } from '../../../services/httpAdvanced';
 
 @Component({
     selector : 'users-count',
-    templateUrl : './dest/components/stats/usersCount/usersCount.html'
+    templateUrl : './dist/components/stats/usersCount/usersCount.html'
 })
 export class UsersCount{
     http : HttpAdvanced;

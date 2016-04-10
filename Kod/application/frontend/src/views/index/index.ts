@@ -1,4 +1,4 @@
-import { View, Component } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { Location, RouteConfig, RouterLink, Router, CanActivate } from 'angular2/router';
 import { COMMON_DIRECTIVES, FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, Control } from 'angular2/common';
 
@@ -14,7 +14,7 @@ import { Station } from '../../components/station/station';
 @Component({
     selector: 'Index',
     directives: [ Messages, Player, Popular, RadioDescr, Schedule, Station ],
-    templateUrl: './dest/views/index/index.html'
+    templateUrl: './dist/views/index/index.html'
 })
 export class Index {
     http: HttpAdvanced;
